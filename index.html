@@ -768,8 +768,16 @@ els.speedBtn.addEventListener('click', () => {
   speedIndex = (speedIndex + 1) % SPEEDS.length;
   try{ localStorage.setItem('gerel:speed', String(speedIndex)); }catch(e){}
   updateSpeedLabel();
+  clearClips();
+  announce('Хурд: ' + SPEEDS[speedIndex] + '×');
+  // Restart the current sentence so the new speed takes effect immediately.
+  if(playing){ stopPlayback(); playFromHere(); }
+});
+updateSpeedLabel();
 
-function updateReaderLabel(){ els.readerBtn.textContent = 'Хоолой: ' + READERS[readerIndex].label; }
+function updateReaderLabel(){
+  els.readerBtn.textContent = 'Хоолой: ' + READERS[readerIndex].label;
+}
 els.readerBtn.addEventListener('click', () => {
   readerIndex = (readerIndex + 1) % READERS.length;
   try{ localStorage.setItem('gerel:reader', String(readerIndex)); }catch(e){}
@@ -779,12 +787,7 @@ els.readerBtn.addEventListener('click', () => {
   if(playing){ stopPlayback(); playFromHere(); }
 });
 updateReaderLabel();
-  clearClips();
-  announce('Хурд: ' + SPEEDS[speedIndex] + '×');
-  // Restart the current sentence so the new speed takes effect immediately.
-  if(playing){ stopPlayback(); playFromHere(); }
-});
-updateSpeedLabel();
+
 els.tocBtn.addEventListener('click', () => els.tocPanel.classList.remove('hidden'));
 els.tocCloseBtn.addEventListener('click', () => els.tocPanel.classList.add('hidden'));
 
