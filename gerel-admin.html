@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Гэрэл — Номын сангийн удирдлага</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --night:#0A1730; --night-2:#122444; --night-3:#1A2F52;
+    --lamp:#FFC24B; --lamp-dim:#B8862B;
+    --dawn:#7FA3CC; --paper:#F4F1E8;
+    --good:#5BC98C; --warn:#FF8A6A;
+    --display:'Unbounded', system-ui, sans-serif;
+    --body:'Inter', system-ui, -apple-system, sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--night);color:var(--paper);font-family:var(--body);}
+
+  header{
+    position:sticky;top:0;z-index:10;background:var(--night);
+    border-bottom:1px solid rgba(127,163,204,0.25);
+    padding:16px 22px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  }
+  .wordmark{font-family:var(--display);font-weight:800;font-size:18px;color:var(--lamp);}
+  .wordmark span{color:var(--paper);font-weight:600;font-size:14px;}
+  .grow{flex:1;}
+
+  button, label.btn{
+    font-family:var(--body);font-size:14px;font-weight:600;
+    background:transparent;color:var(--dawn);
+    border:1px solid rgba(127,163,204,0.45);border-radius:10px;
+    padding:10px 14px;cursor:pointer;
+  }
+  button.primary, label.btn.primary{background:var(--lamp);color:var(--night);border-color:var(--lamp);}
+  button.ghost{border-style:dashed;}
+  button:disabled{opacity:0.4;cursor:default;}
+  input[type=file]{display:none;}
+
+  .stats{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:12px;padding:20px 22px;
+  }
+  .stat{background:var(--night-2);border-radius:14px;padding:14px 16px;}
+  .stat b{display:block;font-size:24px;font-family:var(--display);color:var(--lamp);}
+  .stat span{font-size:12px;color:var(--dawn);letter-spacing:0.04em;text-transform:uppercase;}
+
+  .toolbar{padding:0 22px 14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+  input[type=search], select{
+    font-family:var(--body);font-size:14px;
+    background:var(--night-2);color:var(--paper);
+    border:1px solid rgba(127,163,204,0.35);border-radius:10px;padding:10px 12px;
+  }
+  input[type=search]{min-width:240px;}
+
+  .shelf{margin:0 22px 18px;background:var(--night-2);border-radius:16px;overflow:hidden;}
+  .shelfHead{
+    display:flex;align-items:center;gap:12px;padding:14px 18px;
+    background:var(--night-3);flex-wrap:wrap;
+  }
+  .shelfHead h2{font-family:var(--display);font-size:15px;margin:0;color:var(--paper);}
+  .pill{
+    font-size:11px;letter-spacing:0.06em;text-transform:uppercase;
+    padding:4px 9px;border-radius:99px;border:1px solid currentColor;
+  }
+  .pill.kids{color:var(--lamp);}
+  .pill.count{color:var(--dawn);border-color:rgba(127,163,204,0.4);}
+
+  table{width:100%;border-collapse:collapse;}
+  td{padding:10px 18px;border-top:1px solid rgba(127,163,204,0.13);font-size:14px;vertical-align:middle;}
+  td.title{font-weight:600;}
+  td.author{color:var(--dawn);font-size:13px;}
+  td.len{color:rgba(127,163,204,0.65);font-size:12px;white-space:nowrap;}
+  td.move{width:190px;text-align:right;}
+  td.move select{padding:6px 8px;font-size:13px;}
+  tr.hiddenRow{display:none;}
+
+  .empty{padding:16px 18px;color:rgba(127,163,204,0.6);font-size:13px;}
+  #drop{
+    margin:0 22px 24px;border:2px dashed rgba(127,163,204,0.35);
+    border-radius:16px;padding:26px;text-align:center;color:var(--dawn);font-size:14px;
+  }
+  #drop.over{border-color:var(--lamp);color:var(--lamp);}
+  #log{margin:0 22px 30px;font-size:13px;color:var(--dawn);line-height:1.7;}
+  .note{margin:0 22px 20px;color:rgba(127,163,204,0.7);font-size:13px;line-height:1.7;max-width:70ch;}
+  .warn{color:var(--warn);}
+  .good{color:var(--good);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wordmark">Гэрэл <span>· удирдлага</span></div>
+  <div class="grow"></div>
+  <label class="btn">Catalog нээх<input type="file" id="openCatalog" accept=".json,application/json"></label>
+  <button id="saveBtn" class="primary" disabled>catalog.json татах</button>
+</header>
+
+<div class="stats" id="stats"></div>
+
+<div class="toolbar">
+  <input type="search" id="search" placeholder="Ном хайх…">
+  <select id="shelfFilter"><option value="">Бүх тавиур</option></select>
+  <button id="kidsOnlyBtn" class="ghost">Зөвхөн хүүхдийн</button>
+</div>
+
+<div id="shelves"></div>
+
+<div id="drop">
+  EPUB файлыг энд чирж оруулаад номын санд нэмнэ үү
+  <br><label class="btn" style="margin-top:12px;display:inline-block">Файл сонгох<input type="file" id="addBooks" accept=".epub" multiple></label>
+</div>
+
+<p class="note" id="hint">
+  Эхлээд <b>catalog.json</b> файлаа нээнэ үү. Өөрчлөлт хийсний дараа
+  <b>catalog.json татах</b> дарж, GitHub дээрх хуучин файлыг солино.
+</p>
+
+<div id="log"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+// The library is a set of static files, so there is no server to talk to and
+// nothing here is saved automatically. This page edits catalog.json in the
+// browser and hands it back for you to upload. Nothing leaves the machine.
+let catalog = null;
+let kidsOnly = false;
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s || '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function log(msg, cls){
+  const p = document.createElement('div');
+  if(cls) p.className = cls;
+  p.textContent = msg;
+  $('log').prepend(p);
+}
+
+function allBooks(){
+  const seen = new Map();
+  (catalog.shelves || []).forEach(sh => (sh.books || []).forEach(b => {
+    if(!seen.has(b.file)) seen.set(b.file, b);
+  }));
+  return [...seen.values()];
+}
+
+function renderStats(){
+  const books = allBooks();
+  const kids = new Set();
+  (catalog.shelves || []).forEach(sh => {
+    if(sh.forChildren) (sh.books || []).forEach(b => kids.add(b.file));
+  });
+  const chars = books.reduce((n,b) => n + (b.chars || 0), 0);
+  const hours = chars / 5 / 150 / 60;
+  const stats = [
+    ['Ном', books.length],
+    ['Хүүхдийн ном', kids.size],
+    ['Тавиур', (catalog.shelves || []).length],
+    ['Цаг', Math.round(hours).toLocaleString()],
+    ['Уншуулах өртөг', '$' + (chars/1e6*16).toFixed(0)],
+    ['Дискний хэмжээ', Math.round(hours*26).toLocaleString() + ' MB']
+  ];
+  $('stats').innerHTML = stats.map(([k,v]) =>
+    `<div class="stat"><b>${v}</b><span>${k}</span></div>`).join('');
+}
+
+function shelfOptions(current){
+  return (catalog.shelves || []).map(sh =>
+    `<option value="${esc(sh.name)}"${sh.name===current?' selected':''}>${esc(sh.name)}</option>`
+  ).join('') + '<option value="__remove__">— хасах —</option>';
+}
+
+function renderShelves(){
+  const q = $('search').value.trim().toLowerCase();
+  const only = $('shelfFilter').value;
+  const wrap = $('shelves');
+  wrap.innerHTML = '';
+
+  (catalog.shelves || []).forEach(sh => {
+    if(only && sh.name !== only) return;
+    if(kidsOnly && !sh.forChildren) return;
+
+    const div = document.createElement('div');
+    div.className = 'shelf';
+
+    const books = (sh.books || []);
+    const matching = books.filter(b =>
+      !q || (b.title||'').toLowerCase().includes(q) || (b.author||'').toLowerCase().includes(q));
+
+    div.innerHTML = `
+      <div class="shelfHead">
+        <h2>${esc(sh.name)}</h2>
+        <span class="pill count">${books.length}</span>
+        ${sh.forChildren ? '<span class="pill kids">хүүхдийн</span>' : ''}
+        <div class="grow"></div>
+        <button data-kids="${esc(sh.name)}">${sh.forChildren ? 'Хүүхдийн болиулах' : 'Хүүхдийн болгох'}</button>
+        <button data-up="${esc(sh.name)}">↑</button>
+        <button data-down="${esc(sh.name)}">↓</button>
+      </div>`;
+
+    if(!matching.length){
+      div.insertAdjacentHTML('beforeend', '<div class="empty">Ном алга.</div>');
+    } else {
+      const rows = matching.map(b => `
+        <tr>
+          <td class="title">${esc(b.title)}</td>
+          <td class="author">${esc(b.author)}</td>
+          <td class="len">${b.minutes ? b.minutes + ' мин' : ''}</td>
+          <td class="move">
+            <select data-move="${esc(b.file)}" data-from="${esc(sh.name)}">
+              ${shelfOptions(sh.name)}
+            </select>
+          </td>
+        </tr>`).join('');
+      div.insertAdjacentHTML('beforeend', `<table>${rows}</table>`);
+    }
+    wrap.appendChild(div);
+  });
+
+  $('shelfFilter').innerHTML = '<option value="">Бүх тавиур</option>' +
+    (catalog.shelves||[]).map(sh => `<option${sh.name===only?' selected':''}>${esc(sh.name)}</option>`).join('');
+  $('shelfFilter').value = only;
+  renderStats();
+}
+
+// ---- edits ----
+document.addEventListener('change', e => {
+  const sel = e.target.closest('[data-move]');
+  if(!sel || !catalog) return;
+  const file = sel.dataset.move, from = sel.dataset.from, to = sel.value;
+  const fromShelf = catalog.shelves.find(s => s.name === from);
+  const book = fromShelf.books.find(b => b.file === file);
+  fromShelf.books = fromShelf.books.filter(b => b.file !== file);
+  if(to !== '__remove__'){
+    const toShelf = catalog.shelves.find(s => s.name === to);
+    if(toShelf && !toShelf.books.some(b => b.file === file)){
+      toShelf.books.push(book);
+      toShelf.books.sort((a,b) => (a.title||'').localeCompare(b.title||'', 'mn'));
+    }
+    log(`«${book.title}» → ${to}`);
+  } else {
+    log(`«${book.title}» хасагдлаа`, 'warn');
+  }
+  renderShelves();
+});
+
+document.addEventListener('click', e => {
+  if(!catalog) return;
+  const kids = e.target.closest('[data-kids]');
+  const up = e.target.closest('[data-up]');
+  const down = e.target.closest('[data-down]');
+
+  if(kids){
+    const sh = catalog.shelves.find(s => s.name === kids.dataset.kids);
+    sh.forChildren = !sh.forChildren;
+    log(`«${sh.name}» ${sh.forChildren ? 'хүүхдийн тавиур боллоо' : 'хүүхдийн тавиураас гарлаа'}`);
+    renderShelves();
+  }
+  if(up || down){
+    const name = (up || down).dataset[up ? 'up' : 'down'];
+    const i = catalog.shelves.findIndex(s => s.name === name);
+    const j = up ? i-1 : i+1;
+    if(j >= 0 && j < catalog.shelves.length){
+      [catalog.shelves[i], catalog.shelves[j]] = [catalog.shelves[j], catalog.shelves[i]];
+      renderShelves();
+    }
+  }
+});
+
+$('search').addEventListener('input', renderShelves);
+$('shelfFilter').addEventListener('change', renderShelves);
+$('kidsOnlyBtn').addEventListener('click', () => {
+  kidsOnly = !kidsOnly;
+  $('kidsOnlyBtn').classList.toggle('primary', kidsOnly);
+  renderShelves();
+});
+
+// ---- open / save ----
+$('openCatalog').addEventListener('change', async e => {
+  const file = e.target.files[0];
+  if(!file) return;
+  try{
+    catalog = JSON.parse(await file.text());
+    if(!catalog.shelves) throw new Error('shelves байхгүй');
+    $('saveBtn').disabled = false;
+    $('hint').innerHTML = 'Өөрчлөлт хийсний дараа <b>catalog.json татах</b> дарна уу. '
+      + 'Энэ хуудас юуг ч автоматаар хадгалахгүй.';
+    renderShelves();
+    log(`${allBooks().length} ном ачааллаа.`, 'good');
+  }catch(err){
+    log('Уншиж чадсангүй: ' + err.message, 'warn');
+  }
+});
+
+$('saveBtn').addEventListener('click', () => {
+  const blob = new Blob([JSON.stringify(catalog, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'catalog.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  log('catalog.json татагдлаа. GitHub дээрх файлыг солино уу.', 'good');
+});
+
+// ---- adding books ----
+async function epubInfo(file){
+  const zip = await JSZip.loadAsync(file);
+  const container = await zip.file('META-INF/container.xml').async('string');
+  const opfPath = new DOMParser().parseFromString(container,'application/xml')
+    .querySelector('rootfile').getAttribute('full-path');
+  const opf = new DOMParser().parseFromString(await zip.file(opfPath).async('string'),'application/xml');
+  const title = (opf.querySelector('metadata > *|title') || opf.querySelector('title'))?.textContent?.trim();
+  const author = (opf.querySelector('metadata > *|creator') || opf.querySelector('creator'))?.textContent?.trim();
+
+  // rough character count, enough for the length and cost figures
+  let chars = 0;
+  const names = Object.keys(zip.files).filter(n => /\.x?html?$/i.test(n));
+  for(const n of names){
+    const raw = await zip.file(n).async('string');
+    const doc = new DOMParser().parseFromString(raw, 'text/html');
+    doc.querySelectorAll('script,style').forEach(x => x.remove());
+    chars += (doc.body?.textContent || '').replace(/\s+/g,' ').trim().length;
+  }
+  return { title: title || file.name.replace(/\.epub$/i,''), author: author || '', chars };
+}
+
+async function addFiles(files){
+  if(!catalog){ log('Эхлээд catalog.json нээнэ үү.', 'warn'); return; }
+  const target = catalog.shelves.find(s => s.forChildren) || catalog.shelves[0];
+  for(const file of files){
+    if(!/\.epub$/i.test(file.name)) continue;
+    try{
+      const info = await epubInfo(file);
+      const entry = {
+        title: info.title,
+        author: info.author,
+        file: 'books/' + file.name,
+        chars: info.chars,
+        minutes: Math.round(info.chars/5/150)
+      };
+      if(allBooks().some(b => b.file === entry.file)){
+        log(`«${entry.title}» аль хэдийн байна.`, 'warn');
+        continue;
+      }
+      target.books.push(entry);
+      target.books.sort((a,b) => (a.title||'').localeCompare(b.title||'', 'mn'));
+      log(`«${entry.title}» → ${target.name} (${entry.minutes} мин)`, 'good');
+    }catch(err){
+      log(`${file.name}: ${err.message}`, 'warn');
+    }
+  }
+  renderShelves();
+  log('Файлуудыг books/ хавтас руу хуулахаа мартуузай.', 'warn');
+}
+
+$('addBooks').addEventListener('change', e => addFiles([...e.target.files]));
+const drop = $('drop');
+['dragenter','dragover'].forEach(ev => drop.addEventListener(ev, e => {
+  e.preventDefault(); drop.classList.add('over');
+}));
+['dragleave','drop'].forEach(ev => drop.addEventListener(ev, e => {
+  e.preventDefault(); drop.classList.remove('over');
+}));
+drop.addEventListener('drop', e => addFiles([...e.dataTransfer.files]));
+</script>
+</body>
+</html>
