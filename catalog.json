@@ -1,0 +1,3110 @@
+{
+  "credit": "Номуудыг «Цогт охин тэнгэр» сангийн Цахим номын сангаас зөвшөөрөлтэйгээр авав. e-nom.mn",
+  "shelves": [
+    {
+      "name": "Үлгэр",
+      "forChildren": true,
+      "books": [
+        {
+          "title": "АЛТАН ГУРГАЛДАЙ",
+          "author": "Х. Х. АНДЕРСЕН",
+          "file": "books/АЛТАН_ГУРГАЛДАЙ.epub",
+          "chars": 21330,
+          "minutes": 28,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "АЛТАН ҮСТ ОХИН",
+          "author": "ААЗ",
+          "file": "books/АЛТАН_ҮСТ_ОХИН.epub",
+          "chars": 37472,
+          "minutes": 50,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "АРДЫН AMAH ЗОХИОЛЫН УЧИР",
+          "author": "Ш. Гаадамба",
+          "file": "books/АРДЫН_AMAH_ЗОХИОЛЫН_УЧИР.epub",
+          "chars": 40137,
+          "minutes": 54,
+          "id": "amah",
+          "cover": "covers/amah.jpg"
+        },
+        {
+          "title": "АРДЫН ДУУ",
+          "author": "Ш. Гаадамба",
+          "file": "books/АРДЫН_ДУУ.epub",
+          "chars": 63499,
+          "minutes": 85,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "БААВГАЙ ЖАНЖНЫ АЛБАНАА",
+          "author": "М. Е. Салтыков-Щедрин",
+          "file": "books/БААВГАЙ_ЖАНЖНЫ_АЛБАНАА.epub",
+          "chars": 33772,
+          "minutes": 45,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "БАЛЖИН ХАТНЫ ДОМОГ",
+          "author": "Ц. Дамдинсүрэн",
+          "file": "books/БАЛЖИН_ХАТНЫ_ДОМОГ.epub",
+          "chars": 65485,
+          "minutes": 87,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "БУХ, ХУЦ, УХНА ГУРАВ",
+          "author": "ААЗ",
+          "file": "books/БУХ_ХУЦ_УХНА_ГУРАВ.epub",
+          "chars": 4137,
+          "minutes": 6,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "БӨХИЙН ТУХАЙ ДОМГУУД",
+          "author": "ААЗ",
+          "file": "books/БӨХИЙН_ТУХАЙ_ДОМГУУД.epub",
+          "chars": 139095,
+          "minutes": 185,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ГАРГАНТЮА БА ПАНТАГРЮЭЛЬ - 1",
+          "author": "Франсуа РАБЛЕ",
+          "file": "books/ГАРГАНТЮА_БА_ПАНТАГРЮЭЛЬ_-_1.epub",
+          "chars": 106204,
+          "minutes": 142,
+          "id": "1",
+          "cover": "covers/1.jpg"
+        },
+        {
+          "title": "ГАРГАНТЮА БА ПАНТАГРЮЭЛЬ - 2",
+          "author": "Франсуа РАБЛЕ",
+          "file": "books/ГАРГАНТЮА_БА_ПАНТАГРЮЭЛЬ_-_2.epub",
+          "chars": 205181,
+          "minutes": 274,
+          "id": "2",
+          "cover": "covers/2.jpg"
+        },
+        {
+          "title": "ГОМДОЛ МЭДҮҮЛЭГЧ ХОН ХЭРЭЭ",
+          "author": "М. Е. Салтыков-Щедрин",
+          "file": "books/ГОМДОЛ_МЭДҮҮЛЭГЧ_ХОН_ХЭРЭЭ.epub",
+          "chars": 31052,
+          "minutes": 41,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ГУРВАН САХИУС",
+          "author": "ААЗ",
+          "file": "books/ГУРВАН_САХИУС.epub",
+          "chars": 6562,
+          "minutes": 9,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ГЭСЭР",
+          "author": "ААЗ",
+          "file": "books/ГЭСЭР.epub",
+          "chars": 499937,
+          "minutes": 667,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ДАЛАН ХУДАЛЧ БЭЛЭН СЭНГЭ",
+          "author": "Д. Сүрьяа",
+          "file": "books/ДАЛАН_ХУДАЛЧ_БЭЛЭН_СЭНГЭ.epub",
+          "chars": 136136,
+          "minutes": 182,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ДОЛООН ХОН ХЭРЭЭ",
+          "author": "Ах дүү ГРИММ",
+          "file": "books/ДОЛООН_ХОН_ХЭРЭЭ.epub",
+          "chars": 5192,
+          "minutes": 7,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ДОМОГ ҮЛГЭРИЙН ЗҮЙЛС",
+          "author": "ААЗ",
+          "file": "books/ДОМОГ_ҮЛГЭРИЙН_ЗҮЙЛС.epub",
+          "chars": 95997,
+          "minutes": 128,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ДОМОГ ҮЛГЭРИЙН СЭТГЭЛГЭЭНИЙ АСУУДАЛД",
+          "author": "Ш. Гаадамба",
+          "file": "books/ДОМОГ_ҮЛГЭРИЙН_СЭТГЭЛГЭЭНИЙ_АСУУДАЛД.epub",
+          "chars": 50932,
+          "minutes": 68,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ДЭЛДЭН БАМБАРУУШИЙН ХӨГТЭЙ ЯВДАЛ",
+          "author": "Чеслав Янчарский",
+          "file": "books/ДЭЛДЭН_БАМБАРУУШИЙН_ХӨГТЭЙ_ЯВДАЛ.epub",
+          "chars": 36041,
+          "minutes": 48,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ДЭЛХИЙ ДЭЭР ХАМГИЙН ТАРГАН ХААН, БЯСАА ХОЁР",
+          "author": "Азиз Несин",
+          "file": "books/ДЭЛХИЙ_ДЭЭР_ХАМГИЙН_ТАРГАН_ХААН_БЯСАА_ХОР.epub",
+          "chars": 12735,
+          "minutes": 17,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ДЭЭЖИС ҮЛГЭРҮҮД",
+          "author": "Ах дүү ГРИММ",
+          "file": "books/ДЭЭЖИС_ҮЛГЭРҮҮД.epub",
+          "chars": 42055,
+          "minutes": 56,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЖАНГАР",
+          "author": "ААЗ",
+          "file": "books/ЖАНГАР.epub",
+          "chars": 207825,
+          "minutes": 277,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЗАМЫН ЭХЭН",
+          "author": "Ж. Дамдин",
+          "file": "books/ЗАМЫН_ЭХЭН.epub",
+          "chars": 247892,
+          "minutes": 331,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЗАН ҮЙЛИЙН АМАН ЗОХИОЛ",
+          "author": "Х. САМПИЛДЭНДЭВ",
+          "file": "books/ЗАН_ҮЙЛИЙН_АМАН_ЗОХИОЛ.epub",
+          "chars": 105298,
+          "minutes": 140,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЗУЛ САРЫН БАЯРЫН УРЬД ШӨНӨ",
+          "author": "Н. В. Гоголь",
+          "file": "books/ЗУЛ_САРЫН_БАЯРЫН_УРЬД_ШӨНӨ.epub",
+          "chars": 10439,
+          "minutes": 14,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЗУУН ЛИРТЭЙ БОЛСОН НЬ",
+          "author": "ЖАННИ РОДАРИ",
+          "file": "books/ЗУУН_ЛИРТЭЙ_БОЛСОН_НЬ.epub",
+          "chars": 4328,
+          "minutes": 6,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЗҮЙР ЦЭЦЭН ҮГ",
+          "author": "ААЗ",
+          "file": "books/ЗҮЙР_ЦЭЦЭН_ҮГ.epub",
+          "chars": 61950,
+          "minutes": 83,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ИД ШИДТЭН ЖИРО",
+          "author": "ЖАННИ РОДАРИ",
+          "file": "books/ИД_ШИДТЭН_ЖИРО.epub",
+          "chars": 4715,
+          "minutes": 6,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ИРГЭНИЙ БОЛОВСРОЛ X",
+          "author": "ИРГЭНИЙ БОЛОВСРОЛ X (2014)",
+          "file": "books/ИРГЭНИЙ_БОЛОВСРОЛ_X.epub",
+          "chars": 184801,
+          "minutes": 246,
+          "id": "x",
+          "cover": "covers/x.jpg"
+        },
+        {
+          "title": "КИРГИЗИЙН ЦОМОРЛОГ",
+          "author": "123",
+          "file": "books/КИРГИЗИЙН_ЦОМОРЛОГ.epub",
+          "chars": 43466,
+          "minutes": 58,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "МАГТААЛ",
+          "author": "ААЗ",
+          "file": "books/МАГТААЛ.epub",
+          "chars": 91780,
+          "minutes": 122,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "МОГЖООХОН ДААГАТАЙ ЖОГЖООХОН ХҮҮ",
+          "author": "ААЗ",
+          "file": "books/МОГЖООХОН_ДААГАТАЙ_ЖОГЖООХОН_ХҮҮ.epub",
+          "chars": 54922,
+          "minutes": 73,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "МОНГОЛ АМАН ЗОХИОЛЫН ТОВЧООН",
+          "author": "Х. САМПИЛДЭНДЭВ",
+          "file": "books/МОНГОЛ_АМАН_ЗОХИОЛЫН_ТОВЧООН.epub",
+          "chars": 495754,
+          "minutes": 661,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "МОНГОЛ АРДЫН TУУЛЬ",
+          "author": "ААЗ",
+          "file": "books/МОНГОЛ_АРДЫН_ТУУЛЬ.epub",
+          "chars": 75271,
+          "minutes": 100,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "МОНГОЛ АРДЫН ШОГ ХОШИН ҮЛГЭР",
+          "author": "Д. СҮРЬЯА, О. АЛИМАА",
+          "file": "books/МОНГОЛ_АРДЫН_ШОГ_ХОШИН_ҮЛГЭР.epub",
+          "chars": 273367,
+          "minutes": 364,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "МОНГОЛ ДОМГИЙН ЧУУЛГАН",
+          "author": "Х. Сампилдэндэв",
+          "file": "books/МОНГОЛ_ДОМГИЙН_ЧУУЛГАН.epub",
+          "chars": 786670,
+          "minutes": 1049,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "МОНГОЛ ДОМОГ",
+          "author": "Х. Сампилдэндэв",
+          "file": "books/МОНГОЛ_ДОМОГ.epub",
+          "chars": 506656,
+          "minutes": 676,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "МОНГОЛ ЖАНГАРЫН ТУУЛЬ",
+          "author": "ААЗ",
+          "file": "books/МОНГОЛ_ЖАНГАРЫН_ТУУЛЬ.epub",
+          "chars": 92604,
+          "minutes": 123,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "МОНГОЛ ҮГИЙН УРЛАГИЙН ТОВЧИС",
+          "author": "Х. Сампилдэндэв",
+          "file": "books/МОНГОЛ_ҮГИЙН_УРЛАГИЙН_ТОВЧИС.epub",
+          "chars": 121932,
+          "minutes": 163,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "МЭРГЭН ХАРВААЧ НИ АГЬ",
+          "author": "ААЗ",
+          "file": "books/МЭРГЭН_ХАРВААЧ_НИ_АГЬ.epub",
+          "chars": 7285,
+          "minutes": 10,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "МЭРГЭН ЭМЧ",
+          "author": "Ах дүү ГРИММ",
+          "file": "books/МЭРГЭН_ЭМЧ.epub",
+          "chars": 4724,
+          "minutes": 6,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "МЭХТ САРМАГЧИН",
+          "author": "ААЗ",
+          "file": "books/МЭХТ_САРМАГЧИН.epub",
+          "chars": 22223,
+          "minutes": 30,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "МӨНГӨН ТУРУУТ",
+          "author": "П. П. БАЖОВ",
+          "file": "books/МӨНГӨН_ТУРУУТ.epub",
+          "chars": 17371,
+          "minutes": 23,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "НАЙЗ ЗУРГАА",
+          "author": "ГУИДО ГОЦЦАНО",
+          "file": "books/НАЙЗ_ЗУРГАА.epub",
+          "chars": 10441,
+          "minutes": 14,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "НОХОЙ, БОЛЖМОР ХОЁРЫН ҮЛГЭР",
+          "author": "Ах дүү ГРИММ",
+          "file": "books/НОХОЙ_БОЛЖМОР_ХОРЫН_ҮЛГЭР.epub",
+          "chars": 6990,
+          "minutes": 9,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "НУУЦ ТОВЧООНЫ НУУЦУУДААС",
+          "author": "Ш. ГААДАМБА",
+          "file": "books/НУУЦ_ТОВЧООНЫ_НУУЦУУДААС.epub",
+          "chars": 250426,
+          "minutes": 334,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "Ноён хутагт Д.Равжаагийн домог",
+          "author": "Х. Сампилдэндэв",
+          "file": "books/Нон_хутагт_Д_Равжаагийн_домог.epub",
+          "chars": 52126,
+          "minutes": 70,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ПИНОККИОГИЙН АДАЛ ЯВДАЛ ХЭМЭЭХ ЖААХАН МОДОН ХҮНИЙ ҮЛГЭР",
+          "author": "К. Коллоди",
+          "file": "books/ПИНОККИОГИЙН_АДАЛ_ЯВДАЛ_ХЭМЭЭХ_ЖААХАН_МОДОН_ХҮНИЙ_ҮЛГЭР.epub",
+          "chars": 191462,
+          "minutes": 255,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "РААМЫН ҮЛГЭРИЙН ЦОМОРЛОГ – 1",
+          "author": "ЖАГАРВАДИЙ РААЖГОБАЛАЖАРЯ",
+          "file": "books/РААМЫН_ҮЛГЭРИЙН_ЦОМОРЛОГ_1.epub",
+          "chars": 352302,
+          "minutes": 470,
+          "id": "1",
+          "cover": "covers/1.jpg"
+        },
+        {
+          "title": "РААМЫН ҮЛГЭРИЙН ЦОМОРЛОГ – 2",
+          "author": "ЖАГАРВАДИЙ РААЖГОБАЛАЖАРЯ",
+          "file": "books/РААМЫН_ҮЛГЭРИЙН_ЦОМОРЛОГ_2.epub",
+          "chars": 405401,
+          "minutes": 541,
+          "id": "2",
+          "cover": "covers/2.jpg"
+        },
+        {
+          "title": "РЕНАТИНО НЯМ ГАРАГТ НИСЭХГҮЙ",
+          "author": "Ренато Рашел",
+          "file": "books/РЕНАТИНО_НЯМ_ГАРАГТ_НИСЭХГҮЙ.epub",
+          "chars": 28947,
+          "minutes": 39,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "РОБИН ГУДЫН ТУХАЙ ДУУЛЬ",
+          "author": "ААЗ",
+          "file": "books/РОБИН_ГУДЫН_ТУХАЙ_ДУУЛЬ.epub",
+          "chars": 24070,
+          "minutes": 32,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "РУСЛАН ЛЮДМИЛА ХОЁР",
+          "author": "А. С. Пушкин",
+          "file": "books/РУСЛАН_ЛЮДМИЛА_ХОР.epub",
+          "chars": 114557,
+          "minutes": 153,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "СЭТЭРЖАВЫН ТУУЖ",
+          "author": "ААЗ",
+          "file": "books/СЭТЭРЖАВЫН_ТУУЖ.epub",
+          "chars": 18733,
+          "minutes": 25,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ТУВА АРДЫН ҮЛГЭР",
+          "author": "ААЗ",
+          "file": "books/ТУВА_АРДЫН_ҮЛГЭР.epub",
+          "chars": 79941,
+          "minutes": 107,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ТУУЛЬ",
+          "author": "Ш. Гаадамба",
+          "file": "books/ТУУЛЬ.epub",
+          "chars": 66942,
+          "minutes": 89,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ТҮШМЭЛ ЖАМБААГИЙН ХӨГТЭЙ ЯВДАЛ",
+          "author": "ААЗ",
+          "file": "books/ТҮШМЭЛ_ЖАМБААГИЙН_ХӨГТЭЙ_ЯВДАЛ.epub",
+          "chars": 46437,
+          "minutes": 62,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ТҮҮВЭР ЗОХИОЛ",
+          "author": "Л. БАДАРЧ",
+          "file": "books/ТҮҮВЭР_ЗОХИОЛ.epub",
+          "chars": 150224,
+          "minutes": 200,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ТҮҮВЭР ЗОХИОЛ",
+          "author": "Д. Гомбожав",
+          "file": "books/ШИДЭТ_МОД.epub",
+          "chars": 178533,
+          "minutes": 238,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "УЛААН МАЛГАЙТ",
+          "author": "Ш. Перро",
+          "file": "books/УЛААН_МАЛГАЙТ.epub",
+          "chars": 83449,
+          "minutes": 111,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "УУЛИНШПИГЕЛИЙН ДОМОГ - 3",
+          "author": "Шарль Де Костер",
+          "file": "books/УУЛИНШПИГЕЛИЙН_ДОМОГ_-_3.epub",
+          "chars": 272984,
+          "minutes": 364,
+          "id": "3",
+          "cover": "covers/3.jpg"
+        },
+        {
+          "title": "УУЛИНШПИГЕЛИЙН ДОМОГ - 5",
+          "author": "Шарль Де Костер",
+          "file": "books/УУЛИНШПИГЕЛИЙН_ДОМОГ_-_5.epub",
+          "chars": 70186,
+          "minutes": 94,
+          "id": "5",
+          "cover": "covers/5.jpg"
+        },
+        {
+          "title": "ХОЁР ШАГАЙ",
+          "author": "ААЗ",
+          "file": "books/ХОР_ШАГАЙ.epub",
+          "chars": 7975,
+          "minutes": 11,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ХУЛГАЙЛАГДСАН НАР",
+          "author": "К. ЧУКОВСКИЙ",
+          "file": "books/ХУЛГАЙЛАГДСАН_НАР.epub",
+          "chars": 19833,
+          "minutes": 26,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ХУЛГАЙЧ ЯВСАН ЭРИЙН ДОМОГ",
+          "author": "Ах дүү ГРИММ",
+          "file": "books/ХУЛГАЙЧ_ЯВСАН_ЭРИЙН_ДОМОГ.epub",
+          "chars": 11220,
+          "minutes": 15,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ХҮН НИЙГМИЙН ТУХАЙ ҮЛГЭРҮҮД",
+          "author": "ААЗ",
+          "file": "books/ХҮН_НИЙГМИЙН_ТУХАЙ_ҮЛГЭРҮҮД.epub",
+          "chars": 81179,
+          "minutes": 108,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ХӨГЖИМЧ КЕРИБ",
+          "author": "М. Ю. Лермонтов",
+          "file": "books/ХӨГЖИМЧ_КЕРИБ.epub",
+          "chars": 17676,
+          "minutes": 24,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЦЭЦЭН БЭР",
+          "author": "ААЗ",
+          "file": "books/ЦЭЦЭН_БЭР.epub",
+          "chars": 15971,
+          "minutes": 21,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЧИНГИС ХААНЫ ТУХАЙ ДОМГУУД",
+          "author": "ААЗ",
+          "file": "books/ЧИНГИС_ХААНЫ_ТУХАЙ_ДОМГУУД.epub",
+          "chars": 127571,
+          "minutes": 170,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЧИПОЛЛИНОГИЙН ХӨГТЭЙ ЯВДАЛ - 1",
+          "author": "ЖАННИ РОДАРИ",
+          "file": "books/ЧИПОЛЛИНОГИЙН_ХӨГТЭЙ_ЯВДАЛ_-_1.epub",
+          "chars": 71502,
+          "minutes": 95,
+          "id": "1",
+          "cover": "covers/1.jpg"
+        },
+        {
+          "title": "ЧОНО ШҮҮГЧ БОЛСОН НЬ",
+          "author": "Луиза Вистоли",
+          "file": "books/ЧОНО_ШҮҮГЧ_БОЛСОН_НЬ.epub",
+          "chars": 3114,
+          "minutes": 4,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЧУЛУУН АРСЛАН",
+          "author": "ААЗ",
+          "file": "books/ЧУЛУУН_АРСЛАН.epub",
+          "chars": 240913,
+          "minutes": 321,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ШААЛУУ ХҮҮ МАУГЛИ - 4",
+          "author": "Р. КИПЛИНГ",
+          "file": "books/ШААЛУУ_ХҮҮ_МАУГЛИ_-_4.epub",
+          "chars": 34148,
+          "minutes": 46,
+          "id": "4",
+          "cover": "covers/4.jpg"
+        },
+        {
+          "title": "ШААЛУУ ХҮҮ МАУГЛИ - 6",
+          "author": "Р. КИПЛИНГ",
+          "file": "books/ШААЛУУ_ХҮҮ_МАУГЛИ_-_6.epub",
+          "chars": 28186,
+          "minutes": 38,
+          "id": "6",
+          "cover": "covers/6.jpg"
+        },
+        {
+          "title": "ШАРГА ДААГА",
+          "author": "Б. Бааст",
+          "file": "books/ШАРГА_ДААГА.epub",
+          "chars": 733652,
+          "minutes": 978,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ШПЕССАРТ ДАХЬ БУУРЧИЙН ГАЗАР - 1",
+          "author": "Вильгельм Хауф",
+          "file": "books/ШПЕССАРТ_ДАХЬ_БУУРЧИЙН_ГАЗАР_-_1.epub",
+          "chars": 211299,
+          "minutes": 282,
+          "id": "1",
+          "cover": "covers/1.jpg"
+        },
+        {
+          "title": "ШПЕССАРТ ДАХЬ БУУРЧИЙН ГАЗАР - 3",
+          "author": "Вильгельм Хауф",
+          "file": "books/ШПЕССАРТ_ДАХЬ_БУУРЧИЙН_ГАЗАР_-_3.epub",
+          "chars": 125992,
+          "minutes": 168,
+          "id": "3",
+          "cover": "covers/3.jpg"
+        },
+        {
+          "title": "ЭНЭТХЭГ АРДЫН ҮЛГЭРҮҮД",
+          "author": "ААЗ",
+          "file": "books/ЭНЭТХЭГ_АРДЫН_ҮЛГЭРҮҮД.epub",
+          "chars": 46783,
+          "minutes": 62,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЭРДЭНИЙН ГУРВАН ЖИМС",
+          "author": "ААЗ",
+          "file": "books/ЭРДЭНИЙН_ГУРВАН_ЖИМС.epub",
+          "chars": 144296,
+          "minutes": 192,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЭРДЭНИЙН САН СУБАШИД",
+          "author": "Гунгаажалцан",
+          "file": "books/ЭРДЭНИЙН_САН_СУБАШИД.epub",
+          "chars": 323279,
+          "minutes": 431,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЭРЛЭГ, ЭМЧ ХОЁР",
+          "author": "Жено Хелтай",
+          "file": "books/ЭРЛЭГ_ЭМЧ_ХОР.epub",
+          "chars": 15967,
+          "minutes": 21,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЭРХИЙН ЧИНЭЭ ХҮҮ",
+          "author": "Ах дүү ГРИММ",
+          "file": "books/ЭРХИЙН_ЧИНЭЭ_ХҮҮ.epub",
+          "chars": 11778,
+          "minutes": 16,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЯДУУ ТЭЭРЭМЧИН, МУУР ХОЁР",
+          "author": "Ах дүү ГРИММ",
+          "file": "books/ЯДУУ_ТЭЭРЭМЧИН_МУУР_ХОР.epub",
+          "chars": 7617,
+          "minutes": 10,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ҮЛГЭР",
+          "author": "Ш. Гаадамба",
+          "file": "books/ҮЛГЭР.epub",
+          "chars": 80419,
+          "minutes": 107,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ҮҮЛЭНХЭН",
+          "author": "Карло Бернари",
+          "file": "books/ҮҮЛЭНХЭН.epub",
+          "chars": 4496,
+          "minutes": 6,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ӨНЧИН ХҮҮГИЙН ШАСТИРЫН ТУХАЙ",
+          "author": "Ц. Дамдинсүрэн",
+          "file": "books/ӨНЧИН_ХҮҮГИЙН_ШАСТИРЫН_ТУХАЙ.epub",
+          "chars": 15490,
+          "minutes": 21,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ӨӨДӨСХӨНХҮҮ, ТҮҮНИЙ НӨХӨД",
+          "author": "Ч. АРЬЯАСҮРЭН",
+          "file": "books/ӨӨДӨСХӨНХҮҮ_ТҮҮНИЙ_НӨХӨД.epub",
+          "chars": 153856,
+          "minutes": 205,
+          "id": "",
+          "cover": "covers/.jpg"
+        }
+      ]
+    },
+    {
+      "name": "Хүүхдийн ном",
+      "forChildren": true,
+      "books": [
+        {
+          "title": "АГУУ ИХ БҮТЭЭЛ",
+          "author": "Ц. И. ПЕТЦОЛЬД",
+          "file": "books/АГУУ_ИХ_БҮТЭЭЛ.epub",
+          "chars": 125927,
+          "minutes": 168,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "АЛМААСАН ХУУРТАЙ ХҮҮХЭН",
+          "author": "Д. Даржаа",
+          "file": "books/АЛМААСАН_ХУУРТАЙ_ХҮҮХЭН.epub",
+          "chars": 36620,
+          "minutes": 49,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "АЛСЫГ ЗОРЬСОН АЛТАН ЗАГАС",
+          "author": "С. БУЯННЭМЭХ",
+          "file": "books/АЛСЫГ_ЗОРЬСОН_АЛТАН_ЗАГАС.epub",
+          "chars": 53607,
+          "minutes": 71,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "АЛТАН ХҮҮХЭД",
+          "author": "Т. Нацагдорж",
+          "file": "books/АЛТАН_ХҮҮХЭД.epub",
+          "chars": 11910,
+          "minutes": 16,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "АЛТАН ҮСТ ОХИН",
+          "author": "ААЗ",
+          "file": "books/АЛТАН_ҮСТ_ОХИН.epub",
+          "chars": 37472,
+          "minutes": 50,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "АМТАТ САЙХАН ТАЛХ",
+          "author": "М. ЛЯШЕНКО, А. МУСАТОВ",
+          "file": "books/АМТАТ_САЙХАН_ТАЛХ.epub",
+          "chars": 33702,
+          "minutes": 45,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "АМЬТДЫН ТУХАЙ ӨГҮҮЛЛЭГҮҮД",
+          "author": "С. Баруздин",
+          "file": "books/АМЬТДЫН_ТУХАЙ_ӨГҮҮЛЛЭГҮҮД.epub",
+          "chars": 222927,
+          "minutes": 297,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "АПЕННИНЫН УУЛНААС АНДЫН НУРУУ ХҮРТЭЛ",
+          "author": "Эдмондо де Амичис",
+          "file": "books/АПЕННИНЫН_УУЛНААС_АНДЫН_НУРУУ_ХҮРТЭЛ.epub",
+          "chars": 7082,
+          "minutes": 9,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "АРАНЗАЛ ДАРВУУЛТ ХӨЛӨГ",
+          "author": "А. ГРИН",
+          "file": "books/АРАНЗАЛ_ДАРВУУЛТ_ХӨЛӨГ.epub",
+          "chars": 148603,
+          "minutes": 198,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "АРГА УХААНТ АМЬТДЫН ҮЛГЭР",
+          "author": "Т. ЖАМЪЯНСҮРЭН",
+          "file": "books/АРГА_УХААНТ_АМЬТДЫН_ҮЛГЭР.epub",
+          "chars": 50498,
+          "minutes": 67,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "БАЙЛДАХ ДУРГҮЙ ӨВӨӨ",
+          "author": "Ц. Нацагдорж",
+          "file": "books/БАЙЛДАХ_ДУРГҮЙ_ӨВӨӨ.epub",
+          "chars": 440149,
+          "minutes": 587,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "БИ НОМ СУРАХ САН",
+          "author": "ГАО ЮЙБАО",
+          "file": "books/БИ_НОМ_СУРАХ_САН.epub",
+          "chars": 91270,
+          "minutes": 122,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "БОР МОРЬ",
+          "author": "Ц. Доржготов",
+          "file": "books/БОР_МОРЬ.epub",
+          "chars": 31431,
+          "minutes": 42,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "БУРХАН МЭТ НАСАНД НЬ",
+          "author": "Б. НОМИНЧИМЭД",
+          "file": "books/БУРХАН_МЭТ_НАСАНД_НЬ.epub",
+          "chars": 414458,
+          "minutes": 553,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "БЯЦХАН ХУНТАЙЖ",
+          "author": "Антуан Де Сент-Экзюпери",
+          "file": "books/БЯЦХАН_ХУНТАЙЖ.epub",
+          "chars": 76619,
+          "minutes": 102,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ГАЙХАМШИГТ МОНГОЛ МОРЬ",
+          "author": "Жеймс Олдриж",
+          "file": "books/ГАЙХАМШИГТ_МОНГОЛ_МОРЬ.epub",
+          "chars": 242984,
+          "minutes": 324,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ГАЙХАМШИГТ ӨД СӨД",
+          "author": "Николай Сладков",
+          "file": "books/ГАЙХАМШИГТ_ӨД_СӨД.epub",
+          "chars": 25116,
+          "minutes": 33,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ГАЛУУН ЦУВАА",
+          "author": "Ч. АРЬЯАСҮРЭН",
+          "file": "books/ГАЛУУН_ЦУВАА.epub",
+          "chars": 13941,
+          "minutes": 19,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ГАЛУУНЫ ДЭГДЭЭХЭЙ",
+          "author": "Д. СҮРЬЯА",
+          "file": "books/ГАЛУУНЫ_ДЭГДЭЭХЭЙ.epub",
+          "chars": 75615,
+          "minutes": 101,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ГАРГАНТЮА БА ПАНТАГРЮЭЛЬ - 1",
+          "author": "Франсуа РАБЛЕ",
+          "file": "books/ГАРГАНТЮА_БА_ПАНТАГРЮЭЛЬ_-_1.epub",
+          "chars": 106204,
+          "minutes": 142,
+          "id": "1",
+          "cover": "covers/1.jpg"
+        },
+        {
+          "title": "ГАРГАНТЮА БА ПАНТАГРЮЭЛЬ - 2",
+          "author": "Франсуа РАБЛЕ",
+          "file": "books/ГАРГАНТЮА_БА_ПАНТАГРЮЭЛЬ_-_2.epub",
+          "chars": 205181,
+          "minutes": 274,
+          "id": "2",
+          "cover": "covers/2.jpg"
+        },
+        {
+          "title": "ГУРВАН НАЙЗ",
+          "author": "Ч. Ойдов",
+          "file": "books/ГУРВАН_НАЙЗ.epub",
+          "chars": 36551,
+          "minutes": 49,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ДАЛАЙ ЭЭЖ",
+          "author": "Л. Чойжилсүрэн",
+          "file": "books/ДАЛАЙ_ЭЭЖ.epub",
+          "chars": 12978,
+          "minutes": 17,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ДУГТУЙТ, БОЙТОГТ, ХӨВДӨН САХАЛТ ГУРВЫН ҮЛГЭР",
+          "author": "Эно Рауд",
+          "file": "books/ДУГТУЙТ_БОЙТОГТ_ХӨВДӨН_САХАЛТ_ГУРВЫН_ҮЛГЭР.epub",
+          "chars": 232801,
+          "minutes": 310,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЕР БИШИЙН АЯЛАЛ",
+          "author": "Шейла Барнфорд",
+          "file": "books/ЕР_БИШИЙН_АЯЛАЛ.epub",
+          "chars": 65332,
+          "minutes": 87,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЖЕЛЬСОМИНО ХУДАЛ ХУУРМАГИЙН ГАЗАР ХӨГЛӨСӨН НЬ",
+          "author": "ЖАННИ РОДАРИ",
+          "file": "books/ЖЕЛЬСОМИНО_ХУДАЛ_ХУУРМАГИЙН_ГАЗАР_ХӨГЛӨСӨН_НЬ.epub",
+          "chars": 230728,
+          "minutes": 308,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ИХ ТУУРВИЛУУДЫН ПАЯН - 1",
+          "author": "Александр Ивич",
+          "file": "books/ИХ_ТУУРВИЛУУДЫН_ПАЯН_-_1.epub",
+          "chars": 314129,
+          "minutes": 419,
+          "id": "1",
+          "cover": "covers/1.jpg"
+        },
+        {
+          "title": "ЛУУНЫ ХҮҮ ТАРО",
+          "author": "Миёко Мацутани",
+          "file": "books/ЛУУНЫ_ХҮҮ_ТАРО.epub",
+          "chars": 107026,
+          "minutes": 143,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "МАЛГАЙН БОРОО",
+          "author": "ЖАННИ РОДАРИ",
+          "file": "books/МАЛГАЙН_БОРОО.epub",
+          "chars": 4519,
+          "minutes": 6,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "МАНГИС",
+          "author": "Б. Житков",
+          "file": "books/МАНГИС.epub",
+          "chars": 14070,
+          "minutes": 19,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "МОГЖООХОН ДААГАТАЙ ЖОГЖООХОН ХҮҮ",
+          "author": "ААЗ",
+          "file": "books/МОГЖООХОН_ДААГАТАЙ_ЖОГЖООХОН_ХҮҮ.epub",
+          "chars": 54922,
+          "minutes": 73,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "МОЛЛА БАЯЧУУД ХУДАЛДААЧДЫН ДУНД",
+          "author": "ААЗ",
+          "file": "books/МОЛЛА_БАЯЧУУД_ХУДАЛДААЧДЫН_ДУНД.epub",
+          "chars": 35674,
+          "minutes": 48,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "МЭРГЭН БАГШИЙН НАМТАР",
+          "author": "Х. Нямбуу",
+          "file": "books/МЭРГЭН_БАГШИЙН_НАМТАР.epub",
+          "chars": 45005,
+          "minutes": 60,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "МЭРГЭН ЭМЧ",
+          "author": "Ах дүү ГРИММ",
+          "file": "books/МЭРГЭН_ЭМЧ.epub",
+          "chars": 4724,
+          "minutes": 6,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "МЭХТ САРМАГЧИН",
+          "author": "ААЗ",
+          "file": "books/МЭХТ_САРМАГЧИН.epub",
+          "chars": 22223,
+          "minutes": 30,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "НАЙЗУУД",
+          "author": "Е. Чарушин",
+          "file": "books/НАЙЗУУД.epub",
+          "chars": 36555,
+          "minutes": 49,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "НАРГИАНТАЙ ӨГҮҮЛЛЭГҮҮД",
+          "author": "К. А. РОДКИН",
+          "file": "books/НАРГИАНТАЙ_ӨГҮҮЛЛЭГҮҮД.epub",
+          "chars": 36783,
+          "minutes": 49,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "НЭГЭН АЛХАМ",
+          "author": "Б. Өлзийсүрэн",
+          "file": "books/НЭГЭН_АЛХАМ.epub",
+          "chars": 102976,
+          "minutes": 137,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ОВООХОЙ ОВОГТ ГЭРИЙН ҮЛГЭР",
+          "author": "Х. Нямбуу",
+          "file": "books/ОВООХОЙ_ОВОГТ_ГЭРИЙН_ҮЛГЭР.epub",
+          "chars": 50139,
+          "minutes": 67,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ОДОН АРАА",
+          "author": "И. Василенко",
+          "file": "books/ОДОН_АРАА.epub",
+          "chars": 127834,
+          "minutes": 170,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ПИККОЛЕТТО",
+          "author": "Ренато Рашел",
+          "file": "books/ПИККОЛЕТТО.epub",
+          "chars": 18317,
+          "minutes": 24,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ПИНОККИОГИЙН АДАЛ ЯВДАЛ ХЭМЭЭХ ЖААХАН МОДОН ХҮНИЙ ҮЛГЭР",
+          "author": "К. Коллоди",
+          "file": "books/ПИНОККИОГИЙН_АДАЛ_ЯВДАЛ_ХЭМЭЭХ_ЖААХАН_МОДОН_ХҮНИЙ_ҮЛГЭР.epub",
+          "chars": 191462,
+          "minutes": 255,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "РОБИН ГУДЫН ТУХАЙ ДУУЛЬ",
+          "author": "ААЗ",
+          "file": "books/РОБИН_ГУДЫН_ТУХАЙ_ДУУЛЬ.epub",
+          "chars": 24070,
+          "minutes": 32,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "СИЙНЭН ДУУЛЖ БАЙНА",
+          "author": "З. Баттулга",
+          "file": "books/СИЙНЭН_ДУУЛЖ_БАЙНА.epub",
+          "chars": 172857,
+          "minutes": 230,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "Сүүлэнхүү 6",
+          "author": "Арьяасүрэн Ч.",
+          "file": "books/СҮҮЛЭНХҮҮ_6.epub",
+          "chars": 21062,
+          "minutes": 28,
+          "id": "6",
+          "cover": "covers/6.jpg"
+        },
+        {
+          "title": "ТУВА АРДЫН ҮЛГЭР",
+          "author": "ААЗ",
+          "file": "books/ТУВА_АРДЫН_ҮЛГЭР.epub",
+          "chars": 79941,
+          "minutes": 107,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ТҮШМЭЛ ЖАМБААГИЙН ХӨГТЭЙ ЯВДАЛ",
+          "author": "ААЗ",
+          "file": "books/ТҮШМЭЛ_ЖАМБААГИЙН_ХӨГТЭЙ_ЯВДАЛ.epub",
+          "chars": 46437,
+          "minutes": 62,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "УЛААН МАЛГАЙТ",
+          "author": "Ш. Перро",
+          "file": "books/УЛААН_МАЛГАЙТ.epub",
+          "chars": 83449,
+          "minutes": 111,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "УРАН ҮСНИЙХНИЙ ГЭР БҮЛИЙН НАМТАР",
+          "author": "Х. Нямбуу",
+          "file": "books/УРАН_ҮСНИЙХНИЙ_ГЭР_БҮЛИЙН_НАМТАР.epub",
+          "chars": 16277,
+          "minutes": 22,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "УТАА",
+          "author": "Б. Бааст",
+          "file": "books/УТАА.epub",
+          "chars": 13663,
+          "minutes": 18,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ХАР ЧУЛУУНЫХНЫ ГЭР БҮЛИЙН НАМТАР",
+          "author": "Х. Нямбуу",
+          "file": "books/ХАР_ЧУЛУУНЫХНЫ_ГЭР_БҮЛИЙН_НАМТАР.epub",
+          "chars": 9518,
+          "minutes": 13,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ХАЧИН ИЛЖИГ",
+          "author": "С. Баруздин",
+          "file": "books/ХАЧИН_ИЛЖИГ.epub",
+          "chars": 54115,
+          "minutes": 72,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ХЭН ХЭЛСЭН ЮМ БЭ?",
+          "author": "Л. Ванган",
+          "file": "books/ХЭН_ХЭЛСЭН_ЮМ_БЭ.epub",
+          "chars": 112691,
+          "minutes": 150,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "Хэн хэлнэ вэ?",
+          "author": "Жамъянсүрэн Т.",
+          "file": "books/ХЭН_ХЭЛНЭ_ВЭ.epub",
+          "chars": 8577,
+          "minutes": 11,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ХҮҮХЭД НОХОЙД ХАЙРТАЙ",
+          "author": "В. ЖЕЛЕЗНИКОВ",
+          "file": "books/ХҮҮХЭД_НОХОЙД_ХАЙРТАЙ.epub",
+          "chars": 204495,
+          "minutes": 273,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ХӨӨРХӨН БАЙДИЙ",
+          "author": "Б. Бааст",
+          "file": "books/ХӨӨРХӨН_БАЙДИЙ.epub",
+          "chars": 3975,
+          "minutes": 5,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЦАГААН МАГНАЙТ",
+          "author": "А. П. Чехов",
+          "file": "books/ЦАГААН_МАГНАЙТ.epub",
+          "chars": 11096,
+          "minutes": 15,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЧИПОЛЛИНОГИЙН ХӨГТЭЙ ЯВДАЛ - 1",
+          "author": "ЖАННИ РОДАРИ",
+          "file": "books/ЧИПОЛЛИНОГИЙН_ХӨГТЭЙ_ЯВДАЛ_-_1.epub",
+          "chars": 71502,
+          "minutes": 95,
+          "id": "1",
+          "cover": "covers/1.jpg"
+        },
+        {
+          "title": "ЧИПОЛЛИНОГИЙН ХӨГТЭЙ ЯВДАЛ - 2",
+          "author": "ЖАННИ РОДАРИ",
+          "file": "books/ЧИПОЛЛИНОГИЙН_ХӨГТЭЙ_ЯВДАЛ_-_2.epub",
+          "chars": 133247,
+          "minutes": 178,
+          "id": "2",
+          "cover": "covers/2.jpg"
+        },
+        {
+          "title": "ЧИЧЛҮҮР ХУТГА - 1",
+          "author": "А. Рыбаков",
+          "file": "books/ЧИЧЛҮҮР_ХУТГА_-_1.epub",
+          "chars": 218072,
+          "minutes": 291,
+          "id": "1",
+          "cover": "covers/1.jpg"
+        },
+        {
+          "title": "ШАЛЬДАР БУЛДАР НАС",
+          "author": "З. Сандагаа",
+          "file": "books/ШАЛЬДАР_БУЛДАР_НАС.epub",
+          "chars": 489231,
+          "minutes": 652,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ШИДЭТ БААТАРЛАГ ҮЛГЭРҮҮД",
+          "author": "ААЗ",
+          "file": "books/ШИДЭТ_БААТАРЛАГ_ҮЛГЭРҮҮД.epub",
+          "chars": 296522,
+          "minutes": 395,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЭНЭТХЭГ АРДЫН ҮЛГЭРҮҮД",
+          "author": "ААЗ",
+          "file": "books/ЭНЭТХЭГ_АРДЫН_ҮЛГЭРҮҮД.epub",
+          "chars": 46783,
+          "minutes": 62,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЯМХ ОХИН",
+          "author": "Г. X. АНДЕРСЕН",
+          "file": "books/ЯМХ_ОХИН.epub",
+          "chars": 24343,
+          "minutes": 32,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ҮҮЛЭНХЭН",
+          "author": "Карло Бернари",
+          "file": "books/ҮҮЛЭНХЭН.epub",
+          "chars": 4496,
+          "minutes": 6,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ӨВӨӨГИЙН ӨГҮҮЛСЭН ТҮҮХ",
+          "author": "Х. Нямбуу",
+          "file": "books/ӨВӨӨГИЙН_ӨГҮҮЛСЭН_ТҮҮХ.epub",
+          "chars": 96859,
+          "minutes": 129,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ӨӨДӨСХӨНХҮҮ, ТҮҮНИЙ НӨХӨД",
+          "author": "Ч. АРЬЯАСҮРЭН",
+          "file": "books/ӨӨДӨСХӨНХҮҮ_ТҮҮНИЙ_НӨХӨД.epub",
+          "chars": 153856,
+          "minutes": 205,
+          "id": "",
+          "cover": "covers/.jpg"
+        }
+      ]
+    },
+    {
+      "name": "Шүлэг",
+      "forChildren": true,
+      "books": [
+        {
+          "title": "АЛМААСАН ХУУРТАЙ ХҮҮХЭН",
+          "author": "Д. Даржаа",
+          "file": "books/АЛМААСАН_ХУУРТАЙ_ХҮҮХЭН.epub",
+          "chars": 36620,
+          "minutes": 49,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "АНЧ ХҮҮ",
+          "author": "Шаарийбуу Д.",
+          "file": "books/АНЧ_ХҮҮ.epub",
+          "chars": 7738,
+          "minutes": 10,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "АРГА УХААНТ АМЬТДЫН ҮЛГЭР",
+          "author": "Т. ЖАМЪЯНСҮРЭН",
+          "file": "books/АРГА_УХААНТ_АМЬТДЫН_ҮЛГЭР.epub",
+          "chars": 50498,
+          "minutes": 67,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "АРГАЙ ДАРГАЙ ТҮГ",
+          "author": "Т. Жамъянсүрэн",
+          "file": "books/АРГАЙ_ДАРГАЙ_ТҮГ.epub",
+          "chars": 37862,
+          "minutes": 50,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "БУЛАН ДЭРС",
+          "author": "М. ЯДАМСҮРЭН",
+          "file": "books/БУЛАН_ДЭРС.epub",
+          "chars": 36218,
+          "minutes": 48,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "БӨӨ МӨРГӨЛИЙН ЯРУУ НАЙРАГ",
+          "author": "ААЗ",
+          "file": "books/БӨӨ_МӨРГӨЛИЙН_ЯРУУ_НАЙРАГ.epub",
+          "chars": 93943,
+          "minutes": 125,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ГАЛУУН ЦУВАА",
+          "author": "Ч. АРЬЯАСҮРЭН",
+          "file": "books/ГАЛУУН_ЦУВАА.epub",
+          "chars": 13941,
+          "minutes": 19,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ДАЛАЙ ЭЭЖ",
+          "author": "Л. Чойжилсүрэн",
+          "file": "books/ДАЛАЙ_ЭЭЖ.epub",
+          "chars": 12978,
+          "minutes": 17,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ДАНДИНЫ ЗОХИСТ АЯЛГУУНЫ ТОЛИЙН МОНГОЛ ТАЙЛБАРЫН ТУХАЙ",
+          "author": "Ч. АЛТАНГЭРЭЛ",
+          "file": "books/ДАНДИНЫ_ЗОХИСТ_АЯЛГУУНЫ_ТОЛИЙН_МОНГОЛ_ТАЙЛБАРЫН_ТУХАЙ.epub",
+          "chars": 14001,
+          "minutes": 19,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ДУУ, ШҮЛЭГ",
+          "author": "С. БУЯННЭМЭХ",
+          "file": "books/ДУУ_ШҮЛЭГ.epub",
+          "chars": 39268,
+          "minutes": 52,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЕРӨӨЛҮҮД",
+          "author": "Б. Гэлэгбалсан",
+          "file": "books/ЕРӨӨЛҮҮД.epub",
+          "chars": 47915,
+          "minutes": 64,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЗАЛБИРАЛ",
+          "author": "Жермэйн Дроогенброодт",
+          "file": "books/ЗАЛБИРАЛ.epub",
+          "chars": 23468,
+          "minutes": 31,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "КИРГИЗИЙН ЦОМОРЛОГ",
+          "author": "123",
+          "file": "books/КИРГИЗИЙН_ЦОМОРЛОГ.epub",
+          "chars": 43466,
+          "minutes": 58,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "МОНГОЛ АРДЫН ШИЛДЭГ ДУУНУУД",
+          "author": "ААЗ",
+          "file": "books/МОНГОЛ_АРДЫН_ШИЛДЭГ_ДУУНУУД.epub",
+          "chars": 41398,
+          "minutes": 55,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "САЙХАН БҮСГҮЙ",
+          "author": "Удвал С.",
+          "file": "books/САЙХАН_БҮСГҮЙ.epub",
+          "chars": 21778,
+          "minutes": 29,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "СЕРЁЖ СЭРЖ ХОЁР",
+          "author": "Д. СОДНОМДОРЖ",
+          "file": "books/СЕРЖ_СЭРЖ_ХОР.epub",
+          "chars": 9653,
+          "minutes": 13,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "СЭТГЭЛД ТАТСАН СОЛОНГО",
+          "author": "Ш. Сүрэнжав",
+          "file": "books/СЭТГЭЛД_ТАТСАН_СОЛОНГО.epub",
+          "chars": 140362,
+          "minutes": 187,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ТЭНГЭРЛЭГ ТУУЛЬС : ДИВААЖИН",
+          "author": "А. Данте",
+          "file": "books/ТЭНГЭРЛЭГ_ТУУЛЬС_ДИВААЖИН.epub",
+          "chars": 219471,
+          "minutes": 293,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ТҮҮВЭР ЗОХИОЛ",
+          "author": "Л. БАДАРЧ",
+          "file": "books/ТҮҮВЭР_ЗОХИОЛ.epub",
+          "chars": 150224,
+          "minutes": 200,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ТҮҮВЭР ЗОХИОЛ",
+          "author": "Д. Гомбожав",
+          "file": "books/ШИДЭТ_МОД.epub",
+          "chars": 178533,
+          "minutes": 238,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ХАЙАВАТЫН ДУУЛАЛ",
+          "author": "Х. ЛОНГФЕЛЛО",
+          "file": "books/ХАЙАВАТЫН_ДУУЛАЛ.epub",
+          "chars": 129297,
+          "minutes": 172,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ХАЛУУН АМЬСГАЛ",
+          "author": "С. Доржпалам",
+          "file": "books/ХАЛУУН_АМЬСГАЛ.epub",
+          "chars": 32012,
+          "minutes": 43,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ХУЛГАЙЛАГДСАН НАР",
+          "author": "К. ЧУКОВСКИЙ",
+          "file": "books/ХУЛГАЙЛАГДСАН_НАР.epub",
+          "chars": 19833,
+          "minutes": 26,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ХУУЛЬЧ САНДАГИЙН ЗОХИОЛУУДЫН ТҮҮВЭР",
+          "author": "Хуульч САНДАГ",
+          "file": "books/ХУУЛЬЧ_САНДАГИЙН_ЗОХИОЛУУДЫН_ТҮҮВЭР.epub",
+          "chars": 23321,
+          "minutes": 31,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ХУУЛЬЧ САНДАГИЙН ШҮЛГҮҮД",
+          "author": "Ц. Дамдинсүрэн",
+          "file": "books/ХУУЛЬЧ_САНДАГИЙН_ШҮЛГҮҮД.epub",
+          "chars": 58710,
+          "minutes": 78,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "Хэн хэлнэ вэ?",
+          "author": "Жамъянсүрэн Т.",
+          "file": "books/ХЭН_ХЭЛНЭ_ВЭ.epub",
+          "chars": 8577,
+          "minutes": 11,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ШЕКСПИР - 1",
+          "author": "А. Аникст",
+          "file": "books/ШЕКСПИР_-_1.epub",
+          "chars": 247618,
+          "minutes": 330,
+          "id": "1",
+          "cover": "covers/1.jpg"
+        },
+        {
+          "title": "ШҮЛГИЙН ТҮҮВЭР",
+          "author": "ИОГАНН ВОЛЬФГАНГ ГЕТЕ",
+          "file": "books/ШҮЛГИЙН_ТҮҮВЭР.epub",
+          "chars": 21253,
+          "minutes": 28,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ШҮЛГҮҮД",
+          "author": "Д. Цэвэгмид",
+          "file": "books/ШҮЛГҮҮД.epub",
+          "chars": 66571,
+          "minutes": 89,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ШҮЛЭГ, НАЙРАГЛАЛ",
+          "author": "М. Ю. Лермонтов",
+          "file": "books/ШҮЛЭГ_НАЙРАГЛАЛ.epub",
+          "chars": 114999,
+          "minutes": 153,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ШҮҮГ, ШААГ, ШҮЖИГ, ШАЖИГ",
+          "author": "С. Бараанасан",
+          "file": "books/ШҮҮГ_ШААГ_ШҮЖИГ_ШАЖИГ.epub",
+          "chars": 7220,
+          "minutes": 10,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЯНАГИЙН ДУУЛАЛ",
+          "author": "ЦАНЪЯНЖАМЦ",
+          "file": "books/ЯНАГИЙН_ДУУЛАЛ.epub",
+          "chars": 8070,
+          "minutes": 11,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЯРУУ НАЙРГИЙГ ТӨРӨЛ ЗҮЙЛЭЭР АНГИЛАХ НЬ",
+          "author": "В. Г. БЕЛИНСКИЙ",
+          "file": "books/ЯРУУ_НАЙРГИЙГ_ТӨРӨЛ_ЗҮЙЛЭЭР_АНГИЛАХ_НЬ.epub",
+          "chars": 164382,
+          "minutes": 219,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "Яруу найргийн уран санаа",
+          "author": "Х. Сампилдэндэв",
+          "file": "books/Яруу_найргийн_уран_санаа.epub",
+          "chars": 312594,
+          "minutes": 417,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ҮҮЛЭН ЗАРДАС",
+          "author": "Галидаса",
+          "file": "books/ҮҮЛЭН_ЗАРДАС.epub",
+          "chars": 25019,
+          "minutes": 33,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ӨРГӨЛИЙН ДУУЛАЛ",
+          "author": "Р. Таагүр",
+          "file": "books/ӨРГӨЛИЙН_ДУУЛАЛ.epub",
+          "chars": 107038,
+          "minutes": 143,
+          "id": "",
+          "cover": "covers/.jpg"
+        }
+      ]
+    },
+    {
+      "name": "Инээдтэй",
+      "forChildren": true,
+      "books": [
+        {
+          "title": "БУРХАНД ИЛГЭЭСЭН ЗАХИДАЛ",
+          "author": "Грегорио Лопес-И-Фуэнтес",
+          "file": "books/БУРХАНД_ИЛГЭЭСЭН_ЗАХИДАЛ.epub",
+          "chars": 11132,
+          "minutes": 15,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ГАРГАНТЮА БА ПАНТАГРЮЭЛЬ - 1",
+          "author": "Франсуа РАБЛЕ",
+          "file": "books/ГАРГАНТЮА_БА_ПАНТАГРЮЭЛЬ_-_1.epub",
+          "chars": 106204,
+          "minutes": 142,
+          "id": "1",
+          "cover": "covers/1.jpg"
+        },
+        {
+          "title": "ГАРГАНТЮА БА ПАНТАГРЮЭЛЬ - 2",
+          "author": "Франсуа РАБЛЕ",
+          "file": "books/ГАРГАНТЮА_БА_ПАНТАГРЮЭЛЬ_-_2.epub",
+          "chars": 205181,
+          "minutes": 274,
+          "id": "2",
+          "cover": "covers/2.jpg"
+        },
+        {
+          "title": "ГОМДЛЫН ДЭВТЭР",
+          "author": "А. П. Чехов",
+          "file": "books/ГОМДЛЫН_ДЭВТЭР.epub",
+          "chars": 3319,
+          "minutes": 4,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ГУРВУУЛ НЭГ ЗАВИАР (нохойг эс оролцуулан)",
+          "author": "ЖЕРОМ К.",
+          "file": "books/ГУРВУУЛ_НЭГ_ЗАВИАР_нохойг_эс_оролцуулан.epub",
+          "chars": 360285,
+          "minutes": 480,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ГЭРЛЭХ ГЭСЭН НЬ",
+          "author": "Н. В. Гоголь",
+          "file": "books/ГЭРЛЭХ_ГЭСЭН_НЬ.epub",
+          "chars": 91631,
+          "minutes": 122,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЗААВАРЛАГЧ ИРЭХ ГЭНЭ",
+          "author": "Азиз НЕСИН",
+          "file": "books/ЗААВАРЛАГЧ_ИРЭХ_ГЭНЭ.epub",
+          "chars": 23441,
+          "minutes": 31,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ИХ ҮНЭТЭЙ ЮМ БАЙНА ШҮҮ",
+          "author": "Л. Н. Толстой",
+          "file": "books/ИХ_ҮНЭТЭЙ_ЮМ_БАЙНА_ШҮҮ.epub",
+          "chars": 9331,
+          "minutes": 12,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "МАЛГАЙТАЙ ЧОНО",
+          "author": "Ч. Лодойдамба",
+          "file": "books/МАЛГАЙТАЙ_ЧОНО.epub",
+          "chars": 49680,
+          "minutes": 66,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "МОНГОЛ АРДЫН ШОГ ХОШИН ҮЛГЭР",
+          "author": "Д. СҮРЬЯА, О. АЛИМАА",
+          "file": "books/МОНГОЛ_АРДЫН_ШОГ_ХОШИН_ҮЛГЭР.epub",
+          "chars": 273367,
+          "minutes": 364,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "МУХАР ГУДАМЖИНД",
+          "author": "Ш. ГААДАМБА",
+          "file": "books/МУХАР_ГУДАМЖИНД.epub",
+          "chars": 6729,
+          "minutes": 9,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "НАРГИАНТАЙ ӨГҮҮЛЛЭГҮҮД",
+          "author": "К. А. РОДКИН",
+          "file": "books/НАРГИАНТАЙ_ӨГҮҮЛЛЭГҮҮД.epub",
+          "chars": 36783,
+          "minutes": 49,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "НАРИЙХАН БӨГӨӨД САЙХАН",
+          "author": "Азиз НЕСИН",
+          "file": "books/НАРИЙХАН_БӨГӨӨД_САЙХАН.epub",
+          "chars": 14468,
+          "minutes": 19,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "НЭГ БҮДРЭХЭЭРЭЭ ДОЛОО БҮДЭРДЭГ",
+          "author": "Азиз НЕСИН",
+          "file": "books/НЭГ_БҮДРЭХЭЭРЭЭ_ДОЛОО_БҮДЭРДЭГ.epub",
+          "chars": 7513,
+          "minutes": 10,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ТАЛБАЙН ЦАГ",
+          "author": "Азиз НЕСИН",
+          "file": "books/ТАЛБАЙН_ЦАГ.epub",
+          "chars": 16500,
+          "minutes": 22,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ТҮШМЭЛ ЖАМБААГИЙН ХӨГТЭЙ ЯВДАЛ",
+          "author": "ААЗ",
+          "file": "books/ТҮШМЭЛ_ЖАМБААГИЙН_ХӨГТЭЙ_ЯВДАЛ.epub",
+          "chars": 46437,
+          "minutes": 62,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ТҮҮВЭР ЗОХИОЛ",
+          "author": "Л. БАДАРЧ",
+          "file": "books/ТҮҮВЭР_ЗОХИОЛ.epub",
+          "chars": 150224,
+          "minutes": 200,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ТҮҮВЭР ЗОХИОЛ",
+          "author": "Д. Гомбожав",
+          "file": "books/ШИДЭТ_МОД.epub",
+          "chars": 178533,
+          "minutes": 238,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ТӨРӨЛХ НУТАГ МИНЬ ДЭГЖИН ДЭЭШИЛТҮГЭЙ!",
+          "author": "Азиз НЕСИН",
+          "file": "books/ТӨРӨЛХ_НУТАГ_МИНЬ_ДЭГЖИН_ДЭЭШИЛТҮГЭЙ.epub",
+          "chars": 15873,
+          "minutes": 21,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "УНШДАГ БОЛСОН НЬ",
+          "author": "Л. БАДАРЧ",
+          "file": "books/УНШДАГ_БОЛСОН_НЬ.epub",
+          "chars": 3731,
+          "minutes": 5,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "УУЛИНШПИГЕЛИЙН ДОМОГ - 1",
+          "author": "Шарль Де Костер",
+          "file": "books/УУЛИНШПИГЕЛИЙН_ДОМОГ_-_1.epub",
+          "chars": 353990,
+          "minutes": 472,
+          "id": "1",
+          "cover": "covers/1.jpg"
+        },
+        {
+          "title": "УУЛИНШПИГЕЛИЙН ДОМОГ - 2",
+          "author": "Шарль Де Костер",
+          "file": "books/УУЛИНШПИГЕЛИЙН_ДОМОГ_-_2.epub",
+          "chars": 100575,
+          "minutes": 134,
+          "id": "2",
+          "cover": "covers/2.jpg"
+        },
+        {
+          "title": "УУЛИНШПИГЕЛИЙН ДОМОГ - 3",
+          "author": "Шарль Де Костер",
+          "file": "books/УУЛИНШПИГЕЛИЙН_ДОМОГ_-_3.epub",
+          "chars": 272984,
+          "minutes": 364,
+          "id": "3",
+          "cover": "covers/3.jpg"
+        },
+        {
+          "title": "ХЭРЭВ БИ ЭМЭГТЭЙ БАЙСАН САН БОЛ ДОО",
+          "author": "Азиз Несин",
+          "file": "books/ХЭРЭВ_БИ_ЭМЭГТЭЙ_БАЙСАН_САН_БОЛ_ДОО.epub",
+          "chars": 9882,
+          "minutes": 13,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ХҮҮХДИЙГ БИТГИЙ УЙЛУУЛ!",
+          "author": "Азиз НЕСИН",
+          "file": "books/ХҮҮХДИЙГ_БИТГИЙ_УЙЛУУЛ.epub",
+          "chars": 11328,
+          "minutes": 15,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЦАГААН ТОЛГОЙН ЭХНИЙ ҮСЭГ",
+          "author": "Азиз НЕСИН",
+          "file": "books/ЦАГААН_ТОЛГОЙН_ЭХНИЙ_ҮСЭГ.epub",
+          "chars": 9245,
+          "minutes": 12,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЦӨМӨӨРӨӨ Л БҮТЭЭН БОСГОГЧИД",
+          "author": "Азиз НЕСИН",
+          "file": "books/ЦӨМӨӨРӨӨ_Л_БҮТЭЭН_БОСГОГЧИД.epub",
+          "chars": 12084,
+          "minutes": 16,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ШЕРМЕНДИ ХЭЗЭЭ ТӨРӨӨ ВЭ?",
+          "author": "Азиз НЕСИН",
+          "file": "books/ШЕРМЕНДИ_ХЭЗЭЭ_ТӨРӨӨ_ВЭ.epub",
+          "chars": 10123,
+          "minutes": 13,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ШИНЭ ТОГОО ТАВИХАД БОЛСОН ЦАЙЛЛАГА",
+          "author": "Азиз НЕСИН",
+          "file": "books/ШИНЭ_ТОГОО_ТАВИХАД_БОЛСОН_ЦАЙЛЛАГА.epub",
+          "chars": 9796,
+          "minutes": 13,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЭНЭ НАД ПАДГҮЙ",
+          "author": "Азиз НЕСИН",
+          "file": "books/ЭНЭ_НАД_ПАДГҮЙ.epub",
+          "chars": 7371,
+          "minutes": 10,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЭНЭ ЧИНЬ ХААНАХЫН ЮМ БЭ?",
+          "author": "Азиз НЕСИН",
+          "file": "books/ЭНЭ_ЧИНЬ_ХААНАХЫН_ЮМ_БЭ.epub",
+          "chars": 12807,
+          "minutes": 17,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЭЭЖ ЭЭ!",
+          "author": "Л. Ванган",
+          "file": "books/ЭЭЖ_ЭЭ.epub",
+          "chars": 16285,
+          "minutes": 22,
+          "id": "",
+          "cover": "covers/.jpg"
+        }
+      ]
+    },
+    {
+      "name": "Адал явдал",
+      "forChildren": true,
+      "books": [
+        {
+          "title": "«КОН-ТИКИ» САЛААР",
+          "author": "Т. ХЕЙЕРДАЛ",
+          "file": "books/КОН-ТИКИ_САЛААР.epub",
+          "chars": 484208,
+          "minutes": 646,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "АЛСЫГ ЗОРЬСОН АЛТАН ЗАГАС",
+          "author": "С. БУЯННЭМЭХ",
+          "file": "books/АЛСЫГ_ЗОРЬСОН_АЛТАН_ЗАГАС.epub",
+          "chars": 53607,
+          "minutes": 71,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "АМЬД ЯВАХЫН ХҮСЛЭН",
+          "author": "Ж. ЛОНДОН",
+          "file": "books/АМЬД_ЯВАХЫН_ХҮСЛЭН.epub",
+          "chars": 41241,
+          "minutes": 55,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "АПЕННИНЫН УУЛНААС АНДЫН НУРУУ ХҮРТЭЛ",
+          "author": "Эдмондо де Амичис",
+          "file": "books/АПЕННИНЫН_УУЛНААС_АНДЫН_НУРУУ_ХҮРТЭЛ.epub",
+          "chars": 7082,
+          "minutes": 9,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "БИНГО",
+          "author": "Э. Сетон Томпсон",
+          "file": "books/БИНГО.epub",
+          "chars": 32769,
+          "minutes": 44,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "БУУРАЛ АНЧНЫ ТЭМДЭГЛЭЛ",
+          "author": "Ж. Дамдин",
+          "file": "books/БУУРАЛ_АНЧНЫ_ТЭМДЭГЛЭЛ.epub",
+          "chars": 234568,
+          "minutes": 313,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ГАЙХАМШИГТ МОНГОЛ МОРЬ",
+          "author": "Жеймс Олдриж",
+          "file": "books/ГАЙХАМШИГТ_МОНГОЛ_МОРЬ.epub",
+          "chars": 242984,
+          "minutes": 324,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ГАЛЫН ТӨЛӨӨ ТЭМЦЭЛ",
+          "author": "ЖОЗЕФ РОНИ",
+          "file": "books/ГАЛЫН_ТӨЛӨӨ_ТЭМЦЭЛ.epub",
+          "chars": 335007,
+          "minutes": 447,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ГАНС ЭФРАЛЛЬД УЧИРСАН АДАЛ ЯВДАЛ",
+          "author": "Эдгар По",
+          "file": "books/ГАНС_ЭФРАЛЛЬД_УЧИРСАН_АДАЛ_ЯВДАЛ.epub",
+          "chars": 92045,
+          "minutes": 123,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ГАНЦ ДАЙЧИН ГАНЦААРДАХГҮЙ - 3",
+          "author": "Юрий Дольд-Михайлик",
+          "file": "books/ГАНЦ_ДАЙЧИН_ГАНЦААРДАХГҮЙ_-_3.epub",
+          "chars": 368490,
+          "minutes": 491,
+          "id": "3",
+          "cover": "covers/3.jpg"
+        },
+        {
+          "title": "ГҮЗЭЭЛЗГЭНЭ ӨНГӨТ БЯЦХАН ЦОНХ",
+          "author": "Рэй Брэдбери",
+          "file": "books/ГҮЗЭЭЛЗГЭНЭ_ӨНГӨТ_БЯЦХАН_ЦОНХ.epub",
+          "chars": 28696,
+          "minutes": 38,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ДОКТОР МЕКАНИКУС ТҮҮНИЙ НОХОЙ АЛЬМА - 1",
+          "author": "АЛЕКСАНДР ПОЛЕЩУК",
+          "file": "books/ДОКТОР_МЕКАНИКУС_ТҮҮНИЙ_НОХОЙ_АЛЬМА_-_1.epub",
+          "chars": 199050,
+          "minutes": 265,
+          "id": "1",
+          "cover": "covers/1.jpg"
+        },
+        {
+          "title": "ДОКТОР МЕКАНИКУС ТҮҮНИЙ НОХОЙ АЛЬМА - 2",
+          "author": "АЛЕКСАНДР ПОЛЕЩУК",
+          "file": "books/ДОКТОР_МЕКАНИКУС_ТҮҮНИЙ_НОХОЙ_АЛЬМА_-_2.epub",
+          "chars": 162245,
+          "minutes": 216,
+          "id": "2",
+          "cover": "covers/2.jpg"
+        },
+        {
+          "title": "ЕР БИШИЙН АЯЛАЛ",
+          "author": "Шейла Барнфорд",
+          "file": "books/ЕР_БИШИЙН_АЯЛАЛ.epub",
+          "chars": 65332,
+          "minutes": 87,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЖОНОН, ГУЙЛГАЧИН ХОЁР",
+          "author": "Марк Твен",
+          "file": "books/ЖОНОН_ГУЙЛГАЧИН_ХОР.epub",
+          "chars": 387409,
+          "minutes": 517,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЗАЙЛШГҮЙ ШИЙТГЭЛ-17 (АГААРЫН ТАГНУУЛ)",
+          "author": "И. РУБИНШТЕЙН",
+          "file": "books/ЗАЙЛШГҮЙ_ШИЙТГЭЛ-17_АГААРЫН_ТАГНУУЛ.epub",
+          "chars": 24854,
+          "minutes": 33,
+          "id": "17",
+          "cover": "covers/17.jpg"
+        },
+        {
+          "title": "ЗАЙЛШГҮЙ ШИЙТГЭЛ-18 (ДАВЖ ЗААЛДАХ ЭРХГҮЙ)",
+          "author": "В. СМОЛЬНИКОВ",
+          "file": "books/ЗАЙЛШГҮЙ_ШИЙТГЭЛ-18_ДАВЖ_ЗААЛДАХ_ЭРХГҮЙ.epub",
+          "chars": 34045,
+          "minutes": 45,
+          "id": "18",
+          "cover": "covers/18.jpg"
+        },
+        {
+          "title": "ЗУРГААН НАПОЛЕОН",
+          "author": "А. Конан Дойл",
+          "file": "books/ЗУРГААН_НАПОЛЕОН.epub",
+          "chars": 33290,
+          "minutes": 44,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЗУУН ЖИЛИЙН ГАНЦААРДАЛ - 2",
+          "author": "ГАБРИЕЛЬ ГАРСИА МАРКЕС",
+          "file": "books/ЗУУН_ЖИЛИЙН_ГАНЦААРДАЛ_-_2.epub",
+          "chars": 220925,
+          "minutes": 295,
+          "id": "2",
+          "cover": "covers/2.jpg"
+        },
+        {
+          "title": "КАЛЛИСТО ГАРАГ - 2",
+          "author": "Георгий Мартынов",
+          "file": "books/КАЛЛИСТО_ГАРАГ_-_2.epub",
+          "chars": 219877,
+          "minutes": 293,
+          "id": "2",
+          "cover": "covers/2.jpg"
+        },
+        {
+          "title": "КВЕНТИН ДОРВАРДЫН АЯН ЗАМЫН УЧРАЛ - 1",
+          "author": "ВАЛЬТЕР СКОТТ",
+          "file": "books/КВЕНТИН_ДОРВАРДЫН_АЯН_ЗАМЫН_УЧРАЛ_-_1.epub",
+          "chars": 255212,
+          "minutes": 340,
+          "id": "1",
+          "cover": "covers/1.jpg"
+        },
+        {
+          "title": "КВЕНТИН ДОРВАРДЫН АЯН ЗАМЫН УЧРАЛ - 2",
+          "author": "ВАЛЬТЕР СКОТТ",
+          "file": "books/КВЕНТИН_ДОРВАРДЫН_АЯН_ЗАМЫН_УЧРАЛ_-_2.epub",
+          "chars": 267897,
+          "minutes": 357,
+          "id": "2",
+          "cover": "covers/2.jpg"
+        },
+        {
+          "title": "КВЕНТИН ДОРВАРДЫН АЯН ЗАМЫН УЧРАЛ - 4",
+          "author": "ВАЛЬТЕР СКОТТ",
+          "file": "books/КВЕНТИН_ДОРВАРДЫН_АЯН_ЗАМЫН_УЧРАЛ_-_4.epub",
+          "chars": 278066,
+          "minutes": 371,
+          "id": "4",
+          "cover": "covers/4.jpg"
+        },
+        {
+          "title": "КРИГ ГЭДЭГ КУТНАЙН УГАЛЗЫН ҮЛГЭР",
+          "author": "Э. Сетон Томпсон",
+          "file": "books/КРИГ_ГЭДЭГ_КУТНАЙН_УГАЛЗЫН_ҮЛГЭР.epub",
+          "chars": 67419,
+          "minutes": 90,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЛУУ",
+          "author": "Рэй Брэдбери",
+          "file": "books/ЛУУ.epub",
+          "chars": 19727,
+          "minutes": 26,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "МАНГИС",
+          "author": "Б. Житков",
+          "file": "books/МАНГИС.epub",
+          "chars": 14070,
+          "minutes": 19,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "МАШ НУУЦ - 3",
+          "author": "Юр. Корольков",
+          "file": "books/МАШ_НУУЦ_-_3.epub",
+          "chars": 223613,
+          "minutes": 298,
+          "id": "3",
+          "cover": "covers/3.jpg"
+        },
+        {
+          "title": "МОНТЕ-КРИСТО ГҮН 4",
+          "author": "А. Дюма",
+          "file": "books/МОНТЕ-КРИСТО_ГҮН_4.epub",
+          "chars": 418278,
+          "minutes": 558,
+          "id": "4",
+          "cover": "covers/4.jpg"
+        },
+        {
+          "title": "МӨСНИЙ НОМ",
+          "author": "Юхан Смуул",
+          "file": "books/МӨСНИЙ_НОМ.epub",
+          "chars": 562727,
+          "minutes": 750,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "Мөнхийн талх",
+          "author": "БЕЛЯЕВ А. Р.",
+          "file": "books/МӨНХИЙН_ТАЛХ.epub",
+          "chars": 112174,
+          "minutes": 150,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "НАЙЗУУД",
+          "author": "Е. Чарушин",
+          "file": "books/НАЙЗУУД.epub",
+          "chars": 36555,
+          "minutes": 49,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "НАРАН ХОТ",
+          "author": "ТОМАС КАМПАНЕЛЛА",
+          "file": "books/НАРАН_ХОТ.epub",
+          "chars": 265492,
+          "minutes": 354,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "НУУЦ АЛБАДЫН НУУЦААС - 1",
+          "author": "В. Кассис, Л. Колосов",
+          "file": "books/НУУЦ_АЛБАДЫН_НУУЦААС_-_1.epub",
+          "chars": 162665,
+          "minutes": 217,
+          "id": "1",
+          "cover": "covers/1.jpg"
+        },
+        {
+          "title": "НУУЦАТ АРАЛ - 1 : АЮУЛД УЧРАГСАД",
+          "author": "Жюль Верн",
+          "file": "books/НУУЦАТ_АРАЛ_-_1_АЮУЛД_УЧРАГСАД.epub",
+          "chars": 319040,
+          "minutes": 425,
+          "id": "1",
+          "cover": "covers/1.jpg"
+        },
+        {
+          "title": "НУУЦАТ АРАЛ - 3 : АРЛЫН НУУЦ",
+          "author": "Жюль Верн",
+          "file": "books/НУУЦАТ_АРАЛ_-_3_АРЛЫН_НУУЦ.epub",
+          "chars": 343791,
+          "minutes": 458,
+          "id": "3",
+          "cover": "covers/3.jpg"
+        },
+        {
+          "title": "НӨХӨӨСТЭЙ СЭХЭЭРЭЛТ",
+          "author": "О. ХЕНРИ",
+          "file": "books/НӨХӨӨСТЭЙ_СЭХЭЭРЭЛТ.epub",
+          "chars": 17422,
+          "minutes": 23,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ПИНОККИОГИЙН АДАЛ ЯВДАЛ ХЭМЭЭХ ЖААХАН МОДОН ХҮНИЙ ҮЛГЭР",
+          "author": "К. Коллоди",
+          "file": "books/ПИНОККИОГИЙН_АДАЛ_ЯВДАЛ_ХЭМЭЭХ_ЖААХАН_МОДОН_ХҮНИЙ_ҮЛГЭР.epub",
+          "chars": 191462,
+          "minutes": 255,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "САРАН ДЭЭР",
+          "author": "К. Э. Циолковский",
+          "file": "books/САРАН_ДЭЭР.epub",
+          "chars": 69987,
+          "minutes": 93,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "СОРИЛ",
+          "author": "Михаил Веллер",
+          "file": "books/СОРИЛ.epub",
+          "chars": 12726,
+          "minutes": 17,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ТЭГТЭЛ Ч БУУ ПАНХИЙВ",
+          "author": "Рэй Брэдбери",
+          "file": "books/ТЭГТЭЛ_Ч_БУУ_ПАНХИЙВ.epub",
+          "chars": 26433,
+          "minutes": 35,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "УРУУГАА УРГАСАН МОД",
+          "author": "КРИШАН ЧАНДАР",
+          "file": "books/УРУУГАА_УРГАСАН_МОД.epub",
+          "chars": 119336,
+          "minutes": 159,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ХАВРЫН АРВАН ДОЛООН УЧРАЛ - 1",
+          "author": "Ю. Семенов",
+          "file": "books/ХАВРЫН_АРВАН_ДОЛООН_УЧРАЛ_-_1.epub",
+          "chars": 328667,
+          "minutes": 438,
+          "id": "1",
+          "cover": "covers/1.jpg"
+        },
+        {
+          "title": "ХАВРЫН АРВАН ДОЛООН УЧРАЛ - 2",
+          "author": "Ю. Семенов",
+          "file": "books/ХАВРЫН_АРВАН_ДОЛООН_УЧРАЛ_-_2.epub",
+          "chars": 308924,
+          "minutes": 412,
+          "id": "2",
+          "cover": "covers/2.jpg"
+        },
+        {
+          "title": "ХАМГИЙН САЙХАН ЦАГ",
+          "author": "Рэй Брэдбери",
+          "file": "books/ХАМГИЙН_САЙХАН_ЦАГ.epub",
+          "chars": 43674,
+          "minutes": 58,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ХАРЬ ГАЗАР НУУЦ АЛБАНД - 1",
+          "author": "Юр. Корольков",
+          "file": "books/ХАРЬ_ГАЗАР_НУУЦ_АЛБАНД_-_1.epub",
+          "chars": 243200,
+          "minutes": 324,
+          "id": "1",
+          "cover": "covers/1.jpg"
+        },
+        {
+          "title": "ХАТАН АВХАЙН ТАВАН ДҮНЧҮҮР ӨВ",
+          "author": "Жюль Верн",
+          "file": "books/ХАТАН_АВХАЙН_ТАВАН_ДҮНЧҮҮР_ӨВ.epub",
+          "chars": 291915,
+          "minutes": 389,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ХАЧИН ИЛЖИГ",
+          "author": "С. Баруздин",
+          "file": "books/ХАЧИН_ИЛЖИГ.epub",
+          "chars": 54115,
+          "minutes": 72,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ХЭНЭГГҮЙ АМЕРИК",
+          "author": "ГРЭМ ГРИН",
+          "file": "books/ХЭНЭГГҮЙ_АМЕРИК.epub",
+          "chars": 329651,
+          "minutes": 440,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЭЙНАР ГУАЙ",
+          "author": "Рэй Брэдбери",
+          "file": "books/ЭЙНАР_ГУАЙ.epub",
+          "chars": 29662,
+          "minutes": 40,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЭРГЭЭД ХҮҮХЭД БОЛСОН ЧИНЬ...",
+          "author": "Януш Корчак",
+          "file": "books/ЭРГЭЭД_ХҮҮХЭД_БОЛСОН_ЧИНЬ.epub",
+          "chars": 211195,
+          "minutes": 282,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ҮҮЛЭН БОР",
+          "author": "Уэлл Жемс",
+          "file": "books/ҮҮЛЭН_БОР.epub",
+          "chars": 288666,
+          "minutes": 385,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ӨНӨӨХ ҮҮ!",
+          "author": "Гүи Де Мопассан",
+          "file": "books/ӨНӨӨХ_ҮҮ.epub",
+          "chars": 18778,
+          "minutes": 25,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ӨӨДӨСХӨНХҮҮ, ТҮҮНИЙ НӨХӨД",
+          "author": "Ч. АРЬЯАСҮРЭН",
+          "file": "books/ӨӨДӨСХӨНХҮҮ_ТҮҮНИЙ_НӨХӨД.epub",
+          "chars": 153856,
+          "minutes": 205,
+          "id": "",
+          "cover": "covers/.jpg"
+        }
+      ]
+    },
+    {
+      "name": "Байгаль, амьтад",
+      "forChildren": true,
+      "books": [
+        {
+          "title": "«КОН-ТИКИ» САЛААР",
+          "author": "Т. ХЕЙЕРДАЛ",
+          "file": "books/КОН-ТИКИ_САЛААР.epub",
+          "chars": 484208,
+          "minutes": 646,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "АЛТАЙН ЦААДАХ ГОВЬД",
+          "author": "Д. Цэвэгмид",
+          "file": "books/АЛТАЙН_ЦААДАХ_ГОВЬД.epub",
+          "chars": 131653,
+          "minutes": 176,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "АЛТАН СУВАРГЫН ОРНООР",
+          "author": "Д. Цэвэгмид",
+          "file": "books/АЛТАН_СУВАРГЫН_ОРНООР.epub",
+          "chars": 31924,
+          "minutes": 43,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "АХУЙДАА ХЭМНЭЖ СУРЪЯ",
+          "author": "Е. М. КАНЕВСКИЙ",
+          "file": "books/АХУЙДАА_ХЭМНЭЖ_СУРЪЯ.epub",
+          "chars": 356237,
+          "minutes": 475,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "БНМАУ-ЫН ЯСТАН УГСААТНУУД",
+          "author": "Х. Нямбуу",
+          "file": "books/БНМАУ-ЫН_ЯСТАН_УГСААТНУУД.epub",
+          "chars": 177235,
+          "minutes": 236,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "БУСАД ОРНЫ МОНГОЛ УГСААТНУУД",
+          "author": "Х. Нямбуу",
+          "file": "books/БУСАД_ОРНЫ_МОНГОЛ_УГСААТНУУД.epub",
+          "chars": 66514,
+          "minutes": 89,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "БУУРАЛ АНЧНЫ ТЭМДЭГЛЭЛ",
+          "author": "Ж. Дамдин",
+          "file": "books/БУУРАЛ_АНЧНЫ_ТЭМДЭГЛЭЛ.epub",
+          "chars": 234568,
+          "minutes": 313,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "Байгалийн хачин сонин",
+          "author": "И. Акимушкин",
+          "file": "books/Байгалийн_хачин_сонин.epub",
+          "chars": 460535,
+          "minutes": 614,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ВАЛЬТЕР РИД : ШИНЖЛЭХ УХААНЫ СОНИРХОЛ, ХҮН ТӨРӨЛХТНИЙ НЭРИЙН ӨМНӨӨС",
+          "author": "ПОЛЬ ДЕ КРАЙФ",
+          "file": "books/ВАЛЬТЕР_РИД_ШИНЖЛЭХ_УХААНЫ_СОНИРХОЛ_ХҮН_ТӨРӨЛХТНИЙ_НЭРИЙН_ӨМНӨӨС.epub",
+          "chars": 61753,
+          "minutes": 82,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ГАЙХАМШГИЙН НЭВТЭРХИЙ ТОЛЬ - 1",
+          "author": "Владимир Мезенцев",
+          "file": "books/ГАЙХАМШГИЙН_НЭВТЭРХИЙ_ТОЛЬ_-_1.epub",
+          "chars": 137602,
+          "minutes": 183,
+          "id": "1",
+          "cover": "covers/1.jpg"
+        },
+        {
+          "title": "ГАЙХАМШГИЙН НЭВТЭРХИЙ ТОЛЬ - 2",
+          "author": "Владимир Мезенцев",
+          "file": "books/ГАЙХАМШГИЙН_НЭВТЭРХИЙ_ТОЛЬ_2.epub",
+          "chars": 104905,
+          "minutes": 140,
+          "id": "2",
+          "cover": "covers/2.jpg"
+        },
+        {
+          "title": "ГАЙХАМШГИЙН НЭВТЭРХИЙ ТОЛЬ - 3",
+          "author": "Владимир Мезенцев",
+          "file": "books/ГАЙХАМШГИЙН_НЭВТЭРХИЙ_ТОЛЬ_-_3.epub",
+          "chars": 174768,
+          "minutes": 233,
+          "id": "3",
+          "cover": "covers/3.jpg"
+        },
+        {
+          "title": "ГАЙХАМШГИЙН НЭВТЭРХИЙ ТОЛЬ - 4",
+          "author": "Владимир Мезенцев",
+          "file": "books/ГАЙХАМШГИЙН_НЭВТЭРХИЙ_ТОЛЬ_-_4.epub",
+          "chars": 121374,
+          "minutes": 162,
+          "id": "4",
+          "cover": "covers/4.jpg"
+        },
+        {
+          "title": "ГАЙХАМШИГТ ӨД СӨД",
+          "author": "Николай Сладков",
+          "file": "books/ГАЙХАМШИГТ_ӨД_СӨД.epub",
+          "chars": 25116,
+          "minutes": 33,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ГАРРИЕТ БИЧЕР СТОУ БА «ТОМ АВГЫН ОВООХОЙ»",
+          "author": "ЖОН ВИНТЕРИХ",
+          "file": "books/ГАРРИЕТ_БИЧЕР_СТОУ_БА_ТОМ_АВГЫН_ОВООХОЙ.epub",
+          "chars": 45889,
+          "minutes": 61,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ГУРВУУЛ НЭГ ЗАВИАР (нохойг эс оролцуулан)",
+          "author": "ЖЕРОМ К.",
+          "file": "books/ГУРВУУЛ_НЭГ_ЗАВИАР_нохойг_эс_оролцуулан.epub",
+          "chars": 360285,
+          "minutes": 480,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ГҮНЖИЙН СҮМ",
+          "author": "Ц. Дамдинсүрэн",
+          "file": "books/ГҮНЖИЙН_СҮМ.epub",
+          "chars": 35336,
+          "minutes": 47,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ДАВИД БРЮС : ЦЕЦЕ БАТГАНЫГ МӨРДӨЖ МӨШГӨСӨН НЬ",
+          "author": "ПОЛЬ ДЕ КРАЙФ",
+          "file": "books/ДАВИД_БРЮС_ЦЕЦЕ_БАТГАНЫГ_МӨРДӨЖ_МӨШГӨСӨН_НЬ.epub",
+          "chars": 60973,
+          "minutes": 81,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ДАНИЭЛЬ ДЕФО БА «РОБИНЗОН КРУЗО»",
+          "author": "ЖОН ВИНТЕРИХ",
+          "file": "books/ДАНИЭЛЬ_ДЕФО_БА_РОБИНЗОН_КРУЗО.epub",
+          "chars": 42071,
+          "minutes": 56,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ДОКТОР МЕКАНИКУС ТҮҮНИЙ НОХОЙ АЛЬМА - 1",
+          "author": "АЛЕКСАНДР ПОЛЕЩУК",
+          "file": "books/ДОКТОР_МЕКАНИКУС_ТҮҮНИЙ_НОХОЙ_АЛЬМА_-_1.epub",
+          "chars": 199050,
+          "minutes": 265,
+          "id": "1",
+          "cover": "covers/1.jpg"
+        },
+        {
+          "title": "ДОКТОР МЕКАНИКУС ТҮҮНИЙ НОХОЙ АЛЬМА - 2",
+          "author": "АЛЕКСАНДР ПОЛЕЩУК",
+          "file": "books/ДОКТОР_МЕКАНИКУС_ТҮҮНИЙ_НОХОЙ_АЛЬМА_-_2.epub",
+          "chars": 162245,
+          "minutes": 216,
+          "id": "2",
+          "cover": "covers/2.jpg"
+        },
+        {
+          "title": "ДУУТ МАНХАН",
+          "author": "Николай Сладков",
+          "file": "books/ДУУТ_МАНХАН.epub",
+          "chars": 84027,
+          "minutes": 112,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЗҮЙЛИЙН ҮҮСЭЛ - 1",
+          "author": "Ч. Дарвин",
+          "file": "books/ЗҮЙЛИЙН_ҮҮСЭЛ_-_1.epub",
+          "chars": 550085,
+          "minutes": 733,
+          "id": "1",
+          "cover": "covers/1.jpg"
+        },
+        {
+          "title": "ЗҮЙЛИЙН ҮҮСЭЛ - 2",
+          "author": "Ч. Дарвин",
+          "file": "books/ЗҮЙЛИЙН_ҮҮСЭЛ_-_2.epub",
+          "chars": 582194,
+          "minutes": 776,
+          "id": "2",
+          "cover": "covers/2.jpg"
+        },
+        {
+          "title": "ИХ ТУУРВИЛУУДЫН ПАЯН - 2",
+          "author": "Александр Ивич",
+          "file": "books/ИХ_ТУУРВИЛУУДЫН_ПАЯН_-_2.epub",
+          "chars": 181078,
+          "minutes": 241,
+          "id": "2",
+          "cover": "covers/2.jpg"
+        },
+        {
+          "title": "КАПИТАН ГРАНТЫН ХҮҮХДҮҮД - 1",
+          "author": "Жюль Верн",
+          "file": "books/КАПИТАН_ГРАНТЫН_ХҮҮХДҮҮД_-_1.epub",
+          "chars": 385461,
+          "minutes": 514,
+          "id": "1",
+          "cover": "covers/1.jpg"
+        },
+        {
+          "title": "КАПИТАН ГРАНТЫН ХҮҮХДҮҮД - 2",
+          "author": "Жюль Верн",
+          "file": "books/КАПИТАН_ГРАНТЫН_ХҮҮХДҮҮД_-_2.epub",
+          "chars": 392552,
+          "minutes": 523,
+          "id": "2",
+          "cover": "covers/2.jpg"
+        },
+        {
+          "title": "КАПИТАН ГРАНТЫН ХҮҮХДҮҮД - 3",
+          "author": "Жюль Верн",
+          "file": "books/КАПИТАН_ГРАНТЫН_ХҮҮХДҮҮД_-_3.epub",
+          "chars": 328511,
+          "minutes": 438,
+          "id": "3",
+          "cover": "covers/3.jpg"
+        },
+        {
+          "title": "ЛУИ ПАСТЕР : ГАЛЗУУ ӨВЧНИЙ ЭРЛЭГ МӨН",
+          "author": "ПОЛЬ ДЕ КРАЙФ",
+          "file": "books/ЛУИ_ПАСТЕР_ГАЛЗУУ_ӨВЧНИЙ_ЭРЛЭГ_МӨН.epub",
+          "chars": 77107,
+          "minutes": 103,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЛЬЮИС КЭРРОЛЛ БОЛОН «АЛИСА ГАЙХАМШГИЙН ОРОНД»",
+          "author": "ЖОН ВИНТЕРИХ",
+          "file": "books/ЛЬЮИС_КЭРРОЛЛ_БОЛОН_АЛИСА_ГАЙХАМШГИЙН_ОРОНД.epub",
+          "chars": 39956,
+          "minutes": 53,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "МАЛ АЖ АХУЙДАА ЯАЖ АЖИЛЛАХ ТУХАЙ АРДАД ӨГӨХ САНУУЛГА СУРГААЛ",
+          "author": "Ж. Самбуу",
+          "file": "books/МАЛ_АЖ_АХУЙДАА_ЯАЖ_АЖИЛЛАХ_ТУХАЙ_АРДАД_ӨГӨХ_САНУУЛГА_СУРГААЛ.epub",
+          "chars": 224910,
+          "minutes": 300,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "МАЛЧДАД ӨГӨХ ЗӨВЛӨГӨӨ",
+          "author": "Ж. Самбуу",
+          "file": "books/МАЛЧДАД_ӨГӨХ_ЗӨВЛӨГӨӨ.epub",
+          "chars": 343578,
+          "minutes": 458,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "МАЛЧИН АРДЫН АМЬДРАЛ АХУЙ, ХЭВ ЗАНШЛААС",
+          "author": "Ж. Самбуу",
+          "file": "books/МАЛЧИН_АРДЫН_АМЬДРАЛ_АХУЙ_ХЭВ_ЗАНШЛААС.epub",
+          "chars": 109242,
+          "minutes": 146,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "МИЧ ХҮН БОЛОХОД ХӨДӨЛМӨРИЙН ГҮЙЦЭТГЭСЭН РОЛЬ",
+          "author": "Ф. Энгельс",
+          "file": "books/МИЧ_ХҮН_БОЛОХОД_ХӨДӨЛМӨРИЙН_ГҮЙЦЭТГЭСЭН_РОЛЬ.epub",
+          "chars": 30991,
+          "minutes": 41,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "МОНГОЛ ДОМГИЙН ЧУУЛГАН",
+          "author": "Х. Сампилдэндэв",
+          "file": "books/МОНГОЛ_ДОМГИЙН_ЧУУЛГАН.epub",
+          "chars": 786670,
+          "minutes": 1049,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "МОНГОЛЫН УУДАМ НУТГААР",
+          "author": "Э. М. Мурзаев",
+          "file": "books/МОНГОЛЫН_УУДАМ_НУТГААР.epub",
+          "chars": 203935,
+          "minutes": 272,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "МОНГОЛЫН ЭЗЭНТ ГҮРЭНД ЗОРЧСОН НЬ",
+          "author": "Гийом де Рубрук",
+          "file": "books/МОНГОЛЫН_ЭЗЭНТ_ГҮРЭНД_ЗОРЧСОН_НЬ.epub",
+          "chars": 683700,
+          "minutes": 912,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "НОБЕЛИЙН ШАГНАЛ ГАРДАН АВАХДАА ХЭЛСЭН ҮГ",
+          "author": "Пол А. Самюэлсон",
+          "file": "books/НОБЕЛИЙН_ШАГНАЛ_ГАРДАН_АВАХДАА_ХЭЛСЭН_ҮГ.epub",
+          "chars": 6766,
+          "minutes": 9,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "НУУЦ ТОВЧООНЫ НУУЦУУДААС",
+          "author": "Ш. ГААДАМБА",
+          "file": "books/НУУЦ_ТОВЧООНЫ_НУУЦУУДААС.epub",
+          "chars": 250426,
+          "minutes": 334,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ОВООХОЙ ОВОГТ ГЭРИЙН ҮЛГЭР",
+          "author": "Х. Нямбуу",
+          "file": "books/ОВООХОЙ_ОВОГТ_ГЭРИЙН_ҮЛГЭР.epub",
+          "chars": 50139,
+          "minutes": 67,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ОЛНОО ӨРГӨГДСӨН БОГД ХААНТ МОНГОЛ УЛСЫН ТӨРИЙН ЁС, ЁСЛОЛ",
+          "author": "Х. Нямбуу",
+          "file": "books/ОЛНОО_ӨРГӨГДСӨН_БОГД_ХААНТ_МОНГОЛ_УЛСЫН_ТӨРИЙН_С_СЛОЛ.epub",
+          "chars": 107193,
+          "minutes": 143,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ПАУЛЬ ЭРЛИХ : ШИДЭТ СУМ",
+          "author": "ПОЛЬ ДЕ КРАЙФ",
+          "file": "books/ПАУЛЬ_ЭРЛИХ_ШИДЭТ_СУМ.epub",
+          "chars": 48213,
+          "minutes": 64,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "РОБЕРТ БЕРНС ТҮҮНИЙ «ШҮЛГҮҮД»",
+          "author": "ЖОН ВИНТЕРИХ",
+          "file": "books/РОБЕРТ_БЕРНС_ТҮҮНИЙ_ШҮЛГҮҮД.epub",
+          "chars": 38886,
+          "minutes": 52,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "РОБЕРТ КОХ : ҮХЭЛТЭЙ ДАЙТАГЧ",
+          "author": "ПОЛЬ ДЕ КРАЙФ",
+          "file": "books/РОБЕРТ_КОХ_ҮХЭЛТЭЙ_ДАЙТАГЧ.epub",
+          "chars": 79833,
+          "minutes": 106,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "РОСС, ГРАССИ ХОЁР : ХАЛУУН ХУМХАА ӨВЧИН",
+          "author": "ПОЛЬ ДЕ КРАЙФ",
+          "file": "books/РОСС_ГРАССИ_ХОР_ХАЛУУН_ХУМХАА_ӨВЧИН.epub",
+          "chars": 69247,
+          "minutes": 92,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "РУ, БЕРИНГ XОЁР : УСАН ГАХАЙГ ХЯДСАН НЬ",
+          "author": "ПОЛЬ ДЕ КРАЙФ",
+          "file": "books/РУ_БЕРИНГ_XОР_УСАН_ГАХАЙГ_ХЯДСАН_НЬ.epub",
+          "chars": 47341,
+          "minutes": 63,
+          "id": "x",
+          "cover": "covers/x.jpg"
+        },
+        {
+          "title": "САРАН ДЭЭР",
+          "author": "К. Э. Циолковский",
+          "file": "books/САРАН_ДЭЭР.epub",
+          "chars": 69987,
+          "minutes": 93,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "СПАЛЛАНЦАНИ : НЯНД ЭЦЭГ ЭХ ЭРХБИШ БАЙЛТАЙ",
+          "author": "ПОЛЬ ДЕ КРАЙФ",
+          "file": "books/СПАЛЛАНЦАНИ_НЯНД_ЭЦЭГ_ЭХ_ЭРХБИШ_БАЙЛТАЙ.epub",
+          "chars": 82907,
+          "minutes": 111,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ТЕОБАЛЬД СМИТ : ХАЧИГ, ТЕХАССЫН ХАЛУУН ХАНИАД",
+          "author": "ПОЛЬ ДЕ КРАЙФ",
+          "file": "books/ТЕОБАЛЬД_СМИТ_ХАЧИГ_ТЕХАССЫН_ХАЛУУН_ХАНИАД.epub",
+          "chars": 48863,
+          "minutes": 65,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ТУУЛАЙТНЫ БИЕ БҮТЭЦ, ОРЧИНДОО ДАСАН ЗОХИЦОХ ЗҮЙ ТОГТОЛ",
+          "author": "Д. Цэвэгмид",
+          "file": "books/ТУУЛАЙТНЫ_БИЕ_БҮТЭЦ_ОРЧИНДОО_ДАСАН_ЗОХИЦОХ_ЗҮЙ_ТОГТОЛ.epub",
+          "chars": 28169,
+          "minutes": 38,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ТЭЭВРИЙН ГАЗАРЗҮЙ",
+          "author": "Н. Одхүү",
+          "file": "books/ТЭЭВРИЙН_ГАЗАРЗҮЙ.epub",
+          "chars": 104877,
+          "minutes": 140,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "УОЛТ УЙТМЕН БА ӨВСНИЙ НАВЧИС",
+          "author": "ЖОН ВИНТЕРИХ",
+          "file": "books/УОЛТ_УЙТМЕН_БА_ӨВСНИЙ_НАВЧИС.epub",
+          "chars": 42180,
+          "minutes": 56,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "УРЛАГ, ЭРҮҮЛ МЭНД",
+          "author": "Ю. П. ЛИСИЦЫН, Е. П. ЖИЛЯЕВА",
+          "file": "books/УРЛАГ_ЭРҮҮЛ_МЭНД.epub",
+          "chars": 257330,
+          "minutes": 343,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "УРТ НАСЛАХ УХААН",
+          "author": "А. А. Микулин",
+          "file": "books/УРТ_НАСЛАХ_УХААН.epub",
+          "chars": 177741,
+          "minutes": 237,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "УТСАН ДЭЭРХ ШУВУУ",
+          "author": "В. ПЕСКОВ",
+          "file": "books/УТСАН_ДЭЭРХ_ШУВУУ.epub",
+          "chars": 766790,
+          "minutes": 1022,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ХАР ЧУЛУУНЫХНЫ ГЭР БҮЛИЙН НАМТАР",
+          "author": "Х. Нямбуу",
+          "file": "books/ХАР_ЧУЛУУНЫХНЫ_ГЭР_БҮЛИЙН_НАМТАР.epub",
+          "chars": 9518,
+          "minutes": 13,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ХАЧИН ИЛЖИГ",
+          "author": "С. Баруздин",
+          "file": "books/ХАЧИН_ИЛЖИГ.epub",
+          "chars": 54115,
+          "minutes": 72,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ХИЙМЭЛ НҮД",
+          "author": "М. Ильин",
+          "file": "books/ХИЙМЭЛ_НҮД.epub",
+          "chars": 28037,
+          "minutes": 37,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ХЭЛ ЯРИА ХЭРХЭН БИЙ БОЛОВ?",
+          "author": "Б. Дэмчигдорж",
+          "file": "books/ХЭЛ_ЯРИА_ХЭРХЭН_БИЙ_БОЛОВ.epub",
+          "chars": 22903,
+          "minutes": 31,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ХҮН ХЭРХЭН ҮҮСЭВ?",
+          "author": "М. А. Гремяцкий",
+          "file": "books/ХҮН_ХЭРХЭН_ҮҮСЭВ.epub",
+          "chars": 264175,
+          "minutes": 352,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЦАСТ УУЛЫН БАРС",
+          "author": "Дэнзэн Норгай",
+          "file": "books/ЦАСТ_УУЛЫН_БАРС.epub",
+          "chars": 463070,
+          "minutes": 617,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЦӨГӨРЗГӨНИЙ ТУХАЙ ЦӨӨХӨН ҮГ",
+          "author": "Ш. ГААДАМБА",
+          "file": "books/ЦӨГӨРЗГӨНИЙ_ТУХАЙ_ЦӨӨХӨН_ҮГ.epub",
+          "chars": 7764,
+          "minutes": 10,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ШОРООН БУДГИЙГ ЯАЖ БОЛОВСРУУЛАН БЭЛТГЭХ ВЭ?",
+          "author": "К. В. ЖЕЛУБОВСКАЯ, Ю. С. ЖЕЛУБОВСКИЙ",
+          "file": "books/ШОРООН_БУДГИЙГ_ЯАЖ_БОЛОВСРУУЛАН_БЭЛТГЭХ_ВЭ.epub",
+          "chars": 66347,
+          "minutes": 88,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЭРТНИЙ ЖИМЭЭР",
+          "author": "С. Сандагдорж",
+          "file": "books/ЭРТНИЙ_ЖИМЭЭР.epub",
+          "chars": 110266,
+          "minutes": 147,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ЯАГААД ЯАГААД ЯАГААД",
+          "author": "М. Гумилевская",
+          "file": "books/ЯАГААД_ЯАГААД_ЯАГААД.epub",
+          "chars": 219343,
+          "minutes": 292,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ҮЛ ҮЗЭГДЭХ ТУСЛАГЧ",
+          "author": "Владимир Мезенцев",
+          "file": "books/ҮЛ_ҮЗЭГДЭХ_ТУСЛАГЧ.epub",
+          "chars": 291716,
+          "minutes": 389,
+          "id": "",
+          "cover": "covers/.jpg"
+        },
+        {
+          "title": "ҮҮЛЭН БОР",
+          "author": "Уэлл Жемс",
+          "file": "books/ҮҮЛЭН_БОР.epub",
+          "chars": 288666,
+          "minutes": 385,
+          "id": "",
+          "cover": "covers/.jpg"
+        }
+      ]
+    }
+  ]
+}
