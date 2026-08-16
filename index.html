@@ -482,8 +482,15 @@ function stop(){
   paint();
 }
 function notReady(){
-  stop(); $('playerStatus').classList.remove('hidden');
-  announce('Энэ ном хараахан бэлэн болоогүй байна.');
+  stop();
+  $('playerStatus').classList.remove('hidden');
+  // A book whose text loaded but whose audio has not been made yet can still
+  // be read. Saying "not ready" would hide a book that is half available.
+  if(book.chapters.length && !book.audioBase){
+    announce('Энэ номыг одоогоор чанга уншиж чадахгүй. "Том үсгээр" дарж уншина уу.');
+  } else {
+    announce('Энэ ном хараахан бэлэн болоогүй байна.');
+  }
 }
 function step(d){
   const was=playing; stop();
