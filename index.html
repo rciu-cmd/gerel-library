@@ -147,7 +147,18 @@
       <span class="ic">🔎</span>Унших<small>Том үсгээр харна</small>
     </button>
   </div>
+  <button class="chip" id="whoChip" style="margin-top:4px">Би хэн бэ?</button>
   <div id="status" class="note" role="status" aria-live="polite"></div>
+</div>
+
+<div id="who" class="screen hidden">
+  <div class="bar">
+    <h1>Хэн уншиж байна вэ?</h1>
+    <button class="chip" id="whoClose">Хаах</button>
+  </div>
+  <div class="books" id="whoList"></div>
+  <button class="mini" id="whoAdd" style="max-width:720px;margin:12px auto">＋ Шинэ нэр</button>
+  <p class="credit">Нэр зөвхөн энэ төхөөрөмж дээр хадгалагдана.</p>
 </div>
 
 <div id="shelf" class="screen hidden">
@@ -205,6 +216,14 @@
   </div>
 </div>
 
+<div id="help" class="screen hidden">
+  <div class="bar">
+    <h1>Товчлуурууд</h1>
+    <button class="chip" id="helpClose">Хаах</button>
+  </div>
+  <div class="books" id="helpList"></div>
+</div>
+
 <div id="toc" class="screen hidden">
   <div class="bar">
     <h1>Бүлгүүд</h1>
@@ -223,9 +242,17 @@ const COLOURS=['var(--sky)','var(--sun)','var(--berry)','var(--leaf)','var(--lil
 const SPEEDS=[0.6,0.7,0.85,1.0,1.15,1.3], SLEEPS=[0,15,30,60];
 
 const $=id=>document.getElementById(id);
+
+// Who is using this device right now. On a shared classroom tablet each child
+// picks a name once and keeps their own books and places. Stored on the device
+// only — no account, no server, nothing sent anywhere.
+let who = '';
+function nsKey(k){ return who ? 'u:'+who+':'+k : k; }
 const esc=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const put=(k,v)=>{try{localStorage.setItem('gerel:'+k,v)}catch(e){}};
-const get=(k,d)=>{try{const v=localStorage.getItem('gerel:'+k);return v===null?d:v}catch(e){return d}};
+const rawPut=(k,v)=>{try{localStorage.setItem('gerel:'+k,v)}catch(e){}};
+const rawGet=(k,d)=>{try{const v=localStorage.getItem('gerel:'+k);return v===null?d:v}catch(e){return d}};
+const put=(k,v)=>rawPut(nsKey(k),v);
+const get=(k,d)=>rawGet(nsKey(k),d);
 
 let mode=get('mode','');
 let speedIndex=parseInt(get('speed','2'),10); if(isNaN(speedIndex)||!SPEEDS[speedIndex]) speedIndex=2;
@@ -281,17 +308,43 @@ function announce(t){ $('status').textContent=t; $('playerStatus').textContent=t
 
 // ---- book text ----
 const book={title:'',author:'',chapters:[],audioBase:null,entry:null};
-const PROMO=['bolorsoft','болор дуран','сурталчилгаа','программтай танилцах','хандив',
-  'хаан банк','qpay','e-nom.mn','үнэ төлбөр'];
-const CRED=['e-nom.mn','цахим номын сан','хөрвүүлэв','эрхлэн хэвлүүлсэн','хэвлэлийн газар'];
-const FRONT=['хэвлэлийн мэдээлэл','хэвлэн нийтлэл','isbn','удк','ббк','редактор',
-  'эрхлэн гаргав','хянан тохиолдуулсан','зохиогчийн эрх','ном зүйн','хэвлэлийн эх'];
+// Everything here is about the book rather than in it. A child asked for a
+// story, not a publishing history and certainly not an advertisement for a
+// novel on sale in Ulaanbaatar bookshops.
+const PUBLISHER=['эрхлэн хэвлүүлсэн','эрхлэн гаргав','хэвлэлийн газар','хэвлэлийн мэдээлэл',
+  'хэвлэн нийтлэл','яамны хэвлэл','хэвлэлд бэлтгэсэн','редактор','хянан тохиолдуулсан',
+  'эмхэтгэсэн','эх бэлтгэсэн','нүүр зургийг','зохиогчийн эрх','isbn','удк','ббк',
+  'ном зүйн','хэвлэлийн эх','хэвлэл'];
+const SELLING=['зарагдаж','номын дэлгүүр','худалдаанд','захиалга','үнэ:','сурталчилгаа',
+  'болор дуран','bolorsoft','хандив','qpay','хаан банк','e-nom.mn','товшиж','холбоос','дуулгая'];
+const FOREWORD=['өмнөх үг','өмнөтгөл','удиртгал','оршил','редакцаас','эмхэтгэгчээс'];
+const NOTE=/^\s*(жич|тайлбар|анхаарах)\s*[:：]/i;
 const SEP=/^[⁂*※•\s]+$/;
 const hits=(t,w)=>{const l=t.toLowerCase();return w.reduce((n,x)=>n+(l.includes(x)?1:0),0)};
-function stripPromo(ps){
-  for(let i=0;i<ps.length;i++)
-    if(SEP.test(ps[i])&&hits(ps.slice(i).join(' '),PROMO)>=2) return ps.slice(0,i);
+
+// Cut a trailing note or advertisement off a real chapter. Runs before the
+// judgement below, or an advertisement pasted onto the end of a story would
+// condemn the story with it.
+function stripTail(ps){
+  for(let i=0;i<ps.length;i++){
+    const tail=ps.slice(i).join(' ');
+    if((SEP.test(ps[i])||NOTE.test(ps[i])) && hits(tail,SELLING.concat(PUBLISHER))>=2)
+      return ps.slice(0,i);
+  }
   return ps;
+}
+function notStory(title, ps){
+  const whole=ps.join(' ');
+  if(hits(whole,SELLING)>=2 && whole.length<2500) return true;
+  if(hits(whole,PUBLISHER)>=2 && whole.length<2500) return true;
+  // A chapter actually titled "Удиртгал" or "Өмнөх үг" is a grown-up essay
+  // about the book. One such introduction runs to 91,000 characters — three
+  // hours of scholarship standing between a child and the first story.
+  const t=(title||'').trim().toLowerCase().replace(/^["“”«»]+|["“”«».:]+$/g,'');
+  if(FOREWORD.some(w=>t.startsWith(w))) return true;
+  const head=(t+' '+whole.slice(0,200)).toLowerCase();
+  if(FOREWORD.some(w=>head.includes(w)) && hits(whole,PUBLISHER)>=1) return true;
+  return false;
 }
 function sents(text){
   const raw=text.match(/[^.!?…]+[.!?…]+[»”"']?|[^.!?…]+$/g)||[text];
@@ -345,16 +398,12 @@ async function loadEpub(data,fb){
     let ps=(els.length?els:[doc.body]).map(e=>(e.textContent||'').replace(/\s+/g,' ').trim())
       .map(t=>t.replace(/^\s*\[\s*[←<]\s*\d+\s*\]\s*/,'').trim()).filter(t=>t.length>=1);
     if(!ps.length) continue;
-    const w=ps.join(' ');
-    if(w.length<800&&hits(w,PROMO)>=2) continue;
-    if(w.length<1500&&hits(w,CRED)>=2) continue;
-    if(w.length<1200&&hits(w,FRONT)>=2) continue;
-    if(!book.chapters.length&&w.length<400) continue;
-    ps=stripPromo(ps).filter(t=>t.length>1);
+    ps=stripTail(ps).filter(t=>t.length>1);
     if(!ps.length) continue;
-    book.chapters.push({
-      title:titles[h.split('/').pop()]||doc.querySelector('h1,h2,h3')?.textContent?.trim()||ps[0].slice(0,60),
-      blocks:ps.map(p=>({sentences:sents(p)}))});
+    const ttl=titles[h.split('/').pop()]||doc.querySelector('h1,h2,h3')?.textContent?.trim()||ps[0].slice(0,60);
+    if(notStory(ttl, ps)) continue;
+    if(!book.chapters.length && ps.join(' ').length<400) continue;
+    book.chapters.push({title:ttl, blocks:ps.map(p=>({sentences:sents(p)}))});
   }
   if(!book.chapters.length) throw new Error('unavailable');
 }
@@ -547,9 +596,14 @@ function markRead(scroll){
 }
 
 // ---- screens ----
-const SCREENS=['welcome','shelf','player','reader','toc'];
+const SCREENS=['welcome','shelf','player','reader','toc','who','help'];
 let openShelf=null, pick=-1, rows=[], catalog=null;
-function show(n){ SCREENS.forEach(s=>$(s).classList.toggle('hidden',s!==n)); if(n==='reader') buildRead(); }
+let lastScreen='welcome';
+function show(n){
+  if(n!=='help') lastScreen=n;
+  SCREENS.forEach(s=>$(s).classList.toggle('hidden',s!==n));
+  if(n==='reader') buildRead();
+}
 
 function chooseMode(m){
   unlock(); mode=m; put('mode',m);
@@ -680,6 +734,98 @@ function buildToc(){
   });
 }
 
+// Names live only on this device. A child on a shared tablet picks theirs and
+// gets back their own favourites and their own place in every book.
+function readers(){ try{ return JSON.parse(rawGet('readers','[]'))||[] }catch(e){ return [] } }
+function saveReaders(list){ rawPut('readers', JSON.stringify(list)); }
+function setWho(name){
+  who = name || '';
+  rawPut('who', who);
+  $('whoChip').textContent = who ? who : 'Би хэн бэ?';
+  // Re-read this child's own settings.
+  mode = get('mode','');
+  speedIndex = parseInt(get('speed','2'),10); if(isNaN(speedIndex)||!SPEEDS[speedIndex]) speedIndex=2;
+  readSize = parseInt(get('size','32'),10); if(isNaN(readSize)) readSize=32;
+  try{ favs = JSON.parse(get('favs','[]'))||[] }catch(e){ favs=[] }
+  applySize();
+}
+function renderWho(){
+  const L=$('whoList'); L.innerHTML='';
+  const list=readers();
+  if(!list.length){
+    const p=document.createElement('p'); p.className='credit';
+    p.textContent='Нэр байхгүй байна. "Шинэ нэр" дарна уу.';
+    L.appendChild(p);
+  }
+  list.forEach(n=>{
+    const b=document.createElement('button');
+    b.className='bookRow'; b.style.display='block'; b.style.padding='18px';
+    b.innerHTML='<span class="t">'+esc(n)+(n===who?' ✓':'')+'</span>';
+    b.addEventListener('focus',()=>say(n));
+    b.addEventListener('mouseenter',()=>say(n));
+    b.addEventListener('click',()=>{
+      setWho(n); renderShelf(); show('welcome');
+      announce(n);
+    });
+    L.appendChild(b);
+  });
+}
+$('whoChip').addEventListener('click',()=>{ renderWho(); show('who'); announce('Хэн уншиж байна вэ?'); });
+$('whoClose').addEventListener('click',()=>show('welcome'));
+$('whoAdd').addEventListener('click',()=>{
+  const n=(prompt('Нэрээ бичнэ үү')||'').trim().slice(0,24);
+  if(!n) return;
+  const list=readers();
+  if(!list.includes(n)){ list.push(n); saveReaders(list); }
+  setWho(n); renderWho(); renderShelf();
+});
+
+// Four keys do almost everything, and a handful of letters jump straight to a
+// place. A blind child should be able to learn the whole library in a minute,
+// so the list is spoken as well as shown.
+const KEYS=[
+  ['Дээш, доош','Сонголтоо хөдөлгөнө'],
+  ['Баруун сум эсвэл Enter','Сонгоно'],
+  ['Зүүн сум эсвэл Delete','Буцна'],
+  ['Хоосон зай','Уншиж эхэлнэ, зогсооно'],
+  ['Н','Эхлэл рүү'],
+  ['Т','Тавиурууд'],
+  ['М','Миний ном'],
+  ['С','Санамсаргүй ном'],
+  ['Б','Бүлгүүд'],
+  ['У','Том үсгээр унших'],
+  ['Х','Хурд'],
+  ['З','Унтах цаг'],
+  ['Я','Би хаана байна?'],
+  ['?','Энэ жагсаалт']
+];
+function renderHelp(){
+  const L=$('helpList'); L.innerHTML='';
+  KEYS.forEach(([k,v])=>{
+    const b=document.createElement('div');
+    b.className='bookRow'; b.style.display='block'; b.style.padding='16px';
+    b.innerHTML='<span class="t">'+esc(k)+'</span><span class="who">'+esc(v)+'</span>';
+    L.appendChild(b);
+  });
+}
+$('helpClose').addEventListener('click',()=>show(lastScreen));
+
+// "Where am I?" — the question a child asks most, and the one a screen cannot
+// answer to someone who cannot see it.
+function whereAmI(){
+  if(!$('shelf').classList.contains('hidden')){
+    if(openShelf===null) return 'Тавиурууд. '+shelvesOf().length+' тавиур.';
+    const g=shelvesOf()[openShelf];
+    const n=(g.books||[]).length;
+    return g.name+'. '+n+' ном.'+(pick>=0?' '+(pick+1)+' дэх ном.':'');
+  }
+  if(!book.chapters.length) return 'Ном сонгоогүй байна.';
+  const c=chap();
+  let before=0; for(let i=0;i<bi;i++) before+=c.blocks[i].sentences.length;
+  const total=c.blocks.reduce((n,b)=>n+b.sentences.length,0);
+  return book.title+'. '+c.title+'. '+(before+si+1)+' / '+total+'.';
+}
+
 $('doorListen').addEventListener('click',()=>chooseMode('listen'));
 $('doorRead').addEventListener('click',()=>chooseMode('read'));
 $('modeChip').addEventListener('click',()=>chooseMode(mode==='read'?'listen':'read'));
@@ -728,7 +874,62 @@ $('sleepBtn').addEventListener('click',()=>{
 
 // Four keys, the same everywhere: up and down to move and hear, right or Enter
 // to go in, left or Delete to come back.
+// Shortcuts that work anywhere. Given in both Mongolian and Latin letters,
+// because a child may be on either keyboard layout.
+const JUMPS={
+  'н':'home','n':'home',        // эхлэл
+  'т':'shelves','t':'shelves',  // тавиурууд
+  'м':'mine','m':'mine',        // миний ном
+  'с':'random','s':'random',    // санамсаргүй
+  'б':'toc','b':'toc',          // бүлгүүд
+  'у':'read','u':'read',        // унших
+  'х':'speed','h':'speed',      // хурд
+  'з':'sleep','z':'sleep',      // унтах цаг
+  'я':'where','y':'where',      // би хаана байна
+  '?':'help','/':'help'
+};
+function doJump(what){
+  switch(what){
+    case 'home':   stop(); show('welcome'); announce('Сонсох эсвэл унших?'); break;
+    case 'shelves':openShelf=null; renderShelf(); show('shelf'); announce('Тавиурууд'); break;
+    case 'mine': {
+      const i=shelvesOf().findIndex(g=>g.name==='Миний ном');
+      if(i<0){ announce('Дуртай ном алга байна.'); break; }
+      openShelf=i; renderShelf(); show('shelf'); announce('Миний ном'); break;
+    }
+    case 'random': {
+      const all=everyBook();
+      if(!all.length){ announce('Ном алга байна.'); break; }
+      openBook(all[Math.floor(Math.random()*all.length)]); break;
+    }
+    case 'toc':   if(book.chapters.length){ show('toc'); announce('Бүлгүүд'); } break;
+    case 'read':  if(book.chapters.length){ show('reader'); announce('Том үсгээр'); } break;
+    case 'speed': $('speedBtn').click(); break;
+    case 'sleep': $('sleepBtn').click(); break;
+    case 'where': announce(whereAmI()); break;
+    case 'help':  renderHelp(); show('help');
+                  say(KEYS.map(k=>k[0]+': '+k[1]).join('. ')); break;
+  }
+}
+
 document.addEventListener('keydown',e=>{
+  // Letters jump straight to a place, from anywhere except a text box.
+  if(!e.ctrlKey && !e.altKey && !e.metaKey && e.key && e.key.length===1){
+    const j=JUMPS[e.key.toLowerCase()];
+    if(j && !/^(INPUT|TEXTAREA)$/.test((e.target.tagName||''))){
+      e.preventDefault(); doJump(j); return;
+    }
+  }
+  if(!$('help').classList.contains('hidden')){
+    e.preventDefault();
+    if(e.code!=='Tab') show(lastScreen);
+    return;
+  }
+  if(!$('who').classList.contains('hidden')){
+    if(e.code==='Backspace'||e.code==='Delete'||e.code==='Escape'){ e.preventDefault(); show('welcome'); }
+    return;
+  }
+
   const back=e.code==='Backspace'||e.code==='Delete'||e.code==='NumpadSubtract';
   const enter=e.code==='Enter'||e.code==='NumpadEnter'||e.code==='Numpad0';
   const down=e.code==='ArrowDown'||e.code==='Numpad2';
@@ -786,6 +987,7 @@ $('openFileLabel').addEventListener('keydown',e=>{
 });
 
 (async function(){
+  setWho(rawGet('who',''));      // before any setting is read
   try{ const r=await fetch('catalog.json',{cache:'no-store'});
     catalog=r.ok?await r.json():{shelves:[]}; }
   catch(e){ catalog={shelves:[]}; }
