@@ -11,8 +11,8 @@
           "file": "books/АЛТАН_ГУРГАЛДАЙ.epub",
           "chars": 21330,
           "minutes": 28,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "altan-gurgaldai-16d502",
+          "cover": "covers/altan-gurgaldai-16d502.jpg"
         },
         {
           "title": "АЛТАН ҮСТ ОХИН",
@@ -20,8 +20,8 @@
           "file": "books/АЛТАН_ҮСТ_ОХИН.epub",
           "chars": 37472,
           "minutes": 50,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "altan-ust-ohin-70fa52",
+          "cover": "covers/altan-ust-ohin-70fa52.jpg"
         },
         {
           "title": "АРДЫН AMAH ЗОХИОЛЫН УЧИР",
@@ -29,8 +29,8 @@
           "file": "books/АРДЫН_AMAH_ЗОХИОЛЫН_УЧИР.epub",
           "chars": 40137,
           "minutes": 54,
-          "id": "amah",
-          "cover": "covers/amah.jpg"
+          "id": "ardyn-amah-zohiolyn-uchir-5319c5",
+          "cover": "covers/ardyn-amah-zohiolyn-uchir-5319c5.jpg"
         },
         {
           "title": "АРДЫН ДУУ",
@@ -38,8 +38,8 @@
           "file": "books/АРДЫН_ДУУ.epub",
           "chars": 63499,
           "minutes": 85,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "ardyn-duu-7ef093",
+          "cover": "covers/ardyn-duu-7ef093.jpg"
         },
         {
           "title": "БААВГАЙ ЖАНЖНЫ АЛБАНАА",
@@ -47,8 +47,8 @@
           "file": "books/БААВГАЙ_ЖАНЖНЫ_АЛБАНАА.epub",
           "chars": 33772,
           "minutes": 45,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "baavgai-janjny-albanaa-f7af39",
+          "cover": "covers/baavgai-janjny-albanaa-f7af39.jpg"
         },
         {
           "title": "БАЛЖИН ХАТНЫ ДОМОГ",
@@ -56,8 +56,8 @@
           "file": "books/БАЛЖИН_ХАТНЫ_ДОМОГ.epub",
           "chars": 65485,
           "minutes": 87,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "baljin-hatny-domog-627be5",
+          "cover": "covers/baljin-hatny-domog-627be5.jpg"
         },
         {
           "title": "БУХ, ХУЦ, УХНА ГУРАВ",
@@ -65,8 +65,8 @@
           "file": "books/БУХ_ХУЦ_УХНА_ГУРАВ.epub",
           "chars": 4137,
           "minutes": 6,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "buh-huts-uhna-gurav-b38a05",
+          "cover": "covers/buh-huts-uhna-gurav-b38a05.jpg"
         },
         {
           "title": "БӨХИЙН ТУХАЙ ДОМГУУД",
@@ -74,8 +74,8 @@
           "file": "books/БӨХИЙН_ТУХАЙ_ДОМГУУД.epub",
           "chars": 139095,
           "minutes": 185,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "bohiin-tuhai-domguud-8117dd",
+          "cover": "covers/bohiin-tuhai-domguud-8117dd.jpg"
         },
         {
           "title": "ГАРГАНТЮА БА ПАНТАГРЮЭЛЬ - 1",
@@ -83,8 +83,8 @@
           "file": "books/ГАРГАНТЮА_БА_ПАНТАГРЮЭЛЬ_-_1.epub",
           "chars": 106204,
           "minutes": 142,
-          "id": "1",
-          "cover": "covers/1.jpg"
+          "id": "gargantyua-ba-pantagryuel-1-6ef280",
+          "cover": "covers/gargantyua-ba-pantagryuel-1-6ef280.jpg"
         },
         {
           "title": "ГАРГАНТЮА БА ПАНТАГРЮЭЛЬ - 2",
@@ -92,8 +92,8 @@
           "file": "books/ГАРГАНТЮА_БА_ПАНТАГРЮЭЛЬ_-_2.epub",
           "chars": 205181,
           "minutes": 274,
-          "id": "2",
-          "cover": "covers/2.jpg"
+          "id": "gargantyua-ba-pantagryuel-2-7527e3",
+          "cover": "covers/gargantyua-ba-pantagryuel-2-7527e3.jpg"
         },
         {
           "title": "ГОМДОЛ МЭДҮҮЛЭГЧ ХОН ХЭРЭЭ",
@@ -101,8 +101,8 @@
           "file": "books/ГОМДОЛ_МЭДҮҮЛЭГЧ_ХОН_ХЭРЭЭ.epub",
           "chars": 31052,
           "minutes": 41,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "gomdol-meduulegch-hon-heree-48b7ae",
+          "cover": "covers/gomdol-meduulegch-hon-heree-48b7ae.jpg"
         },
         {
           "title": "ГУРВАН САХИУС",
@@ -110,8 +110,8 @@
           "file": "books/ГУРВАН_САХИУС.epub",
           "chars": 6562,
           "minutes": 9,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "gurvan-sahius-8f62cc",
+          "cover": "covers/gurvan-sahius-8f62cc.jpg"
         },
         {
           "title": "ГЭСЭР",
@@ -119,8 +119,8 @@
           "file": "books/ГЭСЭР.epub",
           "chars": 499937,
           "minutes": 667,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "geser-ad05c9",
+          "cover": "covers/geser-ad05c9.jpg"
         },
         {
           "title": "ДАЛАН ХУДАЛЧ БЭЛЭН СЭНГЭ",
@@ -128,8 +128,8 @@
           "file": "books/ДАЛАН_ХУДАЛЧ_БЭЛЭН_СЭНГЭ.epub",
           "chars": 136136,
           "minutes": 182,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "dalan-hudalch-belen-senge-070bfb",
+          "cover": "covers/dalan-hudalch-belen-senge-070bfb.jpg"
         },
         {
           "title": "ДОЛООН ХОН ХЭРЭЭ",
@@ -137,8 +137,8 @@
           "file": "books/ДОЛООН_ХОН_ХЭРЭЭ.epub",
           "chars": 5192,
           "minutes": 7,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "doloon-hon-heree-18bc03",
+          "cover": "covers/doloon-hon-heree-18bc03.jpg"
         },
         {
           "title": "ДОМОГ ҮЛГЭРИЙН ЗҮЙЛС",
@@ -146,8 +146,8 @@
           "file": "books/ДОМОГ_ҮЛГЭРИЙН_ЗҮЙЛС.epub",
           "chars": 95997,
           "minutes": 128,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "domog-ulgeriin-zuils-fe522f",
+          "cover": "covers/domog-ulgeriin-zuils-fe522f.jpg"
         },
         {
           "title": "ДОМОГ ҮЛГЭРИЙН СЭТГЭЛГЭЭНИЙ АСУУДАЛД",
@@ -155,8 +155,8 @@
           "file": "books/ДОМОГ_ҮЛГЭРИЙН_СЭТГЭЛГЭЭНИЙ_АСУУДАЛД.epub",
           "chars": 50932,
           "minutes": 68,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "domog-ulgeriin-setgelgeenii-asuudald-d9b5f0",
+          "cover": "covers/domog-ulgeriin-setgelgeenii-asuudald-d9b5f0.jpg"
         },
         {
           "title": "ДЭЛДЭН БАМБАРУУШИЙН ХӨГТЭЙ ЯВДАЛ",
@@ -164,8 +164,8 @@
           "file": "books/ДЭЛДЭН_БАМБАРУУШИЙН_ХӨГТЭЙ_ЯВДАЛ.epub",
           "chars": 36041,
           "minutes": 48,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "delden-bambaruushiin-hogtei-yavdal-bd1bd6",
+          "cover": "covers/delden-bambaruushiin-hogtei-yavdal-bd1bd6.jpg"
         },
         {
           "title": "ДЭЛХИЙ ДЭЭР ХАМГИЙН ТАРГАН ХААН, БЯСАА ХОЁР",
@@ -173,8 +173,8 @@
           "file": "books/ДЭЛХИЙ_ДЭЭР_ХАМГИЙН_ТАРГАН_ХААН_БЯСАА_ХОР.epub",
           "chars": 12735,
           "minutes": 17,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "delhii-deer-hamgiin-targan-haan-byasaa-hor-d3ee44",
+          "cover": "covers/delhii-deer-hamgiin-targan-haan-byasaa-hor-d3ee44.jpg"
         },
         {
           "title": "ДЭЭЖИС ҮЛГЭРҮҮД",
@@ -182,8 +182,8 @@
           "file": "books/ДЭЭЖИС_ҮЛГЭРҮҮД.epub",
           "chars": 42055,
           "minutes": 56,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "deejis-ulgeruud-f6ea1d",
+          "cover": "covers/deejis-ulgeruud-f6ea1d.jpg"
         },
         {
           "title": "ЖАНГАР",
@@ -191,8 +191,8 @@
           "file": "books/ЖАНГАР.epub",
           "chars": 207825,
           "minutes": 277,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "jangar-fd8d8d",
+          "cover": "covers/jangar-fd8d8d.jpg"
         },
         {
           "title": "ЗАМЫН ЭХЭН",
@@ -200,8 +200,8 @@
           "file": "books/ЗАМЫН_ЭХЭН.epub",
           "chars": 247892,
           "minutes": 331,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "zamyn-ehen-bc08a1",
+          "cover": "covers/zamyn-ehen-bc08a1.jpg"
         },
         {
           "title": "ЗАН ҮЙЛИЙН АМАН ЗОХИОЛ",
@@ -209,8 +209,8 @@
           "file": "books/ЗАН_ҮЙЛИЙН_АМАН_ЗОХИОЛ.epub",
           "chars": 105298,
           "minutes": 140,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "zan-uiliin-aman-zohiol-b13676",
+          "cover": "covers/zan-uiliin-aman-zohiol-b13676.jpg"
         },
         {
           "title": "ЗУЛ САРЫН БАЯРЫН УРЬД ШӨНӨ",
@@ -218,8 +218,8 @@
           "file": "books/ЗУЛ_САРЫН_БАЯРЫН_УРЬД_ШӨНӨ.epub",
           "chars": 10439,
           "minutes": 14,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "zul-saryn-bayaryn-urd-shono-709954",
+          "cover": "covers/zul-saryn-bayaryn-urd-shono-709954.jpg"
         },
         {
           "title": "ЗУУН ЛИРТЭЙ БОЛСОН НЬ",
@@ -227,8 +227,8 @@
           "file": "books/ЗУУН_ЛИРТЭЙ_БОЛСОН_НЬ.epub",
           "chars": 4328,
           "minutes": 6,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "zuun-lirtei-bolson-n-283ab4",
+          "cover": "covers/zuun-lirtei-bolson-n-283ab4.jpg"
         },
         {
           "title": "ЗҮЙР ЦЭЦЭН ҮГ",
@@ -236,8 +236,8 @@
           "file": "books/ЗҮЙР_ЦЭЦЭН_ҮГ.epub",
           "chars": 61950,
           "minutes": 83,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "zuir-tsetsen-ug-388ba1",
+          "cover": "covers/zuir-tsetsen-ug-388ba1.jpg"
         },
         {
           "title": "ИД ШИДТЭН ЖИРО",
@@ -245,8 +245,8 @@
           "file": "books/ИД_ШИДТЭН_ЖИРО.epub",
           "chars": 4715,
           "minutes": 6,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "id-shidten-jiro-a53852",
+          "cover": "covers/id-shidten-jiro-a53852.jpg"
         },
         {
           "title": "ИРГЭНИЙ БОЛОВСРОЛ X",
@@ -254,8 +254,8 @@
           "file": "books/ИРГЭНИЙ_БОЛОВСРОЛ_X.epub",
           "chars": 184801,
           "minutes": 246,
-          "id": "x",
-          "cover": "covers/x.jpg"
+          "id": "irgenii-bolovsrol-x-bd9af5",
+          "cover": "covers/irgenii-bolovsrol-x-bd9af5.jpg"
         },
         {
           "title": "КИРГИЗИЙН ЦОМОРЛОГ",
@@ -263,8 +263,8 @@
           "file": "books/КИРГИЗИЙН_ЦОМОРЛОГ.epub",
           "chars": 43466,
           "minutes": 58,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "kirgiziin-tsomorlog-d46c70",
+          "cover": "covers/kirgiziin-tsomorlog-d46c70.jpg"
         },
         {
           "title": "МАГТААЛ",
@@ -272,8 +272,8 @@
           "file": "books/МАГТААЛ.epub",
           "chars": 91780,
           "minutes": 122,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "magtaal-c5858c",
+          "cover": "covers/magtaal-c5858c.jpg"
         },
         {
           "title": "МОГЖООХОН ДААГАТАЙ ЖОГЖООХОН ХҮҮ",
@@ -281,8 +281,8 @@
           "file": "books/МОГЖООХОН_ДААГАТАЙ_ЖОГЖООХОН_ХҮҮ.epub",
           "chars": 54922,
           "minutes": 73,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "mogjoohon-daagatai-jogjoohon-huu-977958",
+          "cover": "covers/mogjoohon-daagatai-jogjoohon-huu-977958.jpg"
         },
         {
           "title": "МОНГОЛ АМАН ЗОХИОЛЫН ТОВЧООН",
@@ -290,8 +290,8 @@
           "file": "books/МОНГОЛ_АМАН_ЗОХИОЛЫН_ТОВЧООН.epub",
           "chars": 495754,
           "minutes": 661,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "mongol-aman-zohiolyn-tovchoon-3b6def",
+          "cover": "covers/mongol-aman-zohiolyn-tovchoon-3b6def.jpg"
         },
         {
           "title": "МОНГОЛ АРДЫН TУУЛЬ",
@@ -299,8 +299,8 @@
           "file": "books/МОНГОЛ_АРДЫН_ТУУЛЬ.epub",
           "chars": 75271,
           "minutes": 100,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "mongol-ardyn-tuul-367141",
+          "cover": "covers/mongol-ardyn-tuul-367141.jpg"
         },
         {
           "title": "МОНГОЛ АРДЫН ШОГ ХОШИН ҮЛГЭР",
@@ -308,8 +308,8 @@
           "file": "books/МОНГОЛ_АРДЫН_ШОГ_ХОШИН_ҮЛГЭР.epub",
           "chars": 273367,
           "minutes": 364,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "mongol-ardyn-shog-hoshin-ulger-dbe1b0",
+          "cover": "covers/mongol-ardyn-shog-hoshin-ulger-dbe1b0.jpg"
         },
         {
           "title": "МОНГОЛ ДОМГИЙН ЧУУЛГАН",
@@ -317,8 +317,8 @@
           "file": "books/МОНГОЛ_ДОМГИЙН_ЧУУЛГАН.epub",
           "chars": 786670,
           "minutes": 1049,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "mongol-domgiin-chuulgan-d81df9",
+          "cover": "covers/mongol-domgiin-chuulgan-d81df9.jpg"
         },
         {
           "title": "МОНГОЛ ДОМОГ",
@@ -326,8 +326,8 @@
           "file": "books/МОНГОЛ_ДОМОГ.epub",
           "chars": 506656,
           "minutes": 676,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "mongol-domog-2ee5a2",
+          "cover": "covers/mongol-domog-2ee5a2.jpg"
         },
         {
           "title": "МОНГОЛ ЖАНГАРЫН ТУУЛЬ",
@@ -335,8 +335,8 @@
           "file": "books/МОНГОЛ_ЖАНГАРЫН_ТУУЛЬ.epub",
           "chars": 92604,
           "minutes": 123,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "mongol-jangaryn-tuul-f92fbe",
+          "cover": "covers/mongol-jangaryn-tuul-f92fbe.jpg"
         },
         {
           "title": "МОНГОЛ ҮГИЙН УРЛАГИЙН ТОВЧИС",
@@ -344,8 +344,8 @@
           "file": "books/МОНГОЛ_ҮГИЙН_УРЛАГИЙН_ТОВЧИС.epub",
           "chars": 121932,
           "minutes": 163,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "mongol-ugiin-urlagiin-tovchis-c8c366",
+          "cover": "covers/mongol-ugiin-urlagiin-tovchis-c8c366.jpg"
         },
         {
           "title": "МЭРГЭН ХАРВААЧ НИ АГЬ",
@@ -353,8 +353,8 @@
           "file": "books/МЭРГЭН_ХАРВААЧ_НИ_АГЬ.epub",
           "chars": 7285,
           "minutes": 10,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "mergen-harvaach-ni-ag-0d9a2b",
+          "cover": "covers/mergen-harvaach-ni-ag-0d9a2b.jpg"
         },
         {
           "title": "МЭРГЭН ЭМЧ",
@@ -362,8 +362,8 @@
           "file": "books/МЭРГЭН_ЭМЧ.epub",
           "chars": 4724,
           "minutes": 6,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "mergen-emch-38aeb4",
+          "cover": "covers/mergen-emch-38aeb4.jpg"
         },
         {
           "title": "МЭХТ САРМАГЧИН",
@@ -371,8 +371,8 @@
           "file": "books/МЭХТ_САРМАГЧИН.epub",
           "chars": 22223,
           "minutes": 30,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "meht-sarmagchin-a4410f",
+          "cover": "covers/meht-sarmagchin-a4410f.jpg"
         },
         {
           "title": "МӨНГӨН ТУРУУТ",
@@ -380,8 +380,8 @@
           "file": "books/МӨНГӨН_ТУРУУТ.epub",
           "chars": 17371,
           "minutes": 23,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "mongon-turuut-9117a6",
+          "cover": "covers/mongon-turuut-9117a6.jpg"
         },
         {
           "title": "НАЙЗ ЗУРГАА",
@@ -389,8 +389,8 @@
           "file": "books/НАЙЗ_ЗУРГАА.epub",
           "chars": 10441,
           "minutes": 14,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "naiz-zurgaa-240bd9",
+          "cover": "covers/naiz-zurgaa-240bd9.jpg"
         },
         {
           "title": "НОХОЙ, БОЛЖМОР ХОЁРЫН ҮЛГЭР",
@@ -398,8 +398,8 @@
           "file": "books/НОХОЙ_БОЛЖМОР_ХОРЫН_ҮЛГЭР.epub",
           "chars": 6990,
           "minutes": 9,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "nohoi-boljmor-horyn-ulger-b8f34e",
+          "cover": "covers/nohoi-boljmor-horyn-ulger-b8f34e.jpg"
         },
         {
           "title": "НУУЦ ТОВЧООНЫ НУУЦУУДААС",
@@ -407,8 +407,8 @@
           "file": "books/НУУЦ_ТОВЧООНЫ_НУУЦУУДААС.epub",
           "chars": 250426,
           "minutes": 334,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "nuuts-tovchoony-nuutsuudaas-bd7043",
+          "cover": "covers/nuuts-tovchoony-nuutsuudaas-bd7043.jpg"
         },
         {
           "title": "Ноён хутагт Д.Равжаагийн домог",
@@ -416,8 +416,8 @@
           "file": "books/Нон_хутагт_Д_Равжаагийн_домог.epub",
           "chars": 52126,
           "minutes": 70,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "non-hutagt-d-ravjaagiin-domog-a2feaf",
+          "cover": "covers/non-hutagt-d-ravjaagiin-domog-a2feaf.jpg"
         },
         {
           "title": "ПИНОККИОГИЙН АДАЛ ЯВДАЛ ХЭМЭЭХ ЖААХАН МОДОН ХҮНИЙ ҮЛГЭР",
@@ -425,8 +425,8 @@
           "file": "books/ПИНОККИОГИЙН_АДАЛ_ЯВДАЛ_ХЭМЭЭХ_ЖААХАН_МОДОН_ХҮНИЙ_ҮЛГЭР.epub",
           "chars": 191462,
           "minutes": 255,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "pinokkiogiin-adal-yavdal-hemeeh-jaahan-modon-hun-1ec306",
+          "cover": "covers/pinokkiogiin-adal-yavdal-hemeeh-jaahan-modon-hun-1ec306.jpg"
         },
         {
           "title": "РААМЫН ҮЛГЭРИЙН ЦОМОРЛОГ – 1",
@@ -434,8 +434,8 @@
           "file": "books/РААМЫН_ҮЛГЭРИЙН_ЦОМОРЛОГ_1.epub",
           "chars": 352302,
           "minutes": 470,
-          "id": "1",
-          "cover": "covers/1.jpg"
+          "id": "raamyn-ulgeriin-tsomorlog-1-414590",
+          "cover": "covers/raamyn-ulgeriin-tsomorlog-1-414590.jpg"
         },
         {
           "title": "РААМЫН ҮЛГЭРИЙН ЦОМОРЛОГ – 2",
@@ -443,8 +443,8 @@
           "file": "books/РААМЫН_ҮЛГЭРИЙН_ЦОМОРЛОГ_2.epub",
           "chars": 405401,
           "minutes": 541,
-          "id": "2",
-          "cover": "covers/2.jpg"
+          "id": "raamyn-ulgeriin-tsomorlog-2-71e69c",
+          "cover": "covers/raamyn-ulgeriin-tsomorlog-2-71e69c.jpg"
         },
         {
           "title": "РЕНАТИНО НЯМ ГАРАГТ НИСЭХГҮЙ",
@@ -452,8 +452,8 @@
           "file": "books/РЕНАТИНО_НЯМ_ГАРАГТ_НИСЭХГҮЙ.epub",
           "chars": 28947,
           "minutes": 39,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "renatino-nyam-garagt-nisehgui-470de5",
+          "cover": "covers/renatino-nyam-garagt-nisehgui-470de5.jpg"
         },
         {
           "title": "РОБИН ГУДЫН ТУХАЙ ДУУЛЬ",
@@ -461,8 +461,8 @@
           "file": "books/РОБИН_ГУДЫН_ТУХАЙ_ДУУЛЬ.epub",
           "chars": 24070,
           "minutes": 32,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "robin-gudyn-tuhai-duul-991ef2",
+          "cover": "covers/robin-gudyn-tuhai-duul-991ef2.jpg"
         },
         {
           "title": "РУСЛАН ЛЮДМИЛА ХОЁР",
@@ -470,8 +470,8 @@
           "file": "books/РУСЛАН_ЛЮДМИЛА_ХОР.epub",
           "chars": 114557,
           "minutes": 153,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "ruslan-lyudmila-hor-17aff0",
+          "cover": "covers/ruslan-lyudmila-hor-17aff0.jpg"
         },
         {
           "title": "СЭТЭРЖАВЫН ТУУЖ",
@@ -479,8 +479,8 @@
           "file": "books/СЭТЭРЖАВЫН_ТУУЖ.epub",
           "chars": 18733,
           "minutes": 25,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "seterjavyn-tuuj-6a1358",
+          "cover": "covers/seterjavyn-tuuj-6a1358.jpg"
         },
         {
           "title": "ТУВА АРДЫН ҮЛГЭР",
@@ -488,8 +488,8 @@
           "file": "books/ТУВА_АРДЫН_ҮЛГЭР.epub",
           "chars": 79941,
           "minutes": 107,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "tuva-ardyn-ulger-556c35",
+          "cover": "covers/tuva-ardyn-ulger-556c35.jpg"
         },
         {
           "title": "ТУУЛЬ",
@@ -497,8 +497,8 @@
           "file": "books/ТУУЛЬ.epub",
           "chars": 66942,
           "minutes": 89,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "tuul-ad458c",
+          "cover": "covers/tuul-ad458c.jpg"
         },
         {
           "title": "ТҮШМЭЛ ЖАМБААГИЙН ХӨГТЭЙ ЯВДАЛ",
@@ -506,8 +506,8 @@
           "file": "books/ТҮШМЭЛ_ЖАМБААГИЙН_ХӨГТЭЙ_ЯВДАЛ.epub",
           "chars": 46437,
           "minutes": 62,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "tushmel-jambaagiin-hogtei-yavdal-4c48c9",
+          "cover": "covers/tushmel-jambaagiin-hogtei-yavdal-4c48c9.jpg"
         },
         {
           "title": "ТҮҮВЭР ЗОХИОЛ",
@@ -515,8 +515,8 @@
           "file": "books/ТҮҮВЭР_ЗОХИОЛ.epub",
           "chars": 150224,
           "minutes": 200,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "tuuver-zohiol-f2f220",
+          "cover": "covers/tuuver-zohiol-f2f220.jpg"
         },
         {
           "title": "ТҮҮВЭР ЗОХИОЛ",
@@ -524,8 +524,8 @@
           "file": "books/ШИДЭТ_МОД.epub",
           "chars": 178533,
           "minutes": 238,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "shidet-mod-71b076",
+          "cover": "covers/shidet-mod-71b076.jpg"
         },
         {
           "title": "УЛААН МАЛГАЙТ",
@@ -533,8 +533,8 @@
           "file": "books/УЛААН_МАЛГАЙТ.epub",
           "chars": 83449,
           "minutes": 111,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "ulaan-malgait-8ebad1",
+          "cover": "covers/ulaan-malgait-8ebad1.jpg"
         },
         {
           "title": "УУЛИНШПИГЕЛИЙН ДОМОГ - 3",
@@ -542,8 +542,8 @@
           "file": "books/УУЛИНШПИГЕЛИЙН_ДОМОГ_-_3.epub",
           "chars": 272984,
           "minutes": 364,
-          "id": "3",
-          "cover": "covers/3.jpg"
+          "id": "uulinshpigeliin-domog-3-8f2c3e",
+          "cover": "covers/uulinshpigeliin-domog-3-8f2c3e.jpg"
         },
         {
           "title": "УУЛИНШПИГЕЛИЙН ДОМОГ - 5",
@@ -551,8 +551,8 @@
           "file": "books/УУЛИНШПИГЕЛИЙН_ДОМОГ_-_5.epub",
           "chars": 70186,
           "minutes": 94,
-          "id": "5",
-          "cover": "covers/5.jpg"
+          "id": "uulinshpigeliin-domog-5-1b7643",
+          "cover": "covers/uulinshpigeliin-domog-5-1b7643.jpg"
         },
         {
           "title": "ХОЁР ШАГАЙ",
@@ -560,8 +560,8 @@
           "file": "books/ХОР_ШАГАЙ.epub",
           "chars": 7975,
           "minutes": 11,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "hor-shagai-d8dcbe",
+          "cover": "covers/hor-shagai-d8dcbe.jpg"
         },
         {
           "title": "ХУЛГАЙЛАГДСАН НАР",
@@ -569,8 +569,8 @@
           "file": "books/ХУЛГАЙЛАГДСАН_НАР.epub",
           "chars": 19833,
           "minutes": 26,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "hulgailagdsan-nar-f6c858",
+          "cover": "covers/hulgailagdsan-nar-f6c858.jpg"
         },
         {
           "title": "ХУЛГАЙЧ ЯВСАН ЭРИЙН ДОМОГ",
@@ -578,8 +578,8 @@
           "file": "books/ХУЛГАЙЧ_ЯВСАН_ЭРИЙН_ДОМОГ.epub",
           "chars": 11220,
           "minutes": 15,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "hulgaich-yavsan-eriin-domog-d4d54f",
+          "cover": "covers/hulgaich-yavsan-eriin-domog-d4d54f.jpg"
         },
         {
           "title": "ХҮН НИЙГМИЙН ТУХАЙ ҮЛГЭРҮҮД",
@@ -587,8 +587,8 @@
           "file": "books/ХҮН_НИЙГМИЙН_ТУХАЙ_ҮЛГЭРҮҮД.epub",
           "chars": 81179,
           "minutes": 108,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "hun-niigmiin-tuhai-ulgeruud-d725b0",
+          "cover": "covers/hun-niigmiin-tuhai-ulgeruud-d725b0.jpg"
         },
         {
           "title": "ХӨГЖИМЧ КЕРИБ",
@@ -596,8 +596,8 @@
           "file": "books/ХӨГЖИМЧ_КЕРИБ.epub",
           "chars": 17676,
           "minutes": 24,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "hogjimch-kerib-11bbdf",
+          "cover": "covers/hogjimch-kerib-11bbdf.jpg"
         },
         {
           "title": "ЦЭЦЭН БЭР",
@@ -605,8 +605,8 @@
           "file": "books/ЦЭЦЭН_БЭР.epub",
           "chars": 15971,
           "minutes": 21,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "tsetsen-ber-8b1c10",
+          "cover": "covers/tsetsen-ber-8b1c10.jpg"
         },
         {
           "title": "ЧИНГИС ХААНЫ ТУХАЙ ДОМГУУД",
@@ -614,8 +614,8 @@
           "file": "books/ЧИНГИС_ХААНЫ_ТУХАЙ_ДОМГУУД.epub",
           "chars": 127571,
           "minutes": 170,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "chingis-haany-tuhai-domguud-f9dd25",
+          "cover": "covers/chingis-haany-tuhai-domguud-f9dd25.jpg"
         },
         {
           "title": "ЧИПОЛЛИНОГИЙН ХӨГТЭЙ ЯВДАЛ - 1",
@@ -623,8 +623,8 @@
           "file": "books/ЧИПОЛЛИНОГИЙН_ХӨГТЭЙ_ЯВДАЛ_-_1.epub",
           "chars": 71502,
           "minutes": 95,
-          "id": "1",
-          "cover": "covers/1.jpg"
+          "id": "chipollinogiin-hogtei-yavdal-1-c8654e",
+          "cover": "covers/chipollinogiin-hogtei-yavdal-1-c8654e.jpg"
         },
         {
           "title": "ЧОНО ШҮҮГЧ БОЛСОН НЬ",
@@ -632,8 +632,8 @@
           "file": "books/ЧОНО_ШҮҮГЧ_БОЛСОН_НЬ.epub",
           "chars": 3114,
           "minutes": 4,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "chono-shuugch-bolson-n-548dea",
+          "cover": "covers/chono-shuugch-bolson-n-548dea.jpg"
         },
         {
           "title": "ЧУЛУУН АРСЛАН",
@@ -641,8 +641,8 @@
           "file": "books/ЧУЛУУН_АРСЛАН.epub",
           "chars": 240913,
           "minutes": 321,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "chuluun-arslan-096e15",
+          "cover": "covers/chuluun-arslan-096e15.jpg"
         },
         {
           "title": "ШААЛУУ ХҮҮ МАУГЛИ - 4",
@@ -650,8 +650,8 @@
           "file": "books/ШААЛУУ_ХҮҮ_МАУГЛИ_-_4.epub",
           "chars": 34148,
           "minutes": 46,
-          "id": "4",
-          "cover": "covers/4.jpg"
+          "id": "shaaluu-huu-maugli-4-a64758",
+          "cover": "covers/shaaluu-huu-maugli-4-a64758.jpg"
         },
         {
           "title": "ШААЛУУ ХҮҮ МАУГЛИ - 6",
@@ -659,8 +659,8 @@
           "file": "books/ШААЛУУ_ХҮҮ_МАУГЛИ_-_6.epub",
           "chars": 28186,
           "minutes": 38,
-          "id": "6",
-          "cover": "covers/6.jpg"
+          "id": "shaaluu-huu-maugli-6-3513e1",
+          "cover": "covers/shaaluu-huu-maugli-6-3513e1.jpg"
         },
         {
           "title": "ШАРГА ДААГА",
@@ -668,8 +668,8 @@
           "file": "books/ШАРГА_ДААГА.epub",
           "chars": 733652,
           "minutes": 978,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "sharga-daaga-d70814",
+          "cover": "covers/sharga-daaga-d70814.jpg"
         },
         {
           "title": "ШПЕССАРТ ДАХЬ БУУРЧИЙН ГАЗАР - 1",
@@ -677,8 +677,8 @@
           "file": "books/ШПЕССАРТ_ДАХЬ_БУУРЧИЙН_ГАЗАР_-_1.epub",
           "chars": 211299,
           "minutes": 282,
-          "id": "1",
-          "cover": "covers/1.jpg"
+          "id": "shpessart-dah-buurchiin-gazar-1-0f0524",
+          "cover": "covers/shpessart-dah-buurchiin-gazar-1-0f0524.jpg"
         },
         {
           "title": "ШПЕССАРТ ДАХЬ БУУРЧИЙН ГАЗАР - 3",
@@ -686,8 +686,8 @@
           "file": "books/ШПЕССАРТ_ДАХЬ_БУУРЧИЙН_ГАЗАР_-_3.epub",
           "chars": 125992,
           "minutes": 168,
-          "id": "3",
-          "cover": "covers/3.jpg"
+          "id": "shpessart-dah-buurchiin-gazar-3-15d805",
+          "cover": "covers/shpessart-dah-buurchiin-gazar-3-15d805.jpg"
         },
         {
           "title": "ЭНЭТХЭГ АРДЫН ҮЛГЭРҮҮД",
@@ -695,8 +695,8 @@
           "file": "books/ЭНЭТХЭГ_АРДЫН_ҮЛГЭРҮҮД.epub",
           "chars": 46783,
           "minutes": 62,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "enetheg-ardyn-ulgeruud-f3ca33",
+          "cover": "covers/enetheg-ardyn-ulgeruud-f3ca33.jpg"
         },
         {
           "title": "ЭРДЭНИЙН ГУРВАН ЖИМС",
@@ -704,8 +704,8 @@
           "file": "books/ЭРДЭНИЙН_ГУРВАН_ЖИМС.epub",
           "chars": 144296,
           "minutes": 192,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "erdeniin-gurvan-jims-9cd85d",
+          "cover": "covers/erdeniin-gurvan-jims-9cd85d.jpg"
         },
         {
           "title": "ЭРДЭНИЙН САН СУБАШИД",
@@ -713,8 +713,8 @@
           "file": "books/ЭРДЭНИЙН_САН_СУБАШИД.epub",
           "chars": 323279,
           "minutes": 431,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "erdeniin-san-subashid-b39b8b",
+          "cover": "covers/erdeniin-san-subashid-b39b8b.jpg"
         },
         {
           "title": "ЭРЛЭГ, ЭМЧ ХОЁР",
@@ -722,8 +722,8 @@
           "file": "books/ЭРЛЭГ_ЭМЧ_ХОР.epub",
           "chars": 15967,
           "minutes": 21,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "erleg-emch-hor-f87f4a",
+          "cover": "covers/erleg-emch-hor-f87f4a.jpg"
         },
         {
           "title": "ЭРХИЙН ЧИНЭЭ ХҮҮ",
@@ -731,8 +731,8 @@
           "file": "books/ЭРХИЙН_ЧИНЭЭ_ХҮҮ.epub",
           "chars": 11778,
           "minutes": 16,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "erhiin-chinee-huu-83308d",
+          "cover": "covers/erhiin-chinee-huu-83308d.jpg"
         },
         {
           "title": "ЯДУУ ТЭЭРЭМЧИН, МУУР ХОЁР",
@@ -740,8 +740,8 @@
           "file": "books/ЯДУУ_ТЭЭРЭМЧИН_МУУР_ХОР.epub",
           "chars": 7617,
           "minutes": 10,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "yaduu-teeremchin-muur-hor-5360d4",
+          "cover": "covers/yaduu-teeremchin-muur-hor-5360d4.jpg"
         },
         {
           "title": "ҮЛГЭР",
@@ -749,8 +749,8 @@
           "file": "books/ҮЛГЭР.epub",
           "chars": 80419,
           "minutes": 107,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "ulger-a6c9fc",
+          "cover": "covers/ulger-a6c9fc.jpg"
         },
         {
           "title": "ҮҮЛЭНХЭН",
@@ -758,8 +758,8 @@
           "file": "books/ҮҮЛЭНХЭН.epub",
           "chars": 4496,
           "minutes": 6,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "uulenhen-b0a237",
+          "cover": "covers/uulenhen-b0a237.jpg"
         },
         {
           "title": "ӨНЧИН ХҮҮГИЙН ШАСТИРЫН ТУХАЙ",
@@ -767,8 +767,8 @@
           "file": "books/ӨНЧИН_ХҮҮГИЙН_ШАСТИРЫН_ТУХАЙ.epub",
           "chars": 15490,
           "minutes": 21,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "onchin-huugiin-shastiryn-tuhai-0f2c3c",
+          "cover": "covers/onchin-huugiin-shastiryn-tuhai-0f2c3c.jpg"
         },
         {
           "title": "ӨӨДӨСХӨНХҮҮ, ТҮҮНИЙ НӨХӨД",
@@ -776,8 +776,8 @@
           "file": "books/ӨӨДӨСХӨНХҮҮ_ТҮҮНИЙ_НӨХӨД.epub",
           "chars": 153856,
           "minutes": 205,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "oodoshonhuu-tuunii-nohod-f9034f",
+          "cover": "covers/oodoshonhuu-tuunii-nohod-f9034f.jpg"
         }
       ]
     },
@@ -791,8 +791,8 @@
           "file": "books/АГУУ_ИХ_БҮТЭЭЛ.epub",
           "chars": 125927,
           "minutes": 168,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "aguu-ih-buteel-89ec7a",
+          "cover": "covers/aguu-ih-buteel-89ec7a.jpg"
         },
         {
           "title": "АЛМААСАН ХУУРТАЙ ХҮҮХЭН",
@@ -800,8 +800,8 @@
           "file": "books/АЛМААСАН_ХУУРТАЙ_ХҮҮХЭН.epub",
           "chars": 36620,
           "minutes": 49,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "almaasan-huurtai-huuhen-69133b",
+          "cover": "covers/almaasan-huurtai-huuhen-69133b.jpg"
         },
         {
           "title": "АЛСЫГ ЗОРЬСОН АЛТАН ЗАГАС",
@@ -809,8 +809,8 @@
           "file": "books/АЛСЫГ_ЗОРЬСОН_АЛТАН_ЗАГАС.epub",
           "chars": 53607,
           "minutes": 71,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "alsyg-zorson-altan-zagas-e94ef3",
+          "cover": "covers/alsyg-zorson-altan-zagas-e94ef3.jpg"
         },
         {
           "title": "АЛТАН ХҮҮХЭД",
@@ -818,8 +818,8 @@
           "file": "books/АЛТАН_ХҮҮХЭД.epub",
           "chars": 11910,
           "minutes": 16,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "altan-huuhed-ba3861",
+          "cover": "covers/altan-huuhed-ba3861.jpg"
         },
         {
           "title": "АЛТАН ҮСТ ОХИН",
@@ -827,8 +827,8 @@
           "file": "books/АЛТАН_ҮСТ_ОХИН.epub",
           "chars": 37472,
           "minutes": 50,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "altan-ust-ohin-70fa52",
+          "cover": "covers/altan-ust-ohin-70fa52.jpg"
         },
         {
           "title": "АМТАТ САЙХАН ТАЛХ",
@@ -836,8 +836,8 @@
           "file": "books/АМТАТ_САЙХАН_ТАЛХ.epub",
           "chars": 33702,
           "minutes": 45,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "amtat-saihan-talh-376b38",
+          "cover": "covers/amtat-saihan-talh-376b38.jpg"
         },
         {
           "title": "АМЬТДЫН ТУХАЙ ӨГҮҮЛЛЭГҮҮД",
@@ -845,8 +845,8 @@
           "file": "books/АМЬТДЫН_ТУХАЙ_ӨГҮҮЛЛЭГҮҮД.epub",
           "chars": 222927,
           "minutes": 297,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "amtdyn-tuhai-oguulleguud-1a1f7f",
+          "cover": "covers/amtdyn-tuhai-oguulleguud-1a1f7f.jpg"
         },
         {
           "title": "АПЕННИНЫН УУЛНААС АНДЫН НУРУУ ХҮРТЭЛ",
@@ -854,8 +854,8 @@
           "file": "books/АПЕННИНЫН_УУЛНААС_АНДЫН_НУРУУ_ХҮРТЭЛ.epub",
           "chars": 7082,
           "minutes": 9,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "apenninyn-uulnaas-andyn-nuruu-hurtel-c62cec",
+          "cover": "covers/apenninyn-uulnaas-andyn-nuruu-hurtel-c62cec.jpg"
         },
         {
           "title": "АРАНЗАЛ ДАРВУУЛТ ХӨЛӨГ",
@@ -863,8 +863,8 @@
           "file": "books/АРАНЗАЛ_ДАРВУУЛТ_ХӨЛӨГ.epub",
           "chars": 148603,
           "minutes": 198,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "aranzal-darvuult-holog-6c7518",
+          "cover": "covers/aranzal-darvuult-holog-6c7518.jpg"
         },
         {
           "title": "АРГА УХААНТ АМЬТДЫН ҮЛГЭР",
@@ -872,8 +872,8 @@
           "file": "books/АРГА_УХААНТ_АМЬТДЫН_ҮЛГЭР.epub",
           "chars": 50498,
           "minutes": 67,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "arga-uhaant-amtdyn-ulger-38b4ed",
+          "cover": "covers/arga-uhaant-amtdyn-ulger-38b4ed.jpg"
         },
         {
           "title": "БАЙЛДАХ ДУРГҮЙ ӨВӨӨ",
@@ -881,8 +881,8 @@
           "file": "books/БАЙЛДАХ_ДУРГҮЙ_ӨВӨӨ.epub",
           "chars": 440149,
           "minutes": 587,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "baildah-durgui-ovoo-e186d3",
+          "cover": "covers/baildah-durgui-ovoo-e186d3.jpg"
         },
         {
           "title": "БИ НОМ СУРАХ САН",
@@ -890,8 +890,8 @@
           "file": "books/БИ_НОМ_СУРАХ_САН.epub",
           "chars": 91270,
           "minutes": 122,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "bi-nom-surah-san-b942f3",
+          "cover": "covers/bi-nom-surah-san-b942f3.jpg"
         },
         {
           "title": "БОР МОРЬ",
@@ -899,8 +899,8 @@
           "file": "books/БОР_МОРЬ.epub",
           "chars": 31431,
           "minutes": 42,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "bor-mor-c6b5a3",
+          "cover": "covers/bor-mor-c6b5a3.jpg"
         },
         {
           "title": "БУРХАН МЭТ НАСАНД НЬ",
@@ -908,8 +908,8 @@
           "file": "books/БУРХАН_МЭТ_НАСАНД_НЬ.epub",
           "chars": 414458,
           "minutes": 553,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "burhan-met-nasand-n-7a5366",
+          "cover": "covers/burhan-met-nasand-n-7a5366.jpg"
         },
         {
           "title": "БЯЦХАН ХУНТАЙЖ",
@@ -917,8 +917,8 @@
           "file": "books/БЯЦХАН_ХУНТАЙЖ.epub",
           "chars": 76619,
           "minutes": 102,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "byatshan-huntaij-005965",
+          "cover": "covers/byatshan-huntaij-005965.jpg"
         },
         {
           "title": "ГАЙХАМШИГТ МОНГОЛ МОРЬ",
@@ -926,8 +926,8 @@
           "file": "books/ГАЙХАМШИГТ_МОНГОЛ_МОРЬ.epub",
           "chars": 242984,
           "minutes": 324,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "gaihamshigt-mongol-mor-3e86b4",
+          "cover": "covers/gaihamshigt-mongol-mor-3e86b4.jpg"
         },
         {
           "title": "ГАЙХАМШИГТ ӨД СӨД",
@@ -935,8 +935,8 @@
           "file": "books/ГАЙХАМШИГТ_ӨД_СӨД.epub",
           "chars": 25116,
           "minutes": 33,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "gaihamshigt-od-sod-c06e78",
+          "cover": "covers/gaihamshigt-od-sod-c06e78.jpg"
         },
         {
           "title": "ГАЛУУН ЦУВАА",
@@ -944,8 +944,8 @@
           "file": "books/ГАЛУУН_ЦУВАА.epub",
           "chars": 13941,
           "minutes": 19,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "galuun-tsuvaa-51a193",
+          "cover": "covers/galuun-tsuvaa-51a193.jpg"
         },
         {
           "title": "ГАЛУУНЫ ДЭГДЭЭХЭЙ",
@@ -953,8 +953,8 @@
           "file": "books/ГАЛУУНЫ_ДЭГДЭЭХЭЙ.epub",
           "chars": 75615,
           "minutes": 101,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "galuuny-degdeehei-4377d4",
+          "cover": "covers/galuuny-degdeehei-4377d4.jpg"
         },
         {
           "title": "ГАРГАНТЮА БА ПАНТАГРЮЭЛЬ - 1",
@@ -962,8 +962,8 @@
           "file": "books/ГАРГАНТЮА_БА_ПАНТАГРЮЭЛЬ_-_1.epub",
           "chars": 106204,
           "minutes": 142,
-          "id": "1",
-          "cover": "covers/1.jpg"
+          "id": "gargantyua-ba-pantagryuel-1-6ef280",
+          "cover": "covers/gargantyua-ba-pantagryuel-1-6ef280.jpg"
         },
         {
           "title": "ГАРГАНТЮА БА ПАНТАГРЮЭЛЬ - 2",
@@ -971,8 +971,8 @@
           "file": "books/ГАРГАНТЮА_БА_ПАНТАГРЮЭЛЬ_-_2.epub",
           "chars": 205181,
           "minutes": 274,
-          "id": "2",
-          "cover": "covers/2.jpg"
+          "id": "gargantyua-ba-pantagryuel-2-7527e3",
+          "cover": "covers/gargantyua-ba-pantagryuel-2-7527e3.jpg"
         },
         {
           "title": "ГУРВАН НАЙЗ",
@@ -980,8 +980,8 @@
           "file": "books/ГУРВАН_НАЙЗ.epub",
           "chars": 36551,
           "minutes": 49,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "gurvan-naiz-5e0b9f",
+          "cover": "covers/gurvan-naiz-5e0b9f.jpg"
         },
         {
           "title": "ДАЛАЙ ЭЭЖ",
@@ -989,8 +989,8 @@
           "file": "books/ДАЛАЙ_ЭЭЖ.epub",
           "chars": 12978,
           "minutes": 17,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "dalai-eej-0a9482",
+          "cover": "covers/dalai-eej-0a9482.jpg"
         },
         {
           "title": "ДУГТУЙТ, БОЙТОГТ, ХӨВДӨН САХАЛТ ГУРВЫН ҮЛГЭР",
@@ -998,8 +998,8 @@
           "file": "books/ДУГТУЙТ_БОЙТОГТ_ХӨВДӨН_САХАЛТ_ГУРВЫН_ҮЛГЭР.epub",
           "chars": 232801,
           "minutes": 310,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "dugtuit-boitogt-hovdon-sahalt-gurvyn-ulger-20b779",
+          "cover": "covers/dugtuit-boitogt-hovdon-sahalt-gurvyn-ulger-20b779.jpg"
         },
         {
           "title": "ЕР БИШИЙН АЯЛАЛ",
@@ -1007,8 +1007,8 @@
           "file": "books/ЕР_БИШИЙН_АЯЛАЛ.epub",
           "chars": 65332,
           "minutes": 87,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "er-bishiin-ayalal-11f335",
+          "cover": "covers/er-bishiin-ayalal-11f335.jpg"
         },
         {
           "title": "ЖЕЛЬСОМИНО ХУДАЛ ХУУРМАГИЙН ГАЗАР ХӨГЛӨСӨН НЬ",
@@ -1016,8 +1016,8 @@
           "file": "books/ЖЕЛЬСОМИНО_ХУДАЛ_ХУУРМАГИЙН_ГАЗАР_ХӨГЛӨСӨН_НЬ.epub",
           "chars": 230728,
           "minutes": 308,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "jelsomino-hudal-huurmagiin-gazar-hogloson-n-5dd88d",
+          "cover": "covers/jelsomino-hudal-huurmagiin-gazar-hogloson-n-5dd88d.jpg"
         },
         {
           "title": "ИХ ТУУРВИЛУУДЫН ПАЯН - 1",
@@ -1025,8 +1025,8 @@
           "file": "books/ИХ_ТУУРВИЛУУДЫН_ПАЯН_-_1.epub",
           "chars": 314129,
           "minutes": 419,
-          "id": "1",
-          "cover": "covers/1.jpg"
+          "id": "ih-tuurviluudyn-payan-1-2ca804",
+          "cover": "covers/ih-tuurviluudyn-payan-1-2ca804.jpg"
         },
         {
           "title": "ЛУУНЫ ХҮҮ ТАРО",
@@ -1034,8 +1034,8 @@
           "file": "books/ЛУУНЫ_ХҮҮ_ТАРО.epub",
           "chars": 107026,
           "minutes": 143,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "luuny-huu-taro-08ec16",
+          "cover": "covers/luuny-huu-taro-08ec16.jpg"
         },
         {
           "title": "МАЛГАЙН БОРОО",
@@ -1043,8 +1043,8 @@
           "file": "books/МАЛГАЙН_БОРОО.epub",
           "chars": 4519,
           "minutes": 6,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "malgain-boroo-fd6248",
+          "cover": "covers/malgain-boroo-fd6248.jpg"
         },
         {
           "title": "МАНГИС",
@@ -1052,8 +1052,8 @@
           "file": "books/МАНГИС.epub",
           "chars": 14070,
           "minutes": 19,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "mangis-22ba65",
+          "cover": "covers/mangis-22ba65.jpg"
         },
         {
           "title": "МОГЖООХОН ДААГАТАЙ ЖОГЖООХОН ХҮҮ",
@@ -1061,8 +1061,8 @@
           "file": "books/МОГЖООХОН_ДААГАТАЙ_ЖОГЖООХОН_ХҮҮ.epub",
           "chars": 54922,
           "minutes": 73,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "mogjoohon-daagatai-jogjoohon-huu-977958",
+          "cover": "covers/mogjoohon-daagatai-jogjoohon-huu-977958.jpg"
         },
         {
           "title": "МОЛЛА БАЯЧУУД ХУДАЛДААЧДЫН ДУНД",
@@ -1070,8 +1070,8 @@
           "file": "books/МОЛЛА_БАЯЧУУД_ХУДАЛДААЧДЫН_ДУНД.epub",
           "chars": 35674,
           "minutes": 48,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "molla-bayachuud-hudaldaachdyn-dund-261e40",
+          "cover": "covers/molla-bayachuud-hudaldaachdyn-dund-261e40.jpg"
         },
         {
           "title": "МЭРГЭН БАГШИЙН НАМТАР",
@@ -1079,8 +1079,8 @@
           "file": "books/МЭРГЭН_БАГШИЙН_НАМТАР.epub",
           "chars": 45005,
           "minutes": 60,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "mergen-bagshiin-namtar-a93d70",
+          "cover": "covers/mergen-bagshiin-namtar-a93d70.jpg"
         },
         {
           "title": "МЭРГЭН ЭМЧ",
@@ -1088,8 +1088,8 @@
           "file": "books/МЭРГЭН_ЭМЧ.epub",
           "chars": 4724,
           "minutes": 6,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "mergen-emch-38aeb4",
+          "cover": "covers/mergen-emch-38aeb4.jpg"
         },
         {
           "title": "МЭХТ САРМАГЧИН",
@@ -1097,8 +1097,8 @@
           "file": "books/МЭХТ_САРМАГЧИН.epub",
           "chars": 22223,
           "minutes": 30,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "meht-sarmagchin-a4410f",
+          "cover": "covers/meht-sarmagchin-a4410f.jpg"
         },
         {
           "title": "НАЙЗУУД",
@@ -1106,8 +1106,8 @@
           "file": "books/НАЙЗУУД.epub",
           "chars": 36555,
           "minutes": 49,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "naizuud-9ff770",
+          "cover": "covers/naizuud-9ff770.jpg"
         },
         {
           "title": "НАРГИАНТАЙ ӨГҮҮЛЛЭГҮҮД",
@@ -1115,8 +1115,8 @@
           "file": "books/НАРГИАНТАЙ_ӨГҮҮЛЛЭГҮҮД.epub",
           "chars": 36783,
           "minutes": 49,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "nargiantai-oguulleguud-b4e22b",
+          "cover": "covers/nargiantai-oguulleguud-b4e22b.jpg"
         },
         {
           "title": "НЭГЭН АЛХАМ",
@@ -1124,8 +1124,8 @@
           "file": "books/НЭГЭН_АЛХАМ.epub",
           "chars": 102976,
           "minutes": 137,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "negen-alham-a7ebcf",
+          "cover": "covers/negen-alham-a7ebcf.jpg"
         },
         {
           "title": "ОВООХОЙ ОВОГТ ГЭРИЙН ҮЛГЭР",
@@ -1133,8 +1133,8 @@
           "file": "books/ОВООХОЙ_ОВОГТ_ГЭРИЙН_ҮЛГЭР.epub",
           "chars": 50139,
           "minutes": 67,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "ovoohoi-ovogt-geriin-ulger-4e20ec",
+          "cover": "covers/ovoohoi-ovogt-geriin-ulger-4e20ec.jpg"
         },
         {
           "title": "ОДОН АРАА",
@@ -1142,8 +1142,8 @@
           "file": "books/ОДОН_АРАА.epub",
           "chars": 127834,
           "minutes": 170,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "odon-araa-25a07d",
+          "cover": "covers/odon-araa-25a07d.jpg"
         },
         {
           "title": "ПИККОЛЕТТО",
@@ -1151,8 +1151,8 @@
           "file": "books/ПИККОЛЕТТО.epub",
           "chars": 18317,
           "minutes": 24,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "pikkoletto-3b6d36",
+          "cover": "covers/pikkoletto-3b6d36.jpg"
         },
         {
           "title": "ПИНОККИОГИЙН АДАЛ ЯВДАЛ ХЭМЭЭХ ЖААХАН МОДОН ХҮНИЙ ҮЛГЭР",
@@ -1160,8 +1160,8 @@
           "file": "books/ПИНОККИОГИЙН_АДАЛ_ЯВДАЛ_ХЭМЭЭХ_ЖААХАН_МОДОН_ХҮНИЙ_ҮЛГЭР.epub",
           "chars": 191462,
           "minutes": 255,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "pinokkiogiin-adal-yavdal-hemeeh-jaahan-modon-hun-1ec306",
+          "cover": "covers/pinokkiogiin-adal-yavdal-hemeeh-jaahan-modon-hun-1ec306.jpg"
         },
         {
           "title": "РОБИН ГУДЫН ТУХАЙ ДУУЛЬ",
@@ -1169,8 +1169,8 @@
           "file": "books/РОБИН_ГУДЫН_ТУХАЙ_ДУУЛЬ.epub",
           "chars": 24070,
           "minutes": 32,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "robin-gudyn-tuhai-duul-991ef2",
+          "cover": "covers/robin-gudyn-tuhai-duul-991ef2.jpg"
         },
         {
           "title": "СИЙНЭН ДУУЛЖ БАЙНА",
@@ -1178,8 +1178,8 @@
           "file": "books/СИЙНЭН_ДУУЛЖ_БАЙНА.epub",
           "chars": 172857,
           "minutes": 230,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "siinen-duulj-baina-d8f9c4",
+          "cover": "covers/siinen-duulj-baina-d8f9c4.jpg"
         },
         {
           "title": "Сүүлэнхүү 6",
@@ -1187,8 +1187,8 @@
           "file": "books/СҮҮЛЭНХҮҮ_6.epub",
           "chars": 21062,
           "minutes": 28,
-          "id": "6",
-          "cover": "covers/6.jpg"
+          "id": "suulenhuu-6-8acaf8",
+          "cover": "covers/suulenhuu-6-8acaf8.jpg"
         },
         {
           "title": "ТУВА АРДЫН ҮЛГЭР",
@@ -1196,8 +1196,8 @@
           "file": "books/ТУВА_АРДЫН_ҮЛГЭР.epub",
           "chars": 79941,
           "minutes": 107,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "tuva-ardyn-ulger-556c35",
+          "cover": "covers/tuva-ardyn-ulger-556c35.jpg"
         },
         {
           "title": "ТҮШМЭЛ ЖАМБААГИЙН ХӨГТЭЙ ЯВДАЛ",
@@ -1205,8 +1205,8 @@
           "file": "books/ТҮШМЭЛ_ЖАМБААГИЙН_ХӨГТЭЙ_ЯВДАЛ.epub",
           "chars": 46437,
           "minutes": 62,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "tushmel-jambaagiin-hogtei-yavdal-4c48c9",
+          "cover": "covers/tushmel-jambaagiin-hogtei-yavdal-4c48c9.jpg"
         },
         {
           "title": "УЛААН МАЛГАЙТ",
@@ -1214,8 +1214,8 @@
           "file": "books/УЛААН_МАЛГАЙТ.epub",
           "chars": 83449,
           "minutes": 111,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "ulaan-malgait-8ebad1",
+          "cover": "covers/ulaan-malgait-8ebad1.jpg"
         },
         {
           "title": "УРАН ҮСНИЙХНИЙ ГЭР БҮЛИЙН НАМТАР",
@@ -1223,8 +1223,8 @@
           "file": "books/УРАН_ҮСНИЙХНИЙ_ГЭР_БҮЛИЙН_НАМТАР.epub",
           "chars": 16277,
           "minutes": 22,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "uran-usniihnii-ger-buliin-namtar-597da5",
+          "cover": "covers/uran-usniihnii-ger-buliin-namtar-597da5.jpg"
         },
         {
           "title": "УТАА",
@@ -1232,8 +1232,8 @@
           "file": "books/УТАА.epub",
           "chars": 13663,
           "minutes": 18,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "utaa-d6e8a7",
+          "cover": "covers/utaa-d6e8a7.jpg"
         },
         {
           "title": "ХАР ЧУЛУУНЫХНЫ ГЭР БҮЛИЙН НАМТАР",
@@ -1241,8 +1241,8 @@
           "file": "books/ХАР_ЧУЛУУНЫХНЫ_ГЭР_БҮЛИЙН_НАМТАР.epub",
           "chars": 9518,
           "minutes": 13,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "har-chuluunyhny-ger-buliin-namtar-dc0784",
+          "cover": "covers/har-chuluunyhny-ger-buliin-namtar-dc0784.jpg"
         },
         {
           "title": "ХАЧИН ИЛЖИГ",
@@ -1250,8 +1250,8 @@
           "file": "books/ХАЧИН_ИЛЖИГ.epub",
           "chars": 54115,
           "minutes": 72,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "hachin-iljig-e05937",
+          "cover": "covers/hachin-iljig-e05937.jpg"
         },
         {
           "title": "ХЭН ХЭЛСЭН ЮМ БЭ?",
@@ -1259,8 +1259,8 @@
           "file": "books/ХЭН_ХЭЛСЭН_ЮМ_БЭ.epub",
           "chars": 112691,
           "minutes": 150,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "hen-helsen-yum-be-68f2c2",
+          "cover": "covers/hen-helsen-yum-be-68f2c2.jpg"
         },
         {
           "title": "Хэн хэлнэ вэ?",
@@ -1268,8 +1268,8 @@
           "file": "books/ХЭН_ХЭЛНЭ_ВЭ.epub",
           "chars": 8577,
           "minutes": 11,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "hen-helne-ve-8be6f9",
+          "cover": "covers/hen-helne-ve-8be6f9.jpg"
         },
         {
           "title": "ХҮҮХЭД НОХОЙД ХАЙРТАЙ",
@@ -1277,8 +1277,8 @@
           "file": "books/ХҮҮХЭД_НОХОЙД_ХАЙРТАЙ.epub",
           "chars": 204495,
           "minutes": 273,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "huuhed-nohoid-hairtai-f16db7",
+          "cover": "covers/huuhed-nohoid-hairtai-f16db7.jpg"
         },
         {
           "title": "ХӨӨРХӨН БАЙДИЙ",
@@ -1286,8 +1286,8 @@
           "file": "books/ХӨӨРХӨН_БАЙДИЙ.epub",
           "chars": 3975,
           "minutes": 5,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "hoorhon-baidii-30090a",
+          "cover": "covers/hoorhon-baidii-30090a.jpg"
         },
         {
           "title": "ЦАГААН МАГНАЙТ",
@@ -1295,8 +1295,8 @@
           "file": "books/ЦАГААН_МАГНАЙТ.epub",
           "chars": 11096,
           "minutes": 15,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "tsagaan-magnait-566f14",
+          "cover": "covers/tsagaan-magnait-566f14.jpg"
         },
         {
           "title": "ЧИПОЛЛИНОГИЙН ХӨГТЭЙ ЯВДАЛ - 1",
@@ -1304,8 +1304,8 @@
           "file": "books/ЧИПОЛЛИНОГИЙН_ХӨГТЭЙ_ЯВДАЛ_-_1.epub",
           "chars": 71502,
           "minutes": 95,
-          "id": "1",
-          "cover": "covers/1.jpg"
+          "id": "chipollinogiin-hogtei-yavdal-1-c8654e",
+          "cover": "covers/chipollinogiin-hogtei-yavdal-1-c8654e.jpg"
         },
         {
           "title": "ЧИПОЛЛИНОГИЙН ХӨГТЭЙ ЯВДАЛ - 2",
@@ -1313,8 +1313,8 @@
           "file": "books/ЧИПОЛЛИНОГИЙН_ХӨГТЭЙ_ЯВДАЛ_-_2.epub",
           "chars": 133247,
           "minutes": 178,
-          "id": "2",
-          "cover": "covers/2.jpg"
+          "id": "chipollinogiin-hogtei-yavdal-2-737110",
+          "cover": "covers/chipollinogiin-hogtei-yavdal-2-737110.jpg"
         },
         {
           "title": "ЧИЧЛҮҮР ХУТГА - 1",
@@ -1322,8 +1322,8 @@
           "file": "books/ЧИЧЛҮҮР_ХУТГА_-_1.epub",
           "chars": 218072,
           "minutes": 291,
-          "id": "1",
-          "cover": "covers/1.jpg"
+          "id": "chichluur-hutga-1-f7702b",
+          "cover": "covers/chichluur-hutga-1-f7702b.jpg"
         },
         {
           "title": "ШАЛЬДАР БУЛДАР НАС",
@@ -1331,8 +1331,8 @@
           "file": "books/ШАЛЬДАР_БУЛДАР_НАС.epub",
           "chars": 489231,
           "minutes": 652,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "shaldar-buldar-nas-b4482e",
+          "cover": "covers/shaldar-buldar-nas-b4482e.jpg"
         },
         {
           "title": "ШИДЭТ БААТАРЛАГ ҮЛГЭРҮҮД",
@@ -1340,8 +1340,8 @@
           "file": "books/ШИДЭТ_БААТАРЛАГ_ҮЛГЭРҮҮД.epub",
           "chars": 296522,
           "minutes": 395,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "shidet-baatarlag-ulgeruud-6077bc",
+          "cover": "covers/shidet-baatarlag-ulgeruud-6077bc.jpg"
         },
         {
           "title": "ЭНЭТХЭГ АРДЫН ҮЛГЭРҮҮД",
@@ -1349,8 +1349,8 @@
           "file": "books/ЭНЭТХЭГ_АРДЫН_ҮЛГЭРҮҮД.epub",
           "chars": 46783,
           "minutes": 62,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "enetheg-ardyn-ulgeruud-f3ca33",
+          "cover": "covers/enetheg-ardyn-ulgeruud-f3ca33.jpg"
         },
         {
           "title": "ЯМХ ОХИН",
@@ -1358,8 +1358,8 @@
           "file": "books/ЯМХ_ОХИН.epub",
           "chars": 24343,
           "minutes": 32,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "yamh-ohin-9715ec",
+          "cover": "covers/yamh-ohin-9715ec.jpg"
         },
         {
           "title": "ҮҮЛЭНХЭН",
@@ -1367,8 +1367,8 @@
           "file": "books/ҮҮЛЭНХЭН.epub",
           "chars": 4496,
           "minutes": 6,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "uulenhen-b0a237",
+          "cover": "covers/uulenhen-b0a237.jpg"
         },
         {
           "title": "ӨВӨӨГИЙН ӨГҮҮЛСЭН ТҮҮХ",
@@ -1376,8 +1376,8 @@
           "file": "books/ӨВӨӨГИЙН_ӨГҮҮЛСЭН_ТҮҮХ.epub",
           "chars": 96859,
           "minutes": 129,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "ovoogiin-oguulsen-tuuh-8621cc",
+          "cover": "covers/ovoogiin-oguulsen-tuuh-8621cc.jpg"
         },
         {
           "title": "ӨӨДӨСХӨНХҮҮ, ТҮҮНИЙ НӨХӨД",
@@ -1385,8 +1385,8 @@
           "file": "books/ӨӨДӨСХӨНХҮҮ_ТҮҮНИЙ_НӨХӨД.epub",
           "chars": 153856,
           "minutes": 205,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "oodoshonhuu-tuunii-nohod-f9034f",
+          "cover": "covers/oodoshonhuu-tuunii-nohod-f9034f.jpg"
         }
       ]
     },
@@ -1400,8 +1400,8 @@
           "file": "books/АЛМААСАН_ХУУРТАЙ_ХҮҮХЭН.epub",
           "chars": 36620,
           "minutes": 49,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "almaasan-huurtai-huuhen-69133b",
+          "cover": "covers/almaasan-huurtai-huuhen-69133b.jpg"
         },
         {
           "title": "АНЧ ХҮҮ",
@@ -1409,8 +1409,8 @@
           "file": "books/АНЧ_ХҮҮ.epub",
           "chars": 7738,
           "minutes": 10,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "anch-huu-6be78b",
+          "cover": "covers/anch-huu-6be78b.jpg"
         },
         {
           "title": "АРГА УХААНТ АМЬТДЫН ҮЛГЭР",
@@ -1418,8 +1418,8 @@
           "file": "books/АРГА_УХААНТ_АМЬТДЫН_ҮЛГЭР.epub",
           "chars": 50498,
           "minutes": 67,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "arga-uhaant-amtdyn-ulger-38b4ed",
+          "cover": "covers/arga-uhaant-amtdyn-ulger-38b4ed.jpg"
         },
         {
           "title": "АРГАЙ ДАРГАЙ ТҮГ",
@@ -1427,8 +1427,8 @@
           "file": "books/АРГАЙ_ДАРГАЙ_ТҮГ.epub",
           "chars": 37862,
           "minutes": 50,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "argai-dargai-tug-5061f0",
+          "cover": "covers/argai-dargai-tug-5061f0.jpg"
         },
         {
           "title": "БУЛАН ДЭРС",
@@ -1436,8 +1436,8 @@
           "file": "books/БУЛАН_ДЭРС.epub",
           "chars": 36218,
           "minutes": 48,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "bulan-ders-bfeb31",
+          "cover": "covers/bulan-ders-bfeb31.jpg"
         },
         {
           "title": "БӨӨ МӨРГӨЛИЙН ЯРУУ НАЙРАГ",
@@ -1445,8 +1445,8 @@
           "file": "books/БӨӨ_МӨРГӨЛИЙН_ЯРУУ_НАЙРАГ.epub",
           "chars": 93943,
           "minutes": 125,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "boo-morgoliin-yaruu-nairag-587ca8",
+          "cover": "covers/boo-morgoliin-yaruu-nairag-587ca8.jpg"
         },
         {
           "title": "ГАЛУУН ЦУВАА",
@@ -1454,8 +1454,8 @@
           "file": "books/ГАЛУУН_ЦУВАА.epub",
           "chars": 13941,
           "minutes": 19,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "galuun-tsuvaa-51a193",
+          "cover": "covers/galuun-tsuvaa-51a193.jpg"
         },
         {
           "title": "ДАЛАЙ ЭЭЖ",
@@ -1463,8 +1463,8 @@
           "file": "books/ДАЛАЙ_ЭЭЖ.epub",
           "chars": 12978,
           "minutes": 17,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "dalai-eej-0a9482",
+          "cover": "covers/dalai-eej-0a9482.jpg"
         },
         {
           "title": "ДАНДИНЫ ЗОХИСТ АЯЛГУУНЫ ТОЛИЙН МОНГОЛ ТАЙЛБАРЫН ТУХАЙ",
@@ -1472,8 +1472,8 @@
           "file": "books/ДАНДИНЫ_ЗОХИСТ_АЯЛГУУНЫ_ТОЛИЙН_МОНГОЛ_ТАЙЛБАРЫН_ТУХАЙ.epub",
           "chars": 14001,
           "minutes": 19,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "dandiny-zohist-ayalguuny-toliin-mongol-tailbaryn-d31769",
+          "cover": "covers/dandiny-zohist-ayalguuny-toliin-mongol-tailbaryn-d31769.jpg"
         },
         {
           "title": "ДУУ, ШҮЛЭГ",
@@ -1481,8 +1481,8 @@
           "file": "books/ДУУ_ШҮЛЭГ.epub",
           "chars": 39268,
           "minutes": 52,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "duu-shuleg-3c1e4d",
+          "cover": "covers/duu-shuleg-3c1e4d.jpg"
         },
         {
           "title": "ЕРӨӨЛҮҮД",
@@ -1490,8 +1490,8 @@
           "file": "books/ЕРӨӨЛҮҮД.epub",
           "chars": 47915,
           "minutes": 64,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "erooluud-ef295b",
+          "cover": "covers/erooluud-ef295b.jpg"
         },
         {
           "title": "ЗАЛБИРАЛ",
@@ -1499,8 +1499,8 @@
           "file": "books/ЗАЛБИРАЛ.epub",
           "chars": 23468,
           "minutes": 31,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "zalbiral-d21413",
+          "cover": "covers/zalbiral-d21413.jpg"
         },
         {
           "title": "КИРГИЗИЙН ЦОМОРЛОГ",
@@ -1508,8 +1508,8 @@
           "file": "books/КИРГИЗИЙН_ЦОМОРЛОГ.epub",
           "chars": 43466,
           "minutes": 58,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "kirgiziin-tsomorlog-d46c70",
+          "cover": "covers/kirgiziin-tsomorlog-d46c70.jpg"
         },
         {
           "title": "МОНГОЛ АРДЫН ШИЛДЭГ ДУУНУУД",
@@ -1517,8 +1517,8 @@
           "file": "books/МОНГОЛ_АРДЫН_ШИЛДЭГ_ДУУНУУД.epub",
           "chars": 41398,
           "minutes": 55,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "mongol-ardyn-shildeg-duunuud-e7c431",
+          "cover": "covers/mongol-ardyn-shildeg-duunuud-e7c431.jpg"
         },
         {
           "title": "САЙХАН БҮСГҮЙ",
@@ -1526,8 +1526,8 @@
           "file": "books/САЙХАН_БҮСГҮЙ.epub",
           "chars": 21778,
           "minutes": 29,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "saihan-busgui-e10434",
+          "cover": "covers/saihan-busgui-e10434.jpg"
         },
         {
           "title": "СЕРЁЖ СЭРЖ ХОЁР",
@@ -1535,8 +1535,8 @@
           "file": "books/СЕРЖ_СЭРЖ_ХОР.epub",
           "chars": 9653,
           "minutes": 13,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "serj-serj-hor-722d74",
+          "cover": "covers/serj-serj-hor-722d74.jpg"
         },
         {
           "title": "СЭТГЭЛД ТАТСАН СОЛОНГО",
@@ -1544,8 +1544,8 @@
           "file": "books/СЭТГЭЛД_ТАТСАН_СОЛОНГО.epub",
           "chars": 140362,
           "minutes": 187,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "setgeld-tatsan-solongo-382cb0",
+          "cover": "covers/setgeld-tatsan-solongo-382cb0.jpg"
         },
         {
           "title": "ТЭНГЭРЛЭГ ТУУЛЬС : ДИВААЖИН",
@@ -1553,8 +1553,8 @@
           "file": "books/ТЭНГЭРЛЭГ_ТУУЛЬС_ДИВААЖИН.epub",
           "chars": 219471,
           "minutes": 293,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "tengerleg-tuuls-divaajin-34ce5d",
+          "cover": "covers/tengerleg-tuuls-divaajin-34ce5d.jpg"
         },
         {
           "title": "ТҮҮВЭР ЗОХИОЛ",
@@ -1562,8 +1562,8 @@
           "file": "books/ТҮҮВЭР_ЗОХИОЛ.epub",
           "chars": 150224,
           "minutes": 200,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "tuuver-zohiol-f2f220",
+          "cover": "covers/tuuver-zohiol-f2f220.jpg"
         },
         {
           "title": "ТҮҮВЭР ЗОХИОЛ",
@@ -1571,8 +1571,8 @@
           "file": "books/ШИДЭТ_МОД.epub",
           "chars": 178533,
           "minutes": 238,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "shidet-mod-71b076",
+          "cover": "covers/shidet-mod-71b076.jpg"
         },
         {
           "title": "ХАЙАВАТЫН ДУУЛАЛ",
@@ -1580,8 +1580,8 @@
           "file": "books/ХАЙАВАТЫН_ДУУЛАЛ.epub",
           "chars": 129297,
           "minutes": 172,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "haiavatyn-duulal-a40f3d",
+          "cover": "covers/haiavatyn-duulal-a40f3d.jpg"
         },
         {
           "title": "ХАЛУУН АМЬСГАЛ",
@@ -1589,8 +1589,8 @@
           "file": "books/ХАЛУУН_АМЬСГАЛ.epub",
           "chars": 32012,
           "minutes": 43,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "haluun-amsgal-6d830c",
+          "cover": "covers/haluun-amsgal-6d830c.jpg"
         },
         {
           "title": "ХУЛГАЙЛАГДСАН НАР",
@@ -1598,8 +1598,8 @@
           "file": "books/ХУЛГАЙЛАГДСАН_НАР.epub",
           "chars": 19833,
           "minutes": 26,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "hulgailagdsan-nar-f6c858",
+          "cover": "covers/hulgailagdsan-nar-f6c858.jpg"
         },
         {
           "title": "ХУУЛЬЧ САНДАГИЙН ЗОХИОЛУУДЫН ТҮҮВЭР",
@@ -1607,8 +1607,8 @@
           "file": "books/ХУУЛЬЧ_САНДАГИЙН_ЗОХИОЛУУДЫН_ТҮҮВЭР.epub",
           "chars": 23321,
           "minutes": 31,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "huulch-sandagiin-zohioluudyn-tuuver-b86d11",
+          "cover": "covers/huulch-sandagiin-zohioluudyn-tuuver-b86d11.jpg"
         },
         {
           "title": "ХУУЛЬЧ САНДАГИЙН ШҮЛГҮҮД",
@@ -1616,8 +1616,8 @@
           "file": "books/ХУУЛЬЧ_САНДАГИЙН_ШҮЛГҮҮД.epub",
           "chars": 58710,
           "minutes": 78,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "huulch-sandagiin-shulguud-100491",
+          "cover": "covers/huulch-sandagiin-shulguud-100491.jpg"
         },
         {
           "title": "Хэн хэлнэ вэ?",
@@ -1625,8 +1625,8 @@
           "file": "books/ХЭН_ХЭЛНЭ_ВЭ.epub",
           "chars": 8577,
           "minutes": 11,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "hen-helne-ve-8be6f9",
+          "cover": "covers/hen-helne-ve-8be6f9.jpg"
         },
         {
           "title": "ШЕКСПИР - 1",
@@ -1634,8 +1634,8 @@
           "file": "books/ШЕКСПИР_-_1.epub",
           "chars": 247618,
           "minutes": 330,
-          "id": "1",
-          "cover": "covers/1.jpg"
+          "id": "shekspir-1-c6c8b9",
+          "cover": "covers/shekspir-1-c6c8b9.jpg"
         },
         {
           "title": "ШҮЛГИЙН ТҮҮВЭР",
@@ -1643,8 +1643,8 @@
           "file": "books/ШҮЛГИЙН_ТҮҮВЭР.epub",
           "chars": 21253,
           "minutes": 28,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "shulgiin-tuuver-7735b8",
+          "cover": "covers/shulgiin-tuuver-7735b8.jpg"
         },
         {
           "title": "ШҮЛГҮҮД",
@@ -1652,8 +1652,8 @@
           "file": "books/ШҮЛГҮҮД.epub",
           "chars": 66571,
           "minutes": 89,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "shulguud-6794c3",
+          "cover": "covers/shulguud-6794c3.jpg"
         },
         {
           "title": "ШҮЛЭГ, НАЙРАГЛАЛ",
@@ -1661,8 +1661,8 @@
           "file": "books/ШҮЛЭГ_НАЙРАГЛАЛ.epub",
           "chars": 114999,
           "minutes": 153,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "shuleg-nairaglal-73e978",
+          "cover": "covers/shuleg-nairaglal-73e978.jpg"
         },
         {
           "title": "ШҮҮГ, ШААГ, ШҮЖИГ, ШАЖИГ",
@@ -1670,8 +1670,8 @@
           "file": "books/ШҮҮГ_ШААГ_ШҮЖИГ_ШАЖИГ.epub",
           "chars": 7220,
           "minutes": 10,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "shuug-shaag-shujig-shajig-61abbb",
+          "cover": "covers/shuug-shaag-shujig-shajig-61abbb.jpg"
         },
         {
           "title": "ЯНАГИЙН ДУУЛАЛ",
@@ -1679,8 +1679,8 @@
           "file": "books/ЯНАГИЙН_ДУУЛАЛ.epub",
           "chars": 8070,
           "minutes": 11,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "yanagiin-duulal-acea20",
+          "cover": "covers/yanagiin-duulal-acea20.jpg"
         },
         {
           "title": "ЯРУУ НАЙРГИЙГ ТӨРӨЛ ЗҮЙЛЭЭР АНГИЛАХ НЬ",
@@ -1688,8 +1688,8 @@
           "file": "books/ЯРУУ_НАЙРГИЙГ_ТӨРӨЛ_ЗҮЙЛЭЭР_АНГИЛАХ_НЬ.epub",
           "chars": 164382,
           "minutes": 219,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "yaruu-nairgiig-torol-zuileer-angilah-n-c9dbdb",
+          "cover": "covers/yaruu-nairgiig-torol-zuileer-angilah-n-c9dbdb.jpg"
         },
         {
           "title": "Яруу найргийн уран санаа",
@@ -1697,8 +1697,8 @@
           "file": "books/Яруу_найргийн_уран_санаа.epub",
           "chars": 312594,
           "minutes": 417,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "yaruu-nairgiin-uran-sanaa-aa3009",
+          "cover": "covers/yaruu-nairgiin-uran-sanaa-aa3009.jpg"
         },
         {
           "title": "ҮҮЛЭН ЗАРДАС",
@@ -1706,8 +1706,8 @@
           "file": "books/ҮҮЛЭН_ЗАРДАС.epub",
           "chars": 25019,
           "minutes": 33,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "uulen-zardas-29dcaf",
+          "cover": "covers/uulen-zardas-29dcaf.jpg"
         },
         {
           "title": "ӨРГӨЛИЙН ДУУЛАЛ",
@@ -1715,8 +1715,8 @@
           "file": "books/ӨРГӨЛИЙН_ДУУЛАЛ.epub",
           "chars": 107038,
           "minutes": 143,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "orgoliin-duulal-5d4848",
+          "cover": "covers/orgoliin-duulal-5d4848.jpg"
         }
       ]
     },
@@ -1730,8 +1730,8 @@
           "file": "books/БУРХАНД_ИЛГЭЭСЭН_ЗАХИДАЛ.epub",
           "chars": 11132,
           "minutes": 15,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "burhand-ilgeesen-zahidal-b912fc",
+          "cover": "covers/burhand-ilgeesen-zahidal-b912fc.jpg"
         },
         {
           "title": "ГАРГАНТЮА БА ПАНТАГРЮЭЛЬ - 1",
@@ -1739,8 +1739,8 @@
           "file": "books/ГАРГАНТЮА_БА_ПАНТАГРЮЭЛЬ_-_1.epub",
           "chars": 106204,
           "minutes": 142,
-          "id": "1",
-          "cover": "covers/1.jpg"
+          "id": "gargantyua-ba-pantagryuel-1-6ef280",
+          "cover": "covers/gargantyua-ba-pantagryuel-1-6ef280.jpg"
         },
         {
           "title": "ГАРГАНТЮА БА ПАНТАГРЮЭЛЬ - 2",
@@ -1748,8 +1748,8 @@
           "file": "books/ГАРГАНТЮА_БА_ПАНТАГРЮЭЛЬ_-_2.epub",
           "chars": 205181,
           "minutes": 274,
-          "id": "2",
-          "cover": "covers/2.jpg"
+          "id": "gargantyua-ba-pantagryuel-2-7527e3",
+          "cover": "covers/gargantyua-ba-pantagryuel-2-7527e3.jpg"
         },
         {
           "title": "ГОМДЛЫН ДЭВТЭР",
@@ -1757,8 +1757,8 @@
           "file": "books/ГОМДЛЫН_ДЭВТЭР.epub",
           "chars": 3319,
           "minutes": 4,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "gomdlyn-devter-9a1896",
+          "cover": "covers/gomdlyn-devter-9a1896.jpg"
         },
         {
           "title": "ГУРВУУЛ НЭГ ЗАВИАР (нохойг эс оролцуулан)",
@@ -1766,8 +1766,8 @@
           "file": "books/ГУРВУУЛ_НЭГ_ЗАВИАР_нохойг_эс_оролцуулан.epub",
           "chars": 360285,
           "minutes": 480,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "gurvuul-neg-zaviar-nohoig-es-oroltsuulan-b9acb1",
+          "cover": "covers/gurvuul-neg-zaviar-nohoig-es-oroltsuulan-b9acb1.jpg"
         },
         {
           "title": "ГЭРЛЭХ ГЭСЭН НЬ",
@@ -1775,8 +1775,8 @@
           "file": "books/ГЭРЛЭХ_ГЭСЭН_НЬ.epub",
           "chars": 91631,
           "minutes": 122,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "gerleh-gesen-n-e46ba6",
+          "cover": "covers/gerleh-gesen-n-e46ba6.jpg"
         },
         {
           "title": "ЗААВАРЛАГЧ ИРЭХ ГЭНЭ",
@@ -1784,8 +1784,8 @@
           "file": "books/ЗААВАРЛАГЧ_ИРЭХ_ГЭНЭ.epub",
           "chars": 23441,
           "minutes": 31,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "zaavarlagch-ireh-gene-02f9cc",
+          "cover": "covers/zaavarlagch-ireh-gene-02f9cc.jpg"
         },
         {
           "title": "ИХ ҮНЭТЭЙ ЮМ БАЙНА ШҮҮ",
@@ -1793,8 +1793,8 @@
           "file": "books/ИХ_ҮНЭТЭЙ_ЮМ_БАЙНА_ШҮҮ.epub",
           "chars": 9331,
           "minutes": 12,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "ih-unetei-yum-baina-shuu-69cb13",
+          "cover": "covers/ih-unetei-yum-baina-shuu-69cb13.jpg"
         },
         {
           "title": "МАЛГАЙТАЙ ЧОНО",
@@ -1802,8 +1802,8 @@
           "file": "books/МАЛГАЙТАЙ_ЧОНО.epub",
           "chars": 49680,
           "minutes": 66,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "malgaitai-chono-f6f6c4",
+          "cover": "covers/malgaitai-chono-f6f6c4.jpg"
         },
         {
           "title": "МОНГОЛ АРДЫН ШОГ ХОШИН ҮЛГЭР",
@@ -1811,8 +1811,8 @@
           "file": "books/МОНГОЛ_АРДЫН_ШОГ_ХОШИН_ҮЛГЭР.epub",
           "chars": 273367,
           "minutes": 364,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "mongol-ardyn-shog-hoshin-ulger-dbe1b0",
+          "cover": "covers/mongol-ardyn-shog-hoshin-ulger-dbe1b0.jpg"
         },
         {
           "title": "МУХАР ГУДАМЖИНД",
@@ -1820,8 +1820,8 @@
           "file": "books/МУХАР_ГУДАМЖИНД.epub",
           "chars": 6729,
           "minutes": 9,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "muhar-gudamjind-9e8a61",
+          "cover": "covers/muhar-gudamjind-9e8a61.jpg"
         },
         {
           "title": "НАРГИАНТАЙ ӨГҮҮЛЛЭГҮҮД",
@@ -1829,8 +1829,8 @@
           "file": "books/НАРГИАНТАЙ_ӨГҮҮЛЛЭГҮҮД.epub",
           "chars": 36783,
           "minutes": 49,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "nargiantai-oguulleguud-b4e22b",
+          "cover": "covers/nargiantai-oguulleguud-b4e22b.jpg"
         },
         {
           "title": "НАРИЙХАН БӨГӨӨД САЙХАН",
@@ -1838,8 +1838,8 @@
           "file": "books/НАРИЙХАН_БӨГӨӨД_САЙХАН.epub",
           "chars": 14468,
           "minutes": 19,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "nariihan-bogood-saihan-0de013",
+          "cover": "covers/nariihan-bogood-saihan-0de013.jpg"
         },
         {
           "title": "НЭГ БҮДРЭХЭЭРЭЭ ДОЛОО БҮДЭРДЭГ",
@@ -1847,8 +1847,8 @@
           "file": "books/НЭГ_БҮДРЭХЭЭРЭЭ_ДОЛОО_БҮДЭРДЭГ.epub",
           "chars": 7513,
           "minutes": 10,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "neg-budreheeree-doloo-buderdeg-971687",
+          "cover": "covers/neg-budreheeree-doloo-buderdeg-971687.jpg"
         },
         {
           "title": "ТАЛБАЙН ЦАГ",
@@ -1856,8 +1856,8 @@
           "file": "books/ТАЛБАЙН_ЦАГ.epub",
           "chars": 16500,
           "minutes": 22,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "talbain-tsag-ad1bbd",
+          "cover": "covers/talbain-tsag-ad1bbd.jpg"
         },
         {
           "title": "ТҮШМЭЛ ЖАМБААГИЙН ХӨГТЭЙ ЯВДАЛ",
@@ -1865,8 +1865,8 @@
           "file": "books/ТҮШМЭЛ_ЖАМБААГИЙН_ХӨГТЭЙ_ЯВДАЛ.epub",
           "chars": 46437,
           "minutes": 62,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "tushmel-jambaagiin-hogtei-yavdal-4c48c9",
+          "cover": "covers/tushmel-jambaagiin-hogtei-yavdal-4c48c9.jpg"
         },
         {
           "title": "ТҮҮВЭР ЗОХИОЛ",
@@ -1874,8 +1874,8 @@
           "file": "books/ТҮҮВЭР_ЗОХИОЛ.epub",
           "chars": 150224,
           "minutes": 200,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "tuuver-zohiol-f2f220",
+          "cover": "covers/tuuver-zohiol-f2f220.jpg"
         },
         {
           "title": "ТҮҮВЭР ЗОХИОЛ",
@@ -1883,8 +1883,8 @@
           "file": "books/ШИДЭТ_МОД.epub",
           "chars": 178533,
           "minutes": 238,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "shidet-mod-71b076",
+          "cover": "covers/shidet-mod-71b076.jpg"
         },
         {
           "title": "ТӨРӨЛХ НУТАГ МИНЬ ДЭГЖИН ДЭЭШИЛТҮГЭЙ!",
@@ -1892,8 +1892,8 @@
           "file": "books/ТӨРӨЛХ_НУТАГ_МИНЬ_ДЭГЖИН_ДЭЭШИЛТҮГЭЙ.epub",
           "chars": 15873,
           "minutes": 21,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "torolh-nutag-min-degjin-deeshiltugei-d42cf3",
+          "cover": "covers/torolh-nutag-min-degjin-deeshiltugei-d42cf3.jpg"
         },
         {
           "title": "УНШДАГ БОЛСОН НЬ",
@@ -1901,8 +1901,8 @@
           "file": "books/УНШДАГ_БОЛСОН_НЬ.epub",
           "chars": 3731,
           "minutes": 5,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "unshdag-bolson-n-a0c7a8",
+          "cover": "covers/unshdag-bolson-n-a0c7a8.jpg"
         },
         {
           "title": "УУЛИНШПИГЕЛИЙН ДОМОГ - 1",
@@ -1910,8 +1910,8 @@
           "file": "books/УУЛИНШПИГЕЛИЙН_ДОМОГ_-_1.epub",
           "chars": 353990,
           "minutes": 472,
-          "id": "1",
-          "cover": "covers/1.jpg"
+          "id": "uulinshpigeliin-domog-1-a64a4e",
+          "cover": "covers/uulinshpigeliin-domog-1-a64a4e.jpg"
         },
         {
           "title": "УУЛИНШПИГЕЛИЙН ДОМОГ - 2",
@@ -1919,8 +1919,8 @@
           "file": "books/УУЛИНШПИГЕЛИЙН_ДОМОГ_-_2.epub",
           "chars": 100575,
           "minutes": 134,
-          "id": "2",
-          "cover": "covers/2.jpg"
+          "id": "uulinshpigeliin-domog-2-b6c2a4",
+          "cover": "covers/uulinshpigeliin-domog-2-b6c2a4.jpg"
         },
         {
           "title": "УУЛИНШПИГЕЛИЙН ДОМОГ - 3",
@@ -1928,8 +1928,8 @@
           "file": "books/УУЛИНШПИГЕЛИЙН_ДОМОГ_-_3.epub",
           "chars": 272984,
           "minutes": 364,
-          "id": "3",
-          "cover": "covers/3.jpg"
+          "id": "uulinshpigeliin-domog-3-8f2c3e",
+          "cover": "covers/uulinshpigeliin-domog-3-8f2c3e.jpg"
         },
         {
           "title": "ХЭРЭВ БИ ЭМЭГТЭЙ БАЙСАН САН БОЛ ДОО",
@@ -1937,8 +1937,8 @@
           "file": "books/ХЭРЭВ_БИ_ЭМЭГТЭЙ_БАЙСАН_САН_БОЛ_ДОО.epub",
           "chars": 9882,
           "minutes": 13,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "herev-bi-emegtei-baisan-san-bol-doo-3d1411",
+          "cover": "covers/herev-bi-emegtei-baisan-san-bol-doo-3d1411.jpg"
         },
         {
           "title": "ХҮҮХДИЙГ БИТГИЙ УЙЛУУЛ!",
@@ -1946,8 +1946,8 @@
           "file": "books/ХҮҮХДИЙГ_БИТГИЙ_УЙЛУУЛ.epub",
           "chars": 11328,
           "minutes": 15,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "huuhdiig-bitgii-uiluul-71cdd1",
+          "cover": "covers/huuhdiig-bitgii-uiluul-71cdd1.jpg"
         },
         {
           "title": "ЦАГААН ТОЛГОЙН ЭХНИЙ ҮСЭГ",
@@ -1955,8 +1955,8 @@
           "file": "books/ЦАГААН_ТОЛГОЙН_ЭХНИЙ_ҮСЭГ.epub",
           "chars": 9245,
           "minutes": 12,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "tsagaan-tolgoin-ehnii-useg-e7ce7c",
+          "cover": "covers/tsagaan-tolgoin-ehnii-useg-e7ce7c.jpg"
         },
         {
           "title": "ЦӨМӨӨРӨӨ Л БҮТЭЭН БОСГОГЧИД",
@@ -1964,8 +1964,8 @@
           "file": "books/ЦӨМӨӨРӨӨ_Л_БҮТЭЭН_БОСГОГЧИД.epub",
           "chars": 12084,
           "minutes": 16,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "tsomooroo-l-buteen-bosgogchid-8cc618",
+          "cover": "covers/tsomooroo-l-buteen-bosgogchid-8cc618.jpg"
         },
         {
           "title": "ШЕРМЕНДИ ХЭЗЭЭ ТӨРӨӨ ВЭ?",
@@ -1973,8 +1973,8 @@
           "file": "books/ШЕРМЕНДИ_ХЭЗЭЭ_ТӨРӨӨ_ВЭ.epub",
           "chars": 10123,
           "minutes": 13,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "shermendi-hezee-toroo-ve-f83331",
+          "cover": "covers/shermendi-hezee-toroo-ve-f83331.jpg"
         },
         {
           "title": "ШИНЭ ТОГОО ТАВИХАД БОЛСОН ЦАЙЛЛАГА",
@@ -1982,8 +1982,8 @@
           "file": "books/ШИНЭ_ТОГОО_ТАВИХАД_БОЛСОН_ЦАЙЛЛАГА.epub",
           "chars": 9796,
           "minutes": 13,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "shine-togoo-tavihad-bolson-tsaillaga-69639b",
+          "cover": "covers/shine-togoo-tavihad-bolson-tsaillaga-69639b.jpg"
         },
         {
           "title": "ЭНЭ НАД ПАДГҮЙ",
@@ -1991,8 +1991,8 @@
           "file": "books/ЭНЭ_НАД_ПАДГҮЙ.epub",
           "chars": 7371,
           "minutes": 10,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "ene-nad-padgui-5c83d4",
+          "cover": "covers/ene-nad-padgui-5c83d4.jpg"
         },
         {
           "title": "ЭНЭ ЧИНЬ ХААНАХЫН ЮМ БЭ?",
@@ -2000,8 +2000,8 @@
           "file": "books/ЭНЭ_ЧИНЬ_ХААНАХЫН_ЮМ_БЭ.epub",
           "chars": 12807,
           "minutes": 17,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "ene-chin-haanahyn-yum-be-a7d929",
+          "cover": "covers/ene-chin-haanahyn-yum-be-a7d929.jpg"
         },
         {
           "title": "ЭЭЖ ЭЭ!",
@@ -2009,8 +2009,8 @@
           "file": "books/ЭЭЖ_ЭЭ.epub",
           "chars": 16285,
           "minutes": 22,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "eej-ee-3f85c6",
+          "cover": "covers/eej-ee-3f85c6.jpg"
         }
       ]
     },
@@ -2024,8 +2024,8 @@
           "file": "books/КОН-ТИКИ_САЛААР.epub",
           "chars": 484208,
           "minutes": 646,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "kon-tiki-salaar-4727d9",
+          "cover": "covers/kon-tiki-salaar-4727d9.jpg"
         },
         {
           "title": "АЛСЫГ ЗОРЬСОН АЛТАН ЗАГАС",
@@ -2033,8 +2033,8 @@
           "file": "books/АЛСЫГ_ЗОРЬСОН_АЛТАН_ЗАГАС.epub",
           "chars": 53607,
           "minutes": 71,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "alsyg-zorson-altan-zagas-e94ef3",
+          "cover": "covers/alsyg-zorson-altan-zagas-e94ef3.jpg"
         },
         {
           "title": "АМЬД ЯВАХЫН ХҮСЛЭН",
@@ -2042,8 +2042,8 @@
           "file": "books/АМЬД_ЯВАХЫН_ХҮСЛЭН.epub",
           "chars": 41241,
           "minutes": 55,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "amd-yavahyn-huslen-98714d",
+          "cover": "covers/amd-yavahyn-huslen-98714d.jpg"
         },
         {
           "title": "АПЕННИНЫН УУЛНААС АНДЫН НУРУУ ХҮРТЭЛ",
@@ -2051,8 +2051,8 @@
           "file": "books/АПЕННИНЫН_УУЛНААС_АНДЫН_НУРУУ_ХҮРТЭЛ.epub",
           "chars": 7082,
           "minutes": 9,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "apenninyn-uulnaas-andyn-nuruu-hurtel-c62cec",
+          "cover": "covers/apenninyn-uulnaas-andyn-nuruu-hurtel-c62cec.jpg"
         },
         {
           "title": "БИНГО",
@@ -2060,8 +2060,8 @@
           "file": "books/БИНГО.epub",
           "chars": 32769,
           "minutes": 44,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "bingo-2dff2b",
+          "cover": "covers/bingo-2dff2b.jpg"
         },
         {
           "title": "БУУРАЛ АНЧНЫ ТЭМДЭГЛЭЛ",
@@ -2069,8 +2069,8 @@
           "file": "books/БУУРАЛ_АНЧНЫ_ТЭМДЭГЛЭЛ.epub",
           "chars": 234568,
           "minutes": 313,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "buural-anchny-temdeglel-10f4b1",
+          "cover": "covers/buural-anchny-temdeglel-10f4b1.jpg"
         },
         {
           "title": "ГАЙХАМШИГТ МОНГОЛ МОРЬ",
@@ -2078,8 +2078,8 @@
           "file": "books/ГАЙХАМШИГТ_МОНГОЛ_МОРЬ.epub",
           "chars": 242984,
           "minutes": 324,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "gaihamshigt-mongol-mor-3e86b4",
+          "cover": "covers/gaihamshigt-mongol-mor-3e86b4.jpg"
         },
         {
           "title": "ГАЛЫН ТӨЛӨӨ ТЭМЦЭЛ",
@@ -2087,8 +2087,8 @@
           "file": "books/ГАЛЫН_ТӨЛӨӨ_ТЭМЦЭЛ.epub",
           "chars": 335007,
           "minutes": 447,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "galyn-toloo-temtsel-5486de",
+          "cover": "covers/galyn-toloo-temtsel-5486de.jpg"
         },
         {
           "title": "ГАНС ЭФРАЛЛЬД УЧИРСАН АДАЛ ЯВДАЛ",
@@ -2096,8 +2096,8 @@
           "file": "books/ГАНС_ЭФРАЛЛЬД_УЧИРСАН_АДАЛ_ЯВДАЛ.epub",
           "chars": 92045,
           "minutes": 123,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "gans-efralld-uchirsan-adal-yavdal-a49fd1",
+          "cover": "covers/gans-efralld-uchirsan-adal-yavdal-a49fd1.jpg"
         },
         {
           "title": "ГАНЦ ДАЙЧИН ГАНЦААРДАХГҮЙ - 3",
@@ -2105,8 +2105,8 @@
           "file": "books/ГАНЦ_ДАЙЧИН_ГАНЦААРДАХГҮЙ_-_3.epub",
           "chars": 368490,
           "minutes": 491,
-          "id": "3",
-          "cover": "covers/3.jpg"
+          "id": "gants-daichin-gantsaardahgui-3-c907d3",
+          "cover": "covers/gants-daichin-gantsaardahgui-3-c907d3.jpg"
         },
         {
           "title": "ГҮЗЭЭЛЗГЭНЭ ӨНГӨТ БЯЦХАН ЦОНХ",
@@ -2114,8 +2114,8 @@
           "file": "books/ГҮЗЭЭЛЗГЭНЭ_ӨНГӨТ_БЯЦХАН_ЦОНХ.epub",
           "chars": 28696,
           "minutes": 38,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "guzeelzgene-ongot-byatshan-tsonh-fc44ef",
+          "cover": "covers/guzeelzgene-ongot-byatshan-tsonh-fc44ef.jpg"
         },
         {
           "title": "ДОКТОР МЕКАНИКУС ТҮҮНИЙ НОХОЙ АЛЬМА - 1",
@@ -2123,8 +2123,8 @@
           "file": "books/ДОКТОР_МЕКАНИКУС_ТҮҮНИЙ_НОХОЙ_АЛЬМА_-_1.epub",
           "chars": 199050,
           "minutes": 265,
-          "id": "1",
-          "cover": "covers/1.jpg"
+          "id": "doktor-mekanikus-tuunii-nohoi-alma-1-eaee06",
+          "cover": "covers/doktor-mekanikus-tuunii-nohoi-alma-1-eaee06.jpg"
         },
         {
           "title": "ДОКТОР МЕКАНИКУС ТҮҮНИЙ НОХОЙ АЛЬМА - 2",
@@ -2132,8 +2132,8 @@
           "file": "books/ДОКТОР_МЕКАНИКУС_ТҮҮНИЙ_НОХОЙ_АЛЬМА_-_2.epub",
           "chars": 162245,
           "minutes": 216,
-          "id": "2",
-          "cover": "covers/2.jpg"
+          "id": "doktor-mekanikus-tuunii-nohoi-alma-2-b41428",
+          "cover": "covers/doktor-mekanikus-tuunii-nohoi-alma-2-b41428.jpg"
         },
         {
           "title": "ЕР БИШИЙН АЯЛАЛ",
@@ -2141,8 +2141,8 @@
           "file": "books/ЕР_БИШИЙН_АЯЛАЛ.epub",
           "chars": 65332,
           "minutes": 87,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "er-bishiin-ayalal-11f335",
+          "cover": "covers/er-bishiin-ayalal-11f335.jpg"
         },
         {
           "title": "ЖОНОН, ГУЙЛГАЧИН ХОЁР",
@@ -2150,8 +2150,8 @@
           "file": "books/ЖОНОН_ГУЙЛГАЧИН_ХОР.epub",
           "chars": 387409,
           "minutes": 517,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "jonon-guilgachin-hor-356dcf",
+          "cover": "covers/jonon-guilgachin-hor-356dcf.jpg"
         },
         {
           "title": "ЗАЙЛШГҮЙ ШИЙТГЭЛ-17 (АГААРЫН ТАГНУУЛ)",
@@ -2159,8 +2159,8 @@
           "file": "books/ЗАЙЛШГҮЙ_ШИЙТГЭЛ-17_АГААРЫН_ТАГНУУЛ.epub",
           "chars": 24854,
           "minutes": 33,
-          "id": "17",
-          "cover": "covers/17.jpg"
+          "id": "zailshgui-shiitgel-17-agaaryn-tagnuul-16ba24",
+          "cover": "covers/zailshgui-shiitgel-17-agaaryn-tagnuul-16ba24.jpg"
         },
         {
           "title": "ЗАЙЛШГҮЙ ШИЙТГЭЛ-18 (ДАВЖ ЗААЛДАХ ЭРХГҮЙ)",
@@ -2168,8 +2168,8 @@
           "file": "books/ЗАЙЛШГҮЙ_ШИЙТГЭЛ-18_ДАВЖ_ЗААЛДАХ_ЭРХГҮЙ.epub",
           "chars": 34045,
           "minutes": 45,
-          "id": "18",
-          "cover": "covers/18.jpg"
+          "id": "zailshgui-shiitgel-18-davj-zaaldah-erhgui-f2d9d3",
+          "cover": "covers/zailshgui-shiitgel-18-davj-zaaldah-erhgui-f2d9d3.jpg"
         },
         {
           "title": "ЗУРГААН НАПОЛЕОН",
@@ -2177,8 +2177,8 @@
           "file": "books/ЗУРГААН_НАПОЛЕОН.epub",
           "chars": 33290,
           "minutes": 44,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "zurgaan-napoleon-4a0fe3",
+          "cover": "covers/zurgaan-napoleon-4a0fe3.jpg"
         },
         {
           "title": "ЗУУН ЖИЛИЙН ГАНЦААРДАЛ - 2",
@@ -2186,8 +2186,8 @@
           "file": "books/ЗУУН_ЖИЛИЙН_ГАНЦААРДАЛ_-_2.epub",
           "chars": 220925,
           "minutes": 295,
-          "id": "2",
-          "cover": "covers/2.jpg"
+          "id": "zuun-jiliin-gantsaardal-2-b8c3ae",
+          "cover": "covers/zuun-jiliin-gantsaardal-2-b8c3ae.jpg"
         },
         {
           "title": "КАЛЛИСТО ГАРАГ - 2",
@@ -2195,8 +2195,8 @@
           "file": "books/КАЛЛИСТО_ГАРАГ_-_2.epub",
           "chars": 219877,
           "minutes": 293,
-          "id": "2",
-          "cover": "covers/2.jpg"
+          "id": "kallisto-garag-2-cd68e1",
+          "cover": "covers/kallisto-garag-2-cd68e1.jpg"
         },
         {
           "title": "КВЕНТИН ДОРВАРДЫН АЯН ЗАМЫН УЧРАЛ - 1",
@@ -2204,8 +2204,8 @@
           "file": "books/КВЕНТИН_ДОРВАРДЫН_АЯН_ЗАМЫН_УЧРАЛ_-_1.epub",
           "chars": 255212,
           "minutes": 340,
-          "id": "1",
-          "cover": "covers/1.jpg"
+          "id": "kventin-dorvardyn-ayan-zamyn-uchral-1-970a2d",
+          "cover": "covers/kventin-dorvardyn-ayan-zamyn-uchral-1-970a2d.jpg"
         },
         {
           "title": "КВЕНТИН ДОРВАРДЫН АЯН ЗАМЫН УЧРАЛ - 2",
@@ -2213,8 +2213,8 @@
           "file": "books/КВЕНТИН_ДОРВАРДЫН_АЯН_ЗАМЫН_УЧРАЛ_-_2.epub",
           "chars": 267897,
           "minutes": 357,
-          "id": "2",
-          "cover": "covers/2.jpg"
+          "id": "kventin-dorvardyn-ayan-zamyn-uchral-2-f6821d",
+          "cover": "covers/kventin-dorvardyn-ayan-zamyn-uchral-2-f6821d.jpg"
         },
         {
           "title": "КВЕНТИН ДОРВАРДЫН АЯН ЗАМЫН УЧРАЛ - 4",
@@ -2222,8 +2222,8 @@
           "file": "books/КВЕНТИН_ДОРВАРДЫН_АЯН_ЗАМЫН_УЧРАЛ_-_4.epub",
           "chars": 278066,
           "minutes": 371,
-          "id": "4",
-          "cover": "covers/4.jpg"
+          "id": "kventin-dorvardyn-ayan-zamyn-uchral-4-003d69",
+          "cover": "covers/kventin-dorvardyn-ayan-zamyn-uchral-4-003d69.jpg"
         },
         {
           "title": "КРИГ ГЭДЭГ КУТНАЙН УГАЛЗЫН ҮЛГЭР",
@@ -2231,8 +2231,8 @@
           "file": "books/КРИГ_ГЭДЭГ_КУТНАЙН_УГАЛЗЫН_ҮЛГЭР.epub",
           "chars": 67419,
           "minutes": 90,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "krig-gedeg-kutnain-ugalzyn-ulger-fd163a",
+          "cover": "covers/krig-gedeg-kutnain-ugalzyn-ulger-fd163a.jpg"
         },
         {
           "title": "ЛУУ",
@@ -2240,8 +2240,8 @@
           "file": "books/ЛУУ.epub",
           "chars": 19727,
           "minutes": 26,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "luu-70f2aa",
+          "cover": "covers/luu-70f2aa.jpg"
         },
         {
           "title": "МАНГИС",
@@ -2249,8 +2249,8 @@
           "file": "books/МАНГИС.epub",
           "chars": 14070,
           "minutes": 19,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "mangis-22ba65",
+          "cover": "covers/mangis-22ba65.jpg"
         },
         {
           "title": "МАШ НУУЦ - 3",
@@ -2258,8 +2258,8 @@
           "file": "books/МАШ_НУУЦ_-_3.epub",
           "chars": 223613,
           "minutes": 298,
-          "id": "3",
-          "cover": "covers/3.jpg"
+          "id": "mash-nuuts-3-6caeea",
+          "cover": "covers/mash-nuuts-3-6caeea.jpg"
         },
         {
           "title": "МОНТЕ-КРИСТО ГҮН 4",
@@ -2267,8 +2267,8 @@
           "file": "books/МОНТЕ-КРИСТО_ГҮН_4.epub",
           "chars": 418278,
           "minutes": 558,
-          "id": "4",
-          "cover": "covers/4.jpg"
+          "id": "monte-kristo-gun-4-85b10b",
+          "cover": "covers/monte-kristo-gun-4-85b10b.jpg"
         },
         {
           "title": "МӨСНИЙ НОМ",
@@ -2276,8 +2276,8 @@
           "file": "books/МӨСНИЙ_НОМ.epub",
           "chars": 562727,
           "minutes": 750,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "mosnii-nom-2bbda2",
+          "cover": "covers/mosnii-nom-2bbda2.jpg"
         },
         {
           "title": "Мөнхийн талх",
@@ -2285,8 +2285,8 @@
           "file": "books/МӨНХИЙН_ТАЛХ.epub",
           "chars": 112174,
           "minutes": 150,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "monhiin-talh-bef46d",
+          "cover": "covers/monhiin-talh-bef46d.jpg"
         },
         {
           "title": "НАЙЗУУД",
@@ -2294,8 +2294,8 @@
           "file": "books/НАЙЗУУД.epub",
           "chars": 36555,
           "minutes": 49,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "naizuud-9ff770",
+          "cover": "covers/naizuud-9ff770.jpg"
         },
         {
           "title": "НАРАН ХОТ",
@@ -2303,8 +2303,8 @@
           "file": "books/НАРАН_ХОТ.epub",
           "chars": 265492,
           "minutes": 354,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "naran-hot-b63437",
+          "cover": "covers/naran-hot-b63437.jpg"
         },
         {
           "title": "НУУЦ АЛБАДЫН НУУЦААС - 1",
@@ -2312,8 +2312,8 @@
           "file": "books/НУУЦ_АЛБАДЫН_НУУЦААС_-_1.epub",
           "chars": 162665,
           "minutes": 217,
-          "id": "1",
-          "cover": "covers/1.jpg"
+          "id": "nuuts-albadyn-nuutsaas-1-7c53fb",
+          "cover": "covers/nuuts-albadyn-nuutsaas-1-7c53fb.jpg"
         },
         {
           "title": "НУУЦАТ АРАЛ - 1 : АЮУЛД УЧРАГСАД",
@@ -2321,8 +2321,8 @@
           "file": "books/НУУЦАТ_АРАЛ_-_1_АЮУЛД_УЧРАГСАД.epub",
           "chars": 319040,
           "minutes": 425,
-          "id": "1",
-          "cover": "covers/1.jpg"
+          "id": "nuutsat-aral-1-ayuuld-uchragsad-00b294",
+          "cover": "covers/nuutsat-aral-1-ayuuld-uchragsad-00b294.jpg"
         },
         {
           "title": "НУУЦАТ АРАЛ - 3 : АРЛЫН НУУЦ",
@@ -2330,8 +2330,8 @@
           "file": "books/НУУЦАТ_АРАЛ_-_3_АРЛЫН_НУУЦ.epub",
           "chars": 343791,
           "minutes": 458,
-          "id": "3",
-          "cover": "covers/3.jpg"
+          "id": "nuutsat-aral-3-arlyn-nuuts-e191e7",
+          "cover": "covers/nuutsat-aral-3-arlyn-nuuts-e191e7.jpg"
         },
         {
           "title": "НӨХӨӨСТЭЙ СЭХЭЭРЭЛТ",
@@ -2339,8 +2339,8 @@
           "file": "books/НӨХӨӨСТЭЙ_СЭХЭЭРЭЛТ.epub",
           "chars": 17422,
           "minutes": 23,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "nohoostei-seheerelt-9dde9c",
+          "cover": "covers/nohoostei-seheerelt-9dde9c.jpg"
         },
         {
           "title": "ПИНОККИОГИЙН АДАЛ ЯВДАЛ ХЭМЭЭХ ЖААХАН МОДОН ХҮНИЙ ҮЛГЭР",
@@ -2348,8 +2348,8 @@
           "file": "books/ПИНОККИОГИЙН_АДАЛ_ЯВДАЛ_ХЭМЭЭХ_ЖААХАН_МОДОН_ХҮНИЙ_ҮЛГЭР.epub",
           "chars": 191462,
           "minutes": 255,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "pinokkiogiin-adal-yavdal-hemeeh-jaahan-modon-hun-1ec306",
+          "cover": "covers/pinokkiogiin-adal-yavdal-hemeeh-jaahan-modon-hun-1ec306.jpg"
         },
         {
           "title": "САРАН ДЭЭР",
@@ -2357,8 +2357,8 @@
           "file": "books/САРАН_ДЭЭР.epub",
           "chars": 69987,
           "minutes": 93,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "saran-deer-f39a2e",
+          "cover": "covers/saran-deer-f39a2e.jpg"
         },
         {
           "title": "СОРИЛ",
@@ -2366,8 +2366,8 @@
           "file": "books/СОРИЛ.epub",
           "chars": 12726,
           "minutes": 17,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "soril-72ba80",
+          "cover": "covers/soril-72ba80.jpg"
         },
         {
           "title": "ТЭГТЭЛ Ч БУУ ПАНХИЙВ",
@@ -2375,8 +2375,8 @@
           "file": "books/ТЭГТЭЛ_Ч_БУУ_ПАНХИЙВ.epub",
           "chars": 26433,
           "minutes": 35,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "tegtel-ch-buu-panhiiv-af4383",
+          "cover": "covers/tegtel-ch-buu-panhiiv-af4383.jpg"
         },
         {
           "title": "УРУУГАА УРГАСАН МОД",
@@ -2384,8 +2384,8 @@
           "file": "books/УРУУГАА_УРГАСАН_МОД.epub",
           "chars": 119336,
           "minutes": 159,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "uruugaa-urgasan-mod-4848e1",
+          "cover": "covers/uruugaa-urgasan-mod-4848e1.jpg"
         },
         {
           "title": "ХАВРЫН АРВАН ДОЛООН УЧРАЛ - 1",
@@ -2393,8 +2393,8 @@
           "file": "books/ХАВРЫН_АРВАН_ДОЛООН_УЧРАЛ_-_1.epub",
           "chars": 328667,
           "minutes": 438,
-          "id": "1",
-          "cover": "covers/1.jpg"
+          "id": "havryn-arvan-doloon-uchral-1-c56c51",
+          "cover": "covers/havryn-arvan-doloon-uchral-1-c56c51.jpg"
         },
         {
           "title": "ХАВРЫН АРВАН ДОЛООН УЧРАЛ - 2",
@@ -2402,8 +2402,8 @@
           "file": "books/ХАВРЫН_АРВАН_ДОЛООН_УЧРАЛ_-_2.epub",
           "chars": 308924,
           "minutes": 412,
-          "id": "2",
-          "cover": "covers/2.jpg"
+          "id": "havryn-arvan-doloon-uchral-2-94aa0c",
+          "cover": "covers/havryn-arvan-doloon-uchral-2-94aa0c.jpg"
         },
         {
           "title": "ХАМГИЙН САЙХАН ЦАГ",
@@ -2411,8 +2411,8 @@
           "file": "books/ХАМГИЙН_САЙХАН_ЦАГ.epub",
           "chars": 43674,
           "minutes": 58,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "hamgiin-saihan-tsag-e9ada9",
+          "cover": "covers/hamgiin-saihan-tsag-e9ada9.jpg"
         },
         {
           "title": "ХАРЬ ГАЗАР НУУЦ АЛБАНД - 1",
@@ -2420,8 +2420,8 @@
           "file": "books/ХАРЬ_ГАЗАР_НУУЦ_АЛБАНД_-_1.epub",
           "chars": 243200,
           "minutes": 324,
-          "id": "1",
-          "cover": "covers/1.jpg"
+          "id": "har-gazar-nuuts-alband-1-ff26ea",
+          "cover": "covers/har-gazar-nuuts-alband-1-ff26ea.jpg"
         },
         {
           "title": "ХАТАН АВХАЙН ТАВАН ДҮНЧҮҮР ӨВ",
@@ -2429,8 +2429,8 @@
           "file": "books/ХАТАН_АВХАЙН_ТАВАН_ДҮНЧҮҮР_ӨВ.epub",
           "chars": 291915,
           "minutes": 389,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "hatan-avhain-tavan-dunchuur-ov-d367d0",
+          "cover": "covers/hatan-avhain-tavan-dunchuur-ov-d367d0.jpg"
         },
         {
           "title": "ХАЧИН ИЛЖИГ",
@@ -2438,8 +2438,8 @@
           "file": "books/ХАЧИН_ИЛЖИГ.epub",
           "chars": 54115,
           "minutes": 72,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "hachin-iljig-e05937",
+          "cover": "covers/hachin-iljig-e05937.jpg"
         },
         {
           "title": "ХЭНЭГГҮЙ АМЕРИК",
@@ -2447,8 +2447,8 @@
           "file": "books/ХЭНЭГГҮЙ_АМЕРИК.epub",
           "chars": 329651,
           "minutes": 440,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "heneggui-amerik-db948a",
+          "cover": "covers/heneggui-amerik-db948a.jpg"
         },
         {
           "title": "ЭЙНАР ГУАЙ",
@@ -2456,8 +2456,8 @@
           "file": "books/ЭЙНАР_ГУАЙ.epub",
           "chars": 29662,
           "minutes": 40,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "einar-guai-50104a",
+          "cover": "covers/einar-guai-50104a.jpg"
         },
         {
           "title": "ЭРГЭЭД ХҮҮХЭД БОЛСОН ЧИНЬ...",
@@ -2465,8 +2465,8 @@
           "file": "books/ЭРГЭЭД_ХҮҮХЭД_БОЛСОН_ЧИНЬ.epub",
           "chars": 211195,
           "minutes": 282,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "ergeed-huuhed-bolson-chin-65f0b6",
+          "cover": "covers/ergeed-huuhed-bolson-chin-65f0b6.jpg"
         },
         {
           "title": "ҮҮЛЭН БОР",
@@ -2474,8 +2474,8 @@
           "file": "books/ҮҮЛЭН_БОР.epub",
           "chars": 288666,
           "minutes": 385,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "uulen-bor-372eb1",
+          "cover": "covers/uulen-bor-372eb1.jpg"
         },
         {
           "title": "ӨНӨӨХ ҮҮ!",
@@ -2483,8 +2483,8 @@
           "file": "books/ӨНӨӨХ_ҮҮ.epub",
           "chars": 18778,
           "minutes": 25,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "onooh-uu-03621f",
+          "cover": "covers/onooh-uu-03621f.jpg"
         },
         {
           "title": "ӨӨДӨСХӨНХҮҮ, ТҮҮНИЙ НӨХӨД",
@@ -2492,8 +2492,8 @@
           "file": "books/ӨӨДӨСХӨНХҮҮ_ТҮҮНИЙ_НӨХӨД.epub",
           "chars": 153856,
           "minutes": 205,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "oodoshonhuu-tuunii-nohod-f9034f",
+          "cover": "covers/oodoshonhuu-tuunii-nohod-f9034f.jpg"
         }
       ]
     },
@@ -2507,8 +2507,8 @@
           "file": "books/КОН-ТИКИ_САЛААР.epub",
           "chars": 484208,
           "minutes": 646,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "kon-tiki-salaar-4727d9",
+          "cover": "covers/kon-tiki-salaar-4727d9.jpg"
         },
         {
           "title": "АЛТАЙН ЦААДАХ ГОВЬД",
@@ -2516,8 +2516,8 @@
           "file": "books/АЛТАЙН_ЦААДАХ_ГОВЬД.epub",
           "chars": 131653,
           "minutes": 176,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "altain-tsaadah-govd-6c0c15",
+          "cover": "covers/altain-tsaadah-govd-6c0c15.jpg"
         },
         {
           "title": "АЛТАН СУВАРГЫН ОРНООР",
@@ -2525,8 +2525,8 @@
           "file": "books/АЛТАН_СУВАРГЫН_ОРНООР.epub",
           "chars": 31924,
           "minutes": 43,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "altan-suvargyn-ornoor-ac0039",
+          "cover": "covers/altan-suvargyn-ornoor-ac0039.jpg"
         },
         {
           "title": "АХУЙДАА ХЭМНЭЖ СУРЪЯ",
@@ -2534,8 +2534,8 @@
           "file": "books/АХУЙДАА_ХЭМНЭЖ_СУРЪЯ.epub",
           "chars": 356237,
           "minutes": 475,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "ahuidaa-hemnej-surya-572e33",
+          "cover": "covers/ahuidaa-hemnej-surya-572e33.jpg"
         },
         {
           "title": "БНМАУ-ЫН ЯСТАН УГСААТНУУД",
@@ -2543,8 +2543,8 @@
           "file": "books/БНМАУ-ЫН_ЯСТАН_УГСААТНУУД.epub",
           "chars": 177235,
           "minutes": 236,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "bnmau-yn-yastan-ugsaatnuud-73f4ae",
+          "cover": "covers/bnmau-yn-yastan-ugsaatnuud-73f4ae.jpg"
         },
         {
           "title": "БУСАД ОРНЫ МОНГОЛ УГСААТНУУД",
@@ -2552,8 +2552,8 @@
           "file": "books/БУСАД_ОРНЫ_МОНГОЛ_УГСААТНУУД.epub",
           "chars": 66514,
           "minutes": 89,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "busad-orny-mongol-ugsaatnuud-d1b9a5",
+          "cover": "covers/busad-orny-mongol-ugsaatnuud-d1b9a5.jpg"
         },
         {
           "title": "БУУРАЛ АНЧНЫ ТЭМДЭГЛЭЛ",
@@ -2561,8 +2561,8 @@
           "file": "books/БУУРАЛ_АНЧНЫ_ТЭМДЭГЛЭЛ.epub",
           "chars": 234568,
           "minutes": 313,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "buural-anchny-temdeglel-10f4b1",
+          "cover": "covers/buural-anchny-temdeglel-10f4b1.jpg"
         },
         {
           "title": "Байгалийн хачин сонин",
@@ -2570,8 +2570,8 @@
           "file": "books/Байгалийн_хачин_сонин.epub",
           "chars": 460535,
           "minutes": 614,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "baigaliin-hachin-sonin-58063c",
+          "cover": "covers/baigaliin-hachin-sonin-58063c.jpg"
         },
         {
           "title": "ВАЛЬТЕР РИД : ШИНЖЛЭХ УХААНЫ СОНИРХОЛ, ХҮН ТӨРӨЛХТНИЙ НЭРИЙН ӨМНӨӨС",
@@ -2579,8 +2579,8 @@
           "file": "books/ВАЛЬТЕР_РИД_ШИНЖЛЭХ_УХААНЫ_СОНИРХОЛ_ХҮН_ТӨРӨЛХТНИЙ_НЭРИЙН_ӨМНӨӨС.epub",
           "chars": 61753,
           "minutes": 82,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "valter-rid-shinjleh-uhaany-sonirhol-hun-torolhtn-e6f387",
+          "cover": "covers/valter-rid-shinjleh-uhaany-sonirhol-hun-torolhtn-e6f387.jpg"
         },
         {
           "title": "ГАЙХАМШГИЙН НЭВТЭРХИЙ ТОЛЬ - 1",
@@ -2588,8 +2588,8 @@
           "file": "books/ГАЙХАМШГИЙН_НЭВТЭРХИЙ_ТОЛЬ_-_1.epub",
           "chars": 137602,
           "minutes": 183,
-          "id": "1",
-          "cover": "covers/1.jpg"
+          "id": "gaihamshgiin-nevterhii-tol-1-1e22df",
+          "cover": "covers/gaihamshgiin-nevterhii-tol-1-1e22df.jpg"
         },
         {
           "title": "ГАЙХАМШГИЙН НЭВТЭРХИЙ ТОЛЬ - 2",
@@ -2597,8 +2597,8 @@
           "file": "books/ГАЙХАМШГИЙН_НЭВТЭРХИЙ_ТОЛЬ_2.epub",
           "chars": 104905,
           "minutes": 140,
-          "id": "2",
-          "cover": "covers/2.jpg"
+          "id": "gaihamshgiin-nevterhii-tol-2-dc658f",
+          "cover": "covers/gaihamshgiin-nevterhii-tol-2-dc658f.jpg"
         },
         {
           "title": "ГАЙХАМШГИЙН НЭВТЭРХИЙ ТОЛЬ - 3",
@@ -2606,8 +2606,8 @@
           "file": "books/ГАЙХАМШГИЙН_НЭВТЭРХИЙ_ТОЛЬ_-_3.epub",
           "chars": 174768,
           "minutes": 233,
-          "id": "3",
-          "cover": "covers/3.jpg"
+          "id": "gaihamshgiin-nevterhii-tol-3-2cf8ea",
+          "cover": "covers/gaihamshgiin-nevterhii-tol-3-2cf8ea.jpg"
         },
         {
           "title": "ГАЙХАМШГИЙН НЭВТЭРХИЙ ТОЛЬ - 4",
@@ -2615,8 +2615,8 @@
           "file": "books/ГАЙХАМШГИЙН_НЭВТЭРХИЙ_ТОЛЬ_-_4.epub",
           "chars": 121374,
           "minutes": 162,
-          "id": "4",
-          "cover": "covers/4.jpg"
+          "id": "gaihamshgiin-nevterhii-tol-4-4b08bf",
+          "cover": "covers/gaihamshgiin-nevterhii-tol-4-4b08bf.jpg"
         },
         {
           "title": "ГАЙХАМШИГТ ӨД СӨД",
@@ -2624,8 +2624,8 @@
           "file": "books/ГАЙХАМШИГТ_ӨД_СӨД.epub",
           "chars": 25116,
           "minutes": 33,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "gaihamshigt-od-sod-c06e78",
+          "cover": "covers/gaihamshigt-od-sod-c06e78.jpg"
         },
         {
           "title": "ГАРРИЕТ БИЧЕР СТОУ БА «ТОМ АВГЫН ОВООХОЙ»",
@@ -2633,8 +2633,8 @@
           "file": "books/ГАРРИЕТ_БИЧЕР_СТОУ_БА_ТОМ_АВГЫН_ОВООХОЙ.epub",
           "chars": 45889,
           "minutes": 61,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "garriet-bicher-stou-ba-tom-avgyn-ovoohoi-b2d3e1",
+          "cover": "covers/garriet-bicher-stou-ba-tom-avgyn-ovoohoi-b2d3e1.jpg"
         },
         {
           "title": "ГУРВУУЛ НЭГ ЗАВИАР (нохойг эс оролцуулан)",
@@ -2642,8 +2642,8 @@
           "file": "books/ГУРВУУЛ_НЭГ_ЗАВИАР_нохойг_эс_оролцуулан.epub",
           "chars": 360285,
           "minutes": 480,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "gurvuul-neg-zaviar-nohoig-es-oroltsuulan-b9acb1",
+          "cover": "covers/gurvuul-neg-zaviar-nohoig-es-oroltsuulan-b9acb1.jpg"
         },
         {
           "title": "ГҮНЖИЙН СҮМ",
@@ -2651,8 +2651,8 @@
           "file": "books/ГҮНЖИЙН_СҮМ.epub",
           "chars": 35336,
           "minutes": 47,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "gunjiin-sum-a50d2f",
+          "cover": "covers/gunjiin-sum-a50d2f.jpg"
         },
         {
           "title": "ДАВИД БРЮС : ЦЕЦЕ БАТГАНЫГ МӨРДӨЖ МӨШГӨСӨН НЬ",
@@ -2660,8 +2660,8 @@
           "file": "books/ДАВИД_БРЮС_ЦЕЦЕ_БАТГАНЫГ_МӨРДӨЖ_МӨШГӨСӨН_НЬ.epub",
           "chars": 60973,
           "minutes": 81,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "david-bryus-tsetse-batganyg-mordoj-moshgoson-n-e49015",
+          "cover": "covers/david-bryus-tsetse-batganyg-mordoj-moshgoson-n-e49015.jpg"
         },
         {
           "title": "ДАНИЭЛЬ ДЕФО БА «РОБИНЗОН КРУЗО»",
@@ -2669,8 +2669,8 @@
           "file": "books/ДАНИЭЛЬ_ДЕФО_БА_РОБИНЗОН_КРУЗО.epub",
           "chars": 42071,
           "minutes": 56,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "daniel-defo-ba-robinzon-kruzo-60ccde",
+          "cover": "covers/daniel-defo-ba-robinzon-kruzo-60ccde.jpg"
         },
         {
           "title": "ДОКТОР МЕКАНИКУС ТҮҮНИЙ НОХОЙ АЛЬМА - 1",
@@ -2678,8 +2678,8 @@
           "file": "books/ДОКТОР_МЕКАНИКУС_ТҮҮНИЙ_НОХОЙ_АЛЬМА_-_1.epub",
           "chars": 199050,
           "minutes": 265,
-          "id": "1",
-          "cover": "covers/1.jpg"
+          "id": "doktor-mekanikus-tuunii-nohoi-alma-1-eaee06",
+          "cover": "covers/doktor-mekanikus-tuunii-nohoi-alma-1-eaee06.jpg"
         },
         {
           "title": "ДОКТОР МЕКАНИКУС ТҮҮНИЙ НОХОЙ АЛЬМА - 2",
@@ -2687,8 +2687,8 @@
           "file": "books/ДОКТОР_МЕКАНИКУС_ТҮҮНИЙ_НОХОЙ_АЛЬМА_-_2.epub",
           "chars": 162245,
           "minutes": 216,
-          "id": "2",
-          "cover": "covers/2.jpg"
+          "id": "doktor-mekanikus-tuunii-nohoi-alma-2-b41428",
+          "cover": "covers/doktor-mekanikus-tuunii-nohoi-alma-2-b41428.jpg"
         },
         {
           "title": "ДУУТ МАНХАН",
@@ -2696,8 +2696,8 @@
           "file": "books/ДУУТ_МАНХАН.epub",
           "chars": 84027,
           "minutes": 112,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "duut-manhan-c28a1c",
+          "cover": "covers/duut-manhan-c28a1c.jpg"
         },
         {
           "title": "ЗҮЙЛИЙН ҮҮСЭЛ - 1",
@@ -2705,8 +2705,8 @@
           "file": "books/ЗҮЙЛИЙН_ҮҮСЭЛ_-_1.epub",
           "chars": 550085,
           "minutes": 733,
-          "id": "1",
-          "cover": "covers/1.jpg"
+          "id": "zuiliin-uusel-1-c9d1bc",
+          "cover": "covers/zuiliin-uusel-1-c9d1bc.jpg"
         },
         {
           "title": "ЗҮЙЛИЙН ҮҮСЭЛ - 2",
@@ -2714,8 +2714,8 @@
           "file": "books/ЗҮЙЛИЙН_ҮҮСЭЛ_-_2.epub",
           "chars": 582194,
           "minutes": 776,
-          "id": "2",
-          "cover": "covers/2.jpg"
+          "id": "zuiliin-uusel-2-f9dea4",
+          "cover": "covers/zuiliin-uusel-2-f9dea4.jpg"
         },
         {
           "title": "ИХ ТУУРВИЛУУДЫН ПАЯН - 2",
@@ -2723,8 +2723,8 @@
           "file": "books/ИХ_ТУУРВИЛУУДЫН_ПАЯН_-_2.epub",
           "chars": 181078,
           "minutes": 241,
-          "id": "2",
-          "cover": "covers/2.jpg"
+          "id": "ih-tuurviluudyn-payan-2-e491ba",
+          "cover": "covers/ih-tuurviluudyn-payan-2-e491ba.jpg"
         },
         {
           "title": "КАПИТАН ГРАНТЫН ХҮҮХДҮҮД - 1",
@@ -2732,8 +2732,8 @@
           "file": "books/КАПИТАН_ГРАНТЫН_ХҮҮХДҮҮД_-_1.epub",
           "chars": 385461,
           "minutes": 514,
-          "id": "1",
-          "cover": "covers/1.jpg"
+          "id": "kapitan-grantyn-huuhduud-1-1ae74a",
+          "cover": "covers/kapitan-grantyn-huuhduud-1-1ae74a.jpg"
         },
         {
           "title": "КАПИТАН ГРАНТЫН ХҮҮХДҮҮД - 2",
@@ -2741,8 +2741,8 @@
           "file": "books/КАПИТАН_ГРАНТЫН_ХҮҮХДҮҮД_-_2.epub",
           "chars": 392552,
           "minutes": 523,
-          "id": "2",
-          "cover": "covers/2.jpg"
+          "id": "kapitan-grantyn-huuhduud-2-8cdf2f",
+          "cover": "covers/kapitan-grantyn-huuhduud-2-8cdf2f.jpg"
         },
         {
           "title": "КАПИТАН ГРАНТЫН ХҮҮХДҮҮД - 3",
@@ -2750,8 +2750,8 @@
           "file": "books/КАПИТАН_ГРАНТЫН_ХҮҮХДҮҮД_-_3.epub",
           "chars": 328511,
           "minutes": 438,
-          "id": "3",
-          "cover": "covers/3.jpg"
+          "id": "kapitan-grantyn-huuhduud-3-35a388",
+          "cover": "covers/kapitan-grantyn-huuhduud-3-35a388.jpg"
         },
         {
           "title": "ЛУИ ПАСТЕР : ГАЛЗУУ ӨВЧНИЙ ЭРЛЭГ МӨН",
@@ -2759,8 +2759,8 @@
           "file": "books/ЛУИ_ПАСТЕР_ГАЛЗУУ_ӨВЧНИЙ_ЭРЛЭГ_МӨН.epub",
           "chars": 77107,
           "minutes": 103,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "lui-paster-galzuu-ovchnii-erleg-mon-2672fd",
+          "cover": "covers/lui-paster-galzuu-ovchnii-erleg-mon-2672fd.jpg"
         },
         {
           "title": "ЛЬЮИС КЭРРОЛЛ БОЛОН «АЛИСА ГАЙХАМШГИЙН ОРОНД»",
@@ -2768,8 +2768,8 @@
           "file": "books/ЛЬЮИС_КЭРРОЛЛ_БОЛОН_АЛИСА_ГАЙХАМШГИЙН_ОРОНД.epub",
           "chars": 39956,
           "minutes": 53,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "lyuis-kerroll-bolon-alisa-gaihamshgiin-orond-d21908",
+          "cover": "covers/lyuis-kerroll-bolon-alisa-gaihamshgiin-orond-d21908.jpg"
         },
         {
           "title": "МАЛ АЖ АХУЙДАА ЯАЖ АЖИЛЛАХ ТУХАЙ АРДАД ӨГӨХ САНУУЛГА СУРГААЛ",
@@ -2777,8 +2777,8 @@
           "file": "books/МАЛ_АЖ_АХУЙДАА_ЯАЖ_АЖИЛЛАХ_ТУХАЙ_АРДАД_ӨГӨХ_САНУУЛГА_СУРГААЛ.epub",
           "chars": 224910,
           "minutes": 300,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "mal-aj-ahuidaa-yaaj-ajillah-tuhai-ardad-ogoh-san-002261",
+          "cover": "covers/mal-aj-ahuidaa-yaaj-ajillah-tuhai-ardad-ogoh-san-002261.jpg"
         },
         {
           "title": "МАЛЧДАД ӨГӨХ ЗӨВЛӨГӨӨ",
@@ -2786,8 +2786,8 @@
           "file": "books/МАЛЧДАД_ӨГӨХ_ЗӨВЛӨГӨӨ.epub",
           "chars": 343578,
           "minutes": 458,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "malchdad-ogoh-zovlogoo-2f03f6",
+          "cover": "covers/malchdad-ogoh-zovlogoo-2f03f6.jpg"
         },
         {
           "title": "МАЛЧИН АРДЫН АМЬДРАЛ АХУЙ, ХЭВ ЗАНШЛААС",
@@ -2795,8 +2795,8 @@
           "file": "books/МАЛЧИН_АРДЫН_АМЬДРАЛ_АХУЙ_ХЭВ_ЗАНШЛААС.epub",
           "chars": 109242,
           "minutes": 146,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "malchin-ardyn-amdral-ahui-hev-zanshlaas-e97e73",
+          "cover": "covers/malchin-ardyn-amdral-ahui-hev-zanshlaas-e97e73.jpg"
         },
         {
           "title": "МИЧ ХҮН БОЛОХОД ХӨДӨЛМӨРИЙН ГҮЙЦЭТГЭСЭН РОЛЬ",
@@ -2804,8 +2804,8 @@
           "file": "books/МИЧ_ХҮН_БОЛОХОД_ХӨДӨЛМӨРИЙН_ГҮЙЦЭТГЭСЭН_РОЛЬ.epub",
           "chars": 30991,
           "minutes": 41,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "mich-hun-bolohod-hodolmoriin-guitsetgesen-rol-caa958",
+          "cover": "covers/mich-hun-bolohod-hodolmoriin-guitsetgesen-rol-caa958.jpg"
         },
         {
           "title": "МОНГОЛ ДОМГИЙН ЧУУЛГАН",
@@ -2813,8 +2813,8 @@
           "file": "books/МОНГОЛ_ДОМГИЙН_ЧУУЛГАН.epub",
           "chars": 786670,
           "minutes": 1049,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "mongol-domgiin-chuulgan-d81df9",
+          "cover": "covers/mongol-domgiin-chuulgan-d81df9.jpg"
         },
         {
           "title": "МОНГОЛЫН УУДАМ НУТГААР",
@@ -2822,8 +2822,8 @@
           "file": "books/МОНГОЛЫН_УУДАМ_НУТГААР.epub",
           "chars": 203935,
           "minutes": 272,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "mongolyn-uudam-nutgaar-1a45d4",
+          "cover": "covers/mongolyn-uudam-nutgaar-1a45d4.jpg"
         },
         {
           "title": "МОНГОЛЫН ЭЗЭНТ ГҮРЭНД ЗОРЧСОН НЬ",
@@ -2831,8 +2831,8 @@
           "file": "books/МОНГОЛЫН_ЭЗЭНТ_ГҮРЭНД_ЗОРЧСОН_НЬ.epub",
           "chars": 683700,
           "minutes": 912,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "mongolyn-ezent-gurend-zorchson-n-f7f2ce",
+          "cover": "covers/mongolyn-ezent-gurend-zorchson-n-f7f2ce.jpg"
         },
         {
           "title": "НОБЕЛИЙН ШАГНАЛ ГАРДАН АВАХДАА ХЭЛСЭН ҮГ",
@@ -2840,8 +2840,8 @@
           "file": "books/НОБЕЛИЙН_ШАГНАЛ_ГАРДАН_АВАХДАА_ХЭЛСЭН_ҮГ.epub",
           "chars": 6766,
           "minutes": 9,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "nobeliin-shagnal-gardan-avahdaa-helsen-ug-2b101e",
+          "cover": "covers/nobeliin-shagnal-gardan-avahdaa-helsen-ug-2b101e.jpg"
         },
         {
           "title": "НУУЦ ТОВЧООНЫ НУУЦУУДААС",
@@ -2849,8 +2849,8 @@
           "file": "books/НУУЦ_ТОВЧООНЫ_НУУЦУУДААС.epub",
           "chars": 250426,
           "minutes": 334,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "nuuts-tovchoony-nuutsuudaas-bd7043",
+          "cover": "covers/nuuts-tovchoony-nuutsuudaas-bd7043.jpg"
         },
         {
           "title": "ОВООХОЙ ОВОГТ ГЭРИЙН ҮЛГЭР",
@@ -2858,8 +2858,8 @@
           "file": "books/ОВООХОЙ_ОВОГТ_ГЭРИЙН_ҮЛГЭР.epub",
           "chars": 50139,
           "minutes": 67,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "ovoohoi-ovogt-geriin-ulger-4e20ec",
+          "cover": "covers/ovoohoi-ovogt-geriin-ulger-4e20ec.jpg"
         },
         {
           "title": "ОЛНОО ӨРГӨГДСӨН БОГД ХААНТ МОНГОЛ УЛСЫН ТӨРИЙН ЁС, ЁСЛОЛ",
@@ -2867,8 +2867,8 @@
           "file": "books/ОЛНОО_ӨРГӨГДСӨН_БОГД_ХААНТ_МОНГОЛ_УЛСЫН_ТӨРИЙН_С_СЛОЛ.epub",
           "chars": 107193,
           "minutes": 143,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "olnoo-orgogdson-bogd-haant-mongol-ulsyn-toriin-s-7fbbb2",
+          "cover": "covers/olnoo-orgogdson-bogd-haant-mongol-ulsyn-toriin-s-7fbbb2.jpg"
         },
         {
           "title": "ПАУЛЬ ЭРЛИХ : ШИДЭТ СУМ",
@@ -2876,8 +2876,8 @@
           "file": "books/ПАУЛЬ_ЭРЛИХ_ШИДЭТ_СУМ.epub",
           "chars": 48213,
           "minutes": 64,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "paul-erlih-shidet-sum-dc05c0",
+          "cover": "covers/paul-erlih-shidet-sum-dc05c0.jpg"
         },
         {
           "title": "РОБЕРТ БЕРНС ТҮҮНИЙ «ШҮЛГҮҮД»",
@@ -2885,8 +2885,8 @@
           "file": "books/РОБЕРТ_БЕРНС_ТҮҮНИЙ_ШҮЛГҮҮД.epub",
           "chars": 38886,
           "minutes": 52,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "robert-berns-tuunii-shulguud-f66d75",
+          "cover": "covers/robert-berns-tuunii-shulguud-f66d75.jpg"
         },
         {
           "title": "РОБЕРТ КОХ : ҮХЭЛТЭЙ ДАЙТАГЧ",
@@ -2894,8 +2894,8 @@
           "file": "books/РОБЕРТ_КОХ_ҮХЭЛТЭЙ_ДАЙТАГЧ.epub",
           "chars": 79833,
           "minutes": 106,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "robert-koh-uheltei-daitagch-ece1ce",
+          "cover": "covers/robert-koh-uheltei-daitagch-ece1ce.jpg"
         },
         {
           "title": "РОСС, ГРАССИ ХОЁР : ХАЛУУН ХУМХАА ӨВЧИН",
@@ -2903,8 +2903,8 @@
           "file": "books/РОСС_ГРАССИ_ХОР_ХАЛУУН_ХУМХАА_ӨВЧИН.epub",
           "chars": 69247,
           "minutes": 92,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "ross-grassi-hor-haluun-humhaa-ovchin-8c9d2e",
+          "cover": "covers/ross-grassi-hor-haluun-humhaa-ovchin-8c9d2e.jpg"
         },
         {
           "title": "РУ, БЕРИНГ XОЁР : УСАН ГАХАЙГ ХЯДСАН НЬ",
@@ -2912,8 +2912,8 @@
           "file": "books/РУ_БЕРИНГ_XОР_УСАН_ГАХАЙГ_ХЯДСАН_НЬ.epub",
           "chars": 47341,
           "minutes": 63,
-          "id": "x",
-          "cover": "covers/x.jpg"
+          "id": "ru-bering-xor-usan-gahaig-hyadsan-n-050986",
+          "cover": "covers/ru-bering-xor-usan-gahaig-hyadsan-n-050986.jpg"
         },
         {
           "title": "САРАН ДЭЭР",
@@ -2921,8 +2921,8 @@
           "file": "books/САРАН_ДЭЭР.epub",
           "chars": 69987,
           "minutes": 93,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "saran-deer-f39a2e",
+          "cover": "covers/saran-deer-f39a2e.jpg"
         },
         {
           "title": "СПАЛЛАНЦАНИ : НЯНД ЭЦЭГ ЭХ ЭРХБИШ БАЙЛТАЙ",
@@ -2930,8 +2930,8 @@
           "file": "books/СПАЛЛАНЦАНИ_НЯНД_ЭЦЭГ_ЭХ_ЭРХБИШ_БАЙЛТАЙ.epub",
           "chars": 82907,
           "minutes": 111,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "spallantsani-nyand-etseg-eh-erhbish-bailtai-0d8b30",
+          "cover": "covers/spallantsani-nyand-etseg-eh-erhbish-bailtai-0d8b30.jpg"
         },
         {
           "title": "ТЕОБАЛЬД СМИТ : ХАЧИГ, ТЕХАССЫН ХАЛУУН ХАНИАД",
@@ -2939,8 +2939,8 @@
           "file": "books/ТЕОБАЛЬД_СМИТ_ХАЧИГ_ТЕХАССЫН_ХАЛУУН_ХАНИАД.epub",
           "chars": 48863,
           "minutes": 65,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "teobald-smit-hachig-tehassyn-haluun-haniad-ad3820",
+          "cover": "covers/teobald-smit-hachig-tehassyn-haluun-haniad-ad3820.jpg"
         },
         {
           "title": "ТУУЛАЙТНЫ БИЕ БҮТЭЦ, ОРЧИНДОО ДАСАН ЗОХИЦОХ ЗҮЙ ТОГТОЛ",
@@ -2948,8 +2948,8 @@
           "file": "books/ТУУЛАЙТНЫ_БИЕ_БҮТЭЦ_ОРЧИНДОО_ДАСАН_ЗОХИЦОХ_ЗҮЙ_ТОГТОЛ.epub",
           "chars": 28169,
           "minutes": 38,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "tuulaitny-bie-butets-orchindoo-dasan-zohitsoh-zu-b309c7",
+          "cover": "covers/tuulaitny-bie-butets-orchindoo-dasan-zohitsoh-zu-b309c7.jpg"
         },
         {
           "title": "ТЭЭВРИЙН ГАЗАРЗҮЙ",
@@ -2957,8 +2957,8 @@
           "file": "books/ТЭЭВРИЙН_ГАЗАРЗҮЙ.epub",
           "chars": 104877,
           "minutes": 140,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "teevriin-gazarzui-658068",
+          "cover": "covers/teevriin-gazarzui-658068.jpg"
         },
         {
           "title": "УОЛТ УЙТМЕН БА ӨВСНИЙ НАВЧИС",
@@ -2966,8 +2966,8 @@
           "file": "books/УОЛТ_УЙТМЕН_БА_ӨВСНИЙ_НАВЧИС.epub",
           "chars": 42180,
           "minutes": 56,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "uolt-uitmen-ba-ovsnii-navchis-4b81e5",
+          "cover": "covers/uolt-uitmen-ba-ovsnii-navchis-4b81e5.jpg"
         },
         {
           "title": "УРЛАГ, ЭРҮҮЛ МЭНД",
@@ -2975,8 +2975,8 @@
           "file": "books/УРЛАГ_ЭРҮҮЛ_МЭНД.epub",
           "chars": 257330,
           "minutes": 343,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "urlag-eruul-mend-094d33",
+          "cover": "covers/urlag-eruul-mend-094d33.jpg"
         },
         {
           "title": "УРТ НАСЛАХ УХААН",
@@ -2984,8 +2984,8 @@
           "file": "books/УРТ_НАСЛАХ_УХААН.epub",
           "chars": 177741,
           "minutes": 237,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "urt-naslah-uhaan-44d1fb",
+          "cover": "covers/urt-naslah-uhaan-44d1fb.jpg"
         },
         {
           "title": "УТСАН ДЭЭРХ ШУВУУ",
@@ -2993,8 +2993,8 @@
           "file": "books/УТСАН_ДЭЭРХ_ШУВУУ.epub",
           "chars": 766790,
           "minutes": 1022,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "utsan-deerh-shuvuu-6bb2f1",
+          "cover": "covers/utsan-deerh-shuvuu-6bb2f1.jpg"
         },
         {
           "title": "ХАР ЧУЛУУНЫХНЫ ГЭР БҮЛИЙН НАМТАР",
@@ -3002,8 +3002,8 @@
           "file": "books/ХАР_ЧУЛУУНЫХНЫ_ГЭР_БҮЛИЙН_НАМТАР.epub",
           "chars": 9518,
           "minutes": 13,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "har-chuluunyhny-ger-buliin-namtar-dc0784",
+          "cover": "covers/har-chuluunyhny-ger-buliin-namtar-dc0784.jpg"
         },
         {
           "title": "ХАЧИН ИЛЖИГ",
@@ -3011,8 +3011,8 @@
           "file": "books/ХАЧИН_ИЛЖИГ.epub",
           "chars": 54115,
           "minutes": 72,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "hachin-iljig-e05937",
+          "cover": "covers/hachin-iljig-e05937.jpg"
         },
         {
           "title": "ХИЙМЭЛ НҮД",
@@ -3020,8 +3020,8 @@
           "file": "books/ХИЙМЭЛ_НҮД.epub",
           "chars": 28037,
           "minutes": 37,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "hiimel-nud-435bdb",
+          "cover": "covers/hiimel-nud-435bdb.jpg"
         },
         {
           "title": "ХЭЛ ЯРИА ХЭРХЭН БИЙ БОЛОВ?",
@@ -3029,8 +3029,8 @@
           "file": "books/ХЭЛ_ЯРИА_ХЭРХЭН_БИЙ_БОЛОВ.epub",
           "chars": 22903,
           "minutes": 31,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "hel-yaria-herhen-bii-bolov-048042",
+          "cover": "covers/hel-yaria-herhen-bii-bolov-048042.jpg"
         },
         {
           "title": "ХҮН ХЭРХЭН ҮҮСЭВ?",
@@ -3038,8 +3038,8 @@
           "file": "books/ХҮН_ХЭРХЭН_ҮҮСЭВ.epub",
           "chars": 264175,
           "minutes": 352,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "hun-herhen-uusev-5c4c18",
+          "cover": "covers/hun-herhen-uusev-5c4c18.jpg"
         },
         {
           "title": "ЦАСТ УУЛЫН БАРС",
@@ -3047,8 +3047,8 @@
           "file": "books/ЦАСТ_УУЛЫН_БАРС.epub",
           "chars": 463070,
           "minutes": 617,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "tsast-uulyn-bars-64d4ee",
+          "cover": "covers/tsast-uulyn-bars-64d4ee.jpg"
         },
         {
           "title": "ЦӨГӨРЗГӨНИЙ ТУХАЙ ЦӨӨХӨН ҮГ",
@@ -3056,8 +3056,8 @@
           "file": "books/ЦӨГӨРЗГӨНИЙ_ТУХАЙ_ЦӨӨХӨН_ҮГ.epub",
           "chars": 7764,
           "minutes": 10,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "tsogorzgonii-tuhai-tsoohon-ug-0d3143",
+          "cover": "covers/tsogorzgonii-tuhai-tsoohon-ug-0d3143.jpg"
         },
         {
           "title": "ШОРООН БУДГИЙГ ЯАЖ БОЛОВСРУУЛАН БЭЛТГЭХ ВЭ?",
@@ -3065,8 +3065,8 @@
           "file": "books/ШОРООН_БУДГИЙГ_ЯАЖ_БОЛОВСРУУЛАН_БЭЛТГЭХ_ВЭ.epub",
           "chars": 66347,
           "minutes": 88,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "shoroon-budgiig-yaaj-bolovsruulan-beltgeh-ve-6960a1",
+          "cover": "covers/shoroon-budgiig-yaaj-bolovsruulan-beltgeh-ve-6960a1.jpg"
         },
         {
           "title": "ЭРТНИЙ ЖИМЭЭР",
@@ -3074,8 +3074,8 @@
           "file": "books/ЭРТНИЙ_ЖИМЭЭР.epub",
           "chars": 110266,
           "minutes": 147,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "ertnii-jimeer-699b48",
+          "cover": "covers/ertnii-jimeer-699b48.jpg"
         },
         {
           "title": "ЯАГААД ЯАГААД ЯАГААД",
@@ -3083,8 +3083,8 @@
           "file": "books/ЯАГААД_ЯАГААД_ЯАГААД.epub",
           "chars": 219343,
           "minutes": 292,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "yaagaad-yaagaad-yaagaad-447c17",
+          "cover": "covers/yaagaad-yaagaad-yaagaad-447c17.jpg"
         },
         {
           "title": "ҮЛ ҮЗЭГДЭХ ТУСЛАГЧ",
@@ -3092,8 +3092,8 @@
           "file": "books/ҮЛ_ҮЗЭГДЭХ_ТУСЛАГЧ.epub",
           "chars": 291716,
           "minutes": 389,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "ul-uzegdeh-tuslagch-cde8bc",
+          "cover": "covers/ul-uzegdeh-tuslagch-cde8bc.jpg"
         },
         {
           "title": "ҮҮЛЭН БОР",
@@ -3101,8 +3101,8 @@
           "file": "books/ҮҮЛЭН_БОР.epub",
           "chars": 288666,
           "minutes": 385,
-          "id": "",
-          "cover": "covers/.jpg"
+          "id": "uulen-bor-372eb1",
+          "cover": "covers/uulen-bor-372eb1.jpg"
         }
       ]
     }
