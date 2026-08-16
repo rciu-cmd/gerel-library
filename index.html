@@ -130,7 +130,6 @@
     text-align:center;}
   .credit{font-size:13px;color:var(--muted);max-width:720px;margin:20px auto 0;
     line-height:1.6;display:block;text-align:center;}
-  #fileInput{position:absolute;opacity:0;width:1px;height:1px;}
 </style>
 </head>
 <body>
@@ -147,24 +146,7 @@
       <span class="ic">🔎</span>Унших<small>Том үсгээр харна</small>
     </button>
   </div>
-  <button class="chip" id="whoChip" style="margin-top:4px">Би хэн бэ?</button>
   <div id="status" class="note" role="status" aria-live="polite"></div>
-</div>
-
-<div id="who" class="screen hidden">
-  <div class="bar">
-    <h1>Хэн уншиж байна вэ?</h1>
-    <button class="chip" id="whoClose">Хаах</button>
-  </div>
-  <div class="books" id="whoList"></div>
-  <div style="display:flex;gap:9px;max-width:720px;margin:12px auto;width:100%">
-    <input id="whoName" type="text" maxlength="24" placeholder="Нэрээ бичнэ үү"
-      style="flex:1;min-width:0;border:3px solid var(--line);border-radius:18px;
-             padding:14px 16px;font-family:var(--body);font-size:17px;font-weight:600;
-             background:#fff;color:var(--ink)">
-    <button class="mini" id="whoAdd" style="min-width:120px">＋ Нэмэх</button>
-  </div>
-  <p class="credit">Нэр зөвхөн энэ төхөөрөмж дээр хадгалагдана.</p>
 </div>
 
 <div id="shelf" class="screen hidden">
@@ -176,9 +158,6 @@
   <div class="shelves" id="shelfList"></div>
   <div class="books" id="bookList"></div>
   <div class="note hidden" id="shelfNote"></div>
-  <label class="credit" id="openFileLabel" tabindex="0">Өөрийн ном нээх
-    <input type="file" id="fileInput" accept=".epub,application/epub+zip"></label>
-  <p class="credit" id="shelfCredit"></p>
 </div>
 
 <div id="player" class="screen hidden">
@@ -223,6 +202,21 @@
   </div>
 </div>
 
+<div id="resume" class="screen center">
+  <div class="lamp lit" style="--lampSize:110px"></div>
+  <div class="brand" style="font-family:var(--display);font-weight:700;font-size:clamp(24px,6vw,34px)"
+       id="resumeTitle"></div>
+  <p class="sub" id="resumeWhere" style="color:var(--muted);margin:0"></p>
+  <div class="doors">
+    <button class="door listen" id="resumeGo">
+      <span class="ic">▶</span>Үргэлжлүүлэх<small>Зогссон газраас</small>
+    </button>
+    <button class="door read" id="resumeStart">
+      <span class="ic">↺</span>Эхнээс нь<small>Шинээр эхэлнэ</small>
+    </button>
+  </div>
+</div>
+
 <div id="help" class="screen hidden">
   <div class="bar">
     <h1>Товчлуурууд</h1>
@@ -250,16 +244,12 @@ const SPEEDS=[0.6,0.7,0.85,1.0,1.15,1.3], SLEEPS=[0,15,30,60];
 
 const $=id=>document.getElementById(id);
 
-// Who is using this device right now. On a shared classroom tablet each child
-// picks a name once and keeps their own books and places. Stored on the device
-// only — no account, no server, nothing sent anywhere.
-let who = '';
-function nsKey(k){ return who ? 'u:'+who+':'+k : k; }
+// Everything a child does is remembered on this device alone: which books they
+// started, where they stopped, how big the text is. Nothing is sent anywhere
+// and there is no account to make.
 const esc=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const rawPut=(k,v)=>{try{localStorage.setItem('gerel:'+k,v)}catch(e){}};
-const rawGet=(k,d)=>{try{const v=localStorage.getItem('gerel:'+k);return v===null?d:v}catch(e){return d}};
-const put=(k,v)=>rawPut(nsKey(k),v);
-const get=(k,d)=>rawGet(nsKey(k),d);
+const put=(k,v)=>{try{localStorage.setItem('gerel:'+k,v)}catch(e){}};
+const get=(k,d)=>{try{const v=localStorage.getItem('gerel:'+k);return v===null?d:v}catch(e){return d}};
 
 let mode=get('mode','');
 let speedIndex=parseInt(get('speed','2'),10); if(isNaN(speedIndex)||!SPEEDS[speedIndex]) speedIndex=2;
@@ -273,9 +263,17 @@ audioEl.preload='auto';
 let unlocked=false;
 function unlock(){
   if(unlocked) return; unlocked=true;
+  // Both elements must be started inside a real tap or a phone will refuse to
+  // play anything later. Playing then pausing keeps them permitted even though
+  // the silent clip ends immediately.
   const q='data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABAAZGF0YQAAAAA=';
-  audioEl.src=q; audioEl.play().catch(()=>{});
-  voiceEl.src=q; voiceEl.play().catch(()=>{});
+  [audioEl, voiceEl].forEach(el=>{
+    try{
+      el.src=q;
+      const p=el.play();
+      if(p&&p.then) p.then(()=>{ try{el.pause()}catch(e){} }).catch(()=>{});
+    }catch(e){}
+  });
 }
 const rate=()=>{const p=Math.round((SPEEDS[speedIndex]-1)*100);return (p>=0?'+':'')+p+'%'};
 const xml=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
@@ -297,7 +295,15 @@ function say(text){
     const t=(text||'').trim();
     if(!t) return;
     const clip=SPEECH[t];
-    if(clip){ voiceEl.src=SPEECH_ROOT+'/'+clip; voiceEl.play().catch(()=>liveSay(t)); return; }
+    if(clip){
+      voiceEl.src=SPEECH_ROOT+'/'+clip;
+      voiceEl.play().catch(err=>{
+        console.warn('Gerel: clip would not play:', clip, 'for', t, err);
+        liveSay(t);
+      });
+      return;
+    }
+    console.warn('Gerel: no voice clip for:', t, '— run gerel_speak.py');
     liveSay(t);
   },220);   // a pause, so sweeping across the screen does not babble
 }
@@ -363,7 +369,9 @@ function sents(text){
 }
 async function loadVoiced(e){
   const base=AUDIO_ROOT+'/'+e.id;
-  const r=await fetch(base+'/index.json',{cache:'force-cache'});
+  // Revalidated, not force-cached: re-voicing a book rewrites this file, and a
+  // stale copy would point at audio that no longer matches the text.
+  const r=await fetch(base+'/index.json',{cache:'no-cache'});
   if(!r.ok) throw new Error('unavailable');
   const d=await r.json();
   book.title=d.title||e.title; book.author=d.author||e.author||''; book.audioBase=base;
@@ -607,7 +615,7 @@ function markRead(scroll){
 }
 
 // ---- screens ----
-const SCREENS=['welcome','shelf','player','reader','toc','who','help'];
+const SCREENS=['welcome','shelf','player','reader','toc','help','resume'];
 let openShelf=null, pick=-1, rows=[], catalog=null;
 let lastScreen='welcome';
 function show(n){
@@ -641,7 +649,6 @@ const begun=t=>!!get('pos:'+t,'');
 function renderShelf(){
   const L=$('shelfList'), B=$('bookList');
   L.innerHTML=''; B.innerHTML=''; rows=[]; pick=-1;
-  $('shelfCredit').textContent=catalog?.credit||'';
   $('shelfNote').classList.add('hidden');
 
   if(openShelf===null){
@@ -726,11 +733,23 @@ async function openBook(e){
     $('shelfNote').classList.add('hidden');
     $('playerStatus').classList.add('hidden');
     $('bookTitle').textContent=book.title;
-    const again=loadPos();
-    buildToc(); paint();
+    buildToc();
+    // A book already begun asks rather than assuming. Dropping a child into
+    // the middle of a story with no explanation is disorienting when you
+    // cannot see the page.
+    if(loadPos()){
+      paint();
+      $('resumeTitle').textContent = book.title;
+      $('resumeWhere').textContent = chap().title;
+      show('resume');
+      $('resumeGo').focus();
+      announce('Үргэлжлүүлэх үү, эхнээс нь үү?');
+      return;
+    }
+    ci=0; bi=0; si=0; paint();
     show(mode==='read'?'reader':'player');
     media();
-    announce(again?'Уншиж байсан газраас үргэлжилнэ.':book.title);
+    announce(book.title);
     if(mode==='listen') play();
   }catch(err){
     $('shelfNote').textContent='Энэ ном хараахан бэлэн болоогүй байна. Өөр ном сонгоно уу.';
@@ -750,61 +769,6 @@ function buildToc(){
     $('tocList').appendChild(b);
   });
 }
-
-// Names live only on this device. A child on a shared tablet picks theirs and
-// gets back their own favourites and their own place in every book.
-function readers(){ try{ return JSON.parse(rawGet('readers','[]'))||[] }catch(e){ return [] } }
-function saveReaders(list){ rawPut('readers', JSON.stringify(list)); }
-function setWho(name){
-  who = name || '';
-  rawPut('who', who);
-  $('whoChip').textContent = who ? who : 'Би хэн бэ?';
-  // Re-read this child's own settings.
-  mode = get('mode','');
-  speedIndex = parseInt(get('speed','2'),10); if(isNaN(speedIndex)||!SPEEDS[speedIndex]) speedIndex=2;
-  readSize = parseInt(get('size','32'),10); if(isNaN(readSize)) readSize=32;
-  try{ favs = JSON.parse(get('favs','[]'))||[] }catch(e){ favs=[] }
-  applySize();
-}
-function renderWho(){
-  const L=$('whoList'); L.innerHTML='';
-  const list=readers();
-  if(!list.length){
-    const p=document.createElement('p'); p.className='credit';
-    p.textContent='Нэр байхгүй байна. "Шинэ нэр" дарна уу.';
-    L.appendChild(p);
-  }
-  list.forEach(n=>{
-    const b=document.createElement('button');
-    b.className='bookRow'; b.style.display='block'; b.style.padding='18px';
-    b.innerHTML='<span class="t">'+esc(n)+(n===who?' ✓':'')+'</span>';
-    b.addEventListener('focus',()=>say(n));
-    b.addEventListener('mouseenter',()=>say(n));
-    b.addEventListener('click',()=>{
-      setWho(n); renderShelf(); show('welcome');
-      announce(n);
-    });
-    L.appendChild(b);
-  });
-}
-$('whoChip').addEventListener('click',()=>{ renderWho(); show('who'); announce('Хэн уншиж байна вэ?'); });
-$('whoClose').addEventListener('click',()=>show('welcome'));
-// An in-page field rather than a prompt() box: several mobile browsers now
-// block those outright, which is why the button appeared to do nothing.
-function addReader(){
-  const n=($('whoName').value||'').trim().slice(0,24);
-  if(!n){ $('whoName').focus(); return; }
-  const list=readers();
-  if(!list.includes(n)){ list.push(n); saveReaders(list); }
-  $('whoName').value='';
-  setWho(n); renderWho(); renderShelf();
-  announce(n);
-}
-$('whoAdd').addEventListener('click', addReader);
-$('whoName').addEventListener('keydown', e=>{
-  if(e.code==='Enter'||e.code==='NumpadEnter'){ e.preventDefault(); addReader(); }
-  e.stopPropagation();      // so letters are typed, not read as shortcuts
-});
 
 // Four keys do almost everything, and a handful of letters jump straight to a
 // place. A blind child should be able to learn the whole library in a minute,
@@ -827,6 +791,14 @@ const KEYS=[
 ];
 function renderHelp(){
   const L=$('helpList'); L.innerHTML='';
+  // Where the books came from. Out of a child's way, but never dropped: it is
+  // the attribution to the library that allowed all of this.
+  if(catalog && catalog.credit){
+    const c=document.createElement('p');
+    c.className='credit'; c.style.margin='0 0 14px';
+    c.textContent=catalog.credit;
+    L.appendChild(c);
+  }
   KEYS.forEach(([k,v])=>{
     const b=document.createElement('div');
     b.className='bookRow'; b.style.display='block'; b.style.padding='16px';
@@ -851,6 +823,17 @@ function whereAmI(){
   const total=c.blocks.reduce((n,b)=>n+b.sentences.length,0);
   return book.title+'. '+c.title+'. '+(before+si+1)+' / '+total+'.';
 }
+
+function openAt(fromStart){
+  if(fromStart){ ci=0; bi=0; si=0; }
+  paint();
+  show(mode==='read'?'reader':'player');
+  media();
+  announce(fromStart?'Эхнээс нь':'Үргэлжлүүлэх');
+  if(mode==='listen') play();
+}
+$('resumeGo').addEventListener('click',()=>{ unlock(); openAt(false); });
+$('resumeStart').addEventListener('click',()=>{ unlock(); openAt(true); });
 
 $('doorListen').addEventListener('click',()=>chooseMode('listen'));
 $('doorRead').addEventListener('click',()=>chooseMode('read'));
@@ -958,8 +941,18 @@ document.addEventListener('keydown',e=>{
     if(e.code!=='Tab') show(lastScreen);
     return;
   }
-  if(!$('who').classList.contains('hidden')){
-    if(e.code==='Backspace'||e.code==='Delete'||e.code==='Escape'){ e.preventDefault(); show('welcome'); }
+  // The resume question owns its keys while it is showing.
+  if(!$('resume').classList.contains('hidden')){
+    if(e.code==='ArrowLeft'||e.code==='ArrowRight'||e.code==='ArrowUp'||e.code==='ArrowDown'){
+      e.preventDefault();
+      const d=document.activeElement===$('resumeGo')?$('resumeStart'):$('resumeGo');
+      d.focus(); say(d===$('resumeStart')?'Эхнээс нь':'Үргэлжлүүлэх');
+    }
+    if(e.code==='Enter'||e.code==='NumpadEnter'||e.code==='Numpad0'||e.code==='Space'){
+      e.preventDefault();
+      (document.activeElement===$('resumeStart')?$('resumeStart'):$('resumeGo')).click();
+    }
+    if(e.code==='Backspace'||e.code==='Delete'){ e.preventDefault(); show('shelf'); }
     return;
   }
 
@@ -1001,35 +994,22 @@ document.addEventListener('keydown',e=>{
   if(back){ e.preventDefault(); stop(); show('shelf'); announce('Номын жагсаалт'); }
 });
 
-$('fileInput').addEventListener('change',async e=>{
-  const f=e.target.files[0]; if(!f) return;
-  unlock();
-  $('shelfNote').classList.remove('hidden');
-  $('shelfNote').textContent='Ном нээж байна…';
-  try{
-    book.entry=null;
-    await loadEpub(f,f.name);
-    $('shelfNote').classList.add('hidden');
-    $('bookTitle').textContent=book.title;
-    loadPos(); buildToc(); paint();
-    show(mode==='read'?'reader':'player');
-  }catch(err){ $('shelfNote').textContent='Нээж чадсангүй.'; }
-});
-$('openFileLabel').addEventListener('keydown',e=>{
-  if(e.code==='Enter'||e.code==='Space'){ e.preventDefault(); $('fileInput').click(); }
-});
 
 (async function(){
-  setWho(rawGet('who',''));      // before any setting is read
   try{ const r=await fetch('catalog.json',{cache:'no-store'});
     catalog=r.ok?await r.json():{shelves:[]}; }
   catch(e){ catalog={shelves:[]}; }
 
   // Which phrases have been voiced already. Without this the interface is
   // silent unless an Azure key is present, and a child hears nothing move.
-  try{ const r=await fetch(SPEECH_ROOT+'/index.json',{cache:'force-cache'});
+  // 'no-cache' revalidates with the server. The manifest changes whenever a
+  // shelf is renamed or a book added, and a cached copy leaves those names
+  // silent forever with nothing to show why.
+  try{ const r=await fetch(SPEECH_ROOT+'/index.json',{cache:'no-cache'});
     if(r.ok) SPEECH=await r.json(); }
-  catch(e){}
+  catch(e){ console.warn('speech manifest not loaded', e); }
+  if(!Object.keys(SPEECH).length && !live())
+    console.warn('Gerel: no speech manifest and no key — navigation will be silent.');
   applySize();
   // Always start here. Skipping the question for a returning child saved one
   // tap and cost the only way back to the beginning, which is a bad trade for
