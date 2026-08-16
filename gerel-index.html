@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#FFFDF7">
+<title>Гэрэл — Хүүхдийн номын сан</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;700&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* Daylight, not a reading lamp at midnight. Every shelf colour is dark
+       enough to carry black text at full contrast, because most children at a
+       school for the blind have some sight rather than none. */
+    --paper:#FFFDF7; --ink:#22243B; --muted:#6B6F8D; --line:#E8E2D4;
+    --sky:#3D9BE9; --sun:#FFC53D; --berry:#F2637E;
+    --leaf:#58C08B; --lilac:#A98BE0; --coral:#FF8A5B;
+    --display:'Comfortaa', system-ui, sans-serif;
+    --body:'Nunito', system-ui, -apple-system, sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--paper);color:var(--ink);
+    font-family:var(--body);min-height:100%;-webkit-text-size-adjust:100%;}
+  button{font-family:var(--body);cursor:pointer;border:none;background:none;color:inherit;}
+  button:focus-visible,[tabindex]:focus-visible{outline:5px solid var(--ink);
+    outline-offset:4px;border-radius:20px;}
+  .hidden{display:none !important;}
+
+  /* The app is called light, so the light is the interface: it breathes while
+     the voice speaks and rests when it stops. Readable across a room at a
+     glance, which no small icon is. */
+  .lamp{width:var(--lampSize,130px);height:var(--lampSize,130px);border-radius:50%;
+    background:radial-gradient(circle at 50% 45%,#FFF6D2 0%,var(--sun) 40%,
+      #F5A623 66%,rgba(245,166,35,0) 73%);
+    opacity:.3;transition:opacity .5s ease;flex:0 0 auto;}
+  .lamp.lit{opacity:1;animation:breathe 3.6s ease-in-out infinite;}
+  @keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+  @media (prefers-reduced-motion:reduce){.lamp.lit{animation:none}}
+
+  .screen{position:fixed;inset:0;background:var(--paper);display:flex;
+    flex-direction:column;overflow-y:auto;
+    padding:22px 18px calc(22px + env(safe-area-inset-bottom));}
+  .screen.center{align-items:center;justify-content:center;text-align:center;gap:24px;}
+
+  #welcome .brand{font-family:var(--display);font-weight:700;
+    font-size:clamp(48px,14vw,84px);letter-spacing:-.02em;}
+  #welcome .sub{margin:0;font-size:clamp(17px,4.4vw,21px);color:var(--muted);}
+  .doors{display:grid;gap:16px;width:100%;max-width:540px;}
+  @media(min-width:640px){.doors{grid-template-columns:1fr 1fr}}
+  .door{display:flex;flex-direction:column;align-items:center;gap:12px;
+    padding:34px 20px;border-radius:30px;color:var(--ink);
+    font-family:var(--display);font-weight:700;font-size:27px;
+    box-shadow:0 6px 0 rgba(34,36,59,.16);}
+  .door small{font-family:var(--body);font-weight:600;font-size:16px;opacity:.75;}
+  .door .ic{font-size:46px;line-height:1;}
+  .door.listen{background:var(--sun);} .door.read{background:var(--sky);}
+  .door:active{transform:translateY(3px);box-shadow:0 3px 0 rgba(34,36,59,.16);}
+
+  .bar{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
+  .bar h1{font-family:var(--display);font-weight:700;
+    font-size:clamp(23px,6vw,32px);margin:0;flex:1;min-width:120px;}
+  .chip{padding:11px 15px;border-radius:16px;background:#fff;
+    border:2px solid var(--line);font-weight:700;font-size:15px;white-space:nowrap;}
+  .chip.mode{background:var(--sun);border-color:transparent;}
+
+  .shelves,.books{display:grid;gap:13px;width:100%;max-width:720px;margin:0 auto;}
+  .shelfCard{display:flex;align-items:center;gap:14px;text-align:left;
+    padding:24px 22px;border-radius:26px;color:var(--ink);
+    box-shadow:0 5px 0 rgba(34,36,59,.14);width:100%;}
+  .shelfCard .nm{flex:1;font-family:var(--display);font-weight:700;font-size:24px;}
+  .shelfCard .ct{font-weight:700;font-size:15px;opacity:.72;}
+  .shelfCard.on,.bookRow.on{outline:5px solid var(--ink);outline-offset:3px;}
+
+  .bookRow{display:flex;align-items:center;gap:14px;background:#fff;
+    border:3px solid var(--line);border-radius:22px;padding:11px;}
+  .bookRow .cover{flex:0 0 66px;width:66px;height:94px;border-radius:14px;
+    overflow:hidden;background:var(--line);display:flex;align-items:center;
+    justify-content:center;font-family:var(--display);font-weight:700;
+    font-size:28px;color:var(--muted);}
+  .bookRow .cover img{width:100%;height:100%;object-fit:cover;display:block;}
+  .bookRow .meta{flex:1;min-width:0;text-align:left;padding:4px 0;}
+  .bookRow .t{display:block;font-weight:800;font-size:19px;line-height:1.3;}
+  .bookRow .who{display:block;font-size:14px;color:var(--muted);margin-top:4px;}
+  .bookRow .len{display:block;font-size:13px;color:var(--muted);margin-top:3px;}
+  .mark{display:inline-block;margin-left:8px;font-size:12px;font-weight:800;
+    background:var(--leaf);color:#fff;border-radius:99px;padding:2px 9px;vertical-align:middle;}
+  .star{flex:0 0 auto;font-size:27px;padding:10px;line-height:1;color:var(--line);}
+  .star.is{color:var(--sun);}
+
+  #player{justify-content:space-between;}
+  .stage{flex:1;display:flex;flex-direction:column;align-items:center;
+    justify-content:center;gap:20px;text-align:center;padding:10px 0;}
+  #nowChapter{font-weight:800;font-size:15px;letter-spacing:.07em;
+    text-transform:uppercase;color:var(--muted);}
+  #nowText{font-size:clamp(22px,5.6vw,38px);line-height:1.45;font-weight:800;max-width:20ch;}
+  #nowText .said{color:var(--berry);}
+  #nowNext{font-size:clamp(14px,3.4vw,18px);color:var(--muted);max-width:34ch;}
+
+  .transport{display:grid;grid-template-columns:1fr 1.5fr 1fr;gap:11px;
+    width:100%;max-width:560px;margin:0 auto;}
+  .key{border-radius:24px;padding:22px 10px;min-height:88px;
+    font-family:var(--display);font-weight:700;font-size:17px;
+    background:#fff;border:3px solid var(--line);}
+  .key.big{background:var(--berry);color:#fff;border-color:transparent;font-size:21px;}
+  .row2{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));
+    gap:9px;width:100%;max-width:560px;margin:11px auto 0;}
+  .mini{border-radius:18px;padding:14px 8px;font-weight:700;font-size:15px;
+    background:#fff;border:2px solid var(--line);min-height:56px;}
+  .mini.on{background:var(--leaf);color:#fff;border-color:transparent;}
+
+  #reader{padding:0;}
+  #readTop{position:sticky;top:0;z-index:2;background:var(--paper);
+    border-bottom:2px solid var(--line);padding:11px 14px;display:flex;gap:9px;align-items:center;}
+  #readTop .ttl{flex:1;min-width:0;font-weight:800;font-size:15px;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  #readTop button{border:2px solid var(--line);background:#fff;border-radius:14px;
+    padding:12px 14px;font-weight:800;font-size:17px;min-height:48px;}
+  #readText{padding:22px 18px 130px;font-size:var(--size,32px);line-height:1.65;
+    font-weight:600;max-width:32ch;margin:0 auto;}
+  #readText p{margin:0 0 .85em;}
+  #readText .sent{border-radius:8px;padding:0 3px;cursor:pointer;}
+  #readText .sent.now{background:var(--sun);}
+  #readFoot{position:fixed;left:0;right:0;bottom:0;background:var(--paper);
+    border-top:2px solid var(--line);
+    padding:11px 14px calc(11px + env(safe-area-inset-bottom));display:flex;gap:9px;}
+
+  .note{background:#fff;border:3px dashed var(--line);border-radius:20px;
+    padding:17px;color:var(--muted);font-weight:600;max-width:720px;margin:14px auto;
+    text-align:center;}
+  .credit{font-size:13px;color:var(--muted);max-width:720px;margin:20px auto 0;
+    line-height:1.6;display:block;text-align:center;}
+  #fileInput{position:absolute;opacity:0;width:1px;height:1px;}
+</style>
+</head>
+<body>
+
+<div id="welcome" class="screen center">
+  <div class="lamp lit" style="--lampSize:150px"></div>
+  <div class="brand">Гэрэл</div>
+  <p class="sub">Хүүхдийн номын сан</p>
+  <div class="doors">
+    <button class="door listen" id="doorListen">
+      <span class="ic">🎧</span>Сонсох<small>Ном чанга уншина</small>
+    </button>
+    <button class="door read" id="doorRead">
+      <span class="ic">🔎</span>Унших<small>Том үсгээр харна</small>
+    </button>
+  </div>
+  <div id="status" class="note" role="status" aria-live="polite"></div>
+</div>
+
+<div id="shelf" class="screen hidden">
+  <div class="bar">
+    <h1 id="shelfTitle">Тавиурууд</h1>
+    <button class="chip mode" id="modeChip">Сонсох</button>
+    <button class="chip" id="backChip">← Буцах</button>
+  </div>
+  <div class="shelves" id="shelfList"></div>
+  <div class="books" id="bookList"></div>
+  <div class="note hidden" id="shelfNote"></div>
+  <label class="credit" id="openFileLabel" tabindex="0">Өөрийн ном нээх
+    <input type="file" id="fileInput" accept=".epub,application/epub+zip"></label>
+  <p class="credit" id="shelfCredit"></p>
+</div>
+
+<div id="player" class="screen hidden">
+  <div class="bar">
+    <h1 id="bookTitle">—</h1>
+    <button class="chip" id="playerBack">← Буцах</button>
+  </div>
+  <div class="stage">
+    <div class="lamp" id="lamp"></div>
+    <div id="nowChapter"></div>
+    <div id="nowText"></div>
+    <div id="nowNext"></div>
+  </div>
+  <div>
+    <div class="transport">
+      <button class="key" id="prevBtn">◀<br>Өмнөх</button>
+      <button class="key big" id="playBtn">▶ Сонсох</button>
+      <button class="key" id="nextBtn">Дараах<br>▶</button>
+    </div>
+    <div class="row2">
+      <button class="mini" id="tocBtn">Бүлгүүд</button>
+      <button class="mini" id="toReadBtn">Том үсгээр</button>
+      <button class="mini" id="speedBtn">Хурд 1×</button>
+      <button class="mini" id="sleepBtn">Унтах цаг</button>
+    </div>
+    <div id="playerStatus" class="note hidden"></div>
+  </div>
+</div>
+
+<div id="reader" class="screen hidden">
+  <div id="readTop">
+    <button id="readBack">←</button>
+    <span class="ttl" id="readTitle"></span>
+    <button id="sizeDown">А−</button>
+    <button id="sizeUp">А+</button>
+  </div>
+  <div id="readText"></div>
+  <div id="readFoot">
+    <button class="key big" id="readPlayBtn" style="flex:1;min-height:62px;padding:15px">▶ Сонсох</button>
+    <button class="mini" id="readTocBtn" style="min-width:118px">Бүлгүүд</button>
+  </div>
+</div>
+
+<div id="toc" class="screen hidden">
+  <div class="bar">
+    <h1>Бүлгүүд</h1>
+    <button class="chip" id="tocClose">Хаах</button>
+  </div>
+  <div class="books" id="tocList"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/microsoft-cognitiveservices-speech-sdk@1.40.0/distrib/browser/microsoft.cognitiveservices.speech.sdk.bundle-min.js"></script>
+<script>
+const AUDIO_ROOT='audio', SPEECH_ROOT='speech';
+// Only for books not yet voiced. Empty means no key ships in the page.
+const AZURE_SPEECH_KEY="", AZURE_SPEECH_REGION="eastasia", VOICE="mn-MN-YesuiNeural";
+const COLOURS=['var(--sky)','var(--sun)','var(--berry)','var(--leaf)','var(--lilac)','var(--coral)'];
+const SPEEDS=[0.6,0.7,0.85,1.0,1.15,1.3], SLEEPS=[0,15,30,60];
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const put=(k,v)=>{try{localStorage.setItem('gerel:'+k,v)}catch(e){}};
+const get=(k,d)=>{try{const v=localStorage.getItem('gerel:'+k);return v===null?d:v}catch(e){return d}};
+
+let mode=get('mode','');
+let speedIndex=parseInt(get('speed','2'),10); if(isNaN(speedIndex)||!SPEEDS[speedIndex]) speedIndex=2;
+let readSize=parseInt(get('size','32'),10); if(isNaN(readSize)) readSize=32;
+let sleepIndex=0, favs=[];
+try{ favs=JSON.parse(get('favs','[]'))||[] }catch(e){ favs=[] }
+const isFav=f=>favs.includes(f);
+
+const audioEl=new Audio(), voiceEl=new Audio();
+audioEl.preload='auto';
+let unlocked=false;
+function unlock(){
+  if(unlocked) return; unlocked=true;
+  const q='data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABAAZGF0YQAAAAA=';
+  audioEl.src=q; audioEl.play().catch(()=>{});
+  voiceEl.src=q; voiceEl.play().catch(()=>{});
+}
+const rate=()=>{const p=Math.round((SPEEDS[speedIndex]-1)*100);return (p>=0?'+':'')+p+'%'};
+const xml=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
+const live=()=>!!AZURE_SPEECH_KEY&&!!window.SpeechSDK;
+function synth(){
+  const c=SpeechSDK.SpeechConfig.fromSubscription(AZURE_SPEECH_KEY,AZURE_SPEECH_REGION);
+  c.speechSynthesisVoiceName=VOICE;
+  c.speechSynthesisOutputFormat=SpeechSDK.SpeechSynthesisOutputFormat.Audio24Khz48KBitRateMonoMp3;
+  return new SpeechSDK.SpeechSynthesizer(c,null);
+}
+
+// The interface speaks. A child who cannot see learns nothing from a silent
+// app, so every move says what it is. Pre-voiced clips are preferred, which is
+// what lets the published page carry no key at all.
+let sayT=null, SPEECH={};
+function say(text){
+  clearTimeout(sayT);
+  sayT=setTimeout(()=>{
+    const t=(text||'').trim();
+    if(!t) return;
+    const clip=SPEECH[t];
+    if(clip){ voiceEl.src=SPEECH_ROOT+'/'+clip; voiceEl.play().catch(()=>liveSay(t)); return; }
+    liveSay(t);
+  },220);   // a pause, so sweeping across the screen does not babble
+}
+function liveSay(t){
+  if(!live()||!t) return;
+  const s=synth();
+  s.speakSsmlAsync('<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="mn-MN">'
+    +'<voice name="'+VOICE+'">'+xml(t)+'</voice></speak>',
+    r=>{ try{s.close()}catch(e){}
+      if(r.audioData){ voiceEl.src=URL.createObjectURL(new Blob([r.audioData],{type:'audio/mpeg'}));
+        voiceEl.play().catch(()=>{}); } },
+    ()=>{ try{s.close()}catch(e){} });
+}
+function announce(t){ $('status').textContent=t; $('playerStatus').textContent=t; say(t); }
+
+// ---- book text ----
+const book={title:'',author:'',chapters:[],audioBase:null,entry:null};
+const PROMO=['bolorsoft','болор дуран','сурталчилгаа','программтай танилцах','хандив',
+  'хаан банк','qpay','e-nom.mn','үнэ төлбөр'];
+const CRED=['e-nom.mn','цахим номын сан','хөрвүүлэв','эрхлэн хэвлүүлсэн','хэвлэлийн газар'];
+const FRONT=['хэвлэлийн мэдээлэл','хэвлэн нийтлэл','isbn','удк','ббк','редактор',
+  'эрхлэн гаргав','хянан тохиолдуулсан','зохиогчийн эрх','ном зүйн','хэвлэлийн эх'];
+const SEP=/^[⁂*※•\s]+$/;
+const hits=(t,w)=>{const l=t.toLowerCase();return w.reduce((n,x)=>n+(l.includes(x)?1:0),0)};
+function stripPromo(ps){
+  for(let i=0;i<ps.length;i++)
+    if(SEP.test(ps[i])&&hits(ps.slice(i).join(' '),PROMO)>=2) return ps.slice(0,i);
+  return ps;
+}
+function sents(text){
+  const raw=text.match(/[^.!?…]+[.!?…]+[»”"']?|[^.!?…]+$/g)||[text];
+  const out=[];let c='';
+  raw.forEach(p=>{const s=(c+p).trim();if(!s)return;
+    if(s.length<16){c=s+' ';return}out.push(s);c=''});
+  if(c.trim())out.push(c.trim());
+  return out.length?out:[text];
+}
+async function loadVoiced(e){
+  const base=AUDIO_ROOT+'/'+e.id;
+  const r=await fetch(base+'/index.json',{cache:'force-cache'});
+  if(!r.ok) throw new Error('unavailable');
+  const d=await r.json();
+  book.title=d.title||e.title; book.author=d.author||e.author||''; book.audioBase=base;
+  book.chapters=d.chapters.map(c=>({title:c.title,
+    blocks:c.blocks.map(b=>({sentences:b.sentences,audio:b.audio,marks:b.marks}))}));
+  if(!book.chapters.length) throw new Error('unavailable');
+}
+async function loadEpub(data,fb){
+  const zip=await JSZip.loadAsync(data);
+  const cont=await zip.file('META-INF/container.xml').async('string');
+  const opfPath=new DOMParser().parseFromString(cont,'application/xml')
+    .querySelector('rootfile').getAttribute('full-path');
+  const dir=opfPath.includes('/')?opfPath.replace(/\/[^/]*$/,'/'):'';
+  const opf=new DOMParser().parseFromString(await zip.file(opfPath).async('string'),'application/xml');
+  book.audioBase=null;
+  book.title=(opf.querySelector('metadata > *|title')||opf.querySelector('title'))?.textContent?.trim()||fb||'Ном';
+  book.author=(opf.querySelector('metadata > *|creator')||opf.querySelector('creator'))?.textContent?.trim()||'';
+  const href={};
+  opf.querySelectorAll('manifest > item').forEach(i=>href[i.getAttribute('id')]=i.getAttribute('href'));
+  const spine=[...opf.querySelectorAll('spine > itemref')]
+    .map(r=>href[r.getAttribute('idref')]).filter(Boolean);
+  const titles={};
+  const ncx=Object.values(href).find(h=>h&&h.endsWith('.ncx'));
+  if(ncx&&zip.file(dir+ncx)){
+    const t=new DOMParser().parseFromString(await zip.file(dir+ncx).async('string'),'application/xml');
+    t.querySelectorAll('navPoint').forEach(np=>{
+      const s=np.querySelector('content')?.getAttribute('src')||'';
+      const l=np.querySelector('navLabel text')?.textContent?.trim();
+      const k=s.split('#')[0].split('/').pop();
+      if(k&&l&&!titles[k]) titles[k]=l;
+    });
+  }
+  book.chapters=[];
+  for(const h of spine){
+    const f=zip.file(dir+h)||zip.file(h); if(!f) continue;
+    const doc=new DOMParser().parseFromString(await f.async('string'),'text/html');
+    doc.querySelectorAll('script,style').forEach(n=>n.remove());
+    const els=[...doc.querySelectorAll('p,h1,h2,h3,h4,li,blockquote')];
+    let ps=(els.length?els:[doc.body]).map(e=>(e.textContent||'').replace(/\s+/g,' ').trim())
+      .map(t=>t.replace(/^\s*\[\s*[←<]\s*\d+\s*\]\s*/,'').trim()).filter(t=>t.length>=1);
+    if(!ps.length) continue;
+    const w=ps.join(' ');
+    if(w.length<800&&hits(w,PROMO)>=2) continue;
+    if(w.length<1500&&hits(w,CRED)>=2) continue;
+    if(w.length<1200&&hits(w,FRONT)>=2) continue;
+    if(!book.chapters.length&&w.length<400) continue;
+    ps=stripPromo(ps).filter(t=>t.length>1);
+    if(!ps.length) continue;
+    book.chapters.push({
+      title:titles[h.split('/').pop()]||doc.querySelector('h1,h2,h3')?.textContent?.trim()||ps[0].slice(0,60),
+      blocks:ps.map(p=>({sentences:sents(p)}))});
+  }
+  if(!book.chapters.length) throw new Error('unavailable');
+}
+
+// ---- playing ----
+let ci=0,bi=0,si=0,playing=false;
+const clips=new Map(), ck=(c,b)=>c+':'+b;
+function getClip(c,b){
+  const k=ck(c,b); if(clips.has(k)) return clips.get(k);
+  const blk=book.chapters[c].blocks[b];
+  let p;
+  if(book.audioBase&&blk.audio){
+    p=Promise.resolve({url:book.audioBase+'/'+blk.audio,
+      marks:(blk.marks||[]).map(m=>({s:m.s,c:m.c,l:m.l,t:m.t}))});
+  } else if(live()){ p=synthLive(blk.sentences); }
+  else { p=Promise.reject(new Error('unavailable')); }
+  clips.set(k,p); return p;
+}
+function dropClips(keep=[]){
+  const s=new Set(keep);
+  clips.forEach((v,k)=>{ if(s.has(k))return;
+    Promise.resolve(v).then(c=>{if(c&&c.url&&c.url.startsWith('blob:'))URL.revokeObjectURL(c.url)}).catch(()=>{});
+    clips.delete(k); });
+}
+function synthLive(list){
+  return new Promise((res,rej)=>{
+    const s=synth();
+    const head='<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="mn-MN">'
+      +'<voice name="'+VOICE+'"><prosody rate="'+rate()+'">';
+    let ssml=head; const spans=[];
+    list.forEach((t,i)=>{ if(i) ssml+='<break time="260ms"/>';
+      const safe=xml(t);
+      spans.push({start:ssml.length,len:safe.length,exact:safe.length===t.length});
+      ssml+=safe; });
+    ssml+='</prosody></voice></speak>';
+    const marks=[];
+    s.wordBoundary=(x,e)=>{
+      const at=e.textOffset;
+      for(let i=0;i<spans.length;i++){ const sp=spans[i];
+        if(at>=sp.start&&at<sp.start+sp.len){
+          marks.push({s:i,c:sp.exact?at-sp.start:0,l:sp.exact?e.wordLength:0,t:e.audioOffset/1e7});
+          return; } }
+    };
+    s.speakSsmlAsync(ssml,r=>{
+      if(r.reason===SpeechSDK.ResultReason.SynthesizingAudioCompleted&&r.audioData){
+        const u=URL.createObjectURL(new Blob([r.audioData],{type:'audio/mpeg'}));
+        try{s.close()}catch(e){} res({url:u,marks});
+      } else { try{s.close()}catch(e){} rej(new Error('unavailable')); }
+    },()=>{ try{s.close()}catch(e){} rej(new Error('unavailable')); });
+  });
+}
+function playClip(clip,from){
+  return new Promise((res,rej)=>{
+    let frame=null;
+    const done=()=>{audioEl.removeEventListener('ended',ok);audioEl.removeEventListener('error',bad);
+      if(frame)cancelAnimationFrame(frame)};
+    const ok=()=>{done();res()}, bad=()=>{done();rej(new Error('audio'))};
+    const tick=()=>{
+      if(!playing){done();return}
+      const t=audioEl.currentTime; let cur=null;
+      for(const m of clip.marks){ if(m.t<=t) cur=m; else break; }
+      if(cur){ si=cur.s; paint(cur.c+cur.l); }
+      frame=requestAnimationFrame(tick);
+    };
+    audioEl.addEventListener('ended',ok); audioEl.addEventListener('error',bad);
+    audioEl.src=clip.url;
+    audioEl.playbackRate=book.audioBase?SPEEDS[speedIndex]:1;
+    if(from>0) audioEl.addEventListener('loadedmetadata',()=>{try{audioEl.currentTime=from}catch(e){}},{once:true});
+    audioEl.play().then(()=>{frame=requestAnimationFrame(tick)}).catch(e=>{done();rej(e)});
+  });
+}
+
+const chap=()=>book.chapters[ci], blk=()=>chap().blocks[bi];
+const sent=()=>blk().sentences[si]||'';
+const nextOf=(c,b)=>b+1<book.chapters[c].blocks.length?{c,b:b+1}
+  :(c+1<book.chapters.length?{c:c+1,b:0}:null);
+const posKey=()=>'pos:'+book.title;
+const savePos=()=>put(posKey(),JSON.stringify({ci,bi,si}));
+function loadPos(){
+  try{ const s=JSON.parse(get(posKey(),'null'));
+    if(s&&book.chapters[s.ci]){ ci=s.ci;
+      bi=Math.min(s.bi||0,book.chapters[ci].blocks.length-1);
+      si=Math.min(s.si||0,book.chapters[ci].blocks[bi].sentences.length-1);
+      return true; } }catch(e){}
+  return false;
+}
+function paint(upto){
+  if(!book.chapters.length) return;
+  const t=sent(), c=chap();
+  let before=0; for(let i=0;i<bi;i++) before+=c.blocks[i].sentences.length;
+  const total=c.blocks.reduce((n,b)=>n+b.sentences.length,0);
+  $('nowChapter').textContent=c.title+' · '+(before+si+1)+'/'+total;
+  $('nowText').innerHTML = (upto>0&&upto<t.length)
+    ? '<span class="said">'+esc(t.slice(0,upto))+'</span>'+esc(t.slice(upto))
+    : esc(t);
+  const nb=c.blocks[bi+1];
+  $('nowNext').textContent=blk().sentences[si+1]||(nb&&nb.sentences[0])||'';
+  markRead(); savePos();
+}
+async function play(){
+  unlock(); playing=true;
+  $('lamp').classList.add('lit');
+  $('playBtn').textContent='❚❚ Зогсоох'; $('readPlayBtn').textContent='❚❚ Зогсоох';
+  media();
+  while(playing&&ci<book.chapters.length){
+    paint(0);
+    let clip;
+    try{ clip=await getClip(ci,bi); }catch(e){ if(playing) notReady(); return; }
+    if(!playing) return;
+    const nx=nextOf(ci,bi); if(nx) getClip(nx.c,nx.b).catch(()=>{});
+    const m=clip.marks.find(x=>x.s===si);
+    try{ await playClip(clip,m?m.t:0); }catch(e){ if(playing) notReady(); return; }
+    if(!playing) return;
+    if(!nx){ stop(); announce('Ном дууслаа.'); return; }
+    const newCh=nx.c!==ci; ci=nx.c; bi=nx.b; si=0;
+    if(newCh){ announce(chap().title); media(); }
+    const a=nextOf(ci,bi);
+    dropClips([ck(ci,bi)].concat(a?[ck(a.c,a.b)]:[]));
+  }
+}
+function stop(){
+  playing=false; try{audioEl.pause()}catch(e){}
+  $('lamp').classList.remove('lit');
+  $('playBtn').textContent='▶ Сонсох'; $('readPlayBtn').textContent='▶ Сонсох';
+  paint();
+}
+function notReady(){
+  stop(); $('playerStatus').classList.remove('hidden');
+  announce('Энэ ном хараахан бэлэн болоогүй байна.');
+}
+function step(d){
+  const was=playing; stop();
+  let c=ci,b=bi,s=si+d;
+  while(s<0){
+    if(b>0){b--;s+=book.chapters[c].blocks[b].sentences.length}
+    else if(c>0){c--;b=book.chapters[c].blocks.length-1;s+=book.chapters[c].blocks[b].sentences.length}
+    else {s=0;break}
+  }
+  while(s>=book.chapters[c].blocks[b].sentences.length){
+    const n=book.chapters[c].blocks[b].sentences.length;
+    if(b+1<book.chapters[c].blocks.length){s-=n;b++}
+    else if(c+1<book.chapters.length){s-=n;c++;b=0}
+    else {s=n-1;break}
+  }
+  ci=c;bi=b;si=s; paint(); if(was) play();
+}
+function jump(i){
+  stop(); ci=i;bi=0;si=0; paint();
+  show(mode==='read'?'reader':'player'); buildRead();
+  announce(chap().title); play();
+}
+
+// Lock screen, headphone button, car stereo. A child listening in bed with the
+// screen off is the ordinary case here, not the exception.
+function media(){
+  if(!('mediaSession' in navigator)||!book.chapters.length) return;
+  const art=book.entry&&book.entry.cover?[{src:book.entry.cover,sizes:'320x480',type:'image/jpeg'}]:[];
+  navigator.mediaSession.metadata=new MediaMetadata({
+    title:chap().title, artist:book.author||'Гэрэл', album:book.title, artwork:art});
+  const set=(a,f)=>{try{navigator.mediaSession.setActionHandler(a,f)}catch(e){}};
+  set('play',()=>play()); set('pause',()=>stop());
+  set('previoustrack',()=>step(-1)); set('nexttrack',()=>step(1));
+  set('seekbackward',()=>step(-1)); set('seekforward',()=>step(1));
+}
+
+// ---- reading ----
+const applySize=()=>{ $('readText').style.setProperty('--size',readSize+'px'); put('size',readSize); };
+function buildRead(){
+  if(!book.chapters.length) return;
+  $('readTitle').textContent=chap().title;
+  $('readText').innerHTML=chap().blocks.map((b,bx)=>
+    '<p>'+b.sentences.map((t,sx)=>
+      '<span class="sent" data-b="'+bx+'" data-s="'+sx+'">'+esc(t)+'</span>').join(' ')+'</p>').join('');
+  $('readText').dataset.ch=String(ci);
+  applySize(); markRead(true);
+}
+function markRead(scroll){
+  if($('reader').classList.contains('hidden')) return;
+  if($('readText').dataset.ch!==String(ci)){ buildRead(); return; }
+  const p=$('readText').querySelector('.sent.now'); if(p) p.classList.remove('now');
+  const el=$('readText').querySelector('.sent[data-b="'+bi+'"][data-s="'+si+'"]');
+  if(el){ el.classList.add('now'); if(scroll!==false) el.scrollIntoView({block:'center',behavior:'smooth'}); }
+}
+
+// ---- screens ----
+const SCREENS=['welcome','shelf','player','reader','toc'];
+let openShelf=null, pick=-1, rows=[], catalog=null;
+function show(n){ SCREENS.forEach(s=>$(s).classList.toggle('hidden',s!==n)); if(n==='reader') buildRead(); }
+
+function chooseMode(m){
+  unlock(); mode=m; put('mode',m);
+  $('modeChip').textContent=m==='read'?'Унших':'Сонсох';
+  openShelf=null; renderShelf(); show('shelf');
+  announce(m==='read'?'Унших. Тавиур сонгоно уу.':'Сонсох. Тавиур сонгоно уу.');
+}
+
+const everyBook=()=>{
+  const m=new Map();
+  (catalog?.shelves||[]).forEach(g=>(g.books||[]).forEach(b=>{
+    if(b&&b.title&&b.file&&!m.has(b.file)) m.set(b.file,b); }));
+  return [...m.values()];
+};
+function shelvesOf(){
+  const base=(catalog?.shelves||[]).filter(g=>g.forChildren!==false)
+    .filter(g=>(g.books||[]).some(b=>b&&b.title&&b.file));
+  const f=everyBook().filter(b=>isFav(b.file));
+  return f.length?[{name:'Миний ном',books:f}].concat(base):base;
+}
+const mins=m=>m<60?m+' минут':(m%60?Math.floor(m/60)+' цаг '+(m%60)+' минут':Math.floor(m/60)+' цаг');
+const begun=t=>!!get('pos:'+t,'');
+
+function renderShelf(){
+  const L=$('shelfList'), B=$('bookList');
+  L.innerHTML=''; B.innerHTML=''; rows=[]; pick=-1;
+  $('shelfCredit').textContent=catalog?.credit||'';
+  $('shelfNote').classList.add('hidden');
+
+  if(openShelf===null){
+    $('shelfTitle').textContent='Тавиурууд';
+    $('backChip').textContent='← Эхэлье';
+    const list=shelvesOf();
+    list.forEach((g,i)=>{
+      const n=(g.books||[]).filter(b=>b&&b.title&&b.file).length;
+      const c=document.createElement('button');
+      c.className='shelfCard';
+      c.style.background=COLOURS[i%COLOURS.length];
+      c.innerHTML='<span class="nm">'+esc(g.name)+'</span><span class="ct">'+n+' ном</span>';
+      const speak=()=>{ pick=i; hi(L,i); say(g.name); };
+      c.addEventListener('mouseenter',speak); c.addEventListener('focus',speak);
+      c.addEventListener('click',()=>{ unlock(); openShelf=i; renderShelf(); announce(g.name); });
+      L.appendChild(c);
+    });
+    if(!list.length){
+      $('shelfNote').classList.remove('hidden');
+      $('shelfNote').textContent='Ном алга байна. Доороос өөрийн ном нээж болно.';
+    }
+    return;
+  }
+
+  const g=shelvesOf()[openShelf];
+  if(!g){ openShelf=null; renderShelf(); return; }
+  $('shelfTitle').textContent=g.name;
+  $('backChip').textContent='← Тавиурууд';
+  const all=(g.books||[]).filter(b=>b&&b.title&&b.file);
+  all.forEach((e,i)=>{
+    rows.push(e);
+    const r=document.createElement('div');
+    r.className='bookRow'; r.dataset.i=i;
+    const cov=e.cover
+      ?'<span class="cover"><img src="'+esc(e.cover)+'" alt="" loading="lazy"></span>'
+      :'<span class="cover">'+esc((e.title||'?').trim().charAt(0))+'</span>';
+    r.innerHTML=cov
+      +'<button class="meta"><span class="t">'+esc(e.title)
+      +(begun(e.title)?'<span class="mark">эхэлсэн</span>':'')+'</span>'
+      +(e.author?'<span class="who">'+esc(e.author)+'</span>':'')
+      +(e.minutes?'<span class="len">'+mins(e.minutes)+'</span>':'')+'</button>'
+      +'<button class="star'+(isFav(e.file)?' is':'')+'" aria-label="Дуртай">★</button>';
+    const speak=()=>{ pick=i; hi(B,i);
+      say(e.title); };
+    const meta=r.querySelector('.meta');
+    meta.addEventListener('click',()=>{ unlock(); openBook(e); });
+    meta.addEventListener('mouseenter',speak); meta.addEventListener('focus',speak);
+    r.querySelector('.star').addEventListener('click',ev=>{
+      ev.stopPropagation();
+      favs=isFav(e.file)?favs.filter(x=>x!==e.file):favs.concat([e.file]);
+      put('favs',JSON.stringify(favs));
+      ev.currentTarget.classList.toggle('is');
+      announce(isFav(e.file)?'Дуртай номонд нэмлээ.':'Дуртай номноос хаслаа.');
+    });
+    B.appendChild(r);
+  });
+}
+function hi(container,i){
+  container.querySelectorAll('.shelfCard,.bookRow').forEach(x=>x.classList.remove('on'));
+  const sel=container.children[i];
+  if(sel){ sel.classList.add('on'); sel.scrollIntoView({block:'center',behavior:'smooth'}); }
+}
+
+async function openBook(e){
+  book.entry=e;
+  $('shelfNote').classList.remove('hidden');
+  $('shelfNote').textContent='Ном нээж байна…';
+  try{
+    try{ await loadVoiced(e); }
+    catch(x){
+      const r=await fetch(e.file);
+      if(!r.ok) throw new Error('unavailable');
+      await loadEpub(await r.arrayBuffer(), e.title);
+    }
+    put('last',JSON.stringify(e));
+    $('shelfNote').classList.add('hidden');
+    $('playerStatus').classList.add('hidden');
+    $('bookTitle').textContent=book.title;
+    const again=loadPos();
+    buildToc(); paint();
+    show(mode==='read'?'reader':'player');
+    media();
+    announce(again?'Уншиж байсан газраас үргэлжилнэ.':book.title);
+    if(mode==='listen') play();
+  }catch(err){
+    $('shelfNote').textContent='Энэ ном хараахан бэлэн болоогүй байна. Өөр ном сонгоно уу.';
+    say('Энэ ном хараахан бэлэн болоогүй байна.');
+    console.error(err);
+  }
+}
+
+function buildToc(){
+  $('tocList').innerHTML='';
+  book.chapters.forEach((c,i)=>{
+    const b=document.createElement('button');
+    b.className='bookRow'; b.style.display='block'; b.style.padding='18px';
+    b.innerHTML='<span class="t">'+(i+1)+'. '+esc(c.title)+'</span>';
+    b.addEventListener('click',()=>jump(i));
+    b.addEventListener('focus',()=>say(c.title));
+    $('tocList').appendChild(b);
+  });
+}
+
+$('doorListen').addEventListener('click',()=>chooseMode('listen'));
+$('doorRead').addEventListener('click',()=>chooseMode('read'));
+$('modeChip').addEventListener('click',()=>chooseMode(mode==='read'?'listen':'read'));
+$('playBtn').addEventListener('click',()=>playing?stop():play());
+$('readPlayBtn').addEventListener('click',()=>playing?stop():play());
+$('prevBtn').addEventListener('click',()=>step(-1));
+$('nextBtn').addEventListener('click',()=>step(1));
+$('tocBtn').addEventListener('click',()=>{show('toc');announce('Бүлгүүд')});
+$('readTocBtn').addEventListener('click',()=>{show('toc');announce('Бүлгүүд')});
+$('tocClose').addEventListener('click',()=>show(mode==='read'?'reader':'player'));
+$('toReadBtn').addEventListener('click',()=>{show('reader');announce('Том үсгээр')});
+$('readBack').addEventListener('click',()=>{stop();show('shelf')});
+$('playerBack').addEventListener('click',()=>{stop();show('shelf')});
+$('backChip').addEventListener('click',()=>{
+  if(openShelf!==null){ openShelf=null; renderShelf(); announce('Тавиурууд'); }
+  else { show('welcome'); announce('Сонсох эсвэл унших?'); }
+});
+$('readText').addEventListener('click',e=>{
+  const s=e.target.closest('.sent'); if(!s) return;
+  unlock(); stop(); bi=+s.dataset.b; si=+s.dataset.s;
+  paint(); markRead(false); play();
+});
+$('sizeUp').addEventListener('click',()=>{readSize=Math.min(96,readSize+6);applySize();announce('Үсэг '+readSize)});
+$('sizeDown').addEventListener('click',()=>{readSize=Math.max(18,readSize-6);applySize();announce('Үсэг '+readSize)});
+$('speedBtn').addEventListener('click',()=>{
+  speedIndex=(speedIndex+1)%SPEEDS.length; put('speed',speedIndex);
+  $('speedBtn').textContent='Хурд '+SPEEDS[speedIndex].toFixed(2).replace(/0$/,'')+'×';
+  announce('Хурд '+SPEEDS[speedIndex]);
+  if(book.audioBase) audioEl.playbackRate=SPEEDS[speedIndex];
+  else { dropClips(); if(playing){stop();play()} }
+});
+$('speedBtn').textContent='Хурд '+SPEEDS[speedIndex].toFixed(2).replace(/0$/,'')+'×';
+
+// Children fall asleep listening. Without this the book runs all night and
+// their place is gone by morning.
+let sleepT=null;
+$('sleepBtn').addEventListener('click',()=>{
+  sleepIndex=(sleepIndex+1)%SLEEPS.length; clearTimeout(sleepT);
+  const m=SLEEPS[sleepIndex];
+  $('sleepBtn').classList.toggle('on',m>0);
+  $('sleepBtn').textContent=m?m+' минут':'Унтах цаг';
+  if(m){ sleepT=setTimeout(()=>{stop();announce('Сайхан амраарай.')},m*60000);
+    announce(m+' минутын дараа зогсоно.'); }
+  else announce('Унтах цаг унтраалаа.');
+});
+
+// Four keys, the same everywhere: up and down to move and hear, right or Enter
+// to go in, left or Delete to come back.
+document.addEventListener('keydown',e=>{
+  const back=e.code==='Backspace'||e.code==='Delete'||e.code==='NumpadSubtract';
+  const enter=e.code==='Enter'||e.code==='NumpadEnter'||e.code==='Numpad0';
+  const down=e.code==='ArrowDown'||e.code==='Numpad2';
+  const up=e.code==='ArrowUp'||e.code==='Numpad8';
+  const right=e.code==='ArrowRight'||e.code==='Numpad6';
+  const left=e.code==='ArrowLeft'||e.code==='Numpad4';
+
+  if(!$('welcome').classList.contains('hidden')){
+    if(down||up||right||left){ e.preventDefault();
+      const d=document.activeElement===$('doorListen')?$('doorRead'):$('doorListen');
+      d.focus(); say(d===$('doorRead')?'Унших':'Сонсох'); }
+    if(enter){ e.preventDefault(); (document.activeElement===$('doorRead')?$('doorRead'):$('doorListen')).click(); }
+    return;
+  }
+  if(!$('shelf').classList.contains('hidden')){
+    const box=openShelf===null?$('shelfList'):$('bookList');
+    const items=[...box.children]; if(!items.length) return;
+    if(down||up){ e.preventDefault();
+      pick=Math.max(0,Math.min(items.length-1,pick<0?0:pick+(down?1:-1)));
+      hi(box,pick);
+      const t=items[pick].querySelector('.nm,.t'); if(t) say(t.textContent); }
+    if((enter||right)&&pick>=0){ e.preventDefault();
+      (items[pick].querySelector('.meta')||items[pick]).click(); }
+    if(back||left){ e.preventDefault(); $('backChip').click(); }
+    return;
+  }
+  if(!$('toc').classList.contains('hidden')){
+    if(back||left){ e.preventDefault(); $('tocClose').click(); }
+    return;
+  }
+  if(e.code==='Space'||enter){ e.preventDefault(); playing?stop():play(); }
+  if(right) step(1);
+  if(left) step(-1);
+  if(down){ e.preventDefault(); if(ci+1<book.chapters.length) jump(ci+1); }
+  if(up){ e.preventDefault(); if(ci>0) jump(ci-1); }
+  if(back){ e.preventDefault(); stop(); show('shelf'); announce('Номын жагсаалт'); }
+});
+
+$('fileInput').addEventListener('change',async e=>{
+  const f=e.target.files[0]; if(!f) return;
+  unlock();
+  $('shelfNote').classList.remove('hidden');
+  $('shelfNote').textContent='Ном нээж байна…';
+  try{
+    book.entry=null;
+    await loadEpub(f,f.name);
+    $('shelfNote').classList.add('hidden');
+    $('bookTitle').textContent=book.title;
+    loadPos(); buildToc(); paint();
+    show(mode==='read'?'reader':'player');
+  }catch(err){ $('shelfNote').textContent='Нээж чадсангүй.'; }
+});
+$('openFileLabel').addEventListener('keydown',e=>{
+  if(e.code==='Enter'||e.code==='Space'){ e.preventDefault(); $('fileInput').click(); }
+});
+
+(async function(){
+  try{ const r=await fetch('catalog.json',{cache:'no-store'});
+    catalog=r.ok?await r.json():{shelves:[]}; }
+  catch(e){ catalog={shelves:[]}; }
+
+  // Which phrases have been voiced already. Without this the interface is
+  // silent unless an Azure key is present, and a child hears nothing move.
+  try{ const r=await fetch(SPEECH_ROOT+'/index.json',{cache:'force-cache'});
+    if(r.ok) SPEECH=await r.json(); }
+  catch(e){}
+  applySize();
+  if(mode) chooseMode(mode);       // a child who has been here before skips the question
+  else { show('welcome'); $('doorListen').focus(); }
+})();
+</script>
+</body>
+</html>
