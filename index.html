@@ -197,6 +197,7 @@
       <button class="mini" id="toReadBtn">Том үсгээр</button>
       <button class="mini" id="speedBtn">Хурд 1×</button>
       <button class="mini" id="sleepBtn">Унтах цаг</button>
+      <button class="mini" id="restartBtn">Эхнээс нь</button>
     </div>
     <div id="playerStatus" class="note hidden"></div>
   </div>
@@ -389,7 +390,7 @@ async function loadEpub(data,fb){
       if(k&&l&&!titles[k]) titles[k]=l;
     });
   }
-  book.chapters=[];
+  book.chapters=[]; const rawKept=[];
   for(const h of spine){
     const f=zip.file(dir+h)||zip.file(h); if(!f) continue;
     const doc=new DOMParser().parseFromString(await f.async('string'),'text/html');
@@ -401,10 +402,14 @@ async function loadEpub(data,fb){
     ps=stripTail(ps).filter(t=>t.length>1);
     if(!ps.length) continue;
     const ttl=titles[h.split('/').pop()]||doc.querySelector('h1,h2,h3')?.textContent?.trim()||ps[0].slice(0,60);
+    rawKept.push({title:ttl, blocks:ps.map(p=>({sentences:sents(p)}))});
     if(notStory(ttl, ps)) continue;
     if(!book.chapters.length && ps.join(' ').length<400) continue;
     book.chapters.push({title:ttl, blocks:ps.map(p=>({sentences:sents(p)}))});
   }
+  // If filtering removed everything, keep the book rather than lose it. A
+  // foreword read aloud is a smaller failure than a book that will not open.
+  if(!book.chapters.length && rawKept.length) book.chapters=rawKept;
   if(!book.chapters.length) throw new Error('unavailable');
 }
 
@@ -695,7 +700,13 @@ function hi(container,i){
 }
 
 async function openBook(e){
-  book.entry=e;
+  // Clear the previous book first. Without this a book that fails to open
+  // leaves the last one's chapters in place under the new one's title, and a
+  // child hears the wrong story.
+  stop();
+  book.entry=e; book.chapters=[]; book.audioBase=null;
+  book.title=''; book.author='';
+  ci=0; bi=0; si=0;
   $('shelfNote').classList.remove('hidden');
   $('shelfNote').textContent='Ном нээж байна…';
   try{
@@ -850,6 +861,13 @@ $('readText').addEventListener('click',e=>{
 });
 $('sizeUp').addEventListener('click',()=>{readSize=Math.min(96,readSize+6);applySize();announce('Үсэг '+readSize)});
 $('sizeDown').addEventListener('click',()=>{readSize=Math.max(18,readSize-6);applySize();announce('Үсэг '+readSize)});
+// A book resumes where it was left, which is right for a long story and wrong
+// for a short one a child only glanced at. This is the way back.
+$('restartBtn').addEventListener('click',()=>{
+  stop(); ci=0; bi=0; si=0; paint(); buildRead();
+  announce('Эхнээс нь'); play();
+});
+
 $('speedBtn').addEventListener('click',()=>{
   speedIndex=(speedIndex+1)%SPEEDS.length; put('speed',speedIndex);
   $('speedBtn').textContent='Хурд '+SPEEDS[speedIndex].toFixed(2).replace(/0$/,'')+'×';
