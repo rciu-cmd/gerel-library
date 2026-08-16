@@ -71,7 +71,8 @@
   td.title{font-weight:600;}
   td.author{color:var(--dawn);font-size:13px;}
   td.len{color:rgba(127,163,204,0.65);font-size:12px;white-space:nowrap;}
-  td.move{width:190px;text-align:right;}
+  td.move{width:290px;text-align:right;}
+  td.move button{padding:7px 10px;font-size:12px;margin-left:4px;}
   td.move select{padding:6px 8px;font-size:13px;}
   tr.hiddenRow{display:none;}
 
@@ -133,6 +134,27 @@
 </div>
 
 <div id="shelves"></div>
+
+<div id="editPanel" class="hidden" style="position:fixed;inset:0;z-index:50;
+     background:var(--night);display:flex;flex-direction:column">
+  <div style="display:flex;gap:10px;align-items:center;padding:14px 20px;
+              border-bottom:1px solid rgba(127,163,204,.25)">
+    <strong id="editTitle" style="flex:1;min-width:0;overflow:hidden;
+            text-overflow:ellipsis;white-space:nowrap"></strong>
+    <span id="editState" style="font-size:13px;color:var(--dawn)"></span>
+    <button id="editSave" class="primary">Хадгалах</button>
+    <button id="editClose">Хаах</button>
+  </div>
+  <p style="margin:10px 20px 0;font-size:13px;color:var(--dawn);line-height:1.6">
+    ## тэмдэгээр бүлгийн нэр эхэлнэ. Хоосон мөр догол мөрийг тусгаарлана.
+    Хадгалахад эх EPUB хөндөгдөхгүй — засвар тусад нь хадгалагдаж, дуу оруулахад
+    ашиглагдана.
+  </p>
+  <textarea id="editText" spellcheck="false" style="flex:1;margin:12px 20px 20px;
+    background:var(--night-2);color:var(--paper);border:1px solid rgba(127,163,204,.3);
+    border-radius:14px;padding:16px;font-family:var(--body);font-size:15px;
+    line-height:1.7;resize:none"></textarea>
+</div>
 
 <div id="drop">
   EPUB файлыг энд чирж оруулаад номын санд нэмнэ үү
@@ -235,6 +257,8 @@ function renderShelves(){
           <td class="author">${esc(b.author)}</td>
           <td class="len">${b.minutes ? b.minutes + ' мин' : ''}</td>
           <td class="move">
+            <button data-edit="${esc(b.file)}" title="Текст засах">Засах</button>
+            <button data-kill="${esc(b.file)}" title="Бүрмөсөн устгах">Устгах</button>
             <select data-move="${esc(b.file)}" data-from="${esc(sh.name)}">
               ${shelfOptions(sh.name)}
             </select>
@@ -274,6 +298,10 @@ document.addEventListener('change', e => {
 
 document.addEventListener('click', e => {
   if(!catalog) return;
+  const ed = e.target.closest('[data-edit]');
+  if(ed){ editBook(ed.dataset.edit); return; }
+  const kill = e.target.closest('[data-kill]');
+  if(kill){ killBook(kill.dataset.kill); return; }
   const kids = e.target.closest('[data-kids]');
   const up = e.target.closest('[data-up]');
   const down = e.target.closest('[data-down]');
@@ -435,6 +463,189 @@ $('saveBtn').addEventListener('click', () => {
   URL.revokeObjectURL(a.href);
   log('catalog.json татагдлаа. GitHub дээрх файлыг солино уу.', 'good');
 });
+
+// ============================================================
+// Deleting a book properly
+// ============================================================
+// Taking a book off a shelf leaves its file on the server. That is fine for a
+// book moved elsewhere and wrong for one that should not exist, so this
+// removes the file and its cover as well.
+async function ghDelete(path, note){
+  try{
+    const file = await ghApi('/contents/' + path.split('/').map(encodeURIComponent).join('/'));
+    await ghApi('/contents/' + path.split('/').map(encodeURIComponent).join('/'), {
+      method: 'DELETE',
+      body: JSON.stringify({ message: note, sha: file.sha })
+    });
+    return true;
+  }catch(err){
+    return false;      // already gone, which is the outcome we wanted anyway
+  }
+}
+
+async function killBook(file){
+  const book = allBooks().find(b => b.file === file);
+  if(!book) return;
+  if(!confirm('«' + book.title + '» — номыг бүрмөсөн устгах уу?\n\n'
+    + 'Жагсаалтаас хасаад, файлыг нь ч сервэрээс устгана.')) return;
+  if(!ghReady()){ log('Эхлээд GitHub-той холбогдоно уу.', 'warn'); return; }
+
+  // Off the shelves first, so a half-finished delete never leaves a book
+  // listed but unreadable.
+  catalog.shelves.forEach(sh => { sh.books = sh.books.filter(b => b.file !== file); });
+  renderShelves();
+
+  log('«' + book.title + '» устгаж байна…');
+  try{
+    const current = await ghApi('/contents/catalog.json');
+    const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(catalog, null, 1))));
+    await ghApi('/contents/catalog.json', {
+      method: 'PUT',
+      body: JSON.stringify({ message: 'Remove ' + book.title, content: encoded, sha: current.sha })
+    });
+    const note = 'Remove ' + book.title;
+    const gone = [];
+    if(book.id){
+      if(await ghDelete('books/' + book.id + '.epub', note)) gone.push('EPUB');
+      if(book.cover && await ghDelete(book.cover, note)) gone.push('cover');
+    }
+    log('«' + book.title + '» устгагдлаа' + (gone.length ? ' (' + gone.join(', ') + ')' : ''), 'good');
+  }catch(err){
+    log('Устгаж чадсангүй: ' + err.message, 'warn');
+  }
+}
+
+// ============================================================
+// Correcting a book's text
+// ============================================================
+// Some of these books were digitised badly. The EPUB is never changed: the
+// correction is saved beside it as text/<id>.txt, which voicing prefers.
+const PUBLISHER=['эрхлэн хэвлүүлсэн','эрхлэн гаргав','хэвлэлийн газар','хэвлэлийн мэдээлэл',
+  'хэвлэн нийтлэл','яамны хэвлэл','хэвлэлд бэлтгэсэн','редактор','хянан тохиолдуулсан',
+  'эмхэтгэсэн','эх бэлтгэсэн','нүүр зургийг','зохиогчийн эрх','isbn','удк','ббк',
+  'ном зүйн','хэвлэлийн эх','хэвлэл'];
+const SELLING=['зарагдаж','номын дэлгүүр','худалдаанд','захиалга','үнэ:','сурталчилгаа',
+  'болор дуран','bolorsoft','хандив','qpay','хаан банк','e-nom.mn','товшиж','холбоос','дуулгая'];
+const FOREWORD=['өмнөх үг','өмнөтгөл','удиртгал','оршил','редакцаас','эмхэтгэгчээс'];
+const NOTE=/^\s*(жич|тайлбар|анхаарах)\s*[:：]/i;
+const SEP=/^[⁂*※•\s]+$/;
+const hits=(t,w)=>{const l=t.toLowerCase();return w.reduce((n,x)=>n+(l.includes(x)?1:0),0)};
+function stripTail(ps){
+  for(let i=0;i<ps.length;i++){
+    const tail=ps.slice(i).join(' ');
+    if((SEP.test(ps[i])||NOTE.test(ps[i])) && hits(tail,SELLING.concat(PUBLISHER))>=2)
+      return ps.slice(0,i);
+  }
+  return ps;
+}
+function notStory(title, ps){
+  const whole=ps.join(' ');
+  if(hits(whole,SELLING)>=2 && whole.length<2500) return true;
+  if(hits(whole,PUBLISHER)>=2 && whole.length<2500) return true;
+  const t=(title||'').trim().toLowerCase().replace(/^["“”«»]+|["“”«».:]+$/g,'');
+  if(FOREWORD.some(w=>t.startsWith(w))) return true;
+  const head=(t+' '+whole.slice(0,200)).toLowerCase();
+  if(FOREWORD.some(w=>head.includes(w)) && hits(whole,PUBLISHER)>=1) return true;
+  return false;
+}
+
+async function epubToText(url){
+  const res = await fetch(url);
+  if(!res.ok) throw new Error('ном татагдсангүй (' + res.status + ')');
+  const zip = await JSZip.loadAsync(await res.arrayBuffer());
+  const cont = await zip.file('META-INF/container.xml').async('string');
+  const opfPath = new DOMParser().parseFromString(cont,'application/xml')
+    .querySelector('rootfile').getAttribute('full-path');
+  const dir = opfPath.includes('/') ? opfPath.replace(/\/[^/]*$/,'/') : '';
+  const opf = new DOMParser().parseFromString(await zip.file(opfPath).async('string'),'application/xml');
+  const href = {};
+  opf.querySelectorAll('manifest > item').forEach(i=>href[i.getAttribute('id')]=i.getAttribute('href'));
+  const spine = [...opf.querySelectorAll('spine > itemref')]
+    .map(r=>href[r.getAttribute('idref')]).filter(Boolean);
+  const titles = {};
+  const ncx = Object.values(href).find(h=>h&&h.endsWith('.ncx'));
+  if(ncx && zip.file(dir+ncx)){
+    const t = new DOMParser().parseFromString(await zip.file(dir+ncx).async('string'),'application/xml');
+    t.querySelectorAll('navPoint').forEach(np=>{
+      const src=np.querySelector('content')?.getAttribute('src')||'';
+      const lab=np.querySelector('navLabel text')?.textContent?.trim();
+      const k=src.split('#')[0].split('/').pop();
+      if(k&&lab&&!titles[k]) titles[k]=lab;
+    });
+  }
+  const out = [];
+  for(const h of spine){
+    const f = zip.file(dir+h) || zip.file(h);
+    if(!f) continue;
+    const doc = new DOMParser().parseFromString(await f.async('string'),'text/html');
+    doc.querySelectorAll('script,style').forEach(n=>n.remove());
+    const els = [...doc.querySelectorAll('p,h1,h2,h3,h4,li,blockquote')];
+    let ps = (els.length?els:[doc.body]).map(e=>(e.textContent||'').replace(/\s+/g,' ').trim())
+      .map(t=>t.replace(/^\s*\[\s*[←<]\s*\d+\s*\]\s*/,'').trim()).filter(t=>t.length>=1);
+    if(!ps.length) continue;
+    ps = stripTail(ps).filter(t=>t.length>1);
+    if(!ps.length) continue;
+    const ttl = titles[h.split('/').pop()] || doc.querySelector('h1,h2,h3')?.textContent?.trim() || ps[0].slice(0,60);
+    if(notStory(ttl, ps)) continue;
+    if(!out.length && ps.join(' ').length<400) continue;
+    out.push('## ' + ttl + '\n\n' + ps.join('\n\n'));
+  }
+  return out.join('\n\n');
+}
+
+let editing = null;
+async function editBook(file){
+  const book = allBooks().find(b => b.file === file);
+  if(!book || !book.id){ log('Энэ номын id алга.', 'warn'); return; }
+  editing = book;
+  $('editTitle').textContent = book.title;
+  $('editState').textContent = 'ачаалж байна…';
+  $('editText').value = '';
+  $('editPanel').classList.remove('hidden');
+
+  const base = location.href.replace(/\/[^/]*$/, '/');
+  try{
+    // An existing correction wins; otherwise take the text out of the EPUB.
+    let text = null, from = 'EPUB';
+    try{
+      const r = await fetch(base + 'text/' + book.id + '.txt?t=' + Date.now());
+      if(r.ok){ text = await r.text(); from = 'хадгалсан засвар'; }
+    }catch(e){}
+    if(text === null) text = await epubToText(base + 'books/' + book.id + '.epub');
+    $('editText').value = text;
+    $('editState').textContent = from + ' · ' + text.length.toLocaleString() + ' тэмдэгт';
+  }catch(err){
+    $('editState').textContent = 'алдаа';
+    $('editText').value = '';
+    log('Нээж чадсангүй: ' + err.message, 'warn');
+  }
+}
+
+async function saveEdit(){
+  if(!editing) return;
+  if(!ghReady()){ log('Эхлээд GitHub-той холбогдоно уу.', 'warn'); return; }
+  const path = 'text/' + editing.id + '.txt';
+  $('editSave').disabled = true;
+  $('editState').textContent = 'хадгалж байна…';
+  try{
+    let sha = null;
+    try{ sha = (await ghApi('/contents/' + path)).sha; }catch(e){}
+    const encoded = btoa(unescape(encodeURIComponent($('editText').value)));
+    const body = { message: 'Correct text: ' + editing.title, content: encoded };
+    if(sha) body.sha = sha;
+    await ghApi('/contents/' + path, { method:'PUT', body: JSON.stringify(body) });
+    $('editState').textContent = 'хадгалагдлаа';
+    log('«' + editing.title + '» текст хадгалагдлаа. Дуу оруулахын өмнө GitHub Desktop дээр Pull хийнэ үү.', 'good');
+  }catch(err){
+    $('editState').textContent = 'алдаа';
+    log('Хадгалж чадсангүй: ' + err.message, 'warn');
+  }finally{
+    $('editSave').disabled = false;
+  }
+}
+
+$('editClose').addEventListener('click', ()=>{ $('editPanel').classList.add('hidden'); editing=null; });
+$('editSave').addEventListener('click', saveEdit);
 
 // ---- adding books ----
 async function epubInfo(file){
