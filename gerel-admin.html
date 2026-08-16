@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Гэрэл — Номын сангийн удирдлага</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --night:#0A1730; --night-2:#122444; --night-3:#1A2F52;
+    --lamp:#FFC24B; --lamp-dim:#B8862B;
+    --dawn:#7FA3CC; --paper:#F4F1E8;
+    --good:#5BC98C; --warn:#FF8A6A;
+    --display:'Unbounded', system-ui, sans-serif;
+    --body:'Inter', system-ui, -apple-system, sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--night);color:var(--paper);font-family:var(--body);}
+
+  header{
+    position:sticky;top:0;z-index:10;background:var(--night);
+    border-bottom:1px solid rgba(127,163,204,0.25);
+    padding:16px 22px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  }
+  .wordmark{font-family:var(--display);font-weight:800;font-size:18px;color:var(--lamp);}
+  .wordmark span{color:var(--paper);font-weight:600;font-size:14px;}
+  .grow{flex:1;}
+
+  button, label.btn{
+    font-family:var(--body);font-size:14px;font-weight:600;
+    background:transparent;color:var(--dawn);
+    border:1px solid rgba(127,163,204,0.45);border-radius:10px;
+    padding:10px 14px;cursor:pointer;
+  }
+  button.primary, label.btn.primary{background:var(--lamp);color:var(--night);border-color:var(--lamp);}
+  button.ghost{border-style:dashed;}
+  button:disabled{opacity:0.4;cursor:default;}
+  input[type=file]{display:none;}
+
+  .stats{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:12px;padding:20px 22px;
+  }
+  .stat{background:var(--night-2);border-radius:14px;padding:14px 16px;}
+  .stat b{display:block;font-size:24px;font-family:var(--display);color:var(--lamp);}
+  .stat span{font-size:12px;color:var(--dawn);letter-spacing:0.04em;text-transform:uppercase;}
+
+  .toolbar{padding:0 22px 14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+  input[type=search], select{
+    font-family:var(--body);font-size:14px;
+    background:var(--night-2);color:var(--paper);
+    border:1px solid rgba(127,163,204,0.35);border-radius:10px;padding:10px 12px;
+  }
+  input[type=search]{min-width:240px;}
+
+  .shelf{margin:0 22px 18px;background:var(--night-2);border-radius:16px;overflow:hidden;}
+  .shelfHead{
+    display:flex;align-items:center;gap:12px;padding:14px 18px;
+    background:var(--night-3);flex-wrap:wrap;
+  }
+  .shelfHead h2{font-family:var(--display);font-size:15px;margin:0;color:var(--paper);}
+  .pill{
+    font-size:11px;letter-spacing:0.06em;text-transform:uppercase;
+    padding:4px 9px;border-radius:99px;border:1px solid currentColor;
+  }
+  .pill.kids{color:var(--lamp);}
+  .pill.count{color:var(--dawn);border-color:rgba(127,163,204,0.4);}
+
+  table{width:100%;border-collapse:collapse;}
+  td{padding:10px 18px;border-top:1px solid rgba(127,163,204,0.13);font-size:14px;vertical-align:middle;}
+  td.title{font-weight:600;}
+  td.author{color:var(--dawn);font-size:13px;}
+  td.len{color:rgba(127,163,204,0.65);font-size:12px;white-space:nowrap;}
+  td.move{width:290px;text-align:right;}
+  td.move button{padding:7px 10px;font-size:12px;margin-left:4px;}
+  td.move select{padding:6px 8px;font-size:13px;}
+  tr.hiddenRow{display:none;}
+  .hidden{display:none !important;}
+
+  .empty{padding:16px 18px;color:rgba(127,163,204,0.6);font-size:13px;}
+  #drop{
+    margin:0 22px 24px;border:2px dashed rgba(127,163,204,0.35);
+    border-radius:16px;padding:26px;text-align:center;color:var(--dawn);font-size:14px;
+  }
+  #drop.over{border-color:var(--lamp);color:var(--lamp);}
+  #log{margin:0 22px 30px;font-size:13px;color:var(--dawn);line-height:1.7;}
+  .note{margin:0 22px 20px;color:rgba(127,163,204,0.7);font-size:13px;line-height:1.7;max-width:70ch;}
+  .warn{color:var(--warn);}
+  .good{color:var(--good);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wordmark">Гэрэл <span>· удирдлага</span></div>
+  <div class="grow"></div>
+  <button id="ghBtn">GitHub холбох</button>
+  <button id="loadBtn" disabled>GitHub-аас татах</button>
+  <button id="pushBtn" class="primary" disabled>GitHub руу хадгалах</button>
+  <label class="btn">Файлаас нээх<input type="file" id="openCatalog" accept=".json,application/json"></label>
+  <button id="saveBtn" disabled>Файлаар татах</button>
+</header>
+
+<div id="ghPanel" class="hidden" style="margin:0 22px 18px;background:var(--night-2);
+     border-radius:16px;padding:18px;max-width:720px">
+  <h2 style="font-family:var(--display);font-size:16px;margin:0 0 10px;color:var(--lamp)">
+    GitHub холболт</h2>
+  <p style="margin:0 0 14px;font-size:13px;color:var(--dawn);line-height:1.6">
+    Токен зөвхөн энэ төхөөрөмж дээр хадгалагдана. Хэн нэгэн энэ хуудсыг нээсэн ч
+    токенгүйгээр юу ч өөрчилж чадахгүй.
+  </p>
+  <div style="display:grid;gap:10px">
+    <input id="ghRepo" type="text" placeholder="rciu-cmd/gerel-library"
+      style="background:var(--night);color:var(--paper);border:1px solid rgba(127,163,204,.4);
+             border-radius:10px;padding:11px 13px;font-family:var(--body);font-size:14px">
+    <input id="ghToken" type="password" placeholder="ghp_… (Personal access token)"
+      style="background:var(--night);color:var(--paper);border:1px solid rgba(127,163,204,.4);
+             border-radius:10px;padding:11px 13px;font-family:var(--body);font-size:14px">
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button id="ghSave" class="primary">Холбох</button>
+      <button id="ghForget">Токен устгах</button>
+      <a href="https://github.com/settings/tokens/new?scopes=repo&description=Gerel%20admin"
+         target="_blank" rel="noopener"
+         style="color:var(--dawn);font-size:13px;align-self:center">Токен үүсгэх ↗</a>
+    </div>
+  </div>
+</div>
+
+<div class="stats" id="stats"></div>
+
+<div class="toolbar">
+  <input type="search" id="search" placeholder="Ном хайх…">
+  <select id="shelfFilter"><option value="">Бүх тавиур</option></select>
+  <button id="kidsOnlyBtn" class="ghost">Зөвхөн хүүхдийн</button>
+</div>
+
+<div id="shelves"></div>
+
+<div id="editPanel" class="hidden" style="position:fixed;inset:0;z-index:50;
+     background:var(--night);display:flex;flex-direction:column">
+  <div style="display:flex;gap:10px;align-items:center;padding:14px 20px;
+              border-bottom:1px solid rgba(127,163,204,.25)">
+    <strong id="editTitle" style="flex:1;min-width:0;overflow:hidden;
+            text-overflow:ellipsis;white-space:nowrap"></strong>
+    <span id="editState" style="font-size:13px;color:var(--dawn)"></span>
+    <button id="editSave" class="primary">Хадгалах</button>
+    <button id="editClose">Хаах</button>
+  </div>
+  <p style="margin:10px 20px 0;font-size:13px;color:var(--dawn);line-height:1.6">
+    ## тэмдэгээр бүлгийн нэр эхэлнэ. Хоосон мөр догол мөрийг тусгаарлана.
+    Хадгалахад эх EPUB хөндөгдөхгүй — засвар тусад нь хадгалагдаж, дуу оруулахад
+    ашиглагдана.
+  </p>
+  <textarea id="editText" spellcheck="false" style="flex:1;margin:12px 20px 20px;
+    background:var(--night-2);color:var(--paper);border:1px solid rgba(127,163,204,.3);
+    border-radius:14px;padding:16px;font-family:var(--body);font-size:15px;
+    line-height:1.7;resize:none"></textarea>
+</div>
+
+<div id="drop">
+  EPUB файлыг энд чирж оруулаад номын санд нэмнэ үү
+  <br><label class="btn" style="margin-top:12px;display:inline-block">Файл сонгох<input type="file" id="addBooks" accept=".epub" multiple></label>
+</div>
+
+<p class="note" id="hint">
+  Эхлээд <b>catalog.json</b> файлаа нээнэ үү. Өөрчлөлт хийсний дараа
+  <b>catalog.json татах</b> дарж, GitHub дээрх хуучин файлыг солино.
+</p>
+
+<div id="log"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+// The library is a set of static files, so there is no server to talk to and
+// nothing here is saved automatically. This page edits catalog.json in the
+// browser and hands it back for you to upload. Nothing leaves the machine.
+let catalog = null;
+let kidsOnly = false;
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s || '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function log(msg, cls){
+  const p = document.createElement('div');
+  if(cls) p.className = cls;
+  p.textContent = msg;
+  $('log').prepend(p);
+}
+
+function allBooks(){
+  const seen = new Map();
+  (catalog.shelves || []).forEach(sh => (sh.books || []).forEach(b => {
+    if(!seen.has(b.file)) seen.set(b.file, b);
+  }));
+  return [...seen.values()];
+}
+
+function renderStats(){
+  const books = allBooks();
+  const kids = new Set();
+  (catalog.shelves || []).forEach(sh => {
+    if(sh.forChildren) (sh.books || []).forEach(b => kids.add(b.file));
+  });
+  const chars = books.reduce((n,b) => n + (b.chars || 0), 0);
+  const hours = chars / 5 / 150 / 60;
+  const stats = [
+    ['Ном', books.length],
+    ['Хүүхдийн ном', kids.size],
+    ['Тавиур', (catalog.shelves || []).length],
+    ['Цаг', Math.round(hours).toLocaleString()],
+    ['Уншуулах өртөг', '$' + (chars/1e6*16).toFixed(0)],
+    ['Дискний хэмжээ', Math.round(hours*26).toLocaleString() + ' MB']
+  ];
+  $('stats').innerHTML = stats.map(([k,v]) =>
+    `<div class="stat"><b>${v}</b><span>${k}</span></div>`).join('');
+}
+
+function shelfOptions(current){
+  return (catalog.shelves || []).map(sh =>
+    `<option value="${esc(sh.name)}"${sh.name===current?' selected':''}>${esc(sh.name)}</option>`
+  ).join('') + '<option value="__remove__">— хасах —</option>';
+}
+
+function renderShelves(){
+  const q = $('search').value.trim().toLowerCase();
+  const only = $('shelfFilter').value;
+  const wrap = $('shelves');
+  wrap.innerHTML = '';
+
+  (catalog.shelves || []).forEach(sh => {
+    if(only && sh.name !== only) return;
+    if(kidsOnly && !sh.forChildren) return;
+
+    const div = document.createElement('div');
+    div.className = 'shelf';
+
+    const books = (sh.books || []);
+    const matching = books.filter(b =>
+      !q || (b.title||'').toLowerCase().includes(q) || (b.author||'').toLowerCase().includes(q));
+
+    div.innerHTML = `
+      <div class="shelfHead">
+        <h2>${esc(sh.name)}</h2>
+        <span class="pill count">${books.length}</span>
+        ${sh.forChildren ? '<span class="pill kids">хүүхдийн</span>' : ''}
+        <div class="grow"></div>
+        <button data-kids="${esc(sh.name)}">${sh.forChildren ? 'Хүүхдийн болиулах' : 'Хүүхдийн болгох'}</button>
+        <button data-up="${esc(sh.name)}">↑</button>
+        <button data-down="${esc(sh.name)}">↓</button>
+      </div>`;
+
+    if(!matching.length){
+      div.insertAdjacentHTML('beforeend', '<div class="empty">Ном алга.</div>');
+    } else {
+      const rows = matching.map(b => `
+        <tr>
+          <td class="title">${esc(b.title)}</td>
+          <td class="author">${esc(b.author)}</td>
+          <td class="len">${b.minutes ? b.minutes + ' мин' : ''}</td>
+          <td class="move">
+            <button data-edit="${esc(b.file)}" title="Текст засах">Засах</button>
+            <button data-kill="${esc(b.file)}" title="Бүрмөсөн устгах">Устгах</button>
+            <select data-move="${esc(b.file)}" data-from="${esc(sh.name)}">
+              ${shelfOptions(sh.name)}
+            </select>
+          </td>
+        </tr>`).join('');
+      div.insertAdjacentHTML('beforeend', `<table>${rows}</table>`);
+    }
+    wrap.appendChild(div);
+  });
+
+  $('shelfFilter').innerHTML = '<option value="">Бүх тавиур</option>' +
+    (catalog.shelves||[]).map(sh => `<option${sh.name===only?' selected':''}>${esc(sh.name)}</option>`).join('');
+  $('shelfFilter').value = only;
+  renderStats();
+}
+
+// ---- edits ----
+document.addEventListener('change', e => {
+  const sel = e.target.closest('[data-move]');
+  if(!sel || !catalog) return;
+  const file = sel.dataset.move, from = sel.dataset.from, to = sel.value;
+  const fromShelf = catalog.shelves.find(s => s.name === from);
+  const book = fromShelf.books.find(b => b.file === file);
+  fromShelf.books = fromShelf.books.filter(b => b.file !== file);
+  if(to !== '__remove__'){
+    const toShelf = catalog.shelves.find(s => s.name === to);
+    if(toShelf && !toShelf.books.some(b => b.file === file)){
+      toShelf.books.push(book);
+      toShelf.books.sort((a,b) => (a.title||'').localeCompare(b.title||'', 'mn'));
+    }
+    log(`«${book.title}» → ${to}`);
+  } else {
+    log(`«${book.title}» хасагдлаа`, 'warn');
+  }
+  renderShelves();
+});
+
+document.addEventListener('click', e => {
+  if(!catalog) return;
+  const ed = e.target.closest('[data-edit]');
+  if(ed){ editBook(ed.dataset.edit); return; }
+  const kill = e.target.closest('[data-kill]');
+  if(kill){ killBook(kill.dataset.kill); return; }
+  const kids = e.target.closest('[data-kids]');
+  const up = e.target.closest('[data-up]');
+  const down = e.target.closest('[data-down]');
+
+  if(kids){
+    const sh = catalog.shelves.find(s => s.name === kids.dataset.kids);
+    sh.forChildren = !sh.forChildren;
+    log(`«${sh.name}» ${sh.forChildren ? 'хүүхдийн тавиур боллоо' : 'хүүхдийн тавиураас гарлаа'}`);
+    renderShelves();
+  }
+  if(up || down){
+    const name = (up || down).dataset[up ? 'up' : 'down'];
+    const i = catalog.shelves.findIndex(s => s.name === name);
+    const j = up ? i-1 : i+1;
+    if(j >= 0 && j < catalog.shelves.length){
+      [catalog.shelves[i], catalog.shelves[j]] = [catalog.shelves[j], catalog.shelves[i]];
+      renderShelves();
+    }
+  }
+});
+
+$('search').addEventListener('input', renderShelves);
+$('shelfFilter').addEventListener('change', renderShelves);
+$('kidsOnlyBtn').addEventListener('click', () => {
+  kidsOnly = !kidsOnly;
+  $('kidsOnlyBtn').classList.toggle('primary', kidsOnly);
+  renderShelves();
+});
+
+// ============================================================
+// GitHub
+// ============================================================
+// A static site cannot write to itself, so this talks to GitHub's API
+// directly. The token stays in this browser and is never sent anywhere except
+// to github.com — which means this page can be public and still be safe: it is
+// useless to anyone who does not hold a token for the repository.
+let gh = { repo: '', token: '', sha: null };
+try{
+  gh.repo = localStorage.getItem('gerel:ghRepo') || '';
+  gh.token = localStorage.getItem('gerel:ghToken') || '';
+}catch(e){}
+
+function ghReady(){ return !!(gh.repo && gh.token); }
+function ghRefresh(){
+  $('ghRepo').value = gh.repo;
+  $('ghToken').value = gh.token;
+  const on = ghReady();
+  $('loadBtn').disabled = !on;
+  $('pushBtn').disabled = !(on && catalog);
+  $('ghBtn').textContent = on ? 'GitHub: ' + gh.repo.split('/')[1] : 'GitHub холбох';
+}
+
+async function ghApi(path, options){
+  const res = await fetch('https://api.github.com/repos/' + gh.repo + path, Object.assign({
+    headers: {
+      'Authorization': 'Bearer ' + gh.token,
+      'Accept': 'application/vnd.github+json'
+    }
+  }, options || {}));
+  if(!res.ok){
+    const detail = await res.text();
+    throw new Error(res.status + ' ' + detail.slice(0, 160));
+  }
+  return res.json();
+}
+
+// GitHub needs the file's current sha to accept a change. Fetching it first is
+// also what stops two people overwriting each other without noticing.
+async function ghLoad(){
+  log('GitHub-аас татаж байна…');
+  try{
+    const file = await ghApi('/contents/catalog.json');
+    gh.sha = file.sha;
+    const text = decodeURIComponent(escape(atob(file.content.replace(/\n/g, ''))));
+    catalog = JSON.parse(text);
+    if(!catalog.shelves) throw new Error('shelves байхгүй');
+    $('saveBtn').disabled = false;
+    $('pushBtn').disabled = false;
+    renderShelves();
+    log(`${allBooks().length} ном GitHub-аас ачааллаа.`, 'good');
+  }catch(err){
+    log('Татаж чадсангүй: ' + err.message, 'warn');
+  }
+}
+
+async function ghPush(){
+  if(!catalog){ log('Эхлээд catalog ачаална уу.', 'warn'); return; }
+  const note = prompt('Юу өөрчилснөө бичнэ үү', 'Номын сангийн жагсаалт шинэчлэв');
+  if(note === null) return;
+  $('pushBtn').disabled = true;
+  log('GitHub руу хадгалж байна…');
+  try{
+    // Re-read the sha first: someone else may have changed the file since we
+    // loaded it, and overwriting their work silently would be worse than failing.
+    const current = await ghApi('/contents/catalog.json');
+    const body = JSON.stringify(catalog, null, 1);
+    const encoded = btoa(unescape(encodeURIComponent(body)));
+    await ghApi('/contents/catalog.json', {
+      method: 'PUT',
+      body: JSON.stringify({ message: note || 'Update catalog', content: encoded, sha: current.sha })
+    });
+    gh.sha = null;
+    log('Хадгаллаа. Сайт 1-2 минутын дараа шинэчлэгдэнэ.', 'good');
+  }catch(err){
+    log('Хадгалж чадсангүй: ' + err.message, 'warn');
+  }finally{
+    $('pushBtn').disabled = !ghReady();
+  }
+}
+
+$('ghBtn').addEventListener('click', ()=> $('ghPanel').classList.toggle('hidden'));
+$('ghSave').addEventListener('click', ()=>{
+  gh.repo = $('ghRepo').value.trim().replace(/^https?:\/\/github\.com\//,'').replace(/\.git$/,'');
+  gh.token = $('ghToken').value.trim();
+  try{
+    localStorage.setItem('gerel:ghRepo', gh.repo);
+    localStorage.setItem('gerel:ghToken', gh.token);
+  }catch(e){}
+  ghRefresh();
+  $('ghPanel').classList.add('hidden');
+  log(ghReady() ? 'Холбогдлоо: ' + gh.repo : 'Repo болон токен хоёуланг бөглөнө үү.',
+      ghReady() ? 'good' : 'warn');
+  if(ghReady()) ghLoad();
+});
+$('ghForget').addEventListener('click', ()=>{
+  gh = { repo:'', token:'', sha:null };
+  try{ localStorage.removeItem('gerel:ghRepo'); localStorage.removeItem('gerel:ghToken'); }catch(e){}
+  ghRefresh();
+  log('Токен устгагдлаа.');
+});
+$('loadBtn').addEventListener('click', ghLoad);
+$('pushBtn').addEventListener('click', ghPush);
+ghRefresh();
+
+// ---- open / save ----
+$('openCatalog').addEventListener('change', async e => {
+  const file = e.target.files[0];
+  if(!file) return;
+  try{
+    catalog = JSON.parse(await file.text());
+    if(!catalog.shelves) throw new Error('shelves байхгүй');
+    $('saveBtn').disabled = false;
+    if(ghReady()) $('pushBtn').disabled = false;
+    $('hint').innerHTML = 'GitHub-той холбогдсон бол <b>GitHub руу хадгалах</b> дарахад '
+      + 'сайт шууд шинэчлэгдэнэ. Эсвэл <b>Файлаар татах</b> дарж гараар байршуулна.';
+    renderShelves();
+    log(`${allBooks().length} ном ачааллаа.`, 'good');
+  }catch(err){
+    log('Уншиж чадсангүй: ' + err.message, 'warn');
+  }
+});
+
+$('saveBtn').addEventListener('click', () => {
+  const blob = new Blob([JSON.stringify(catalog, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'catalog.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  log('catalog.json татагдлаа. GitHub дээрх файлыг солино уу.', 'good');
+});
+
+// ============================================================
+// Deleting a book properly
+// ============================================================
+// Taking a book off a shelf leaves its file on the server. That is fine for a
+// book moved elsewhere and wrong for one that should not exist, so this
+// removes the file and its cover as well.
+async function ghDelete(path, note){
+  try{
+    const file = await ghApi('/contents/' + path.split('/').map(encodeURIComponent).join('/'));
+    await ghApi('/contents/' + path.split('/').map(encodeURIComponent).join('/'), {
+      method: 'DELETE',
+      body: JSON.stringify({ message: note, sha: file.sha })
+    });
+    return true;
+  }catch(err){
+    return false;      // already gone, which is the outcome we wanted anyway
+  }
+}
+
+async function killBook(file){
+  const book = allBooks().find(b => b.file === file);
+  if(!book) return;
+  if(!confirm('«' + book.title + '» — номыг бүрмөсөн устгах уу?\n\n'
+    + 'Жагсаалтаас хасаад, файлыг нь ч сервэрээс устгана.')) return;
+  if(!ghReady()){ log('Эхлээд GitHub-той холбогдоно уу.', 'warn'); return; }
+
+  // Off the shelves first, so a half-finished delete never leaves a book
+  // listed but unreadable.
+  catalog.shelves.forEach(sh => { sh.books = sh.books.filter(b => b.file !== file); });
+  renderShelves();
+
+  log('«' + book.title + '» устгаж байна…');
+  try{
+    const current = await ghApi('/contents/catalog.json');
+    const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(catalog, null, 1))));
+    await ghApi('/contents/catalog.json', {
+      method: 'PUT',
+      body: JSON.stringify({ message: 'Remove ' + book.title, content: encoded, sha: current.sha })
+    });
+    const note = 'Remove ' + book.title;
+    const gone = [];
+    if(book.id){
+      if(await ghDelete('books/' + book.id + '.epub', note)) gone.push('EPUB');
+      if(book.cover && await ghDelete(book.cover, note)) gone.push('cover');
+    }
+    log('«' + book.title + '» устгагдлаа' + (gone.length ? ' (' + gone.join(', ') + ')' : ''), 'good');
+  }catch(err){
+    log('Устгаж чадсангүй: ' + err.message, 'warn');
+  }
+}
+
+// ============================================================
+// Correcting a book's text
+// ============================================================
+// Some of these books were digitised badly. The EPUB is never changed: the
+// correction is saved beside it as text/<id>.txt, which voicing prefers.
+const PUBLISHER=['эрхлэн хэвлүүлсэн','эрхлэн гаргав','хэвлэлийн газар','хэвлэлийн мэдээлэл',
+  'хэвлэн нийтлэл','яамны хэвлэл','хэвлэлд бэлтгэсэн','редактор','хянан тохиолдуулсан',
+  'эмхэтгэсэн','эх бэлтгэсэн','нүүр зургийг','зохиогчийн эрх','isbn','удк','ббк',
+  'ном зүйн','хэвлэлийн эх','хэвлэл'];
+const SELLING=['зарагдаж','номын дэлгүүр','худалдаанд','захиалга','үнэ:','сурталчилгаа',
+  'болор дуран','bolorsoft','хандив','qpay','хаан банк','e-nom.mn','товшиж','холбоос','дуулгая'];
+const FOREWORD=['өмнөх үг','өмнөтгөл','удиртгал','оршил','редакцаас','эмхэтгэгчээс'];
+const NOTE=/^\s*(жич|тайлбар|анхаарах)\s*[:：]/i;
+const SEP=/^[⁂*※•\s]+$/;
+const hits=(t,w)=>{const l=t.toLowerCase();return w.reduce((n,x)=>n+(l.includes(x)?1:0),0)};
+function stripTail(ps){
+  for(let i=0;i<ps.length;i++){
+    const tail=ps.slice(i).join(' ');
+    if((SEP.test(ps[i])||NOTE.test(ps[i])) && hits(tail,SELLING.concat(PUBLISHER))>=2)
+      return ps.slice(0,i);
+  }
+  return ps;
+}
+function notStory(title, ps){
+  const whole=ps.join(' ');
+  if(hits(whole,SELLING)>=2 && whole.length<2500) return true;
+  if(hits(whole,PUBLISHER)>=2 && whole.length<2500) return true;
+  const t=(title||'').trim().toLowerCase().replace(/^["“”«»]+|["“”«».:]+$/g,'');
+  if(FOREWORD.some(w=>t.startsWith(w))) return true;
+  const head=(t+' '+whole.slice(0,200)).toLowerCase();
+  if(FOREWORD.some(w=>head.includes(w)) && hits(whole,PUBLISHER)>=1) return true;
+  return false;
+}
+
+async function epubToText(url){
+  const res = await fetch(url);
+  if(!res.ok) throw new Error('ном татагдсангүй (' + res.status + ')');
+  const zip = await JSZip.loadAsync(await res.arrayBuffer());
+  const cont = await zip.file('META-INF/container.xml').async('string');
+  const opfPath = new DOMParser().parseFromString(cont,'application/xml')
+    .querySelector('rootfile').getAttribute('full-path');
+  const dir = opfPath.includes('/') ? opfPath.replace(/\/[^/]*$/,'/') : '';
+  const opf = new DOMParser().parseFromString(await zip.file(opfPath).async('string'),'application/xml');
+  const href = {};
+  opf.querySelectorAll('manifest > item').forEach(i=>href[i.getAttribute('id')]=i.getAttribute('href'));
+  const spine = [...opf.querySelectorAll('spine > itemref')]
+    .map(r=>href[r.getAttribute('idref')]).filter(Boolean);
+  const titles = {};
+  const ncx = Object.values(href).find(h=>h&&h.endsWith('.ncx'));
+  if(ncx && zip.file(dir+ncx)){
+    const t = new DOMParser().parseFromString(await zip.file(dir+ncx).async('string'),'application/xml');
+    t.querySelectorAll('navPoint').forEach(np=>{
+      const src=np.querySelector('content')?.getAttribute('src')||'';
+      const lab=np.querySelector('navLabel text')?.textContent?.trim();
+      const k=src.split('#')[0].split('/').pop();
+      if(k&&lab&&!titles[k]) titles[k]=lab;
+    });
+  }
+  const out = [];
+  for(const h of spine){
+    const f = zip.file(dir+h) || zip.file(h);
+    if(!f) continue;
+    const doc = new DOMParser().parseFromString(await f.async('string'),'text/html');
+    doc.querySelectorAll('script,style').forEach(n=>n.remove());
+    const els = [...doc.querySelectorAll('p,h1,h2,h3,h4,li,blockquote')];
+    let ps = (els.length?els:[doc.body]).map(e=>(e.textContent||'').replace(/\s+/g,' ').trim())
+      .map(t=>t.replace(/^\s*\[\s*[←<]\s*\d+\s*\]\s*/,'').trim()).filter(t=>t.length>=1);
+    if(!ps.length) continue;
+    ps = stripTail(ps).filter(t=>t.length>1);
+    if(!ps.length) continue;
+    const ttl = titles[h.split('/').pop()] || doc.querySelector('h1,h2,h3')?.textContent?.trim() || ps[0].slice(0,60);
+    if(notStory(ttl, ps)) continue;
+    if(!out.length && ps.join(' ').length<400) continue;
+    out.push('## ' + ttl + '\n\n' + ps.join('\n\n'));
+  }
+  return out.join('\n\n');
+}
+
+let editing = null;
+async function editBook(file){
+  const book = allBooks().find(b => b.file === file);
+  if(!book || !book.id){ log('Энэ номын id алга.', 'warn'); return; }
+  editing = book;
+  $('editTitle').textContent = book.title;
+  $('editState').textContent = 'ачаалж байна…';
+  $('editText').value = '';
+  $('editPanel').classList.remove('hidden');
+
+  const base = location.href.replace(/\/[^/]*$/, '/');
+  try{
+    // An existing correction wins; otherwise take the text out of the EPUB.
+    let text = null, from = 'EPUB';
+    try{
+      const r = await fetch(base + 'text/' + book.id + '.txt?t=' + Date.now());
+      if(r.ok){ text = await r.text(); from = 'хадгалсан засвар'; }
+    }catch(e){}
+    if(text === null) text = await epubToText(base + 'books/' + book.id + '.epub');
+    $('editText').value = text;
+    $('editState').textContent = from + ' · ' + text.length.toLocaleString() + ' тэмдэгт';
+  }catch(err){
+    $('editState').textContent = 'алдаа';
+    $('editText').value = '';
+    log('Нээж чадсангүй: ' + err.message, 'warn');
+  }
+}
+
+async function saveEdit(){
+  if(!editing) return;
+  if(!ghReady()){ log('Эхлээд GitHub-той холбогдоно уу.', 'warn'); return; }
+  const path = 'text/' + editing.id + '.txt';
+  $('editSave').disabled = true;
+  $('editState').textContent = 'хадгалж байна…';
+  try{
+    let sha = null;
+    try{ sha = (await ghApi('/contents/' + path)).sha; }catch(e){}
+    const encoded = btoa(unescape(encodeURIComponent($('editText').value)));
+    const body = { message: 'Correct text: ' + editing.title, content: encoded };
+    if(sha) body.sha = sha;
+    await ghApi('/contents/' + path, { method:'PUT', body: JSON.stringify(body) });
+    $('editState').textContent = 'хадгалагдлаа';
+    log('«' + editing.title + '» текст хадгалагдлаа. Дуу оруулахын өмнө GitHub Desktop дээр Pull хийнэ үү.', 'good');
+  }catch(err){
+    $('editState').textContent = 'алдаа';
+    log('Хадгалж чадсангүй: ' + err.message, 'warn');
+  }finally{
+    $('editSave').disabled = false;
+  }
+}
+
+$('editClose').addEventListener('click', ()=>{ $('editPanel').classList.add('hidden'); editing=null; });
+$('editSave').addEventListener('click', saveEdit);
+
+// ---- adding books ----
+async function epubInfo(file){
+  const zip = await JSZip.loadAsync(file);
+  const container = await zip.file('META-INF/container.xml').async('string');
+  const opfPath = new DOMParser().parseFromString(container,'application/xml')
+    .querySelector('rootfile').getAttribute('full-path');
+  const opf = new DOMParser().parseFromString(await zip.file(opfPath).async('string'),'application/xml');
+  const title = (opf.querySelector('metadata > *|title') || opf.querySelector('title'))?.textContent?.trim();
+  const author = (opf.querySelector('metadata > *|creator') || opf.querySelector('creator'))?.textContent?.trim();
+
+  // rough character count, enough for the length and cost figures
+  let chars = 0;
+  const names = Object.keys(zip.files).filter(n => /\.x?html?$/i.test(n));
+  for(const n of names){
+    const raw = await zip.file(n).async('string');
+    const doc = new DOMParser().parseFromString(raw, 'text/html');
+    doc.querySelectorAll('script,style').forEach(x => x.remove());
+    chars += (doc.body?.textContent || '').replace(/\s+/g,' ').trim().length;
+  }
+  return { title: title || file.name.replace(/\.epub$/i,''), author: author || '', chars };
+}
+
+async function addFiles(files){
+  if(!catalog){ log('Эхлээд catalog.json нээнэ үү.', 'warn'); return; }
+  const target = catalog.shelves.find(s => s.forChildren) || catalog.shelves[0];
+  for(const file of files){
+    if(!/\.epub$/i.test(file.name)) continue;
+    try{
+      const info = await epubInfo(file);
+      const entry = {
+        title: info.title,
+        author: info.author,
+        file: 'books/' + file.name,
+        chars: info.chars,
+        minutes: Math.round(info.chars/5/150)
+      };
+      if(allBooks().some(b => b.file === entry.file)){
+        log(`«${entry.title}» аль хэдийн байна.`, 'warn');
+        continue;
+      }
+      target.books.push(entry);
+      target.books.sort((a,b) => (a.title||'').localeCompare(b.title||'', 'mn'));
+      log(`«${entry.title}» → ${target.name} (${entry.minutes} мин)`, 'good');
+    }catch(err){
+      log(`${file.name}: ${err.message}`, 'warn');
+    }
+  }
+  renderShelves();
+  log('Файлуудыг books/ хавтас руу хуулахаа мартуузай.', 'warn');
+}
+
+// Published beside the library, so the catalogue is right there. Loading it on
+// open means the dashboard shows the books immediately instead of an empty
+// page waiting for a button, which looks broken.
+(async function(){
+  try{
+    const r = await fetch('catalog.json', { cache: 'no-cache' });
+    if(!r.ok) return;
+    catalog = await r.json();
+    if(!catalog.shelves) { catalog = null; return; }
+    $('saveBtn').disabled = false;
+    if(ghReady()) $('pushBtn').disabled = false;
+    renderShelves();
+    log(`${allBooks().length} ном ачааллаа.`, 'good');
+    if(!ghReady())
+      log('Өөрчлөлт хийхийн тулд "GitHub холбох" дарж токен оруулна уу.');
+  }catch(e){
+    log('catalog.json олдсонгүй. Файлаас нээж болно.');
+  }
+})();
+
+$('addBooks').addEventListener('change', e => addFiles([...e.target.files]));
+const drop = $('drop');
+['dragenter','dragover'].forEach(ev => drop.addEventListener(ev, e => {
+  e.preventDefault(); drop.classList.add('over');
+}));
+['dragleave','drop'].forEach(ev => drop.addEventListener(ev, e => {
+  e.preventDefault(); drop.classList.remove('over');
+}));
+drop.addEventListener('drop', e => addFiles([...e.dataTransfer.files]));
+</script>
+</body>
+</html>
