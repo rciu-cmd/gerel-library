@@ -92,9 +92,37 @@
 <header>
   <div class="wordmark">Гэрэл <span>· удирдлага</span></div>
   <div class="grow"></div>
-  <label class="btn">Catalog нээх<input type="file" id="openCatalog" accept=".json,application/json"></label>
-  <button id="saveBtn" class="primary" disabled>catalog.json татах</button>
+  <button id="ghBtn">GitHub холбох</button>
+  <button id="loadBtn" disabled>GitHub-аас татах</button>
+  <button id="pushBtn" class="primary" disabled>GitHub руу хадгалах</button>
+  <label class="btn">Файлаас нээх<input type="file" id="openCatalog" accept=".json,application/json"></label>
+  <button id="saveBtn" disabled>Файлаар татах</button>
 </header>
+
+<div id="ghPanel" class="hidden" style="margin:0 22px 18px;background:var(--night-2);
+     border-radius:16px;padding:18px;max-width:720px">
+  <h2 style="font-family:var(--display);font-size:16px;margin:0 0 10px;color:var(--lamp)">
+    GitHub холболт</h2>
+  <p style="margin:0 0 14px;font-size:13px;color:var(--dawn);line-height:1.6">
+    Токен зөвхөн энэ төхөөрөмж дээр хадгалагдана. Хэн нэгэн энэ хуудсыг нээсэн ч
+    токенгүйгээр юу ч өөрчилж чадахгүй.
+  </p>
+  <div style="display:grid;gap:10px">
+    <input id="ghRepo" type="text" placeholder="rciu-cmd/gerel-library"
+      style="background:var(--night);color:var(--paper);border:1px solid rgba(127,163,204,.4);
+             border-radius:10px;padding:11px 13px;font-family:var(--body);font-size:14px">
+    <input id="ghToken" type="password" placeholder="ghp_… (Personal access token)"
+      style="background:var(--night);color:var(--paper);border:1px solid rgba(127,163,204,.4);
+             border-radius:10px;padding:11px 13px;font-family:var(--body);font-size:14px">
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button id="ghSave" class="primary">Холбох</button>
+      <button id="ghForget">Токен устгах</button>
+      <a href="https://github.com/settings/tokens/new?scopes=repo&description=Gerel%20admin"
+         target="_blank" rel="noopener"
+         style="color:var(--dawn);font-size:13px;align-self:center">Токен үүсгэх ↗</a>
+    </div>
+  </div>
+</div>
 
 <div class="stats" id="stats"></div>
 
@@ -275,6 +303,111 @@ $('kidsOnlyBtn').addEventListener('click', () => {
   renderShelves();
 });
 
+// ============================================================
+// GitHub
+// ============================================================
+// A static site cannot write to itself, so this talks to GitHub's API
+// directly. The token stays in this browser and is never sent anywhere except
+// to github.com — which means this page can be public and still be safe: it is
+// useless to anyone who does not hold a token for the repository.
+let gh = { repo: '', token: '', sha: null };
+try{
+  gh.repo = localStorage.getItem('gerel:ghRepo') || '';
+  gh.token = localStorage.getItem('gerel:ghToken') || '';
+}catch(e){}
+
+function ghReady(){ return !!(gh.repo && gh.token); }
+function ghRefresh(){
+  $('ghRepo').value = gh.repo;
+  $('ghToken').value = gh.token;
+  const on = ghReady();
+  $('loadBtn').disabled = !on;
+  $('pushBtn').disabled = !(on && catalog);
+  $('ghBtn').textContent = on ? 'GitHub: ' + gh.repo.split('/')[1] : 'GitHub холбох';
+}
+
+async function ghApi(path, options){
+  const res = await fetch('https://api.github.com/repos/' + gh.repo + path, Object.assign({
+    headers: {
+      'Authorization': 'Bearer ' + gh.token,
+      'Accept': 'application/vnd.github+json'
+    }
+  }, options || {}));
+  if(!res.ok){
+    const detail = await res.text();
+    throw new Error(res.status + ' ' + detail.slice(0, 160));
+  }
+  return res.json();
+}
+
+// GitHub needs the file's current sha to accept a change. Fetching it first is
+// also what stops two people overwriting each other without noticing.
+async function ghLoad(){
+  log('GitHub-аас татаж байна…');
+  try{
+    const file = await ghApi('/contents/catalog.json');
+    gh.sha = file.sha;
+    const text = decodeURIComponent(escape(atob(file.content.replace(/\n/g, ''))));
+    catalog = JSON.parse(text);
+    if(!catalog.shelves) throw new Error('shelves байхгүй');
+    $('saveBtn').disabled = false;
+    $('pushBtn').disabled = false;
+    renderShelves();
+    log(`${allBooks().length} ном GitHub-аас ачааллаа.`, 'good');
+  }catch(err){
+    log('Татаж чадсангүй: ' + err.message, 'warn');
+  }
+}
+
+async function ghPush(){
+  if(!catalog){ log('Эхлээд catalog ачаална уу.', 'warn'); return; }
+  const note = prompt('Юу өөрчилснөө бичнэ үү', 'Номын сангийн жагсаалт шинэчлэв');
+  if(note === null) return;
+  $('pushBtn').disabled = true;
+  log('GitHub руу хадгалж байна…');
+  try{
+    // Re-read the sha first: someone else may have changed the file since we
+    // loaded it, and overwriting their work silently would be worse than failing.
+    const current = await ghApi('/contents/catalog.json');
+    const body = JSON.stringify(catalog, null, 1);
+    const encoded = btoa(unescape(encodeURIComponent(body)));
+    await ghApi('/contents/catalog.json', {
+      method: 'PUT',
+      body: JSON.stringify({ message: note || 'Update catalog', content: encoded, sha: current.sha })
+    });
+    gh.sha = null;
+    log('Хадгаллаа. Сайт 1-2 минутын дараа шинэчлэгдэнэ.', 'good');
+  }catch(err){
+    log('Хадгалж чадсангүй: ' + err.message, 'warn');
+  }finally{
+    $('pushBtn').disabled = !ghReady();
+  }
+}
+
+$('ghBtn').addEventListener('click', ()=> $('ghPanel').classList.toggle('hidden'));
+$('ghSave').addEventListener('click', ()=>{
+  gh.repo = $('ghRepo').value.trim().replace(/^https?:\/\/github\.com\//,'').replace(/\.git$/,'');
+  gh.token = $('ghToken').value.trim();
+  try{
+    localStorage.setItem('gerel:ghRepo', gh.repo);
+    localStorage.setItem('gerel:ghToken', gh.token);
+  }catch(e){}
+  ghRefresh();
+  $('ghPanel').classList.add('hidden');
+  log(ghReady() ? 'Холбогдлоо: ' + gh.repo : 'Repo болон токен хоёуланг бөглөнө үү.',
+      ghReady() ? 'good' : 'warn');
+  if(ghReady()) ghLoad();
+});
+$('ghForget').addEventListener('click', ()=>{
+  gh = { repo:'', token:'', sha:null };
+  try{ localStorage.removeItem('gerel:ghRepo'); localStorage.removeItem('gerel:ghToken'); }catch(e){}
+  ghRefresh();
+  log('Токен устгагдлаа.');
+});
+$('loadBtn').addEventListener('click', ghLoad);
+$('pushBtn').addEventListener('click', ghPush);
+ghRefresh();
+
 // ---- open / save ----
 $('openCatalog').addEventListener('change', async e => {
   const file = e.target.files[0];
@@ -283,8 +416,9 @@ $('openCatalog').addEventListener('change', async e => {
     catalog = JSON.parse(await file.text());
     if(!catalog.shelves) throw new Error('shelves байхгүй');
     $('saveBtn').disabled = false;
-    $('hint').innerHTML = 'Өөрчлөлт хийсний дараа <b>catalog.json татах</b> дарна уу. '
-      + 'Энэ хуудас юуг ч автоматаар хадгалахгүй.';
+    if(ghReady()) $('pushBtn').disabled = false;
+    $('hint').innerHTML = 'GitHub-той холбогдсон бол <b>GitHub руу хадгалах</b> дарахад '
+      + 'сайт шууд шинэчлэгдэнэ. Эсвэл <b>Файлаар татах</b> дарж гараар байршуулна.';
     renderShelves();
     log(`${allBooks().length} ном ачааллаа.`, 'good');
   }catch(err){
