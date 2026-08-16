@@ -157,7 +157,13 @@
     <button class="chip" id="whoClose">Хаах</button>
   </div>
   <div class="books" id="whoList"></div>
-  <button class="mini" id="whoAdd" style="max-width:720px;margin:12px auto">＋ Шинэ нэр</button>
+  <div style="display:flex;gap:9px;max-width:720px;margin:12px auto;width:100%">
+    <input id="whoName" type="text" maxlength="24" placeholder="Нэрээ бичнэ үү"
+      style="flex:1;min-width:0;border:3px solid var(--line);border-radius:18px;
+             padding:14px 16px;font-family:var(--body);font-size:17px;font-weight:600;
+             background:#fff;color:var(--ink)">
+    <button class="mini" id="whoAdd" style="min-width:120px">＋ Нэмэх</button>
+  </div>
   <p class="credit">Нэр зөвхөн энэ төхөөрөмж дээр хадгалагдана.</p>
 </div>
 
@@ -783,12 +789,21 @@ function renderWho(){
 }
 $('whoChip').addEventListener('click',()=>{ renderWho(); show('who'); announce('Хэн уншиж байна вэ?'); });
 $('whoClose').addEventListener('click',()=>show('welcome'));
-$('whoAdd').addEventListener('click',()=>{
-  const n=(prompt('Нэрээ бичнэ үү')||'').trim().slice(0,24);
-  if(!n) return;
+// An in-page field rather than a prompt() box: several mobile browsers now
+// block those outright, which is why the button appeared to do nothing.
+function addReader(){
+  const n=($('whoName').value||'').trim().slice(0,24);
+  if(!n){ $('whoName').focus(); return; }
   const list=readers();
   if(!list.includes(n)){ list.push(n); saveReaders(list); }
+  $('whoName').value='';
   setWho(n); renderWho(); renderShelf();
+  announce(n);
+}
+$('whoAdd').addEventListener('click', addReader);
+$('whoName').addEventListener('keydown', e=>{
+  if(e.code==='Enter'||e.code==='NumpadEnter'){ e.preventDefault(); addReader(); }
+  e.stopPropagation();      // so letters are typed, not read as shortcuts
 });
 
 // Four keys do almost everything, and a handful of letters jump straight to a
@@ -1016,8 +1031,13 @@ $('openFileLabel').addEventListener('keydown',e=>{
     if(r.ok) SPEECH=await r.json(); }
   catch(e){}
   applySize();
-  if(mode) chooseMode(mode);       // a child who has been here before skips the question
-  else { show('welcome'); $('doorListen').focus(); }
+  // Always start here. Skipping the question for a returning child saved one
+  // tap and cost the only way back to the beginning, which is a bad trade for
+  // someone navigating by ear. The last choice is focused, so Enter continues.
+  renderShelf();
+  show('welcome');
+  (mode==='read' ? $('doorRead') : $('doorListen')).focus();
+  if(mode) $('modeChip').textContent = mode==='read' ? 'Унших' : 'Сонсох';
 })();
 </script>
 </body>
