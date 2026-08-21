@@ -1,0 +1,20 @@
+{
+  "_note": "Corrections applied to every book as it is read and voiced. Edit this file, re-run gerel_voice.py and gerel_build.py, and the fix reaches all 287 books at once. Nothing inside the EPUBs is altered — they stay exactly as the library published them.",
+
+  "_how": {
+    "text": "Fixes a genuine typo. Changes what is shown AND what is spoken. Use sparingly: this alters someone else's published text.",
+    "say": "Fixes only how a word is pronounced. The page still shows the original. Use freely — abbreviations, numerals, foreign names."
+  },
+
+  "text": [
+  ],
+
+  "say": [
+    { "find": "МУИС",   "with": "Монголын Улсын Их Сургууль" },
+    { "find": "БНМАУ",  "with": "Бүгд Найрамдах Монгол Ард Улс" },
+    { "find": "ШУА",    "with": "Шинжлэх Ухааны Академи" },
+    { "find": "г.м.",   "with": "гэх мэт" },
+    { "find": "жнь",    "with": "жишээ нь" },
+    { "find": "х.у.",   "with": "хуудас" }
+  ]
+}

@@ -332,12 +332,21 @@ const SELLING=['зарагдаж','номын дэлгүүр','худалдаа�
   'болор дуран','bolorsoft','хандив','qpay','хаан банк','e-nom.mn','товшиж','холбоос','дуулгая'];
 const FOREWORD=['өмнөх үг','өмнөтгөл','удиртгал','оршил','редакцаас','эмхэтгэгчээс'];
 const NOTE=/^\s*(жич|тайлбар|анхаарах)\s*[:：]/i;
+// Exact lines removed from every book, found by looking for paragraphs that
+// repeat across many of them. A story appears once; a publisher's notice
+// appears in fifty. Exact matching only, so no real sentence is caught.
+let BLOCKED=new Set();
 const SEP=/^[⁂*※•\s]+$/;
 const hits=(t,w)=>{const l=t.toLowerCase();return w.reduce((n,x)=>n+(l.includes(x)?1:0),0)};
 
 // Cut a trailing note or advertisement off a real chapter. Runs before the
 // judgement below, or an advertisement pasted onto the end of a story would
 // condemn the story with it.
+// One paragraph that is plainly an advertisement. The spell-checker notice
+// survived in 91 books because it does not always follow a separator; judging
+// a paragraph alone catches it wherever it sits, and two independent selling
+// words in a single paragraph do not happen in a folk tale.
+const isAdvert=p=>p.length<600 && hits(p,SELLING)>=2;
 function stripTail(ps){
   for(let i=0;i<ps.length;i++){
     const tail=ps.slice(i).join(' ');
@@ -411,7 +420,8 @@ async function loadEpub(data,fb){
     doc.querySelectorAll('script,style').forEach(n=>n.remove());
     const els=[...doc.querySelectorAll('p,h1,h2,h3,h4,li,blockquote')];
     let ps=(els.length?els:[doc.body]).map(e=>(e.textContent||'').replace(/\s+/g,' ').trim())
-      .map(t=>t.replace(/^\s*\[\s*[←<]\s*\d+\s*\]\s*/,'').trim()).filter(t=>t.length>=1);
+      .map(t=>t.replace(/^\s*\[\s*[←<]\s*\d+\s*\]\s*/,'').trim())
+      .filter(t=>t.length>=1 && !BLOCKED.has(t) && !isAdvert(t));
     if(!ps.length) continue;
     ps=stripTail(ps).filter(t=>t.length>1);
     if(!ps.length) continue;
@@ -999,6 +1009,10 @@ document.addEventListener('keydown',e=>{
   try{ const r=await fetch('catalog.json',{cache:'no-store'});
     catalog=r.ok?await r.json():{shelves:[]}; }
   catch(e){ catalog={shelves:[]}; }
+
+  try{ const r=await fetch('blocklist.json',{cache:'no-cache'});
+    if(r.ok) BLOCKED=new Set(((await r.json()).lines||[]).map(x=>x.trim()).filter(Boolean)); }
+  catch(e){}
 
   // Which phrases have been voiced already. Without this the interface is
   // silent unless an Azure key is present, and a child hears nothing move.

@@ -648,55 +648,183 @@ async function saveEdit(){
 $('editClose').addEventListener('click', ()=>{ $('editPanel').classList.add('hidden'); editing=null; });
 $('editSave').addEventListener('click', saveEdit);
 
-// ---- adding books ----
-async function epubInfo(file){
+// ============================================================
+// Adding a book
+// ============================================================
+// The whole job, from the browser: read the book, pull out its cover, upload
+// both to the repository and list it. Nothing to copy by hand.
+
+// Mongolian Cyrillic to Latin, matching the Python side. Stripping non-Latin
+// characters instead would collapse most Mongolian filenames to nothing, and
+// every book would end up sharing one id.
+const TRANSLIT = {
+  'а':'a','б':'b','в':'v','г':'g','д':'d','е':'e','ё':'yo','ж':'j','з':'z',
+  'и':'i','й':'i','к':'k','л':'l','м':'m','н':'n','о':'o','ө':'o','п':'p',
+  'р':'r','с':'s','т':'t','у':'u','ү':'u','ф':'f','х':'h','ц':'ts','ч':'ch',
+  'ш':'sh','щ':'sh','ъ':'','ы':'y','ь':'','э':'e','ю':'yu','я':'ya'
+};
+function shortHash(str){
+  // Not cryptography — just enough to keep two similar titles apart.
+  let h = 5381;
+  for(let i=0;i<str.length;i++) h = ((h<<5)+h+str.charCodeAt(i))>>>0;
+  return h.toString(16).padStart(8,'0').slice(0,6);
+}
+function makeId(name){
+  const stem = name.replace(/\.epub$/i,'');
+  const latin = [...stem].map(ch=>{
+    const low = ch.toLowerCase();
+    const t = TRANSLIT[low];
+    if(t === undefined) return ch;
+    return ch === low ? t : t.toUpperCase();
+  }).join('');
+  const slug = latin.replace(/[^0-9A-Za-z]+/g,'-').replace(/^-|-$/g,'').toLowerCase().slice(0,48);
+  return (slug || 'book') + '-' + shortHash(stem);
+}
+
+async function coverFrom(zip, opfPath, opf){
+  const dir = opfPath.includes('/') ? opfPath.replace(/\/[^/]*$/,'/') : '';
+  const names = Object.keys(zip.files);
+  const resolve = h => names.find(n => n === dir+h || n === h);
+
+  let href = null;
+  opf.querySelectorAll('manifest > item').forEach(i=>{
+    if(!href && (i.getAttribute('properties')||'').includes('cover-image')) href = i.getAttribute('href');
+  });
+  if(!href){
+    const meta = [...opf.querySelectorAll('metadata > meta')]
+      .find(m => (m.getAttribute('name')||'').toLowerCase()==='cover');
+    if(meta){
+      const id = meta.getAttribute('content');
+      const item = [...opf.querySelectorAll('manifest > item')].find(i=>i.getAttribute('id')===id);
+      if(item) href = item.getAttribute('href');
+    }
+  }
+  if(!href){
+    const item = [...opf.querySelectorAll('manifest > item')].find(i=>{
+      const h=(i.getAttribute('href')||'').toLowerCase();
+      return /\.(jpe?g|png|gif|webp)$/.test(h) &&
+             (h.includes('cover') || (i.getAttribute('id')||'').toLowerCase().includes('cover'));
+    });
+    if(item) href = item.getAttribute('href');
+  }
+  const path = href ? resolve(href) : names.find(n=>/\.(jpe?g|png)$/i.test(n));
+  if(!path) return null;
+
+  // Shrunk to a thumbnail, or 287 covers would weigh more than the books.
+  const blob = await zip.file(path).async('blob');
+  const url = URL.createObjectURL(blob);
+  try{
+    const img = await new Promise((res,rej)=>{
+      const i=new Image(); i.onload=()=>res(i); i.onerror=rej; i.src=url;
+    });
+    const w = Math.min(320, img.width || 320);
+    const c = document.createElement('canvas');
+    c.width = w; c.height = Math.round((img.height||w) * w / (img.width||w));
+    c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+    return c.toDataURL('image/jpeg', 0.82).split(',')[1];
+  }catch(e){
+    return null;
+  }finally{
+    URL.revokeObjectURL(url);
+  }
+}
+
+async function readEpub(file){
   const zip = await JSZip.loadAsync(file);
-  const container = await zip.file('META-INF/container.xml').async('string');
-  const opfPath = new DOMParser().parseFromString(container,'application/xml')
+  const cont = await zip.file('META-INF/container.xml').async('string');
+  const opfPath = new DOMParser().parseFromString(cont,'application/xml')
     .querySelector('rootfile').getAttribute('full-path');
   const opf = new DOMParser().parseFromString(await zip.file(opfPath).async('string'),'application/xml');
-  const title = (opf.querySelector('metadata > *|title') || opf.querySelector('title'))?.textContent?.trim();
-  const author = (opf.querySelector('metadata > *|creator') || opf.querySelector('creator'))?.textContent?.trim();
+  const title = (opf.querySelector('metadata > *|title')||opf.querySelector('title'))?.textContent?.trim();
+  const author = (opf.querySelector('metadata > *|creator')||opf.querySelector('creator'))?.textContent?.trim();
 
-  // rough character count, enough for the length and cost figures
   let chars = 0;
-  const names = Object.keys(zip.files).filter(n => /\.x?html?$/i.test(n));
-  for(const n of names){
-    const raw = await zip.file(n).async('string');
-    const doc = new DOMParser().parseFromString(raw, 'text/html');
-    doc.querySelectorAll('script,style').forEach(x => x.remove());
-    chars += (doc.body?.textContent || '').replace(/\s+/g,' ').trim().length;
+  for(const n of Object.keys(zip.files)){
+    if(!/\.x?html?$/i.test(n)) continue;
+    const doc = new DOMParser().parseFromString(await zip.file(n).async('string'),'text/html');
+    doc.querySelectorAll('script,style').forEach(x=>x.remove());
+    chars += (doc.body?.textContent||'').replace(/\s+/g,' ').trim().length;
   }
-  return { title: title || file.name.replace(/\.epub$/i,''), author: author || '', chars };
+  const cover = await coverFrom(zip, opfPath, opf);
+  return { title: title || file.name.replace(/\.epub$/i,''), author: author || '', chars, cover };
+}
+
+function toBase64(buffer){
+  const bytes = new Uint8Array(buffer);
+  let binary = '';
+  for(let i=0;i<bytes.length;i+=0x8000)
+    binary += String.fromCharCode.apply(null, bytes.subarray(i, i+0x8000));
+  return btoa(binary);
+}
+
+async function ghPut(path, base64, note){
+  let sha = null;
+  try{ sha = (await ghApi('/contents/' + path)).sha; }catch(e){}
+  const body = { message: note, content: base64 };
+  if(sha) body.sha = sha;
+  await ghApi('/contents/' + path, { method:'PUT', body: JSON.stringify(body) });
 }
 
 async function addFiles(files){
-  if(!catalog){ log('Эхлээд catalog.json нээнэ үү.', 'warn'); return; }
+  if(!catalog){ log('Эхлээд catalog ачаална уу.', 'warn'); return; }
+  if(!ghReady()){ log('Ном нэмэхийн тулд GitHub-той холбогдоно уу.', 'warn'); return; }
+
   const target = catalog.shelves.find(s => s.forChildren) || catalog.shelves[0];
   for(const file of files){
     if(!/\.epub$/i.test(file.name)) continue;
+
+    // Very large books are unreliable through the API. GitHub Desktop handles
+    // those better, and saying so beats a failure halfway through an upload.
+    if(file.size > 12*1024*1024){
+      log(`${file.name} хэт том (${(file.size/1024/1024).toFixed(0)} MB). `
+        + 'GitHub Desktop ашиглана уу.', 'warn');
+      continue;
+    }
+
     try{
-      const info = await epubInfo(file);
+      log(`${file.name} уншиж байна…`);
+      const info = await readEpub(file);
+      const id = makeId(file.name);
+
+      if(allBooks().some(b => b.id === id)){
+        log(`«${info.title}» аль хэдийн байна.`, 'warn');
+        continue;
+      }
+
+      log(`«${info.title}» байршуулж байна…`);
+      await ghPut('books/' + id + '.epub', toBase64(await file.arrayBuffer()),
+                  'Add book: ' + info.title);
       const entry = {
         title: info.title,
         author: info.author,
-        file: 'books/' + file.name,
+        file: 'books/' + id + '.epub',
         chars: info.chars,
-        minutes: Math.round(info.chars/5/150)
+        minutes: Math.round(info.chars/5/150),
+        id
       };
-      if(allBooks().some(b => b.file === entry.file)){
-        log(`«${entry.title}» аль хэдийн байна.`, 'warn');
-        continue;
+      if(info.cover){
+        await ghPut('covers/' + id + '.jpg', info.cover, 'Cover: ' + info.title);
+        entry.cover = 'covers/' + id + '.jpg';
       }
+
       target.books.push(entry);
-      target.books.sort((a,b) => (a.title||'').localeCompare(b.title||'', 'mn'));
-      log(`«${entry.title}» → ${target.name} (${entry.minutes} мин)`, 'good');
+      target.books.sort((a,b)=>(a.title||'').localeCompare(b.title||'','mn'));
+
+      const current = await ghApi('/contents/catalog.json');
+      const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(catalog, null, 1))));
+      await ghApi('/contents/catalog.json', {
+        method:'PUT',
+        body: JSON.stringify({ message:'Add '+info.title, content: encoded, sha: current.sha })
+      });
+
+      renderShelves();
+      log(`«${info.title}» нэмэгдлээ → ${target.name} (${entry.minutes} мин)`
+        + (info.cover ? ', хавтастай' : ', хавтасгүй'), 'good');
     }catch(err){
       log(`${file.name}: ${err.message}`, 'warn');
     }
   }
-  renderShelves();
-  log('Файлуудыг books/ хавтас руу хуулахаа мартуузай.', 'warn');
+  log('Дуу оруулахын өмнө GitHub Desktop дээр Pull хийнэ үү.');
 }
 
 $('addBooks').addEventListener('change', e => addFiles([...e.target.files]));
