@@ -347,6 +347,16 @@ const hits=(t,w)=>{const l=t.toLowerCase();return w.reduce((n,x)=>n+(l.includes(
 // a paragraph alone catches it wherever it sits, and two independent selling
 // words in a single paragraph do not happen in a folk tale.
 const isAdvert=p=>p.length<600 && hits(p,SELLING)>=2;
+// The digitisation credit. Removed from narration by agreement with the
+// library: a blind child should not sit through a web address spelled out
+// before every story. The library is still credited on the information screen.
+const DIGITISER=['цахим хэлбэрт хөрвүүл','цахим номын сан','цогт охин тэнгэр',
+  'цагаан бамбарууш','e-nom','enom','e˗nom'];
+const isCredit=p=>{
+  if(p.length>400) return false;
+  const low=p.toLowerCase().replace(/\s+/g,'');
+  return DIGITISER.some(m=>low.includes(m.replace(/\s+/g,'')));
+};
 function stripTail(ps){
   for(let i=0;i<ps.length;i++){
     const tail=ps.slice(i).join(' ');
@@ -421,7 +431,7 @@ async function loadEpub(data,fb){
     const els=[...doc.querySelectorAll('p,h1,h2,h3,h4,li,blockquote')];
     let ps=(els.length?els:[doc.body]).map(e=>(e.textContent||'').replace(/\s+/g,' ').trim())
       .map(t=>t.replace(/^\s*\[\s*[←<]\s*\d+\s*\]\s*/,'').trim())
-      .filter(t=>t.length>=1 && !BLOCKED.has(t) && !isAdvert(t));
+      .filter(t=>t.length>=1 && !BLOCKED.has(t) && !isAdvert(t) && !isCredit(t));
     if(!ps.length) continue;
     ps=stripTail(ps).filter(t=>t.length>1);
     if(!ps.length) continue;
