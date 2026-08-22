@@ -1,0 +1,14 @@
+# Гэрэл — Хүүхдийн номын сан
+# A free audiobook library for blind and partially sighted children in Mongolia.
+
+User-agent: *
+Allow: /
+
+# The books and their audio are for reading and listening, not for bulk
+# collection. Please leave them alone.
+Disallow: /books/
+Disallow: /audio/
+Disallow: /admin.html
+Disallow: /gerel-admin.html
+
+Sitemap: https://gerelnom.com/sitemap.xml
