@@ -236,7 +236,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/microsoft-cognitiveservices-speech-sdk@1.40.0/distrib/browser/microsoft.cognitiveservices.speech.sdk.bundle-min.js"></script>
 <script>
-const AUDIO_ROOT='audio', SPEECH_ROOT='speech';
+// Where the voiced books live. The catalogue may point this elsewhere — at
+// Cloudflare R2 — because 21 GB of audio cannot sit in a GitHub repository,
+// and R2 charges nothing for the downloads.
+let AUDIO_ROOT='audio';
+const SPEECH_ROOT='speech';
 // Only for books not yet voiced. Empty means no key ships in the page.
 const AZURE_SPEECH_KEY="", AZURE_SPEECH_REGION="eastasia", VOICE="mn-MN-YesuiNeural";
 const COLOURS=['var(--sky)','var(--sun)','var(--berry)','var(--leaf)','var(--lilac)','var(--coral)'];
@@ -1019,6 +1023,7 @@ document.addEventListener('keydown',e=>{
   try{ const r=await fetch('catalog.json',{cache:'no-store'});
     catalog=r.ok?await r.json():{shelves:[]}; }
   catch(e){ catalog={shelves:[]}; }
+  if(catalog && catalog.audioBase) AUDIO_ROOT=catalog.audioBase.replace(/\/+$/,'');
 
   try{ const r=await fetch('blocklist.json',{cache:'no-cache'});
     if(r.ok) BLOCKED=new Set(((await r.json()).lines||[]).map(x=>x.trim()).filter(Boolean)); }
