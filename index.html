@@ -251,7 +251,9 @@ const SPEECH_ROOT='speech';
 // Only for books not yet voiced. Empty means no key ships in the page.
 const AZURE_SPEECH_KEY="", AZURE_SPEECH_REGION="eastasia", VOICE="mn-MN-YesuiNeural";
 const COLOURS=['var(--sky)','var(--sun)','var(--berry)','var(--leaf)','var(--lilac)','var(--coral)'];
-const SPEEDS=[0.6,0.7,0.85,1.0,1.15,1.3], SLEEPS=[0,15,30,60];
+// Slower than normal turned out to sound dragged rather than calm, so the
+// choice is normal or faster.
+const SPEEDS=[1.0,1.15,1.3], SLEEPS=[0,15,30,60];
 
 const $=id=>document.getElementById(id);
 
@@ -263,7 +265,7 @@ const put=(k,v)=>{try{localStorage.setItem('gerel:'+k,v)}catch(e){}};
 const get=(k,d)=>{try{const v=localStorage.getItem('gerel:'+k);return v===null?d:v}catch(e){return d}};
 
 let mode=get('mode','');
-let speedIndex=parseInt(get('speed','2'),10); if(isNaN(speedIndex)||!SPEEDS[speedIndex]) speedIndex=2;
+let speedIndex=parseInt(get('speed','0'),10); if(isNaN(speedIndex)||!SPEEDS[speedIndex]) speedIndex=0;
 let readSize=parseInt(get('size','32'),10); if(isNaN(readSize)) readSize=32;
 let sleepIndex=0, favs=[];
 try{ favs=JSON.parse(get('favs','[]'))||[] }catch(e){ favs=[] }
@@ -330,6 +332,17 @@ function liveSay(t){
 }
 function announce(t){ $('status').textContent=t; $('playerStatus').textContent=t; say(t); }
 
+// Wait for the interface to stop talking before the book begins. Otherwise the
+// title and the first sentence are spoken over each other, which is confusing
+// for anyone and disorienting for a child who cannot see the screen.
+function afterSpeaking(fn){
+  const go=()=>{ voiceEl.removeEventListener('ended',go); clearTimeout(timer); fn(); };
+  // A ceiling, so a clip that never fires 'ended' cannot strand the book.
+  const timer=setTimeout(go, 6000);
+  if(voiceEl.paused || voiceEl.ended){ setTimeout(go, 350); return; }
+  voiceEl.addEventListener('ended',go);
+}
+
 // ---- book text ----
 const book={title:'',author:'',chapters:[],audioBase:null,entry:null};
 // Everything here is about the book rather than in it. A child asked for a
@@ -358,6 +371,23 @@ const hits=(t,w)=>{const l=t.toLowerCase();return w.reduce((n,x)=>n+(l.includes(
 // a paragraph alone catches it wherever it sits, and two independent selling
 // words in a single paragraph do not happen in a folk tale.
 const isAdvert=p=>p.length<600 && hits(p,SELLING)>=2;
+// Some books split the advertisement across two lines, so neither line alone
+// carries two selling words. These phrases are unmistakable on their own: no
+// folk tale mentions a spell-checker or a publisher's imprint line.
+const ALONE=['болор дуран','bolorsoft','программтай танилц','сурталчилгаа дээр',
+  'онд эрхлэн хэвлүүлсэн номоос','цахим номын сан:'];
+// A publishing house is only boilerplate beside a year — a story may mention
+// one honestly, and a mother who works at one should survive.
+const ALONE_RE=[
+  /хэвлэлийн газар\w*\s*(”|"|»)?\s*(улаанбаатар|\w+\s+хотноо)/i,
+  /хэвлэлийн газар\w*\s+\d{4}\s*онд/i,
+  /\d{4}\s*онд\s+(цахим|эрхлэн)/i
+];
+const isBoilerplate=p=>{
+  if(p.length>500) return false;
+  const low=p.toLowerCase();
+  return ALONE.some(m=>low.includes(m)) || ALONE_RE.some(r=>r.test(low));
+};
 // The digitisation credit. Removed from narration by agreement with the
 // library: a blind child should not sit through a web address spelled out
 // before every story. The library is still credited on the information screen.
@@ -442,7 +472,8 @@ async function loadEpub(data,fb){
     const els=[...doc.querySelectorAll('p,h1,h2,h3,h4,li,blockquote')];
     let ps=(els.length?els:[doc.body]).map(e=>(e.textContent||'').replace(/\s+/g,' ').trim())
       .map(t=>t.replace(/^\s*\[\s*[←<]\s*\d+\s*\]\s*/,'').trim())
-      .filter(t=>t.length>=1 && !BLOCKED.has(t) && !isAdvert(t) && !isCredit(t));
+      .filter(t=>t.length>=1 && !BLOCKED.has(t) && !isAdvert(t)
+                 && !isCredit(t) && !isBoilerplate(t));
     if(!ps.length) continue;
     ps=stripTail(ps).filter(t=>t.length>1);
     if(!ps.length) continue;
@@ -610,7 +641,7 @@ function step(d){
 function jump(i){
   stop(); ci=i;bi=0;si=0; paint();
   show(mode==='read'?'reader':'player'); buildRead();
-  announce(chap().title); play();
+  announce(chap().title); afterSpeaking(play);
 }
 
 // Lock screen, headphone button, car stereo. A child listening in bed with the
@@ -861,7 +892,7 @@ function openAt(fromStart){
   show(mode==='read'?'reader':'player');
   media();
   announce(fromStart?'Эхнээс нь':'Үргэлжлүүлэх');
-  if(mode==='listen') play();
+  if(mode==='listen') afterSpeaking(play);
 }
 $('resumeGo').addEventListener('click',()=>{ unlock(); openAt(false); });
 $('resumeStart').addEventListener('click',()=>{ unlock(); openAt(true); });

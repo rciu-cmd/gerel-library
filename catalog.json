@@ -546,6 +546,15 @@
      "cover": "covers/uulinshpigeliin-domog-3-8f2c3e.jpg"
     },
     {
+     "title": "УУЛИНШПИГЕЛИЙН ДОМОГ - 4",
+     "author": "Шарль Де Костер",
+     "file": "books/uulinshpigieliin-domog-4-sharl-die-kostier-779210.epub",
+     "chars": 149104,
+     "minutes": 199,
+     "id": "uulinshpigieliin-domog-4-sharl-die-kostier-779210",
+     "cover": "covers/uulinshpigieliin-domog-4-sharl-die-kostier-779210.jpg"
+    },
+    {
      "title": "УУЛИНШПИГЕЛИЙН ДОМОГ - 5",
      "author": "Шарль Де Костер",
      "file": "books/uulinshpigeliin-domog-5-1b7643.epub",
@@ -645,6 +654,33 @@
      "cover": "covers/chuluun-arslan-096e15.jpg"
     },
     {
+     "title": "ШААЛУУ ХҮҮ МАУГЛИ - 1",
+     "author": "Р. КИПЛИНГ",
+     "file": "books/shaaluu-khuu-maugli-1-r-kipling-ef0fe2.epub",
+     "chars": 88494,
+     "minutes": 118,
+     "id": "shaaluu-khuu-maugli-1-r-kipling-ef0fe2",
+     "cover": "covers/shaaluu-khuu-maugli-1-r-kipling-ef0fe2.jpg"
+    },
+    {
+     "title": "ШААЛУУ ХҮҮ МАУГЛИ - 2",
+     "author": "Р. КИПЛИНГ",
+     "file": "books/shaaluu-khuu-maugli-2-r-kipling-d8cbe3.epub",
+     "chars": 32936,
+     "minutes": 44,
+     "id": "shaaluu-khuu-maugli-2-r-kipling-d8cbe3",
+     "cover": "covers/shaaluu-khuu-maugli-2-r-kipling-d8cbe3.jpg"
+    },
+    {
+     "title": "ШААЛУУ ХҮҮ МАУГЛИ - 3",
+     "author": "Р. КИПЛИНГ",
+     "file": "books/shaaluu-khuu-maugli-3-r-kipling-f386ee.epub",
+     "chars": 75313,
+     "minutes": 100,
+     "id": "shaaluu-khuu-maugli-3-r-kipling-f386ee",
+     "cover": "covers/shaaluu-khuu-maugli-3-r-kipling-f386ee.jpg"
+    },
+    {
      "title": "ШААЛУУ ХҮҮ МАУГЛИ - 4",
      "author": "Р. КИПЛИНГ",
      "file": "books/shaaluu-huu-maugli-4-a64758.epub",
@@ -652,6 +688,15 @@
      "minutes": 46,
      "id": "shaaluu-huu-maugli-4-a64758",
      "cover": "covers/shaaluu-huu-maugli-4-a64758.jpg"
+    },
+    {
+     "title": "ШААЛУУ ХҮҮ МАУГЛИ - 5",
+     "author": "Р. КИПЛИНГ",
+     "file": "books/shaaluu-khuu-maugli-5-r-kipling-ba4120.epub",
+     "chars": 45496,
+     "minutes": 61,
+     "id": "shaaluu-khuu-maugli-5-r-kipling-ba4120",
+     "cover": "covers/shaaluu-khuu-maugli-5-r-kipling-ba4120.jpg"
     },
     {
      "title": "ШААЛУУ ХҮҮ МАУГЛИ - 6",
@@ -688,6 +733,15 @@
      "minutes": 168,
      "id": "shpessart-dah-buurchiin-gazar-3-15d805",
      "cover": "covers/shpessart-dah-buurchiin-gazar-3-15d805.jpg"
+    },
+    {
+     "title": "ШПЕССАРТ ДАХЬ БУУРЧИЙН ГАЗАР-2",
+     "author": "Вильгельм Хауф",
+     "file": "books/shpiessart-dakh-buurchiin-2-e2e2d2.epub",
+     "chars": 303032,
+     "minutes": 404,
+     "id": "shpiessart-dakh-buurchiin-2-e2e2d2",
+     "cover": "covers/shpiessart-dakh-buurchiin-2-e2e2d2.jpg"
     },
     {
      "title": "ЭНЭТХЭГ АРДЫН ҮЛГЭРҮҮД",
