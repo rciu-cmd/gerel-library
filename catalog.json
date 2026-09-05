@@ -537,6 +537,24 @@
      "cover": "covers/ulaan-malgait-8ebad1.jpg"
     },
     {
+     "title": "УУЛИНШПИГЕЛИЙН ДОМОГ - 1",
+     "author": "Шарль Де Костер",
+     "file": "books/uulinshpigeliin-domog-1-a64a4e.epub",
+     "chars": 353990,
+     "minutes": 472,
+     "id": "uulinshpigeliin-domog-1-a64a4e",
+     "cover": "covers/uulinshpigeliin-domog-1-a64a4e.jpg"
+    },
+    {
+     "title": "УУЛИНШПИГЕЛИЙН ДОМОГ - 2",
+     "author": "Шарль Де Костер",
+     "file": "books/uulinshpigeliin-domog-2-b6c2a4.epub",
+     "chars": 100575,
+     "minutes": 134,
+     "id": "uulinshpigeliin-domog-2-b6c2a4",
+     "cover": "covers/uulinshpigeliin-domog-2-b6c2a4.jpg"
+    },
+    {
      "title": "УУЛИНШПИГЕЛИЙН ДОМОГ - 3",
      "author": "Шарль Де Костер",
      "file": "books/uulinshpigeliin-domog-3-8f2c3e.epub",
@@ -634,6 +652,15 @@
      "minutes": 95,
      "id": "chipollinogiin-hogtei-yavdal-1-c8654e",
      "cover": "covers/chipollinogiin-hogtei-yavdal-1-c8654e.jpg"
+    },
+    {
+     "title": "ЧИПОЛЛИНОГИЙН ХӨГТЭЙ ЯВДАЛ - 2",
+     "author": "ЖАННИ РОДАРИ",
+     "file": "books/chipollinogiin-hogtei-yavdal-2-737110.epub",
+     "chars": 133247,
+     "minutes": 178,
+     "id": "chipollinogiin-hogtei-yavdal-2-737110",
+     "cover": "covers/chipollinogiin-hogtei-yavdal-2-737110.jpg"
     },
     {
      "title": "ЧОНО ШҮҮГЧ БОЛСОН НЬ",
@@ -1081,6 +1108,15 @@
      "minutes": 419,
      "id": "ih-tuurviluudyn-payan-1-2ca804",
      "cover": "covers/ih-tuurviluudyn-payan-1-2ca804.jpg"
+    },
+    {
+     "title": "ИХ ТУУРВИЛУУДЫН ПАЯН - 2",
+     "author": "Александр Ивич",
+     "file": "books/ih-tuurviluudyn-payan-2-e491ba.epub",
+     "chars": 181078,
+     "minutes": 241,
+     "id": "ih-tuurviluudyn-payan-2-e491ba",
+     "cover": "covers/ih-tuurviluudyn-payan-2-e491ba.jpg"
     },
     {
      "title": "ЛУУНЫ ХҮҮ ТАРО",
@@ -1986,6 +2022,24 @@
      "cover": "covers/uulinshpigeliin-domog-3-8f2c3e.jpg"
     },
     {
+     "title": "УУЛИНШПИГЕЛИЙН ДОМОГ - 4",
+     "author": "Шарль Де Костер",
+     "file": "books/uulinshpigieliin-domog-4-sharl-die-kostier-779210.epub",
+     "chars": 149104,
+     "minutes": 199,
+     "id": "uulinshpigieliin-domog-4-sharl-die-kostier-779210",
+     "cover": "covers/uulinshpigieliin-domog-4-sharl-die-kostier-779210.jpg"
+    },
+    {
+     "title": "УУЛИНШПИГЕЛИЙН ДОМОГ - 5",
+     "author": "Шарль Де Костер",
+     "file": "books/uulinshpigeliin-domog-5-1b7643.epub",
+     "chars": 70186,
+     "minutes": 94,
+     "id": "uulinshpigeliin-domog-5-1b7643",
+     "cover": "covers/uulinshpigeliin-domog-5-1b7643.jpg"
+    },
+    {
      "title": "ХЭРЭВ БИ ЭМЭГТЭЙ БАЙСАН САН БОЛ ДОО",
      "author": "Азиз Несин",
      "file": "books/herev-bi-emegtei-baisan-san-bol-doo-3d1411.epub",
@@ -2770,6 +2824,15 @@
      "minutes": 776,
      "id": "zuiliin-uusel-2-f9dea4",
      "cover": "covers/zuiliin-uusel-2-f9dea4.jpg"
+    },
+    {
+     "title": "ИХ ТУУРВИЛУУДЫН ПАЯН - 1",
+     "author": "Александр Ивич",
+     "file": "books/ih-tuurviluudyn-payan-1-2ca804.epub",
+     "chars": 314129,
+     "minutes": 419,
+     "id": "ih-tuurviluudyn-payan-1-2ca804",
+     "cover": "covers/ih-tuurviluudyn-payan-1-2ca804.jpg"
     },
     {
      "title": "ИХ ТУУРВИЛУУДЫН ПАЯН - 2",
