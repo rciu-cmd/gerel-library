@@ -57,12 +57,13 @@
   @media(min-width:640px){.doors{grid-template-columns:1fr 1fr}
     .doors.three{grid-template-columns:1fr 1fr 1fr}}
   .door.both{background:var(--leaf);}
-  .door{display:flex;flex-direction:column;align-items:center;gap:12px;
-    padding:34px 20px;border-radius:30px;color:var(--ink);
-    font-family:var(--display);font-weight:700;font-size:27px;
+  .door{display:flex;flex-direction:column;align-items:center;gap:14px;
+    padding:48px 20px;border-radius:34px;color:var(--ink);
+    font-family:var(--display);font-weight:700;font-size:30px;
+    min-height:190px;justify-content:center;
     box-shadow:0 6px 0 rgba(34,36,59,.16);}
   .door small{font-family:var(--body);font-weight:600;font-size:16px;opacity:.75;}
-  .door .ic{font-size:46px;line-height:1;}
+  .door .ic{font-size:62px;line-height:1;}
   .door.listen{background:var(--sun);} .door.read{background:var(--sky);}
   .door:active{transform:translateY(3px);box-shadow:0 3px 0 rgba(34,36,59,.16);}
 
@@ -157,13 +158,13 @@
   <p class="sub">Хүүхдийн номын сан</p>
   <div class="doors three">
     <button class="door listen" id="doorListen">
-      <span class="ic">🎧</span>Сонсох<small>Зөвхөн чанга уншина</small>
+      <span class="ic">🎧</span>Сонсох
     </button>
     <button class="door both" id="doorBoth">
-      <span class="ic">📖</span>Сонсох ба унших<small>Уншихыг нь дагаж харна</small>
+      <span class="ic">📖</span>Сонсох ба унших
     </button>
     <button class="door read" id="doorRead">
-      <span class="ic">🔎</span>Унших<small>Зөвхөн том үсгээр</small>
+      <span class="ic">🔎</span>Унших
     </button>
   </div>
   <div id="status" class="note" role="status" aria-live="polite"></div>
@@ -203,7 +204,6 @@
       <button class="mini" id="tocBtn">Бүлгүүд</button>
       <button class="mini" id="toReadBtn">Том үсгээр</button>
       <button class="mini" id="speedBtn">Хурд 1×</button>
-      <button class="mini" id="sleepBtn">Унтах цаг</button>
       <button class="mini" id="restartBtn">Эхнээс нь</button>
     </div>
     <div id="playerStatus" class="note hidden"></div>
@@ -319,27 +319,36 @@ function synth(){
 // app, so every move says what it is. Pre-voiced clips are preferred, which is
 // what lets the published page carry no key at all.
 let sayT=null, SPEECH={};
+// Set the moment say() is called, not when the sound starts. Without it,
+// anything waiting for the voice to finish looked during the pause before it
+// began, saw silence, and started talking over the top.
+let speaking=false;
 // Only one thing speaks at a time. Two voices over each other is confusing to
 // anyone and useless to a child who has only sound to go on.
 function hush(){
   clearTimeout(sayT);
+  speaking=false;
   try{ voiceEl.pause(); voiceEl.currentTime=0; }catch(e){}
 }
 function say(text){
   hush();
+  if((text||'').trim()) speaking=true;
   sayT=setTimeout(()=>{
     const t=(text||'').trim();
     if(!t) return;
     const clip=SPEECH[t];
     if(clip){
       voiceEl.src=SPEECH_ROOT+'/'+clip;
+      voiceEl.onended=()=>{ speaking=false; };
       voiceEl.play().catch(err=>{
+        speaking=false;
         console.warn('Gerel: clip would not play:', clip, 'for', t, err);
         liveSay(t);
       });
       return;
     }
     console.warn('Gerel: no voice clip for:', t, '— run gerel_speak.py');
+    speaking=false;
     liveSay(t);
   },220);   // a pause, so sweeping across the screen does not babble
 }
@@ -359,11 +368,15 @@ function announce(t){ $('status').textContent=t; $('playerStatus').textContent=t
 // title and the first sentence are spoken over each other, which is confusing
 // for anyone and disorienting for a child who cannot see the screen.
 function afterSpeaking(fn){
-  const go=()=>{ voiceEl.removeEventListener('ended',go); clearTimeout(timer); fn(); };
-  // A ceiling, so a clip that never fires 'ended' cannot strand the book.
-  const timer=setTimeout(go, 6000);
-  if(voiceEl.paused || voiceEl.ended){ setTimeout(go, 350); return; }
-  voiceEl.addEventListener('ended',go);
+  let done=false;
+  const go=()=>{ if(done) return; done=true; clearInterval(watch); clearTimeout(cap); fn(); };
+  // A ceiling, so a clip that never reports finishing cannot strand the book.
+  const cap=setTimeout(go, 12000);
+  // Poll rather than listen for one event: the clip may not have started yet,
+  // and 'speaking' covers the whole span from the request to the last word.
+  const watch=setInterval(()=>{
+    if(!speaking && voiceEl.paused) go();
+  }, 120);
 }
 
 // ---- book text ----
@@ -564,7 +577,20 @@ function playClip(clip,from){
     let frame=null;
     const done=()=>{audioEl.removeEventListener('ended',ok);audioEl.removeEventListener('error',bad);
       if(frame)cancelAnimationFrame(frame)};
-    const ok=()=>{done();res()}, bad=()=>{done();rej(new Error('audio'))};
+    const ok=()=>{done();res()};
+    // One retry before giving up: a dropped connection is far more common than
+    // a genuinely missing file, and a child should not be told a book is gone
+    // because a tunnel interrupted it.
+    let tried=false;
+    const bad=()=>{
+      if(!tried && playing){
+        tried=true;
+        setTimeout(()=>{ try{ audioEl.load(); audioEl.play().catch(()=>{done();rej(new Error('audio'))}); }
+                         catch(e){ done(); rej(new Error('audio')); } }, 1200);
+        return;
+      }
+      done(); rej(new Error('audio'));
+    };
     const tick=()=>{
       if(!playing){done();return}
       const t=audioEl.currentTime; let cur=null;
@@ -573,6 +599,11 @@ function playClip(clip,from){
       frame=requestAnimationFrame(tick);
     };
     audioEl.addEventListener('ended',ok); audioEl.addEventListener('error',bad);
+    // A book on a slow connection was being reported as unavailable. Say it is
+    // loading instead, and give it time.
+    const slow=setTimeout(()=>{ if(playing) announce('Ачаалж байна…'); }, 1500);
+    audioEl.addEventListener('playing',()=>clearTimeout(slow),{once:true});
+    audioEl.addEventListener('canplay',()=>clearTimeout(slow),{once:true});
     audioEl.src=clip.url;
     audioEl.playbackRate=book.audioBase?SPEEDS[speedIndex]:1;
     if(from>0) audioEl.addEventListener('loadedmetadata',()=>{try{audioEl.currentTime=from}catch(e){}},{once:true});
@@ -768,7 +799,12 @@ let letterPick='';
 const MN_LETTERS='АБВГДЕЁЖЗИЙКЛМНОӨПРСТУҮФХЦЧШЩЭЮЯ'.split('');
 const firstLetter=t=>((t||'').trim().charAt(0)||'').toUpperCase();
 
+let letterCounts={};
+const countFor=L=>letterCounts[L]||0;
+
 function renderLetters(books){
+  letterCounts={};
+  books.forEach(b=>{ const L=firstLetter(b.title); letterCounts[L]=(letterCounts[L]||0)+1; });
   const box=$('letters');
   box.innerHTML='';
   if(!books.length) return;
@@ -778,11 +814,19 @@ function renderLetters(books){
     b.textContent=L;
     if(!present.has(L)) b.className='off';
     else if(L===letterPick) b.className='on';
+    // Spoken on hover and on focus, so a child sweeping across with arrows
+    // hears each letter rather than having to see it.
+    const speak=()=>{ if(present.has(L)) say(L); };
+    b.addEventListener('mouseenter',speak);
+    b.addEventListener('focus',speak);
     b.addEventListener('click',()=>{
-      if(!present.has(L)){ announce(L+' үсгээр эхэлсэн ном алга.'); return; }
+      if(!present.has(L)){ say(L+'. Ном алга.'); return; }
       letterPick = (letterPick===L) ? '' : L;
       renderShelf();
-      announce(letterPick ? letterPick+' үсэг' : 'Бүх ном');
+      announce(letterPick || 'Бүх ном');
+      // Land on the books, so the next arrow press moves through them.
+      setTimeout(()=>{ pick=-1; const first=$('bookList').firstElementChild;
+        if(first && letterPick) hi($('bookList'),0); }, 60);
     });
     box.appendChild(b);
   });
@@ -935,7 +979,6 @@ const KEYS=[
   ['Б','Бүлгүүд'],
   ['У','Том үсгээр унших'],
   ['Х','Хурд'],
-  ['З','Унтах цаг'],
   ['Я','Би хаана байна?'],
   ['?','Энэ жагсаалт']
 ];
@@ -1016,12 +1059,15 @@ $('readBack').addEventListener('click',()=>{stop();show('shelf')});
 $('playerBack').addEventListener('click',()=>{stop();show('shelf')});
 $('backChip').addEventListener('click',()=>{
   if(openShelf!==null){ openShelf=null; renderShelf(); announce('Тавиурууд'); }
-  else { show('welcome'); announce('Сонсох эсвэл унших?'); }
+  else { show('welcome'); }
 });
 $('readText').addEventListener('click',e=>{
   const s=e.target.closest('.sent'); if(!s) return;
+  // In reading mode the child is reading, not listening: moving the marker is
+  // enough, and starting the voice would be an interruption.
   unlock(); stop(); bi=+s.dataset.b; si=+s.dataset.s;
-  paint(); markRead(false); play();
+  paint(); markRead(false);
+  if(mode!=='read') play();
 });
 $('sizeUp').addEventListener('click',()=>{readSize=Math.min(96,readSize+6);applySize();announce('Үсэг '+readSize)});
 $('sizeDown').addEventListener('click',()=>{readSize=Math.max(18,readSize-6);applySize();announce('Үсэг '+readSize)});
@@ -1041,19 +1087,6 @@ $('speedBtn').addEventListener('click',()=>{
 });
 $('speedBtn').textContent='Хурд '+SPEEDS[speedIndex].toFixed(2).replace(/0$/,'')+'×';
 
-// Children fall asleep listening. Without this the book runs all night and
-// their place is gone by morning.
-let sleepT=null;
-$('sleepBtn').addEventListener('click',()=>{
-  sleepIndex=(sleepIndex+1)%SLEEPS.length; clearTimeout(sleepT);
-  const m=SLEEPS[sleepIndex];
-  $('sleepBtn').classList.toggle('on',m>0);
-  $('sleepBtn').textContent=m?m+' минут':'Унтах цаг';
-  if(m){ sleepT=setTimeout(()=>{stop();announce('Сайхан амраарай.')},m*60000);
-    announce(m+' минутын дараа зогсоно.'); }
-  else announce('Унтах цаг унтраалаа.');
-});
-
 // Four keys, the same everywhere: up and down to move and hear, right or Enter
 // to go in, left or Delete to come back.
 // Shortcuts that work anywhere. Given in both Mongolian and Latin letters,
@@ -1066,13 +1099,12 @@ const JUMPS={
   'б':'toc','b':'toc',          // бүлгүүд
   'у':'read','u':'read',        // унших
   'х':'speed','h':'speed',      // хурд
-  'з':'sleep','z':'sleep',      // унтах цаг
   'я':'where','y':'where',      // би хаана байна
   '?':'help','/':'help'
 };
 function doJump(what){
   switch(what){
-    case 'home':   stop(); show('welcome'); announce('Сонсох эсвэл унших?'); break;
+    case 'home':   stop(); show('welcome'); break;
     case 'shelves':openShelf=null; renderShelf(); show('shelf'); announce('Тавиурууд'); break;
     case 'mine': {
       const i=shelvesOf().findIndex(g=>g.name==='Миний ном');
@@ -1087,7 +1119,6 @@ function doJump(what){
     case 'toc':   if(book.chapters.length){ show('toc'); announce('Бүлгүүд'); } break;
     case 'read':  if(book.chapters.length){ show('reader'); announce('Том үсгээр'); } break;
     case 'speed': $('speedBtn').click(); break;
-    case 'sleep': $('sleepBtn').click(); break;
     case 'where': announce(whereAmI()); break;
     case 'help':  renderHelp(); show('help');
                   say(KEYS.map(k=>k[0]+': '+k[1]).join('. ')); break;
@@ -1137,6 +1168,23 @@ document.addEventListener('keydown',e=>{
     return;
   }
   if(!$('shelf').classList.contains('hidden')){
+    // On a book list, left and right step through the alphabet and say each
+    // letter; up and down move through the books themselves. Four keys, two
+    // levels, nothing to remember.
+    if(openShelf!==null && (left||right)){
+      e.preventDefault();
+      const usable=MN_LETTERS.filter(L=>countFor(L)>0);
+      if(!usable.length) return;
+      let at=usable.indexOf(letterPick);
+      at = at<0 ? (right?0:usable.length-1) : at+(right?1:-1);
+      if(at<0 || at>=usable.length){
+        letterPick=''; renderShelf(); announce('Бүх ном'); return;
+      }
+      letterPick=usable[at];
+      renderShelf();
+      announce(letterPick);
+      return;
+    }
     const box=openShelf===null?$('shelfList'):$('bookList');
     const items=[...box.children]; if(!items.length) return;
     if(down||up){ e.preventDefault();
