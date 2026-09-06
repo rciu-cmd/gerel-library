@@ -54,7 +54,9 @@
     font-size:clamp(48px,14vw,84px);letter-spacing:-.02em;}
   #welcome .sub{margin:0;font-size:clamp(17px,4.4vw,21px);color:var(--muted);}
   .doors{display:grid;gap:16px;width:100%;max-width:540px;}
-  @media(min-width:640px){.doors{grid-template-columns:1fr 1fr}}
+  @media(min-width:640px){.doors{grid-template-columns:1fr 1fr}
+    .doors.three{grid-template-columns:1fr 1fr 1fr}}
+  .door.both{background:var(--leaf);}
   .door{display:flex;flex-direction:column;align-items:center;gap:12px;
     padding:34px 20px;border-radius:30px;color:var(--ink);
     font-family:var(--display);font-weight:700;font-size:27px;
@@ -72,6 +74,14 @@
   .chip.mode{background:var(--sun);border-color:transparent;}
 
   .shelves,.books{display:grid;gap:13px;width:100%;max-width:720px;margin:0 auto;}
+  /* A row of letters, the way a phone's contact list works — two taps to reach
+     Чиполлино instead of eighty. */
+  #letters{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;
+    max-width:720px;margin:0 auto 14px;}
+  #letters button{min-width:44px;min-height:44px;border-radius:12px;
+    border:2px solid var(--line);background:#fff;font-weight:800;font-size:16px;}
+  #letters button.off{opacity:.3;}
+  #letters button.on{background:var(--sun);border-color:transparent;}
   .shelfCard{display:flex;align-items:center;gap:14px;text-align:left;
     padding:24px 22px;border-radius:26px;color:var(--ink);
     box-shadow:0 5px 0 rgba(34,36,59,.14);width:100%;}
@@ -145,12 +155,15 @@
   <div class="lamp lit" style="--lampSize:150px"></div>
   <div class="brand">Гэрэл</div>
   <p class="sub">Хүүхдийн номын сан</p>
-  <div class="doors">
+  <div class="doors three">
     <button class="door listen" id="doorListen">
-      <span class="ic">🎧</span>Сонсох<small>Ном чанга уншина</small>
+      <span class="ic">🎧</span>Сонсох<small>Зөвхөн чанга уншина</small>
+    </button>
+    <button class="door both" id="doorBoth">
+      <span class="ic">📖</span>Сонсох ба унших<small>Уншихыг нь дагаж харна</small>
     </button>
     <button class="door read" id="doorRead">
-      <span class="ic">🔎</span>Унших<small>Том үсгээр харна</small>
+      <span class="ic">🔎</span>Унших<small>Зөвхөн том үсгээр</small>
     </button>
   </div>
   <div id="status" class="note" role="status" aria-live="polite"></div>
@@ -163,6 +176,8 @@
     <button class="chip" id="backChip">← Буцах</button>
   </div>
   <div class="shelves" id="shelfList"></div>
+  <button class="chip" id="sortBtn" style="display:none;margin:0 auto 12px">А–Я</button>
+  <div id="letters"></div>
   <div class="books" id="bookList"></div>
   <div class="note hidden" id="shelfNote"></div>
 </div>
@@ -204,8 +219,10 @@
   </div>
   <div id="readText"></div>
   <div id="readFoot">
+    <button class="mini" id="readPrev" style="min-width:74px">◀</button>
     <button class="key big" id="readPlayBtn" style="flex:1;min-height:62px;padding:15px">▶ Сонсох</button>
-    <button class="mini" id="readTocBtn" style="min-width:118px">Бүлгүүд</button>
+    <button class="mini" id="readNext" style="min-width:74px">▶</button>
+    <button class="mini" id="readTocBtn" style="min-width:104px">Бүлгүүд</button>
   </div>
 </div>
 
@@ -302,8 +319,14 @@ function synth(){
 // app, so every move says what it is. Pre-voiced clips are preferred, which is
 // what lets the published page carry no key at all.
 let sayT=null, SPEECH={};
-function say(text){
+// Only one thing speaks at a time. Two voices over each other is confusing to
+// anyone and useless to a child who has only sound to go on.
+function hush(){
   clearTimeout(sayT);
+  try{ voiceEl.pause(); voiceEl.currentTime=0; }catch(e){}
+}
+function say(text){
+  hush();
   sayT=setTimeout(()=>{
     const t=(text||'').trim();
     if(!t) return;
@@ -686,12 +709,36 @@ function show(n){
   if(n==='reader') buildRead();
 }
 
+const MODES={listen:'Сонсох', both:'Сонсох ба унших', read:'Унших'};
+// Each mode is a different child: one who cannot see, one who reads slowly and
+// large, one who wants the text and the voice together. Building one interface
+// for all three served none of them well.
+// Listening mode shows no text at all: a child who cannot see gains nothing
+// from it, and the screen is quieter without it.
+function applyMode(){
+  const listening = mode === 'listen';
+  $('toReadBtn').classList.toggle('hidden', listening);
+  $('nowText').style.display = listening ? 'none' : '';
+  $('nowNext').style.display = listening ? 'none' : '';
+  $('readPlayBtn').classList.toggle('hidden', mode === 'read');
+  $('lamp').style.setProperty('--lampSize', listening ? '190px' : '130px');
+}
+
 function chooseMode(m){
   unlock(); mode=m; put('mode',m);
-  $('modeChip').textContent=m==='read'?'Унших':'Сонсох';
+  $('modeChip').textContent=MODES[m]||'Сонсох';
+  document.body.dataset.mode=m;
+  applyMode();
   openShelf=null; renderShelf(); show('shelf');
-  announce(m==='read'?'Унших. Тавиур сонгоно уу.':'Сонсох. Тавиур сонгоно уу.');
+  announce((MODES[m]||'Сонсох')+'. Тавиур сонгоно уу.');
 }
+$('doorBoth').addEventListener('click',()=>chooseMode('both'));
+$('sortBtn').addEventListener('click',()=>{
+  sortIndex=(sortIndex+1)%SORTS.length;
+  put('sort',sortIndex);
+  renderShelf();
+  announce(SORTS[sortIndex][0]);
+});
 
 const everyBook=()=>{
   const m=new Map();
@@ -708,12 +755,48 @@ function shelvesOf(){
 const mins=m=>m<60?m+' минут':(m%60?Math.floor(m/60)+' цаг '+(m%60)+' минут':Math.floor(m/60)+' цаг');
 const begun=t=>!!get('pos:'+t,'');
 
+// Eighty-six titles in one scroll is unusable by eye and worse by ear, so the
+// list can be ordered three ways and jumped into by letter.
+const SORTS=[
+  ['А–Я',          (a,b)=>(a.title||'').localeCompare(b.title||'','mn')],
+  ['Богино эхэлж', (a,b)=>(a.minutes||0)-(b.minutes||0)],
+  ['Урт эхэлж',    (a,b)=>(b.minutes||0)-(a.minutes||0)],
+];
+let sortIndex=parseInt(get('sort','0'),10); if(isNaN(sortIndex)||!SORTS[sortIndex]) sortIndex=0;
+let letterPick='';
+
+const MN_LETTERS='АБВГДЕЁЖЗИЙКЛМНОӨПРСТУҮФХЦЧШЩЭЮЯ'.split('');
+const firstLetter=t=>((t||'').trim().charAt(0)||'').toUpperCase();
+
+function renderLetters(books){
+  const box=$('letters');
+  box.innerHTML='';
+  if(!books.length) return;
+  const present=new Set(books.map(b=>firstLetter(b.title)));
+  MN_LETTERS.forEach(L=>{
+    const b=document.createElement('button');
+    b.textContent=L;
+    if(!present.has(L)) b.className='off';
+    else if(L===letterPick) b.className='on';
+    b.addEventListener('click',()=>{
+      if(!present.has(L)){ announce(L+' үсгээр эхэлсэн ном алга.'); return; }
+      letterPick = (letterPick===L) ? '' : L;
+      renderShelf();
+      announce(letterPick ? letterPick+' үсэг' : 'Бүх ном');
+    });
+    box.appendChild(b);
+  });
+}
+
 function renderShelf(){
   const L=$('shelfList'), B=$('bookList');
   L.innerHTML=''; B.innerHTML=''; rows=[]; pick=-1;
   $('shelfNote').classList.add('hidden');
 
+  $('sortBtn').style.display = openShelf===null ? 'none' : '';
   if(openShelf===null){
+    $('letters').innerHTML='';
+    letterPick='';
     $('shelfTitle').textContent='Тавиурууд';
     $('backChip').textContent='← Эхэлье';
     const list=shelvesOf();
@@ -739,7 +822,11 @@ function renderShelf(){
   if(!g){ openShelf=null; renderShelf(); return; }
   $('shelfTitle').textContent=g.name;
   $('backChip').textContent='← Тавиурууд';
-  const all=(g.books||[]).filter(b=>b&&b.title&&b.file);
+  let all=(g.books||[]).filter(b=>b&&b.title&&b.file);
+  renderLetters(all);
+  if(letterPick) all=all.filter(b=>firstLetter(b.title)===letterPick);
+  all=all.slice().sort(SORTS[sortIndex][1]);
+  $('sortBtn').textContent=SORTS[sortIndex][0]+' · '+all.length;
   all.forEach((e,i)=>{
     rows.push(e);
     const r=document.createElement('div');
@@ -775,6 +862,7 @@ function hi(container,i){
 }
 
 async function openBook(e){
+  hush();                       // stop the title being read over the last one
   // Clear the previous book first. Without this a book that fails to open
   // leaves the last one's chapters in place under the new one's title, and a
   // child hears the wrong story.
@@ -899,7 +987,10 @@ $('resumeStart').addEventListener('click',()=>{ unlock(); openAt(true); });
 
 $('doorListen').addEventListener('click',()=>chooseMode('listen'));
 $('doorRead').addEventListener('click',()=>chooseMode('read'));
-$('modeChip').addEventListener('click',()=>chooseMode(mode==='read'?'listen':'read'));
+$('modeChip').addEventListener('click',()=>{
+  const order=['listen','both','read'];
+  chooseMode(order[(order.indexOf(mode)+1)%order.length]);
+});
 $('playBtn').addEventListener('click',()=>playing?stop():play());
 $('readPlayBtn').addEventListener('click',()=>playing?stop():play());
 $('prevBtn').addEventListener('click',()=>step(-1));
@@ -908,6 +999,19 @@ $('tocBtn').addEventListener('click',()=>{show('toc');announce('Бүлгүүд')
 $('readTocBtn').addEventListener('click',()=>{show('toc');announce('Бүлгүүд')});
 $('tocClose').addEventListener('click',()=>show(mode==='read'?'reader':'player'));
 $('toReadBtn').addEventListener('click',()=>{show('reader');announce('Том үсгээр')});
+// Turning the page. Reading a book without them meant using the chapter list
+// for every page, which is no way to read a story.
+function turn(d){
+  const t=ci+d;
+  if(t<0||t>=book.chapters.length){ announce(d>0?'Ном дууслаа.':'Эхлэл'); return; }
+  const was=playing; stop();
+  ci=t; bi=0; si=0; paint(); buildRead();
+  announce((ci+1)+' / '+book.chapters.length+'. '+chap().title);
+  $('readText').scrollTop=0;
+  if(was) afterSpeaking(play);
+}
+$('readPrev').addEventListener('click',()=>turn(-1));
+$('readNext').addEventListener('click',()=>turn(1));
 $('readBack').addEventListener('click',()=>{stop();show('shelf')});
 $('playerBack').addEventListener('click',()=>{stop();show('shelf')});
 $('backChip').addEventListener('click',()=>{
@@ -1078,6 +1182,7 @@ document.addEventListener('keydown',e=>{
   if(!Object.keys(SPEECH).length && !live())
     console.warn('Gerel: no speech manifest and no key — navigation will be silent.');
   applySize();
+  if(mode){ document.body.dataset.mode=mode; applyMode(); }
   // Always start here. Skipping the question for a returning child saved one
   // tap and cost the only way back to the beginning, which is a bad trade for
   // someone navigating by ear. The last choice is focused, so Enter continues.
