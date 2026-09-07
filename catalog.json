@@ -1728,6 +1728,15 @@
      "cover": "covers/shekspir-1-c6c8b9.jpg"
     },
     {
+     "title": "ШЕКСПИР - 2",
+     "author": "А. Аникст",
+     "file": "books/shekspir-2-8c2ae1.epub",
+     "chars": 277361,
+     "minutes": 370,
+     "id": "shekspir-2-8c2ae1",
+     "cover": "covers/shekspir-2-8c2ae1.jpg"
+    },
+    {
      "title": "ШҮЛГИЙН ТҮҮВЭР",
      "author": "ИОГАНН ВОЛЬФГАНГ ГЕТЕ",
      "file": "books/shulgiin-tuuver-7735b8.epub",
@@ -3220,6 +3229,480 @@
      "minutes": 385,
      "id": "uulen-bor-372eb1",
      "cover": "covers/uulen-bor-372eb1.jpg"
+    }
+   ]
+  },
+  {
+   "name": "Дэлхийн шилдэг зохиол",
+   "forChildren": true,
+   "books": [
+    {
+     "title": "АЛЬБЕРТ",
+     "author": "Л. Н. Толстой",
+     "file": "books/albert-9bfc64.epub",
+     "chars": 56257,
+     "minutes": 75,
+     "id": "albert-9bfc64",
+     "cover": "covers/albert-9bfc64.jpg"
+    },
+    {
+     "title": "АНХНЫ БАГШ",
+     "author": "Ч. Айтматов",
+     "file": "books/anhny-bagsh-9e64d0.epub",
+     "chars": 1865,
+     "minutes": 2,
+     "id": "anhny-bagsh-9e64d0",
+     "cover": "covers/anhny-bagsh-9e64d0.jpg"
+    },
+    {
+     "title": "АРНЭ ГУАЙН МӨНГӨ",
+     "author": "СЕЛМА ЛАГЕРЛЕФ",
+     "file": "books/arne-guain-mongo-2ac94f.epub",
+     "chars": 134437,
+     "minutes": 179,
+     "id": "arne-guain-mongo-2ac94f",
+     "cover": "covers/arne-guain-mongo-2ac94f.jpg"
+    },
+    {
+     "title": "АХ ДҮҮ АРВАН ХОЁР",
+     "author": "Ах дүү ГРИММ",
+     "file": "books/ah-duu-arvan-hor-951bc6.epub",
+     "chars": 8460,
+     "minutes": 11,
+     "id": "ah-duu-arvan-hor-951bc6",
+     "cover": "covers/ah-duu-arvan-hor-951bc6.jpg"
+    },
+    {
+     "title": "БАГА НАС",
+     "author": "Л. Н. Толстой",
+     "file": "books/baga-nas-1786e6.epub",
+     "chars": 201258,
+     "minutes": 268,
+     "id": "baga-nas-1786e6",
+     "cover": "covers/baga-nas-1786e6.jpg"
+    },
+    {
+     "title": "БОВАРИ ХАТАГТАЙ - 1",
+     "author": "ГЮСТАВ ФЛОБЕР",
+     "file": "books/bovari-hatagtai-1-13c857.epub",
+     "chars": 119718,
+     "minutes": 160,
+     "id": "bovari-hatagtai-1-13c857",
+     "cover": "covers/bovari-hatagtai-1-13c857.jpg"
+    },
+    {
+     "title": "БОВАРИ ХАТАГТАЙ - 2",
+     "author": "ГЮСТАВ ФЛОБЕР",
+     "file": "books/bovari-hatagtai-2-a23424.epub",
+     "chars": 285487,
+     "minutes": 381,
+     "id": "bovari-hatagtai-2-a23424",
+     "cover": "covers/bovari-hatagtai-2-a23424.jpg"
+    },
+    {
+     "title": "БРАЖЕЛОН БЭЙЛ - 2",
+     "author": "А. Дюма",
+     "file": "books/brajelon-beil-buyuu-arvan-jiliin-daraa-2-1a8764.epub",
+     "chars": 1232673,
+     "minutes": 1644,
+     "id": "brajelon-beil-buyuu-arvan-jiliin-daraa-2-1a8764",
+     "cover": "covers/brajelon-beil-buyuu-arvan-jiliin-daraa-2-1a8764.jpg"
+    },
+    {
+     "title": "ВИЛЬЯМ ШЕКСПИР",
+     "author": "Ж. Намсрай",
+     "file": "books/vilyam-shekspir-2c016e.epub",
+     "chars": 3849,
+     "minutes": 5,
+     "id": "vilyam-shekspir-2c016e",
+     "cover": "covers/vilyam-shekspir-2c016e.jpg"
+    },
+    {
+     "title": "ГАЙ ГАЗАР ДОРООС",
+     "author": "Гүи Де Мопассан",
+     "file": "books/gai-gazar-doroos-60e530.epub",
+     "chars": 12923,
+     "minutes": 17,
+     "id": "gai-gazar-doroos-60e530",
+     "cover": "covers/gai-gazar-doroos-60e530.jpg"
+    },
+    {
+     "title": "ГАЛТ ТЭРЭГ АВАРСАН ОХИН",
+     "author": "Эдмондо де Амичис",
+     "file": "books/galt-tereg-avarsan-ohin-22143a.epub",
+     "chars": 33784,
+     "minutes": 45,
+     "id": "galt-tereg-avarsan-ohin-22143a",
+     "cover": "covers/galt-tereg-avarsan-ohin-22143a.jpg"
+    },
+    {
+     "title": "ГУЛЬСАРЫ МИНЬ БАЯРТАЙ",
+     "author": "Ч. Айтматов",
+     "file": "books/gulsary-min-bayartai-6849e0.epub",
+     "chars": 292084,
+     "minutes": 389,
+     "id": "gulsary-min-bayartai-6849e0",
+     "cover": "covers/gulsary-min-bayartai-6849e0.jpg"
+    },
+    {
+     "title": "ДАЛАЙН ХӨВӨӨНИЙ АЛАГ ХАВ ТОЛГОЙ",
+     "author": "Ч. Айтматов",
+     "file": "books/dalain-hovoonii-alag-hav-tolgoi-865c34.epub",
+     "chars": 173960,
+     "minutes": 232,
+     "id": "dalain-hovoonii-alag-hav-tolgoi-865c34",
+     "cover": "covers/dalain-hovoonii-alag-hav-tolgoi-865c34.jpg"
+    },
+    {
+     "title": "ДОГШИН АРААТАН",
+     "author": "Ж. ЛОНДОН",
+     "file": "books/dogshin-araatan-df3973.epub",
+     "chars": 141506,
+     "minutes": 189,
+     "id": "dogshin-araatan-df3973",
+     "cover": "covers/dogshin-araatan-df3973.jpg"
+    },
+    {
+     "title": "ЕВГЕНИЙ ОНЕГИН",
+     "author": "А. С. Пушкин",
+     "file": "books/evgenii-onegin-11e9d5.epub",
+     "chars": 175050,
+     "minutes": 233,
+     "id": "evgenii-onegin-11e9d5",
+     "cover": "covers/evgenii-onegin-11e9d5.jpg"
+    },
+    {
+     "title": "ЗУУНААС Ч УРТ ӨДӨР",
+     "author": "Ч. Айтматов",
+     "file": "books/zuunaas-ch-urt-odor-10ab6a.epub",
+     "chars": 676231,
+     "minutes": 902,
+     "id": "zuunaas-ch-urt-odor-10ab6a",
+     "cover": "covers/zuunaas-ch-urt-odor-10ab6a.jpg"
+    },
+    {
+     "title": "ЗЭР ЗЭВСЭГ МИНЬ БАЯРТАЙ",
+     "author": "Эрнест Хемингуэй",
+     "file": "books/zer-zevseg-min-bayartai-cd617a.epub",
+     "chars": 440372,
+     "minutes": 587,
+     "id": "zer-zevseg-min-bayartai-cd617a",
+     "cover": "covers/zer-zevseg-min-bayartai-cd617a.jpg"
+    },
+    {
+     "title": "ЗӨВЛӨЛҮҮДИЙН ОРНООР",
+     "author": "М. Горький",
+     "file": "books/zovloluudiin-ornoor-66fa6d.epub",
+     "chars": 277099,
+     "minutes": 369,
+     "id": "zovloluudiin-ornoor-66fa6d",
+     "cover": "covers/zovloluudiin-ornoor-66fa6d.jpg"
+    },
+    {
+     "title": "ИЛЖИГ ЯАГААД ОРИЛДОГ ВЭ?",
+     "author": "ЖАННИ РОДАРИ",
+     "file": "books/iljig-yaagaad-orildog-ve-6ab2fe.epub",
+     "chars": 1629,
+     "minutes": 2,
+     "id": "iljig-yaagaad-orildog-ve-6ab2fe",
+     "cover": "covers/iljig-yaagaad-orildog-ve-6ab2fe.jpg"
+    },
+    {
+     "title": "КЛИМ САМГИНЫ АМЬДРАЛ-4",
+     "author": "М. Горький",
+     "file": "books/klim-samginy-amdral-4-ba9dba.epub",
+     "chars": 237040,
+     "minutes": 316,
+     "id": "klim-samginy-amdral-4-ba9dba",
+     "cover": "covers/klim-samginy-amdral-4-ba9dba.jpg"
+    },
+    {
+     "title": "Л. Н. ТОЛСТОЙН АМЬДРАЛ БА УТГА ЗОХИОЛЫН ҮЙЛ АЖИЛЛАГААНЫ ТУХАЙ",
+     "author": "Д. Сэнгээ",
+     "file": "books/l-n-tolstoin-amdral-ba-utga-zohiolyn-uil-ajillag-5a7ad7.epub",
+     "chars": 17698,
+     "minutes": 24,
+     "id": "l-n-tolstoin-amdral-ba-utga-zohiolyn-uil-ajillag-5a7ad7",
+     "cover": "covers/l-n-tolstoin-amdral-ba-utga-zohiolyn-uil-ajillag-5a7ad7.jpg"
+    },
+    {
+     "title": "МАНАН ДОТОРХИ ОРОС ОРОН",
+     "author": "ГЕРБЕРТ УЭЛЛС",
+     "file": "books/manan-dotorhi-oros-oron-6038f7.epub",
+     "chars": 152870,
+     "minutes": 204,
+     "id": "manan-dotorhi-oros-oron-6038f7",
+     "cover": "covers/manan-dotorhi-oros-oron-6038f7.jpg"
+    },
+    {
+     "title": "МАРК ТВЕН БА «ЭГЭЛ ХҮМҮҮС ХИЛИЙН ЧАНАДАД»",
+     "author": "ЖОН ВИНТЕРИХ",
+     "file": "books/mark-tven-ba-egel-humuus-hiliin-chanadad-2a1ddb.epub",
+     "chars": 24421,
+     "minutes": 33,
+     "id": "mark-tven-ba-egel-humuus-hiliin-chanadad-2a1ddb",
+     "cover": "covers/mark-tven-ba-egel-humuus-hiliin-chanadad-2a1ddb.jpg"
+    },
+    {
+     "title": "МИНИЙ ЗАМЫН ХАНЬ",
+     "author": "М. Горький",
+     "file": "books/minii-zamyn-han-bfa28b.epub",
+     "chars": 56157,
+     "minutes": 75,
+     "id": "minii-zamyn-han-bfa28b",
+     "cover": "covers/minii-zamyn-han-bfa28b.jpg"
+    },
+    {
+     "title": "МӨНГӨ (ФРАНЦ)",
+     "author": "Эмиль Золя",
+     "file": "books/mongo-frants-982b3c.epub",
+     "chars": 886362,
+     "minutes": 1182,
+     "id": "mongo-frants-982b3c",
+     "cover": "covers/mongo-frants-982b3c.jpg"
+    },
+    {
+     "title": "НАРНЫ АЛТАН АЛИМУУД",
+     "author": "Рэй Брэдбери",
+     "file": "books/narny-altan-alimuud-c510b3.epub",
+     "chars": 24482,
+     "minutes": 33,
+     "id": "narny-altan-alimuud-c510b3",
+     "cover": "covers/narny-altan-alimuud-c510b3.jpg"
+    },
+    {
+     "title": "ОЛИВЕР ТВИСТ - 1",
+     "author": "Чарльз Диккенс",
+     "file": "books/oliver-tvisted-uchirsan-olon-adal-yavdal-1-a759b0.epub",
+     "chars": 305813,
+     "minutes": 408,
+     "id": "oliver-tvisted-uchirsan-olon-adal-yavdal-1-a759b0",
+     "cover": "covers/oliver-tvisted-uchirsan-olon-adal-yavdal-1-a759b0.jpg"
+    },
+    {
+     "title": "ОЛИВЕР ТВИСТ - 2",
+     "author": "Чарльз Диккенс",
+     "file": "books/oliver-tvisted-uchirsan-olon-adal-yavdal-2-68ffbb.epub",
+     "chars": 259314,
+     "minutes": 346,
+     "id": "oliver-tvisted-uchirsan-olon-adal-yavdal-2-68ffbb",
+     "cover": "covers/oliver-tvisted-uchirsan-olon-adal-yavdal-2-68ffbb.jpg"
+    },
+    {
+     "title": "ОЛИВЕР ТВИСТ - 3",
+     "author": "Чарльз Диккенс",
+     "file": "books/oliver-tvisted-uchirsan-olon-adal-yavdal-3-dc8fd6.epub",
+     "chars": 275291,
+     "minutes": 367,
+     "id": "oliver-tvisted-uchirsan-olon-adal-yavdal-3-dc8fd6",
+     "cover": "covers/oliver-tvisted-uchirsan-olon-adal-yavdal-3-dc8fd6.jpg"
+    },
+    {
+     "title": "СҮҮЛЧИЙН МОГИКАН",
+     "author": "Ж. ФЕНИМОР КУПЕР",
+     "file": "books/suulchiin-mogikan-816d61.epub",
+     "chars": 610859,
+     "minutes": 814,
+     "id": "suulchiin-mogikan-816d61",
+     "cover": "covers/suulchiin-mogikan-816d61.jpg"
+    },
+    {
+     "title": "ТӨӨРСӨН ХОЁР",
+     "author": "А. П. Чехов",
+     "file": "books/toorson-hor-dde627.epub",
+     "chars": 9452,
+     "minutes": 13,
+     "id": "toorson-hor-dde627",
+     "cover": "covers/toorson-hor-dde627.jpg"
+    },
+    {
+     "title": "УЛААН АЛИМ",
+     "author": "Ч. Айтматов",
+     "file": "books/ulaan-alim-ba16a2.epub",
+     "chars": 15130,
+     "minutes": 20,
+     "id": "ulaan-alim-ba16a2",
+     "cover": "covers/ulaan-alim-ba16a2.jpg"
+    },
+    {
+     "title": "УЛААНЫХАН БА ХАРЫНХАН - 4",
+     "author": "СТЕНДАЛЬ",
+     "file": "books/ulaanyhan-ba-harynhan-4-30ad97.epub",
+     "chars": 269385,
+     "minutes": 359,
+     "id": "ulaanyhan-ba-harynhan-4-30ad97",
+     "cover": "covers/ulaanyhan-ba-harynhan-4-30ad97.jpg"
+    },
+    {
+     "title": "УРХИ",
+     "author": "Эмиль ЗОЛЯ",
+     "file": "books/urhi-cf3da2.epub",
+     "chars": 934422,
+     "minutes": 1246,
+     "id": "urhi-cf3da2",
+     "cover": "covers/urhi-cf3da2.jpg"
+    },
+    {
+     "title": "УСАН ДООГУУР 20000 БЭЭР - 1",
+     "author": "Жюль Верн",
+     "file": "books/usan-dooguur-horin-myangan-beer-ayalsan-n-1-064d93.epub",
+     "chars": 369894,
+     "minutes": 493,
+     "id": "usan-dooguur-horin-myangan-beer-ayalsan-n-1-064d93",
+     "cover": "covers/usan-dooguur-horin-myangan-beer-ayalsan-n-1-064d93.jpg"
+    },
+    {
+     "title": "УСАН ДООГУУР 20000 БЭЭР - 2",
+     "author": "Жюль Верн",
+     "file": "books/usan-dooguur-horin-myangan-beer-ayalsan-n-2-c0c15e.epub",
+     "chars": 455868,
+     "minutes": 608,
+     "id": "usan-dooguur-horin-myangan-beer-ayalsan-n-2-c0c15e",
+     "cover": "covers/usan-dooguur-horin-myangan-beer-ayalsan-n-2-c0c15e.jpg"
+    },
+    {
+     "title": "ХОЛМСЫН СҮҮЛЧИЙН ХЭРЭГ",
+     "author": "А. Конан Дойл",
+     "file": "books/holmsyn-suulchiin-hereg-e12a50.epub",
+     "chars": 32022,
+     "minutes": 43,
+     "id": "holmsyn-suulchiin-hereg-e12a50",
+     "cover": "covers/holmsyn-suulchiin-hereg-e12a50.jpg"
+    },
+    {
+     "title": "ХООСОН БАЙШИНД БОЛСОН ХЭРЭГ",
+     "author": "А. Конан Дойл",
+     "file": "books/hooson-baishind-bolson-hereg-4d9d5e.epub",
+     "chars": 47779,
+     "minutes": 64,
+     "id": "hooson-baishind-bolson-hereg-4d9d5e",
+     "cover": "covers/hooson-baishind-bolson-hereg-4d9d5e.jpg"
+    },
+    {
+     "title": "ХОРИН ЗУРГАА БА ГАНЦ",
+     "author": "М. Горький",
+     "file": "books/horin-zurgaa-ba-gants-5d0f0b.epub",
+     "chars": 26503,
+     "minutes": 35,
+     "id": "horin-zurgaa-ba-gants-5d0f0b",
+     "cover": "covers/horin-zurgaa-ba-gants-5d0f0b.jpg"
+    },
+    {
+     "title": "ХЭЛ БИЧГИЙН БАГШ",
+     "author": "А. П. Чехов",
+     "file": "books/hel-bichgiin-bagsh-1ad5eb.epub",
+     "chars": 47837,
+     "minutes": 64,
+     "id": "hel-bichgiin-bagsh-1ad5eb",
+     "cover": "covers/hel-bichgiin-bagsh-1ad5eb.jpg"
+    },
+    {
+     "title": "ЦААЗЫН ТАВЦАН - 1",
+     "author": "Ч. Айтматов",
+     "file": "books/tsaazyn-tavtsan-1-baf0f8.epub",
+     "chars": 218541,
+     "minutes": 291,
+     "id": "tsaazyn-tavtsan-1-baf0f8",
+     "cover": "covers/tsaazyn-tavtsan-1-baf0f8.jpg"
+    },
+    {
+     "title": "ЦААЗЫН ТАВЦАН - 2",
+     "author": "Ч. Айтматов",
+     "file": "books/tsaazyn-tavtsan-2-bf7bc5.epub",
+     "chars": 172002,
+     "minutes": 229,
+     "id": "tsaazyn-tavtsan-2-bf7bc5",
+     "cover": "covers/tsaazyn-tavtsan-2-bf7bc5.jpg"
+    },
+    {
+     "title": "ЦААЗЫН ТАВЦАН - 3",
+     "author": "Ч. Айтматов",
+     "file": "books/tsaazyn-tavtsan-3-a8130f.epub",
+     "chars": 211219,
+     "minutes": 282,
+     "id": "tsaazyn-tavtsan-3-a8130f",
+     "cover": "covers/tsaazyn-tavtsan-3-a8130f.jpg"
+    },
+    {
+     "title": "ЦАЙРАН ХАРАГДАХ ХӨЛӨГ ОНГОЦ",
+     "author": "Ч. Айтматов",
+     "file": "books/tsairan-haragdah-holog-ongots-d483b6.epub",
+     "chars": 242396,
+     "minutes": 323,
+     "id": "tsairan-haragdah-holog-ongots-d483b6",
+     "cover": "covers/tsairan-haragdah-holog-ongots-d483b6.jpg"
+    },
+    {
+     "title": "ЦЭНХЭР СУМНЫ АЯН",
+     "author": "ЖАННИ РОДАРИ",
+     "file": "books/tsenher-sumny-ayan-e22a22.epub",
+     "chars": 195121,
+     "minutes": 260,
+     "id": "tsenher-sumny-ayan-e22a22",
+     "cover": "covers/tsenher-sumny-ayan-e22a22.jpg"
+    },
+    {
+     "title": "ШАЙЛОУГИЙН БӨМБӨРЧИН",
+     "author": "Рэй Брэдбери",
+     "file": "books/shailougiin-bomborchin-16edd2.epub",
+     "chars": 23267,
+     "minutes": 31,
+     "id": "shailougiin-bomborchin-16edd2",
+     "cover": "covers/shailougiin-bomborchin-16edd2.jpg"
+    },
+    {
+     "title": "ШЕКСПИР - 1",
+     "author": "А. Аникст",
+     "file": "books/shekspir-1-c6c8b9.epub",
+     "chars": 247618,
+     "minutes": 330,
+     "id": "shekspir-1-c6c8b9",
+     "cover": "covers/shekspir-1-c6c8b9.jpg"
+    },
+    {
+     "title": "ШЕКСПИР - 2",
+     "author": "А. Аникст",
+     "file": "books/shekspir-2-8c2ae1.epub",
+     "chars": 277361,
+     "minutes": 370,
+     "id": "shekspir-2-8c2ae1",
+     "cover": "covers/shekspir-2-8c2ae1.jpg"
+    },
+    {
+     "title": "ЭX - 1",
+     "author": "М. Горький",
+     "file": "books/eh-1-1fa173.epub",
+     "chars": 305423,
+     "minutes": 407,
+     "id": "eh-1-1fa173",
+     "cover": "covers/eh-1-1fa173.jpg"
+    },
+    {
+     "title": "ЭХИЙН ТАЛ",
+     "author": "Ч. Айтматов",
+     "file": "books/ehiin-tal-8a0cdd.epub",
+     "chars": 191921,
+     "minutes": 256,
+     "id": "ehiin-tal-8a0cdd",
+     "cover": "covers/ehiin-tal-8a0cdd.jpg"
+    },
+    {
+     "title": "ҮЛ ҮЗЭГДЭГЧ ХҮН",
+     "author": "ГЕРБЕРТ УЭЛЛС",
+     "file": "books/ul-uzegdegch-hun-5e67a5.epub",
+     "chars": 271522,
+     "minutes": 362,
+     "id": "ul-uzegdegch-hun-5e67a5",
+     "cover": "covers/ul-uzegdegch-hun-5e67a5.jpg"
+    },
+    {
+     "title": "“П” ГЭЖ ПУУЖИН",
+     "author": "Рэй Брэдбери",
+     "file": "books/p-gej-puujin-510c74.epub",
+     "chars": 29009,
+     "minutes": 39,
+     "id": "p-gej-puujin-510c74",
+     "cover": "covers/p-gej-puujin-510c74.jpg"
     }
    ]
   }

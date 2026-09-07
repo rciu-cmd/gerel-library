@@ -419,6 +419,14 @@ const ALONE_RE=[
   /хэвлэлийн газар\w*\s+\d{4}\s*онд/i,
   /\d{4}\s*онд\s+(цахим|эрхлэн)/i
 ];
+// A contents page carried inside every story of a split anthology: the
+// publisher's line, then a list of "Author - TITLE" entries. Read aloud it is
+// two minutes of names either side of a two-minute story.
+const isContents=p=>{
+  if(/номын\s+гарчиг\s*[:：]/i.test(p)) return true;
+  const dashed=(p.match(/[^\n]{3,40}\s+[-–—]\s+[^\n]{3,60}/g)||[]).length;
+  return dashed>=4 && p.length<3000;
+};
 const isBoilerplate=p=>{
   if(p.length>500) return false;
   const low=p.toLowerCase();
@@ -509,7 +517,7 @@ async function loadEpub(data,fb){
     let ps=(els.length?els:[doc.body]).map(e=>(e.textContent||'').replace(/\s+/g,' ').trim())
       .map(t=>t.replace(/^\s*\[\s*[←<]\s*\d+\s*\]\s*/,'').trim())
       .filter(t=>t.length>=1 && !BLOCKED.has(t) && !isAdvert(t)
-                 && !isCredit(t) && !isBoilerplate(t));
+                 && !isCredit(t) && !isBoilerplate(t) && !isContents(t));
     if(!ps.length) continue;
     ps=stripTail(ps).filter(t=>t.length>1);
     if(!ps.length) continue;
