@@ -53,17 +53,17 @@
   #welcome .brand{font-family:var(--display);font-weight:700;
     font-size:clamp(48px,14vw,84px);letter-spacing:-.02em;}
   #welcome .sub{margin:0;font-size:clamp(17px,4.4vw,21px);color:var(--muted);}
-  .doors{display:grid;gap:16px;width:100%;max-width:540px;}
+  .doors{display:grid;gap:18px;width:100%;max-width:620px;}
   @media(min-width:640px){.doors{grid-template-columns:1fr 1fr}
     .doors.three{grid-template-columns:1fr 1fr 1fr}}
   .door.both{background:var(--leaf);}
-  .door{display:flex;flex-direction:column;align-items:center;gap:14px;
-    padding:48px 20px;border-radius:34px;color:var(--ink);
-    font-family:var(--display);font-weight:700;font-size:30px;
-    min-height:190px;justify-content:center;
-    box-shadow:0 6px 0 rgba(34,36,59,.16);}
+  .door{display:flex;flex-direction:column;align-items:center;gap:16px;
+    padding:56px 22px;border-radius:36px;color:var(--ink);
+    font-family:var(--display);font-weight:700;font-size:34px;
+    min-height:230px;justify-content:center;
+    box-shadow:0 7px 0 rgba(34,36,59,.16);}
   .door small{font-family:var(--body);font-weight:600;font-size:16px;opacity:.75;}
-  .door .ic{font-size:62px;line-height:1;}
+  .door .ic{font-size:74px;line-height:1;}
   .door.listen{background:var(--sun);} .door.read{background:var(--sky);}
   .door:active{transform:translateY(3px);box-shadow:0 3px 0 rgba(34,36,59,.16);}
 
@@ -127,20 +127,29 @@
     background:#fff;border:2px solid var(--line);min-height:56px;}
   .mini.on{background:var(--leaf);color:#fff;border-color:transparent;}
 
-  #reader{padding:0;}
-  #readTop{position:sticky;top:0;z-index:2;background:var(--paper);
-    border-bottom:2px solid var(--line);padding:11px 14px;display:flex;gap:9px;align-items:center;}
+  /* Reading is a different act from browsing. Warm paper rather than white,
+     a serif face, generous line spacing, and a measure of about 34 characters
+     — the width the eye reads without losing its place. */
+  #reader{padding:0;background:#FBF4E6;}
+  #readTop{position:sticky;top:0;z-index:2;background:#FBF4E6;
+    border-bottom:1px solid #E3D9C4;padding:11px 14px;display:flex;gap:9px;align-items:center;}
   #readTop .ttl{flex:1;min-width:0;font-weight:800;font-size:15px;
     overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-  #readTop button{border:2px solid var(--line);background:#fff;border-radius:14px;
-    padding:12px 14px;font-weight:800;font-size:17px;min-height:48px;}
-  #readText{padding:22px 18px 130px;font-size:var(--size,32px);line-height:1.65;
-    font-weight:600;max-width:32ch;margin:0 auto;}
-  #readText p{margin:0 0 .85em;}
-  #readText .sent{border-radius:8px;padding:0 3px;cursor:pointer;}
-  #readText .sent.now{background:var(--sun);}
-  #readFoot{position:fixed;left:0;right:0;bottom:0;background:var(--paper);
-    border-top:2px solid var(--line);
+  #readTop button{border:1px solid #DCD0B6;background:#FFFDF6;border-radius:12px;
+    padding:12px 14px;font-weight:700;font-size:17px;min-height:48px;color:#2A2620;}
+  #readTop .ttl{color:#6B6154;}
+  #readText{padding:34px 22px 140px;font-size:var(--size,32px);line-height:1.72;
+    font-weight:400;max-width:34ch;margin:0 auto;color:#2A2620;
+    font-family:Georgia,'Times New Roman',serif;
+    text-align:left;hyphens:auto;-webkit-hyphens:auto;}
+  #readText p{margin:0 0 1.05em;}
+  /* The first line of a paragraph indented, as a printed book does, rather
+     than a blank line between every one. */
+  #readText p + p{text-indent:1.4em;margin-top:-.35em;}
+  #readText .sent{border-radius:6px;padding:0 2px;cursor:pointer;}
+  #readText .sent.now{background:#F3E2A9;}
+  #readFoot{position:fixed;left:0;right:0;bottom:0;background:#FBF4E6;
+    border-top:1px solid #E3D9C4;
     padding:11px 14px calc(11px + env(safe-area-inset-bottom));display:flex;gap:9px;}
 
   .note{background:#fff;border:3px dashed var(--line);border-radius:20px;
@@ -155,7 +164,7 @@
 <div id="welcome" class="screen center">
   <div class="lamp lit" style="--lampSize:150px"></div>
   <div class="brand">Гэрэл</div>
-  <p class="sub">Хүүхдийн номын сан</p>
+
   <div class="doors three">
     <button class="door listen" id="doorListen">
       <span class="ic">🎧</span>Сонсох
@@ -647,6 +656,18 @@ function paint(upto){
   markRead(); savePos();
 }
 async function play(){
+  // Reading mode has no voice at all: a child who chose to read should never
+  // have a book start talking, and nothing here should reach for audio.
+  if(mode==='read') return;
+
+  // Wait here, not at the six places that call this. Guarding the call sites
+  // meant the play button and the chapter list slipped through, and the title
+  // was still being spoken when the story began.
+  if(speaking || !voiceEl.paused){
+    afterSpeaking(play);
+    return;
+  }
+
   unlock(); playing=true;
   $('lamp').classList.add('lit');
   $('playBtn').textContent='❚❚ Зогсоох'; $('readPlayBtn').textContent='❚❚ Зогсоох';
@@ -703,7 +724,7 @@ function step(d){
 function jump(i){
   stop(); ci=i;bi=0;si=0; paint();
   show(mode==='read'?'reader':'player'); buildRead();
-  announce(chap().title); afterSpeaking(play);
+  announce(chap().title); play();
 }
 
 // Lock screen, headphone button, car stereo. A child listening in bed with the
@@ -756,10 +777,15 @@ const MODES={listen:'Сонсох', both:'Сонсох ба унших', read:'�
 // from it, and the screen is quieter without it.
 function applyMode(){
   const listening = mode === 'listen';
+  const reading = mode === 'read';
+  // Reading mode has no voice, so the play button is not merely unused — it
+  // should not be there to press.
+  $('readPlayBtn').classList.toggle('hidden', reading);
+  $('readPrev').classList.toggle('hidden', false);
+  $('readNext').classList.toggle('hidden', false);
   $('toReadBtn').classList.toggle('hidden', listening);
   $('nowText').style.display = listening ? 'none' : '';
   $('nowNext').style.display = listening ? 'none' : '';
-  $('readPlayBtn').classList.toggle('hidden', mode === 'read');
   $('lamp').style.setProperty('--lampSize', listening ? '190px' : '130px');
 }
 
@@ -1031,7 +1057,7 @@ function openAt(fromStart){
   show(mode==='read'?'reader':'player');
   media();
   announce(fromStart?'Эхнээс нь':'Үргэлжлүүлэх');
-  if(mode==='listen') afterSpeaking(play);
+  if(mode==='listen') play();
 }
 $('resumeGo').addEventListener('click',()=>{ unlock(); openAt(false); });
 $('resumeStart').addEventListener('click',()=>{ unlock(); openAt(true); });
@@ -1059,7 +1085,7 @@ function turn(d){
   ci=t; bi=0; si=0; paint(); buildRead();
   announce((ci+1)+' / '+book.chapters.length+'. '+chap().title);
   $('readText').scrollTop=0;
-  if(was) afterSpeaking(play);
+  if(was) play();
 }
 $('readPrev').addEventListener('click',()=>turn(-1));
 $('readNext').addEventListener('click',()=>turn(1));
