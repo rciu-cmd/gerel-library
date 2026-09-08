@@ -958,10 +958,11 @@ function renderShelf(){
     B.appendChild(r);
   });
 }
-function hi(container,i){
+function hi(container,i,fast){
   container.querySelectorAll('.shelfCard,.bookRow').forEach(x=>x.classList.remove('on'));
   const sel=container.children[i];
-  if(sel){ sel.classList.add('on'); sel.scrollIntoView({block:'center',behavior:'smooth'}); }
+  if(sel){ sel.classList.add('on');
+    sel.scrollIntoView({block:'center',behavior:fast?'auto':'smooth'}); }
 }
 
 async function openBook(e){
@@ -1189,6 +1190,7 @@ function doJump(what){
   }
 }
 
+let lastNav=0;
 document.addEventListener('keydown',e=>{
   // Letters jump straight to a place, from anywhere except a text box.
   if(!e.ctrlKey && !e.altKey && !e.metaKey && e.key && e.key.length===1){
@@ -1224,6 +1226,16 @@ document.addEventListener('keydown',e=>{
   const right=e.code==='ArrowRight'||e.code==='Numpad6';
   const left=e.code==='ArrowLeft'||e.code==='Numpad4';
 
+  // Holding a key repeats at whatever rate the operating system uses — about
+  // thirty a second. Every repeat re-rendered the list and started another
+  // smooth scroll, so the books raced past and nothing could be heard. A held
+  // key now moves about five a second, which is still quick to cross a shelf.
+  if(e.repeat && (down||up||left||right)){
+    const now=performance.now();
+    if(now-lastNav<190){ e.preventDefault(); return; }
+    lastNav=now;
+  }
+
   if(!$('welcome').classList.contains('hidden')){
     if(down||up||right||left){ e.preventDefault();
       const d=document.activeElement===$('doorListen')?$('doorRead'):$('doorListen');
@@ -1253,7 +1265,7 @@ document.addEventListener('keydown',e=>{
     const items=[...box.children]; if(!items.length) return;
     if(down||up){ e.preventDefault();
       pick=Math.max(0,Math.min(items.length-1,pick<0?0:pick+(down?1:-1)));
-      hi(box,pick);
+      hi(box,pick,e.repeat);
       const t=items[pick].querySelector('.nm,.t'); if(t) say(t.textContent); }
     if((enter||right)&&pick>=0){ e.preventDefault();
       (items[pick].querySelector('.meta')||items[pick]).click(); }
