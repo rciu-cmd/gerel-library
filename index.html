@@ -874,7 +874,8 @@ function renderLetters(books){
     // Spoken on hover and on focus, so a child sweeping across with arrows
     // hears each letter rather than having to see it.
     const speak=()=>{ if(present.has(L)) say(L); };
-    b.addEventListener('mouseenter',speak);
+    b.addEventListener('mouseenter',onHover(speak));
+    b.addEventListener('mouseleave',()=>clearTimeout(hoverT));
     b.addEventListener('focus',speak);
     b.addEventListener('click',()=>{
       if(!present.has(L)){ say(L+'. Ном алга.'); return; }
@@ -907,8 +908,10 @@ function renderShelf(){
       c.className='shelfCard';
       c.style.background=COLOURS[i%COLOURS.length];
       c.innerHTML='<span class="nm">'+esc(g.name)+'</span><span class="ct">'+n+' ном</span>';
-      const speak=()=>{ pick=i; hi(L,i); say(g.name); };
-      c.addEventListener('mouseenter',speak); c.addEventListener('focus',speak);
+      const speak=(noScroll)=>{ pick=i; hi(L,i,true,noScroll); say(g.name); };
+      c.addEventListener('mouseenter',onHover(()=>speak(true)));
+      c.addEventListener('mouseleave',()=>clearTimeout(hoverT));
+      c.addEventListener('focus',()=>speak(false));
       c.addEventListener('click',()=>{ unlock(); openShelf=i; renderShelf(); announce(g.name); });
       L.appendChild(c);
     });
@@ -943,11 +946,13 @@ function renderShelf(){
       +'<button class="star'+(isFav(e.file)?' is':'')+'" aria-label="Дуртай">★</button>';
     // Title and author together: a child cannot tell three books called
     // "Үлгэрүүд" apart, and the author is how a library distinguishes them.
-    const speak=()=>{ pick=i; hi(B,i);
+    const speak=(noScroll)=>{ pick=i; hi(B,i,true,noScroll);
       say(e.author ? e.title + '. ' + e.author : e.title); };
     const meta=r.querySelector('.meta');
     meta.addEventListener('click',()=>{ unlock(); openBook(e); });
-    meta.addEventListener('mouseenter',speak); meta.addEventListener('focus',speak);
+    meta.addEventListener('mouseenter',onHover(()=>speak(true)));
+    meta.addEventListener('mouseleave',()=>clearTimeout(hoverT));
+    meta.addEventListener('focus',()=>speak(false));
     r.querySelector('.star').addEventListener('click',ev=>{
       ev.stopPropagation();
       favs=isFav(e.file)?favs.filter(x=>x!==e.file):favs.concat([e.file]);
@@ -958,11 +963,22 @@ function renderShelf(){
     B.appendChild(r);
   });
 }
-function hi(container,i,fast){
+function hi(container,i,fast,noScroll){
   container.querySelectorAll('.shelfCard,.bookRow').forEach(x=>x.classList.remove('on'));
   const sel=container.children[i];
-  if(sel){ sel.classList.add('on');
-    sel.scrollIntoView({block:'center',behavior:fast?'auto':'smooth'}); }
+  if(!sel) return;
+  sel.classList.add('on');
+  // Scrolling on hover made the list fight the mouse wheel: each row passing
+  // under the pointer re-centred the page. The pointer needs no help finding
+  // a row it is already on — only the keyboard does.
+  if(!noScroll) sel.scrollIntoView({block:'center',behavior:fast?'auto':'smooth'});
+}
+
+// Speaking on hover has the same problem in the ear: rows sweeping past the
+// pointer start and cut off a dozen titles. Wait for the pointer to settle.
+let hoverT=null;
+function onHover(fn){
+  return ()=>{ clearTimeout(hoverT); hoverT=setTimeout(fn,140); };
 }
 
 async function openBook(e){
