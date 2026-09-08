@@ -970,6 +970,11 @@ async function openBook(e){
   // leaves the last one's chapters in place under the new one's title, and a
   // child hears the wrong story.
   stop();
+  // And empty the clip cache. Its keys are chapter:block only, with nothing
+  // identifying the book, so the new book's first paragraph asked for "0:0"
+  // and was handed the PREVIOUS book's recording — the child heard the old
+  // story under the new title.
+  dropClips();
   book.entry=e; book.chapters=[]; book.audioBase=null;
   book.title=''; book.author='';
   ci=0; bi=0; si=0;
