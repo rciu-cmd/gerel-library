@@ -51,7 +51,7 @@
   .screen.center{align-items:center;justify-content:center;text-align:center;gap:24px;}
 
   #welcome .brand{font-family:var(--display);font-weight:700;
-    font-size:clamp(48px,14vw,84px);letter-spacing:-.02em;}
+    font-size:clamp(34px,9vw,62px);letter-spacing:-.02em;line-height:1.1;}
   #welcome .sub{margin:0;font-size:clamp(17px,4.4vw,21px);color:var(--muted);}
   .doors{display:grid;gap:18px;width:100%;max-width:620px;}
   @media(min-width:640px){.doors{grid-template-columns:1fr 1fr}
@@ -152,6 +152,7 @@
     border-top:1px solid #E3D9C4;
     padding:11px 14px calc(11px + env(safe-area-inset-bottom));display:flex;gap:9px;}
 
+  .note:empty{display:none;}
   .note{background:#fff;border:3px dashed var(--line);border-radius:20px;
     padding:17px;color:var(--muted);font-weight:600;max-width:720px;margin:14px auto;
     text-align:center;}
@@ -163,7 +164,7 @@
 
 <div id="welcome" class="screen center">
   <div class="lamp lit" style="--lampSize:150px"></div>
-  <div class="brand">Гэрэл</div>
+  <div class="brand">Гэрэл номын сан</div>
 
   <div class="doors three">
     <button class="door listen" id="doorListen">
