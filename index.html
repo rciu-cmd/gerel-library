@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
+<meta name="gerel-build" content="2026-09-08-d">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#FFFDF7">
@@ -1206,6 +1207,9 @@ function doJump(what){
   }
 }
 
+// Printed so it is possible to tell which build is actually live, instead of
+// guessing whether a fix reached the server.
+console.log('Gerel build 2026-09-08-d');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   // Letters jump straight to a place, from anywhere except a text box.
