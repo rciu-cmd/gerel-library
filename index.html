@@ -1090,6 +1090,82 @@ function renderHelp(){
 }
 $('helpClose').addEventListener('click',()=>show(lastScreen));
 
+// ---- controls ----
+function openAt(fromStart){
+  if(fromStart){ ci=0; bi=0; si=0; }
+  paint();
+  show(mode==='read'?'reader':'player');
+  media();
+  announce(fromStart?'Эхнээс нь':'Үргэлжлүүлэх');
+  if(mode==='listen') play();
+}
+$('resumeGo').addEventListener('click',()=>{ unlock(); openAt(false); });
+$('resumeStart').addEventListener('click',()=>{ unlock(); openAt(true); });
+
+$('doorListen').addEventListener('click',()=>chooseMode('listen'));
+$('doorBoth').addEventListener('click',()=>chooseMode('both'));
+$('doorRead').addEventListener('click',()=>chooseMode('read'));
+$('modeChip').addEventListener('click',()=>{
+  const order=['listen','both','read'];
+  chooseMode(order[(order.indexOf(mode)+1)%order.length]);
+});
+
+$('sortBtn').addEventListener('click',()=>{
+  sortIndex=(sortIndex+1)%SORTS.length;
+  put('sort',sortIndex);
+  renderShelf();
+  announce(SORTS[sortIndex][0]);
+});
+
+$('playBtn').addEventListener('click',()=>playing?stop():play());
+$('readPlayBtn').addEventListener('click',()=>playing?stop():play());
+$('prevBtn').addEventListener('click',()=>step(-1));
+$('nextBtn').addEventListener('click',()=>step(1));
+$('tocBtn').addEventListener('click',()=>{show('toc');announce('Бүлгүүд')});
+$('readTocBtn').addEventListener('click',()=>{show('toc');announce('Бүлгүүд')});
+$('tocClose').addEventListener('click',()=>show(mode==='read'?'reader':'player'));
+$('toReadBtn').addEventListener('click',()=>{show('reader');announce('Том үсгээр')});
+$('playerBack').addEventListener('click',()=>{stop();show('shelf')});
+$('backChip').addEventListener('click',()=>{
+  if(openShelf!==null){ openShelf=null; renderShelf(); announce('Тавиурууд'); }
+  else { show('welcome'); }
+});
+
+// Turning the page. Without these a child had to use the chapter list for
+// every page, which is no way to read a story.
+function turn(d){
+  const t=ci+d;
+  if(t<0||t>=book.chapters.length){ announce(d>0?'Ном дууслаа.':'Эхлэл'); return; }
+  const was=playing; stop();
+  ci=t; bi=0; si=0; paint(); buildRead();
+  announce((ci+1)+' / '+book.chapters.length+'. '+chap().title);
+  $('readText').scrollTop=0;
+  if(was) play();
+}
+$('readPrev').addEventListener('click',()=>turn(-1));
+$('readNext').addEventListener('click',()=>turn(1));
+$('readBack').addEventListener('click',()=>{stop();show('shelf')});
+
+$('readText').addEventListener('click',e=>{
+  const t=e.target.closest('.sent'); if(!t) return;
+  // In reading mode the child is reading, not listening: moving the marker is
+  // enough, and starting the voice would be an interruption.
+  unlock(); stop(); bi=+t.dataset.b; si=+t.dataset.s;
+  paint(); markRead(false);
+  if(mode!=='read') play();
+});
+$('sizeUp').addEventListener('click',()=>{readSize=Math.min(96,readSize+6);applySize();announce('Үсэг '+readSize)});
+$('sizeDown').addEventListener('click',()=>{readSize=Math.max(18,readSize-6);applySize();announce('Үсэг '+readSize)});
+
+$('speedBtn').addEventListener('click',()=>{
+  speedIndex=(speedIndex+1)%SPEEDS.length; put('speed',speedIndex);
+  $('speedBtn').textContent='Хурд '+SPEEDS[speedIndex].toFixed(2).replace(/0$/,'')+'×';
+  announce('Хурд '+SPEEDS[speedIndex]);
+  if(book.audioBase) audioEl.playbackRate=SPEEDS[speedIndex];
+  else { dropClips(); if(playing){stop();play()} }
+});
+$('speedBtn').textContent='Хурд '+SPEEDS[speedIndex].toFixed(2).replace(/0$/,'')+'×';
+
 // "Where am I?" — the question a child asks most, and the one a screen cannot
 // answer to someone who cannot see it.
 function whereAmI(){
@@ -1106,95 +1182,19 @@ function whereAmI(){
   return book.title+'. '+c.title+'. '+(before+si+1)+' / '+total+'.';
 }
 
-function openAt(fromStart){
-  if(fromStart){ ci=0; bi=0; si=0; }
-  paint();
-  show(mode==='read'?'reader':'player');
-  media();
-  announce(fromStart?'Эхнээс нь':'Үргэлжлүүлэх');
-  if(mode==='listen') play();
-}
-$('resumeGo').addEventListener('click',()=>{ unlock(); openAt(false); });
-$('resumeStart').addEventListener('click',()=>{ unlock(); openAt(true); });
-
-$('doorListen').addEventListener('click',()=>chooseMode('listen'));
-$('doorRead').addEventListener('click',()=>chooseMode('read'));
-$('modeChip').addEventListener('click',()=>{
-  const order=['listen','both','read'];
-  chooseMode(order[(order.indexOf(mode)+1)%order.length]);
-});
-$('playBtn').addEventListener('click',()=>playing?stop():play());
-$('readPlayBtn').addEventListener('click',()=>playing?stop():play());
-$('prevBtn').addEventListener('click',()=>step(-1));
-$('nextBtn').addEventListener('click',()=>step(1));
-$('tocBtn').addEventListener('click',()=>{show('toc');announce('Бүлгүүд')});
-$('readTocBtn').addEventListener('click',()=>{show('toc');announce('Бүлгүүд')});
-$('tocClose').addEventListener('click',()=>show(mode==='read'?'reader':'player'));
-$('toReadBtn').addEventListener('click',()=>{show('reader');announce('Том үсгээр')});
-// Turning the page. Reading a book without them meant using the chapter list
-// for every page, which is no way to read a story.
-function turn(d){
-  const t=ci+d;
-  if(t<0||t>=book.chapters.length){ announce(d>0?'Ном дууслаа.':'Эхлэл'); return; }
-  const was=playing; stop();
-  ci=t; bi=0; si=0; paint(); buildRead();
-  announce((ci+1)+' / '+book.chapters.length+'. '+chap().title);
-  $('readText').scrollTop=0;
-  if(was) play();
-}
-$('readPrev').addEventListener('click',()=>turn(-1));
-$('readNext').addEventListener('click',()=>turn(1));
-$('readBack').addEventListener('click',()=>{stop();show('shelf')});
-$('playerBack').addEventListener('click',()=>{stop();show('shelf')});
-$('backChip').addEventListener('click',()=>{
-  if(openShelf!==null){ openShelf=null; renderShelf(); announce('Тавиурууд'); }
-  else { show('welcome'); }
-});
-$('readText').addEventListener('click',e=>{
-  const s=e.target.closest('.sent'); if(!s) return;
-  // In reading mode the child is reading, not listening: moving the marker is
-  // enough, and starting the voice would be an interruption.
-  unlock(); stop(); bi=+s.dataset.b; si=+s.dataset.s;
-  paint(); markRead(false);
-  if(mode!=='read') play();
-});
-$('sizeUp').addEventListener('click',()=>{readSize=Math.min(96,readSize+6);applySize();announce('Үсэг '+readSize)});
-$('sizeDown').addEventListener('click',()=>{readSize=Math.max(18,readSize-6);applySize();announce('Үсэг '+readSize)});
-// A book resumes where it was left, which is right for a long story and wrong
-// for a short one a child only glanced at. This is the way back.
-$('restartBtn').addEventListener('click',()=>{
-  stop(); ci=0; bi=0; si=0; paint(); buildRead();
-  announce('Эхнээс нь'); play();
-});
-
-$('speedBtn').addEventListener('click',()=>{
-  speedIndex=(speedIndex+1)%SPEEDS.length; put('speed',speedIndex);
-  $('speedBtn').textContent='Хурд '+SPEEDS[speedIndex].toFixed(2).replace(/0$/,'')+'×';
-  announce('Хурд '+SPEEDS[speedIndex]);
-  if(book.audioBase) audioEl.playbackRate=SPEEDS[speedIndex];
-  else { dropClips(); if(playing){stop();play()} }
-});
-$('speedBtn').textContent='Хурд '+SPEEDS[speedIndex].toFixed(2).replace(/0$/,'')+'×';
-
-// Four keys, the same everywhere: up and down to move and hear, right or Enter
-// to go in, left or Delete to come back.
-// Shortcuts that work anywhere. Given in both Mongolian and Latin letters,
-// because a child may be on either keyboard layout.
+// Letters that jump straight somewhere, in Mongolian and Latin, since a child
+// may be on either keyboard.
 const JUMPS={
-  'н':'home','n':'home',        // эхлэл
-  'т':'shelves','t':'shelves',  // тавиурууд
-  'м':'mine','m':'mine',        // миний ном
-  'с':'random','s':'random',    // санамсаргүй
-  'б':'toc','b':'toc',          // бүлгүүд
-  'у':'read','u':'read',        // унших
-  'х':'speed','h':'speed',      // хурд
-  'я':'where','y':'where',      // би хаана байна
+  'н':'home','n':'home',        'т':'shelves','t':'shelves',
+  'м':'mine','m':'mine',        'с':'random','s':'random',
+  'б':'toc','b':'toc',          'у':'read','u':'read',
+  'х':'speed','h':'speed',      'я':'where','y':'where',
   '?':'help','/':'help'
 };
 function doJump(what){
   switch(what){
-    case 'home':   stop(); show('welcome'); break;
-    case 'shelves':openShelf=null; renderShelf(); show('shelf'); announce('Тавиурууд'); break;
+    case 'home':    stop(); show('welcome'); break;
+    case 'shelves': openShelf=null; renderShelf(); show('shelf'); announce('Тавиурууд'); break;
     case 'mine': {
       const i=shelvesOf().findIndex(g=>g.name==='Миний ном');
       if(i<0){ announce('Дуртай ном алга байна.'); break; }
@@ -1215,33 +1215,6 @@ function doJump(what){
 }
 
 document.addEventListener('keydown',e=>{
-  // Letters jump straight to a place, from anywhere except a text box.
-  if(!e.ctrlKey && !e.altKey && !e.metaKey && e.key && e.key.length===1){
-    const j=JUMPS[e.key.toLowerCase()];
-    if(j && !/^(INPUT|TEXTAREA)$/.test((e.target.tagName||''))){
-      e.preventDefault(); doJump(j); return;
-    }
-  }
-  if(!$('help').classList.contains('hidden')){
-    e.preventDefault();
-    if(e.code!=='Tab') show(lastScreen);
-    return;
-  }
-  // The resume question owns its keys while it is showing.
-  if(!$('resume').classList.contains('hidden')){
-    if(e.code==='ArrowLeft'||e.code==='ArrowRight'||e.code==='ArrowUp'||e.code==='ArrowDown'){
-      e.preventDefault();
-      const d=document.activeElement===$('resumeGo')?$('resumeStart'):$('resumeGo');
-      d.focus(); say(d===$('resumeStart')?'Эхнээс нь':'Үргэлжлүүлэх');
-    }
-    if(e.code==='Enter'||e.code==='NumpadEnter'||e.code==='Numpad0'||e.code==='Space'){
-      e.preventDefault();
-      (document.activeElement===$('resumeStart')?$('resumeStart'):$('resumeGo')).click();
-    }
-    if(e.code==='Backspace'||e.code==='Delete'){ e.preventDefault(); show('shelf'); }
-    return;
-  }
-
   const back=e.code==='Backspace'||e.code==='Delete'||e.code==='NumpadSubtract';
   const enter=e.code==='Enter'||e.code==='NumpadEnter'||e.code==='Numpad0';
   const down=e.code==='ArrowDown'||e.code==='Numpad2';
@@ -1249,9 +1222,37 @@ document.addEventListener('keydown',e=>{
   const right=e.code==='ArrowRight'||e.code==='Numpad6';
   const left=e.code==='ArrowLeft'||e.code==='Numpad4';
 
+  // A single letter jumps somewhere, unless the cursor is in a text box.
+  if(!e.ctrlKey && !e.altKey && !e.metaKey && e.key && e.key.length===1){
+    const j=JUMPS[e.key.toLowerCase()];
+    if(j && !/^(INPUT|TEXTAREA)$/.test((e.target.tagName||''))){
+      e.preventDefault(); doJump(j); return;
+    }
+  }
+
+  if(!$('help').classList.contains('hidden')){
+    e.preventDefault();
+    if(e.code!=='Tab') show(lastScreen);
+    return;
+  }
+
+  // The resume question owns its keys while it is showing.
+  if(!$('resume').classList.contains('hidden')){
+    if(left||right||up||down){
+      e.preventDefault();
+      const d=document.activeElement===$('resumeGo')?$('resumeStart'):$('resumeGo');
+      d.focus(); say(d===$('resumeStart')?'Эхнээс нь':'Үргэлжлүүлэх');
+    }
+    if(enter||e.code==='Space'){
+      e.preventDefault();
+      (document.activeElement===$('resumeStart')?$('resumeStart'):$('resumeGo')).click();
+    }
+    if(back){ e.preventDefault(); show('shelf'); }
+    return;
+  }
+
   if(!$('welcome').classList.contains('hidden')){
-    // Three doors now, so stepping between two of them left the middle one
-    // unreachable by keyboard.
+    // Three doors, so stepping between two left the middle unreachable.
     const doors=[$('doorListen'),$('doorBoth'),$('doorRead')];
     const names=['Сонсох','Сонсох ба унших','Унших'];
     let at=doors.indexOf(document.activeElement);
@@ -1262,35 +1263,76 @@ document.addEventListener('keydown',e=>{
     if(enter){ e.preventDefault(); (at<0?doors[0]:doors[at]).click(); }
     return;
   }
+
   if(!$('shelf').classList.contains('hidden')){
-    // On a book list, left and right step through the alphabet and say each
-    // letter; up and down move through the books themselves. Four keys, two
-    // levels, nothing to remember.
-    if(openShelf!==null && (left||right)){
+    // Every arrow moves the selection. On a wide screen the list is two
+    // columns, so up and down step by a whole row and left and right by one —
+    // the selection goes where the arrow points. Enter opens, Delete goes back.
+    // Letters moved off the arrows onto PageUp and PageDown: taking a whole
+    // direction for them left a child unable to move sideways at all.
+    const box = openShelf===null ? $('shelfList') : $('bookList');
+    const items = [...box.children];
+    if(!items.length) return;
+
+    // How many fit across, worked out from where they actually sit.
+    let cols = 1;
+    if(items.length > 1){
+      const top = items[0].getBoundingClientRect().top;
+      cols = items.filter(el => Math.abs(el.getBoundingClientRect().top - top) < 4).length || 1;
+    }
+
+    const speakAt = i => {
+      hi(box, i);
+      const el = items[i];
+      const t = el.querySelector('.nm');
+      if(t){ say(t.textContent); return; }
+      const title = el.querySelector('.t');
+      const who = el.querySelector('.who');
+      if(title) say(who ? title.textContent + '. ' + who.textContent : title.textContent);
+    };
+
+    const move = step => {
+      const at = pick < 0 ? 0 : Math.max(0, Math.min(items.length - 1, pick + step));
+      pick = at;
+      speakAt(at);
+    };
+
+    if(down){ e.preventDefault(); move(pick < 0 ? 0 : cols); return; }
+    if(up){ e.preventDefault(); move(pick < 0 ? 0 : -cols); return; }
+    if(right){ e.preventDefault(); move(pick < 0 ? 0 : 1); return; }
+    if(left){
       e.preventDefault();
-      const usable=MN_LETTERS.filter(L=>countFor(L)>0);
+      // At the very start, left is the way out rather than a dead key.
+      if(pick <= 0){ $('backChip').click(); return; }
+      move(-1); return;
+    }
+
+    // Whole letters, for jumping across a long shelf quickly.
+    if(openShelf!==null && (e.code==='PageDown' || e.code==='PageUp')){
+      e.preventDefault();
+      const usable = MN_LETTERS.filter(L => countFor(L) > 0);
       if(!usable.length) return;
-      let at=usable.indexOf(letterPick);
-      at = at<0 ? (right?0:usable.length-1) : at+(right?1:-1);
-      if(at<0 || at>=usable.length){
+      let at = usable.indexOf(letterPick);
+      at = at < 0 ? (e.code==='PageDown' ? 0 : usable.length-1)
+                  : at + (e.code==='PageDown' ? 1 : -1);
+      if(at < 0 || at >= usable.length){
         letterPick=''; renderShelf(); announce('Бүх ном'); return;
       }
-      letterPick=usable[at];
+      letterPick = usable[at];
       renderShelf();
       announce(letterPick);
       return;
     }
-    const box=openShelf===null?$('shelfList'):$('bookList');
-    const items=[...box.children]; if(!items.length) return;
-    if(down||up){ e.preventDefault();
-      pick=Math.max(0,Math.min(items.length-1,pick<0?0:pick+(down?1:-1)));
-      hi(box,pick);
-      const t=items[pick].querySelector('.nm,.t'); if(t) say(t.textContent); }
-    if((enter||right)&&pick>=0){ e.preventDefault();
-      (items[pick].querySelector('.meta')||items[pick]).click(); }
-    if(back||left){ e.preventDefault(); $('backChip').click(); }
+
+    if(enter && pick>=0){
+      e.preventDefault();
+      (items[pick].querySelector('.meta') || items[pick]).click();
+      return;
+    }
+    if(back){ e.preventDefault(); $('backChip').click(); }
     return;
   }
+
   if(!$('toc').classList.contains('hidden')){
     if(back||left){ e.preventDefault(); $('tocClose').click(); }
     return;
