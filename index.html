@@ -51,9 +51,7 @@
   .screen.center{align-items:center;justify-content:center;text-align:center;gap:24px;}
 
   #welcome .brand{font-family:var(--display);font-weight:700;
-    font-size:clamp(52px,15vw,92px);letter-spacing:-.03em;
-    background:linear-gradient(120deg,#F5A623 0%,#E0621B 60%,#C2410C 100%);
-    -webkit-background-clip:text;background-clip:text;color:transparent;}
+    font-size:clamp(48px,14vw,84px);letter-spacing:-.02em;color:var(--ink);}
   #welcome .sub{margin:0;font-size:clamp(17px,4.4vw,21px);color:var(--muted);}
   .doors{display:grid;gap:18px;width:100%;max-width:620px;}
   @media(min-width:640px){.doors{grid-template-columns:1fr 1fr}
@@ -75,11 +73,12 @@
   .door small{font-family:var(--body);font-weight:600;font-size:16px;opacity:.75;}
   .door .ic{width:76px;height:76px;display:block;}
   .door .ic svg{width:100%;height:100%;display:block;}
-  /* Deeper than the shelf colours, and dark enough to carry white text at
-     full contrast — the flat pastels read as unfinished. */
-  .door.listen{background:linear-gradient(160deg,#F2A33C 0%,#D9761B 100%);}
-  .door.both{background:linear-gradient(160deg,#3FA981 0%,#1E7A5A 100%);}
-  .door.read{background:linear-gradient(160deg,#4A96E0 0%,#2361A8 100%);}
+  /* Red, green and blue: the three a child separates fastest, and far apart
+     enough that partial colour vision still tells them apart by brightness.
+     Each dark enough to carry white text at full contrast. */
+  .door.listen{background:linear-gradient(160deg,#F0455F 0%,#C21B3C 100%);}
+  .door.both{background:linear-gradient(160deg,#2FB574 0%,#127A4B 100%);}
+  .door.read{background:linear-gradient(160deg,#4C8FF0 0%,#1F4FB8 100%);}
   .door:active{transform:translateY(2px);
     box-shadow:0 6px 16px rgba(34,36,59,.22), inset 0 -3px 0 rgba(0,0,0,.16);}
 
@@ -186,10 +185,11 @@
 <div id="welcome" class="screen center">
   <div class="lamp lit" style="--lampSize:150px"></div>
   <div class="brand">Гэрэл</div>
+  <p class="sub">Хүүхдийн сонсох номын сан</p>
 
   <div class="doors three">
     <button class="door listen" id="doorListen">
-      <span class="ic"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 44a14 14 0 1 1 22-11"/><path d="M27 44c0 5 3 8 7 8s6-3 6-7-3-6-6-6"/><path d="M50 20c4 4 6 8 6 13s-2 9-6 13"/><path d="M56 12c6 6 9 13 9 21"/></svg></span>Сонсох
+      <span class="ic"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 38V32a20 20 0 0 1 40 0v6"/><rect x="6" y="36" width="13" height="19" rx="6.5" fill="currentColor" stroke="none"/><rect x="45" y="36" width="13" height="19" rx="6.5" fill="currentColor" stroke="none"/></svg></span>Сонсох
     </button>
     <button class="door both" id="doorBoth">
       <span class="ic"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M32 18c-5-4-11-6-19-6v34c8 0 14 2 19 6"/><path d="M32 18c5-4 11-6 19-6v20"/><path d="M32 18v34"/><path d="M47 44c3 0 5 2 5 5s-2 5-5 5"/><path d="M56 40c4 3 6 6 6 9s-2 6-6 9"/></svg></span>Сонсох ба унших
@@ -198,7 +198,7 @@
       <span class="ic"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 40V22a4 4 0 0 1 4-4h10"/><path d="M18 46h12"/><path d="M22 34l7-16 7 16"/><path d="M24.5 29h9"/><circle cx="45" cy="34" r="12"/><path d="M54 43l8 8"/></svg></span>Унших
     </button>
   </div>
-  <div id="status" class="note" role="status" aria-live="polite"></div>
+  <div id="status" class="note hidden" role="status" aria-live="polite"></div>
 </div>
 
 <div id="shelf" class="screen hidden">
@@ -393,7 +393,14 @@ function liveSay(t){
         voiceEl.play().catch(()=>{}); } },
     ()=>{ try{s.close()}catch(e){} });
 }
-function announce(t){ $('status').textContent=t; $('playerStatus').textContent=t; say(t); }
+function announce(t){
+  // Shown only while there is something to say. A leftover line such as
+  // "Тавиурууд" sitting under the three doors is clutter, not information.
+  $('status').textContent=t||'';
+  $('status').classList.toggle('hidden', !t);
+  $('playerStatus').textContent=t||'';
+  say(t);
+}
 
 // Wait for the interface to stop talking before the book begins. Otherwise the
 // title and the first sentence are spoken over each other, which is confusing
@@ -808,6 +815,7 @@ const SCREENS=['welcome','shelf','player','reader','toc','help','resume'];
 let openShelf=null, pick=-1, rows=[], catalog=null;
 let lastScreen='welcome';
 function show(n){
+  if(n==='welcome'){ $('status').textContent=''; $('status').classList.add('hidden'); }
   if(n!=='help') lastScreen=n;
   SCREENS.forEach(s=>$(s).classList.toggle('hidden',s!==n));
   if(n==='reader') buildRead();
