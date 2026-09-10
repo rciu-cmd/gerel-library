@@ -53,14 +53,16 @@
   #welcome .brand{font-family:var(--display);font-weight:700;
     font-size:clamp(48px,14vw,84px);letter-spacing:-.02em;color:var(--ink);}
   #welcome .sub{margin:0;font-size:clamp(17px,4.4vw,21px);color:var(--muted);}
-  .doors{display:grid;gap:18px;width:100%;max-width:620px;}
+  .doors{display:grid;gap:clamp(18px,2vw,30px);width:100%;
+    max-width:min(94vw,1100px);}
   @media(min-width:640px){.doors{grid-template-columns:1fr 1fr}
     .doors.three{grid-template-columns:1fr 1fr 1fr}}
 
   .door{display:flex;flex-direction:column;align-items:center;gap:18px;
-    padding:52px 22px;border-radius:36px;color:#fff;
-    font-family:var(--display);font-weight:700;font-size:32px;
-    min-height:240px;justify-content:center;position:relative;overflow:hidden;
+    padding:clamp(52px,6vw,86px) 22px;border-radius:38px;color:#fff;
+    font-family:var(--display);font-weight:700;font-size:clamp(32px,3.4vw,52px);
+    min-height:clamp(240px,32vh,420px);justify-content:center;
+    position:relative;overflow:hidden;
     text-shadow:0 2px 10px rgba(0,0,0,.22);
     box-shadow:0 10px 26px rgba(34,36,59,.20), inset 0 -6px 0 rgba(0,0,0,.14);
     transition:transform .12s ease, box-shadow .12s ease;}
@@ -71,7 +73,7 @@
   .door:hover{transform:translateY(-3px);
     box-shadow:0 14px 32px rgba(34,36,59,.26), inset 0 -6px 0 rgba(0,0,0,.14);}
   .door small{font-family:var(--body);font-weight:600;font-size:16px;opacity:.75;}
-  .door .ic{width:76px;height:76px;display:block;}
+  .door .ic{width:clamp(76px,8vw,130px);height:clamp(76px,8vw,130px);display:block;}
   .door .ic svg{width:100%;height:100%;display:block;}
   /* Red, green and blue: the three a child separates fastest, and far apart
      enough that partial colour vision still tells them apart by brightness.
@@ -93,35 +95,44 @@
   /* On a laptop the eye can take in two columns at once, which halves the
      scrolling. On a phone one column stays right. */
   @media (min-width:900px){
-    .books{grid-template-columns:1fr 1fr;max-width:1100px;}
-    .shelves{grid-template-columns:1fr 1fr;max-width:1100px;}
+    .books{grid-template-columns:1fr 1fr;max-width:min(94vw,1400px);}
+    .shelves{grid-template-columns:1fr 1fr;max-width:min(94vw,1400px);}
   }
   /* A row of letters, the way a phone's contact list works — two taps to reach
      Чиполлино instead of eighty. */
   #letters{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;
     max-width:720px;margin:0 auto 14px;}
-  #letters button{min-width:44px;min-height:44px;border-radius:12px;
-    border:2px solid var(--line);background:#fff;font-weight:800;font-size:16px;}
+  #letters button{min-width:clamp(44px,4vw,66px);min-height:clamp(44px,4vw,66px);
+    border-radius:14px;border:2px solid var(--line);background:#fff;
+    font-weight:800;font-size:clamp(16px,1.7vw,24px);}
   #letters button.off{opacity:.3;}
   #letters button.on{background:var(--sun);border-color:transparent;}
-  .shelfCard{display:flex;align-items:center;gap:14px;text-align:left;
-    padding:24px 22px;border-radius:26px;color:var(--ink);
+  /* Where the arrows are, as distinct from which letter is chosen. */
+  #letters button.on2{outline:4px solid var(--ink);outline-offset:3px;}
+  /* Everything grows with the screen. On a classroom monitor a shelf card
+     should be a large target, not a phone-sized one stranded in white space. */
+  .shelfCard{display:flex;align-items:center;gap:16px;text-align:left;
+    padding:clamp(24px,3.4vw,44px) clamp(22px,3vw,38px);
+    border-radius:28px;color:var(--ink);
     box-shadow:0 5px 0 rgba(34,36,59,.14);width:100%;}
-  .shelfCard .nm{flex:1;font-family:var(--display);font-weight:700;font-size:24px;}
-  .shelfCard .ct{font-weight:700;font-size:15px;opacity:.72;}
+  .shelfCard .nm{flex:1;font-family:var(--display);font-weight:700;
+    font-size:clamp(24px,3vw,40px);}
+  .shelfCard .ct{font-weight:700;font-size:clamp(15px,1.5vw,21px);opacity:.72;}
   .shelfCard.on,.bookRow.on{outline:5px solid var(--ink);outline-offset:3px;}
 
-  .bookRow{display:flex;align-items:center;gap:14px;background:#fff;
-    border:3px solid var(--line);border-radius:22px;padding:11px;}
-  .bookRow .cover{flex:0 0 66px;width:66px;height:94px;border-radius:14px;
+  .bookRow{display:flex;align-items:center;gap:16px;background:#fff;
+    border:3px solid var(--line);border-radius:22px;
+    padding:clamp(11px,1.2vw,20px);}
+  .bookRow .cover{flex:0 0 clamp(66px,6vw,104px);width:clamp(66px,6vw,104px);
+    height:clamp(94px,8.6vw,148px);border-radius:14px;
     overflow:hidden;background:var(--line);display:flex;align-items:center;
     justify-content:center;font-family:var(--display);font-weight:700;
     font-size:28px;color:var(--muted);}
   .bookRow .cover img{width:100%;height:100%;object-fit:cover;display:block;}
   .bookRow .meta{flex:1;min-width:0;text-align:left;padding:4px 0;}
-  .bookRow .t{display:block;font-weight:800;font-size:19px;line-height:1.3;}
-  .bookRow .who{display:block;font-size:14px;color:var(--muted);margin-top:4px;}
-  .bookRow .len{display:block;font-size:13px;color:var(--muted);margin-top:3px;}
+  .bookRow .t{display:block;font-weight:800;font-size:clamp(19px,1.9vw,28px);line-height:1.3;}
+  .bookRow .who{display:block;font-size:clamp(14px,1.3vw,19px);color:var(--muted);margin-top:5px;}
+  .bookRow .len{display:block;font-size:clamp(13px,1.1vw,17px);color:var(--muted);margin-top:3px;}
   .mark{display:inline-block;margin-left:8px;font-size:12px;font-weight:800;
     background:var(--leaf);color:#fff;border-radius:99px;padding:2px 9px;vertical-align:middle;}
   .star{flex:0 0 auto;font-size:27px;padding:10px;line-height:1;color:var(--line);}
@@ -132,20 +143,23 @@
     justify-content:center;gap:20px;text-align:center;padding:10px 0;}
   #nowChapter{font-weight:800;font-size:15px;letter-spacing:.07em;
     text-transform:uppercase;color:var(--muted);}
-  #nowText{font-size:clamp(22px,5.6vw,38px);line-height:1.45;font-weight:800;max-width:20ch;}
+  #nowText{font-size:clamp(22px,5.6vw,56px);line-height:1.45;font-weight:800;max-width:20ch;}
   #nowText .said{color:var(--berry);}
   #nowNext{font-size:clamp(14px,3.4vw,18px);color:var(--muted);max-width:34ch;}
 
-  .transport{display:grid;grid-template-columns:1fr 1.5fr 1fr;gap:11px;
-    width:100%;max-width:560px;margin:0 auto;}
-  .key{border-radius:24px;padding:22px 10px;min-height:88px;
-    font-family:var(--display);font-weight:700;font-size:17px;
+  .transport{display:grid;grid-template-columns:1fr 1.5fr 1fr;gap:clamp(11px,1.2vw,20px);
+    width:100%;max-width:min(94vw,900px);margin:0 auto;}
+  .key{border-radius:26px;padding:clamp(22px,2.6vw,40px) 12px;
+    min-height:clamp(88px,10vh,150px);
+    font-family:var(--display);font-weight:700;font-size:clamp(17px,2vw,28px);
     background:#fff;border:3px solid var(--line);}
-  .key.big{background:var(--berry);color:#fff;border-color:transparent;font-size:21px;}
+  .key.big{background:var(--berry);color:#fff;border-color:transparent;
+    font-size:clamp(21px,2.4vw,34px);}
   .row2{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));
-    gap:9px;width:100%;max-width:560px;margin:11px auto 0;}
-  .mini{border-radius:18px;padding:14px 8px;font-weight:700;font-size:15px;
-    background:#fff;border:2px solid var(--line);min-height:56px;}
+    gap:clamp(9px,1vw,16px);width:100%;max-width:min(94vw,900px);margin:12px auto 0;}
+  .mini{border-radius:18px;padding:clamp(14px,1.6vw,24px) 10px;font-weight:700;
+    font-size:clamp(15px,1.5vw,22px);
+    background:#fff;border:2px solid var(--line);min-height:clamp(56px,6vh,88px);}
   .mini.on{background:var(--leaf);color:#fff;border-color:transparent;}
 
   /* Reading is a different act from browsing. Warm paper rather than white,
@@ -208,7 +222,6 @@
     <button class="chip" id="backChip">← Буцах</button>
   </div>
   <div class="shelves" id="shelfList"></div>
-  <button class="chip" id="sortBtn" style="display:none;margin:0 auto 12px">А–Я</button>
   <div id="letters"></div>
   <div class="books" id="bookList"></div>
   <div class="note hidden" id="shelfNote"></div>
@@ -813,6 +826,8 @@ function markRead(scroll){
 // ---- screens ----
 const SCREENS=['welcome','shelf','player','reader','toc','help','resume'];
 let openShelf=null, pick=-1, rows=[], catalog=null;
+// Whether the arrows are moving through the letter row or the books below it.
+let inLetters=false;
 let lastScreen='welcome';
 function show(n){
   if(n==='welcome'){ $('status').textContent=''; $('status').classList.add('hidden'); }
@@ -851,13 +866,6 @@ function chooseMode(m){
   // announcing the mode is a sentence in the way rather than information.
 }
 $('doorBoth').addEventListener('click',()=>chooseMode('both'));
-$('sortBtn').addEventListener('click',()=>{
-  sortIndex=(sortIndex+1)%SORTS.length;
-  put('sort',sortIndex);
-  renderShelf();
-  announce(SORTS[sortIndex][0]);
-});
-
 const everyBook=()=>{
   const m=new Map();
   (catalog?.shelves||[]).forEach(g=>(g.books||[]).forEach(b=>{
@@ -924,10 +932,9 @@ function renderShelf(){
   L.innerHTML=''; B.innerHTML=''; rows=[]; pick=-1;
   $('shelfNote').classList.add('hidden');
 
-  $('sortBtn').style.display = openShelf===null ? 'none' : '';
   if(openShelf===null){
     $('letters').innerHTML='';
-    letterPick='';
+    letterPick=''; inLetters=false;
     $('shelfTitle').textContent='Тавиурууд';
     $('backChip').textContent='← Эхэлье';
     const list=shelvesOf();
@@ -957,7 +964,6 @@ function renderShelf(){
   renderLetters(all);
   if(letterPick) all=all.filter(b=>firstLetter(b.title)===letterPick);
   all=all.slice().sort(SORTS[sortIndex][1]);
-  $('sortBtn').textContent=SORTS[sortIndex][0]+' · '+all.length;
   all.forEach((e,i)=>{
     rows.push(e);
     const r=document.createElement('div');
@@ -1108,13 +1114,6 @@ $('doorRead').addEventListener('click',()=>chooseMode('read'));
 $('modeChip').addEventListener('click',()=>{
   const order=['listen','both','read'];
   chooseMode(order[(order.indexOf(mode)+1)%order.length]);
-});
-
-$('sortBtn').addEventListener('click',()=>{
-  sortIndex=(sortIndex+1)%SORTS.length;
-  put('sort',sortIndex);
-  renderShelf();
-  announce(SORTS[sortIndex][0]);
 });
 
 $('playBtn').addEventListener('click',()=>playing?stop():play());
@@ -1297,31 +1296,49 @@ document.addEventListener('keydown',e=>{
       speakAt(at);
     };
 
+    // Two rows of things on a book shelf: the letters above, the books below.
+    // Up from the first book moves into the letters, down from a letter comes
+    // back to the books. So the arrows reach everything without a second key.
+    const letters = openShelf===null ? [] : [...$('letters').children];
+
+    if(inLetters && letters.length){
+      const at = () => letters.findIndex(el => el.classList.contains('on2'));
+      const mark = i => {
+        letters.forEach(el => el.classList.remove('on2'));
+        letters[i].classList.add('on2');
+        letters[i].scrollIntoView({block:'nearest', inline:'center', behavior:'smooth'});
+        say(letters[i].textContent);
+      };
+      let i = at();
+      if(right){ e.preventDefault(); mark(i<0?0:(i+1)%letters.length); return; }
+      if(left){ e.preventDefault(); mark(i<0?letters.length-1:(i-1+letters.length)%letters.length); return; }
+      if(down){ e.preventDefault(); inLetters=false; letters.forEach(el=>el.classList.remove('on2'));
+                pick=-1; move(0); return; }
+      if(up){ e.preventDefault(); inLetters=false; letters.forEach(el=>el.classList.remove('on2'));
+              $('backChip').click(); return; }
+      if(enter && i>=0){ e.preventDefault(); letters[i].click(); inLetters=false; return; }
+      if(back){ e.preventDefault(); inLetters=false; $('backChip').click(); }
+      return;
+    }
+
     if(down){ e.preventDefault(); move(pick < 0 ? 0 : cols); return; }
-    if(up){ e.preventDefault(); move(pick < 0 ? 0 : -cols); return; }
+    if(up){
+      e.preventDefault();
+      // From the top of the books, up goes to the letters.
+      if(pick <= 0 && letters.length){
+        inLetters = true;
+        letters[0].classList.add('on2');
+        letters[0].scrollIntoView({block:'nearest', inline:'center'});
+        say(letters[0].textContent);
+        return;
+      }
+      move(pick < 0 ? 0 : -cols); return;
+    }
     if(right){ e.preventDefault(); move(pick < 0 ? 0 : 1); return; }
     if(left){
       e.preventDefault();
-      // At the very start, left is the way out rather than a dead key.
       if(pick <= 0){ $('backChip').click(); return; }
       move(-1); return;
-    }
-
-    // Whole letters, for jumping across a long shelf quickly.
-    if(openShelf!==null && (e.code==='PageDown' || e.code==='PageUp')){
-      e.preventDefault();
-      const usable = MN_LETTERS.filter(L => countFor(L) > 0);
-      if(!usable.length) return;
-      let at = usable.indexOf(letterPick);
-      at = at < 0 ? (e.code==='PageDown' ? 0 : usable.length-1)
-                  : at + (e.code==='PageDown' ? 1 : -1);
-      if(at < 0 || at >= usable.length){
-        letterPick=''; renderShelf(); announce('Бүх ном'); return;
-      }
-      letterPick = usable[at];
-      renderShelf();
-      announce(letterPick);
-      return;
     }
 
     if(enter && pick>=0){
