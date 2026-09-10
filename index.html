@@ -12,6 +12,10 @@
 <meta property="og:url" content="https://gerelnom.com/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="mn_MN">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Гэрэл">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;700&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
@@ -137,6 +141,10 @@
     background:var(--leaf);color:#fff;border-radius:99px;padding:2px 9px;vertical-align:middle;}
   .star{flex:0 0 auto;font-size:27px;padding:10px;line-height:1;color:var(--line);}
   .star.is{color:var(--sun);}
+  .keepBtn{flex:0 0 auto;font-size:22px;padding:10px 12px;line-height:1;
+    color:var(--muted);border:2px solid var(--line);border-radius:14px;
+    background:#fff;min-width:52px;}
+  .keepBtn.is{background:var(--leaf);color:#fff;border-color:transparent;}
 
   #player{justify-content:space-between;}
   .stage{flex:1;display:flex;flex-direction:column;align-items:center;
@@ -215,10 +223,27 @@
   <div id="status" class="note hidden" role="status" aria-live="polite"></div>
 </div>
 
+<div id="login" class="screen center hidden">
+  <div class="brand" style="font-size:clamp(34px,7vw,54px)">Нэвтрэх</div>
+  <p class="sub">Ном татаж авахын тулд нэвтэрнэ үү</p>
+  <div style="display:grid;gap:14px;width:100%;max-width:420px">
+    <input id="loginUser" type="text" autocomplete="username" placeholder="Хэрэглэгчийн нэр"
+      style="border:3px solid var(--line);border-radius:18px;padding:18px 20px;
+             font-family:var(--body);font-size:20px;font-weight:600;background:#fff;color:var(--ink)">
+    <input id="loginPass" type="password" autocomplete="current-password" placeholder="Нууц үг"
+      style="border:3px solid var(--line);border-radius:18px;padding:18px 20px;
+             font-family:var(--body);font-size:20px;font-weight:600;background:#fff;color:var(--ink)">
+    <button class="key big" id="loginGo" style="min-height:70px">Нэвтрэх</button>
+    <button class="mini" id="loginBack">← Буцах</button>
+  </div>
+  <div id="loginNote" class="note hidden"></div>
+</div>
+
 <div id="shelf" class="screen hidden">
   <div class="bar">
     <h1 id="shelfTitle">Тавиурууд</h1>
     <button class="chip mode" id="modeChip">Сонсох</button>
+    <button class="chip" id="loginChip">Нэвтрэх</button>
     <button class="chip" id="backChip">← Буцах</button>
   </div>
   <div class="shelves" id="shelfList"></div>
@@ -283,6 +308,27 @@
       <span class="ic">↺</span>Эхнээс нь<small>Шинээр эхэлнэ</small>
     </button>
   </div>
+</div>
+
+<div id="login" class="screen center hidden">
+  <div class="lamp" style="--lampSize:110px"></div>
+  <div class="brand" style="font-size:clamp(34px,7vw,52px)">Нэвтрэх</div>
+  <p class="sub" id="loginNote">Номоо утсандаа хадгалахын тулд нэвтэрнэ үү</p>
+  <div style="display:grid;gap:14px;width:100%;max-width:420px">
+    <input id="loginUser" type="text" autocomplete="username"
+      placeholder="Хэрэглэгчийн нэр"
+      style="border:3px solid var(--line);border-radius:18px;padding:18px 20px;
+             font-family:var(--body);font-size:20px;font-weight:600;
+             background:#fff;color:var(--ink)">
+    <input id="loginPass" type="password" autocomplete="current-password"
+      placeholder="Нууц үг"
+      style="border:3px solid var(--line);border-radius:18px;padding:18px 20px;
+             font-family:var(--body);font-size:20px;font-weight:600;
+             background:#fff;color:var(--ink)">
+    <button class="key big" id="loginGo" style="min-height:70px">Нэвтрэх</button>
+    <button class="mini" id="loginBack">← Буцах</button>
+  </div>
+  <div id="loginMsg" class="note hidden"></div>
 </div>
 
 <div id="help" class="screen hidden">
@@ -824,7 +870,7 @@ function markRead(scroll){
 }
 
 // ---- screens ----
-const SCREENS=['welcome','shelf','player','reader','toc','help','resume'];
+const SCREENS=['welcome','shelf','player','reader','toc','help','resume','login'];
 let openShelf=null, pick=-1, rows=[], catalog=null;
 // Whether the arrows are moving through the letter row or the books below it.
 let inLetters=false;
@@ -976,7 +1022,8 @@ function renderShelf(){
       +(begun(e.title)?'<span class="mark">эхэлсэн</span>':'')+'</span>'
       +(e.author?'<span class="who">'+esc(e.author)+'</span>':'')
       +(e.minutes?'<span class="len">'+mins(e.minutes)+'</span>':'')+'</button>'
-      +'<button class="star'+(isFav(e.file)?' is':'')+'" aria-label="Дуртай">★</button>';
+      +'<button class="star'+(isFav(e.file)?' is':'')+'" aria-label="Дуртай">★</button>'
+      +'<button class="keepBtn'+(me?'':' hidden')+'" aria-label="Утсанд хадгалах">⤓</button>';
     // Title and author together: a child cannot tell three books called
     // "Үлгэрүүд" apart, and the author is how a library distinguishes them.
     const speak=()=>{ pick=i; hi(B,i);
@@ -984,6 +1031,28 @@ function renderShelf(){
     const meta=r.querySelector('.meta');
     meta.addEventListener('click',()=>{ unlock(); openBook(e); });
     meta.addEventListener('mouseenter',speak); meta.addEventListener('focus',speak);
+    const keep=r.querySelector('.keepBtn');
+    isKept(e).then(yes=>{ if(yes) keep.classList.add('is'); });
+    keep.addEventListener('click',async ev=>{
+      ev.stopPropagation();
+      if(!me){ show('login'); return; }
+      if(keep.classList.contains('is')){
+        await forgetBook(e); keep.classList.remove('is');
+        announce('Утаснаас устгалаа.'); return;
+      }
+      keep.disabled=true;
+      announce('Татаж байна…');
+      try{
+        await keepBook(e,(done,all)=>{
+          keep.textContent = Math.round(done/all*100)+'%';
+        });
+        keep.textContent='⤓'; keep.classList.add('is');
+        announce('Утсанд хадгаллаа. Интернэтгүй сонсож болно.');
+      }catch(err){
+        keep.textContent='⤓';
+        announce('Татаж чадсангүй.');
+      }finally{ keep.disabled=false; }
+    });
     r.querySelector('.star').addEventListener('click',ev=>{
       ev.stopPropagation();
       favs=isFav(e.file)?favs.filter(x=>x!==e.file):favs.concat([e.file]);
@@ -1095,6 +1164,135 @@ function renderHelp(){
   });
 }
 $('helpClose').addEventListener('click',()=>show(lastScreen));
+
+// ============================================================
+// Keeping a book on this device
+// ============================================================
+// Mobile data costs money and dormitory wifi comes and goes, so a book a child
+// has started should stay on the phone. Each file is put in the browser's own
+// cache; nothing is downloaded twice and nothing needs an app store.
+const KEPT='gerel-books-v1';
+
+async function isKept(entry){
+  if(!('caches' in window) || !entry.id) return false;
+  try{
+    const c=await caches.open(KEPT);
+    return !!(await c.match(AUDIO_ROOT+'/'+entry.id+'/index.json'));
+  }catch(e){ return false; }
+}
+
+async function keepBook(entry, onProgress){
+  const c=await caches.open(KEPT);
+  const base=AUDIO_ROOT+'/'+entry.id;
+  const r=await fetch(base+'/index.json',{cache:'no-cache'});
+  if(!r.ok) throw new Error('unavailable');
+  const data=await r.json();
+  await c.put(base+'/index.json', r.clone());
+
+  const files=[];
+  data.chapters.forEach(ch=>ch.blocks.forEach(b=>{ if(b.audio) files.push(base+'/'+b.audio); }));
+  if(entry.cover) files.push(entry.cover);
+
+  let done=0;
+  // A few at a time: a hundred at once stalls a slow connection and gives the
+  // child no sign anything is happening.
+  for(let i=0;i<files.length;i+=4){
+    await Promise.all(files.slice(i,i+4).map(async u=>{
+      try{
+        if(!(await c.match(u))) await c.add(u);
+      }catch(e){}
+      done++;
+      if(onProgress) onProgress(done, files.length);
+    }));
+  }
+  return files.length;
+}
+
+async function forgetBook(entry){
+  const c=await caches.open(KEPT);
+  const keys=await c.keys();
+  const base=AUDIO_ROOT+'/'+entry.id+'/';
+  await Promise.all(keys.filter(k=>k.url.includes(base)).map(k=>c.delete(k)));
+}
+
+// ============================================================
+// Signing in
+// ============================================================
+// Accounts exist so a child can keep books on their own phone. Nothing about
+// them is sent anywhere: the list of usernames and password hashes is fetched
+// like any other file, and the check happens here in the browser. No reading
+// history is recorded, and no account is created by using the library.
+let me=null;
+try{ me=JSON.parse(get('me','null')); }catch(e){ me=null; }
+
+async function hashPassword(user,password){
+  const data=new TextEncoder().encode('gerel:'+user.toLowerCase()+':'+password);
+  const buf=await crypto.subtle.digest('SHA-256',data);
+  return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+function showWho(){
+  $('loginChip').textContent = me ? (me.name||me.user) : 'Нэвтрэх';
+  document.body.dataset.role = me ? me.role : '';
+  // Download buttons appear only once someone has signed in.
+  document.querySelectorAll('.keepBtn').forEach(b=>b.classList.toggle('hidden',!me));
+}
+
+async function signIn(){
+  const user=($('loginUser').value||'').trim().toLowerCase();
+  const pass=$('loginPass').value||'';
+  if(!user||!pass){ $('loginNote').classList.remove('hidden');
+    $('loginNote').textContent='Нэр болон нууц үгээ бөглөнө үү.'; return; }
+
+  $('loginGo').disabled=true;
+  $('loginNote').classList.remove('hidden');
+  $('loginNote').textContent='Шалгаж байна…';
+  try{
+    const r=await fetch('users.json',{cache:'no-cache'});
+    if(!r.ok) throw new Error('жагсаалт алга');
+    const list=(await r.json()).users||[];
+    const found=list.find(p=>(p.user||'').toLowerCase()===user);
+    const hash=await hashPassword(user,pass);
+    if(!found || found.hash!==hash){
+      $('loginNote').textContent='Нэр эсвэл нууц үг буруу байна.';
+      say('Нэр эсвэл нууц үг буруу байна.');
+      return;
+    }
+    me={user:found.user,name:found.name||found.user,role:found.role||'сурагч'};
+    put('me',JSON.stringify(me));
+    showWho();
+    $('loginPass').value='';
+    $('loginNote').classList.add('hidden');
+    show('shelf'); renderShelf();
+    announce('Сайн байна уу, '+(me.name||me.user));
+  }catch(err){
+    $('loginNote').textContent='Нэвтэрч чадсангүй. Дараа дахин оролдоно уу.';
+  }finally{
+    $('loginGo').disabled=false;
+  }
+}
+
+function signOut(){
+  me=null;
+  try{ localStorage.removeItem('gerel:me'); }catch(e){}
+  showWho();
+  announce('Гарлаа.');
+}
+
+$('loginGo').addEventListener('click',signIn);
+$('loginPass').addEventListener('keydown',e=>{
+  if(e.code==='Enter'||e.code==='NumpadEnter'){ e.preventDefault(); signIn(); }
+  e.stopPropagation();
+});
+$('loginUser').addEventListener('keydown',e=>{
+  if(e.code==='Enter'||e.code==='NumpadEnter'){ e.preventDefault(); $('loginPass').focus(); }
+  e.stopPropagation();
+});
+$('loginBack').addEventListener('click',()=>show('shelf'));
+$('loginChip').addEventListener('click',()=>{
+  if(me){ if(confirm((me.name||me.user)+' — гарах уу?')) signOut(); return; }
+  show('login'); $('loginUser').focus(); announce('Нэвтрэх');
+});
 
 // ---- controls ----
 function openAt(fromStart){
@@ -1363,6 +1561,15 @@ document.addEventListener('keydown',e=>{
 });
 
 
+// Registering this is what lets a kept book play with no signal, and what
+// allows the library to be added to a home screen like an app.
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('sw.js').catch(err=>
+      console.warn('Gerel: offline support unavailable', err));
+  });
+}
+
 (async function(){
   try{ const r=await fetch('catalog.json',{cache:'no-store'});
     catalog=r.ok?await r.json():{shelves:[]}; }
@@ -1384,6 +1591,7 @@ document.addEventListener('keydown',e=>{
   if(!Object.keys(SPEECH).length && !live())
     console.warn('Gerel: no speech manifest and no key — navigation will be silent.');
   applySize();
+  showWho();
   if(mode){ document.body.dataset.mode=mode; applyMode(); }
   // Always start here. Skipping the question for a returning child saved one
   // tap and cost the only way back to the beginning, which is a bad trade for

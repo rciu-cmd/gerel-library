@@ -136,6 +136,26 @@
 
 <div id="shelves"></div>
 
+<div id="usersPanel" style="margin:0 22px 24px;background:var(--night-2);
+     border-radius:16px;padding:20px;max-width:720px">
+  <h2 style="font-family:var(--display);font-size:16px;margin:0 0 10px;color:var(--lamp)">
+    Хэрэглэгчид</h2>
+  <p style="margin:0 0 14px;font-size:13px;color:var(--dawn);line-height:1.6">
+    Excel эсвэл Google Sheets дээр 4 багана бөглөж, CSV болгон хадгална:
+    <b>нэр, хэрэглэгчийн нэр, нууц үг, эрх</b>. Эрх нь <b>сурагч</b> эсвэл
+    <b>багш</b> байна. Файлыг доор чирж оруулна уу.
+  </p>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+    <label class="btn primary">CSV сонгох
+      <input type="file" id="usersFile" accept=".csv,text/csv"></label>
+    <a id="usersTemplate" download="hereglegchid.csv"
+       style="color:var(--dawn);font-size:13px;align-self:center">Загвар татах ↓</a>
+    <span id="usersCount" style="font-size:13px;color:var(--dawn)"></span>
+  </div>
+  <div id="usersList" style="margin-top:14px;font-size:13px;color:var(--dawn);
+       max-height:220px;overflow:auto"></div>
+</div>
+
 <div id="editPanel" class="hidden" style="position:fixed;inset:0;z-index:50;
      background:var(--night);display:flex;flex-direction:column">
   <div style="display:flex;gap:10px;align-items:center;padding:14px 20px;
@@ -449,6 +469,7 @@ $('openCatalog').addEventListener('change', async e => {
     $('hint').innerHTML = 'GitHub-той холбогдсон бол <b>GitHub руу хадгалах</b> дарахад '
       + 'сайт шууд шинэчлэгдэнэ. Эсвэл <b>Файлаар татах</b> дарж гараар байршуулна.';
     renderShelves();
+    loadPeople();
     log(`${allBooks().length} ном ачааллаа.`, 'good');
   }catch(err){
     log('Уншиж чадсангүй: ' + err.message, 'warn');
