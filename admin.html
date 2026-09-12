@@ -193,6 +193,32 @@
        style="color:var(--dawn);font-size:13px;align-self:center">Загвар татах ↓</a>
     <span id="usersCount" style="font-size:13px;color:var(--dawn)"></span>
   </div>
+  <div style="margin-top:18px;padding-top:16px;border-top:1px solid rgba(127,163,204,.25)">
+    <h3 style="font-family:var(--display);font-size:14px;margin:0 0 10px;color:var(--lamp)">
+      Нэг хүн нэмэх</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+                gap:10px;align-items:end">
+      <input id="oneName" type="text" placeholder="Нэр"
+        style="background:var(--night);color:var(--paper);border:1px solid rgba(127,163,204,.4);
+               border-radius:10px;padding:12px;font-family:var(--body);font-size:14px">
+      <input id="oneUser" type="text" placeholder="Хэрэглэгчийн нэр"
+        style="background:var(--night);color:var(--paper);border:1px solid rgba(127,163,204,.4);
+               border-radius:10px;padding:12px;font-family:var(--body);font-size:14px">
+      <input id="onePass" type="text" placeholder="Нууц үг"
+        style="background:var(--night);color:var(--paper);border:1px solid rgba(127,163,204,.4);
+               border-radius:10px;padding:12px;font-family:var(--body);font-size:14px">
+      <select id="oneRole"
+        style="background:var(--night);color:var(--paper);border:1px solid rgba(127,163,204,.4);
+               border-radius:10px;padding:12px;font-family:var(--body);font-size:14px">
+        <option value="сурагч">Сурагч</option>
+        <option value="багш">Багш</option>
+        <option value="админ">Админ</option>
+      </select>
+      <button id="oneAdd" class="primary" style="padding:12px 20px">Нэмэх</button>
+    </div>
+    <div id="oneNote" style="margin-top:10px;font-size:13px;color:var(--dawn)"></div>
+  </div>
+
   <div id="usersList" style="margin-top:14px;font-size:13px;color:var(--dawn);
        max-height:220px;overflow:auto"></div>
 
@@ -1047,6 +1073,59 @@ function showPeople(){
     '<div>' + esc(p.name || '') + ' — <b>' + esc(p.user) + '</b> (' + esc(p.role) + ')</div>'
   ).join('');
 }
+
+// Adding one person without a spreadsheet. A school enrolling thirty children
+// wants the CSV; a teacher joining in March wants this.
+async function addOnePerson(){
+  const name = ($('oneName').value || '').trim();
+  const user = ($('oneUser').value || '').trim().toLowerCase();
+  const pass = $('onePass').value || '';
+  const role = $('oneRole').value;
+
+  // What is wrong with the form first, then whether we can save it — being
+  // told to sign in when the real problem is an empty box helps nobody.
+  if(!user || !pass){ $('oneNote').textContent = 'Нэр болон нууц үгээ бөглөнө үү.'; return; }
+  if(pass.length < 4){ $('oneNote').textContent = 'Нууц үг хэт богино байна.'; return; }
+  if(/[\s,;]/.test(user)){ $('oneNote').textContent = 'Хэрэглэгчийн нэрэнд зай байж болохгүй.'; return; }
+  if(!ghReady()){ $('oneNote').textContent = 'Эхлээд нэвтэрнэ үү.'; return; }
+
+  $('oneAdd').disabled = true;
+  $('oneNote').textContent = 'Хадгалж байна…';
+  try{
+    if(!people.length) await loadPeople();
+    const existing = people.find(p => p.user === user);
+    if(existing && !confirm(user + ' аль хэдийн байна. Нууц үгийг нь солих уу?')){
+      $('oneNote').textContent = '';
+      return;
+    }
+    const row = { name: name || user, user, role,
+                  hash: await hashPassword(user, pass) };
+    people = people.filter(p => p.user !== user).concat([row]);
+
+    let sha = null;
+    try{ sha = (await ghApi('/contents/users.json')).sha; }catch(err){}
+    const body = { message: (existing ? 'Хэрэглэгч шинэчлэв: ' : 'Хэрэглэгч нэмэв: ') + user,
+                   content: btoa(unescape(encodeURIComponent(
+                     JSON.stringify({ users: people }, null, 1)))) };
+    if(sha) body.sha = sha;
+    await ghApi('/contents/users.json', { method:'PUT', body: JSON.stringify(body) });
+
+    showPeople();
+    $('oneName').value = ''; $('oneUser').value = ''; $('onePass').value = '';
+    $('oneNote').textContent = (existing ? 'Шинэчлэгдлээ: ' : 'Нэмэгдлээ: ') + user;
+    log((existing ? 'Шинэчлэв: ' : 'Нэмэв: ') + user + ' (' + role + ')', 'good');
+    // The password cannot be read back, so it must be written down now.
+    log('Нууц үгийг нь бичиж авна уу — дахин харах боломжгүй.', 'warn');
+  }catch(err){
+    $('oneNote').textContent = 'Хадгалж чадсангүй: ' + err.message;
+  }finally{
+    $('oneAdd').disabled = false;
+  }
+}
+$('oneAdd').addEventListener('click', addOnePerson);
+$('onePass').addEventListener('keydown', e => {
+  if(e.key === 'Enter'){ e.preventDefault(); addOnePerson(); }
+});
 
 // Changing your own password. Only your own — an admin who could silently
 // change another admin's password would be a way to lock a colleague out.
