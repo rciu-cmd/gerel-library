@@ -101,13 +101,25 @@
     </div>
     <div style="background:var(--night-2);border-radius:18px;padding:24px">
       <label style="display:block;font-size:13px;color:var(--dawn);margin-bottom:6px">
+        Хэрэглэгчийн нэр</label>
+      <input id="gateUser" type="text" placeholder="админ" autocomplete="username"
+        style="width:100%;box-sizing:border-box;background:var(--night);color:var(--paper);
+               border:1px solid rgba(127,163,204,.4);border-radius:12px;padding:14px;
+               font-family:var(--body);font-size:15px;margin-bottom:16px">
+      <label style="display:block;font-size:13px;color:var(--dawn);margin-bottom:6px">
+        Нууц үг</label>
+      <input id="gatePass" type="password" placeholder="••••••••" autocomplete="current-password"
+        style="width:100%;box-sizing:border-box;background:var(--night);color:var(--paper);
+               border:1px solid rgba(127,163,204,.4);border-radius:12px;padding:14px;
+               font-family:var(--body);font-size:15px;margin-bottom:16px">
+      <label style="display:block;font-size:13px;color:var(--dawn);margin-bottom:6px">
         Repository</label>
       <input id="gateRepo" type="text" placeholder="rciu-cmd/gerel-library"
         style="width:100%;box-sizing:border-box;background:var(--night);color:var(--paper);
                border:1px solid rgba(127,163,204,.4);border-radius:12px;padding:14px;
                font-family:var(--body);font-size:15px;margin-bottom:16px">
       <label style="display:block;font-size:13px;color:var(--dawn);margin-bottom:6px">
-        Нэвтрэх түлхүүр</label>
+        GitHub түлхүүр</label>
       <input id="gateToken" type="password" placeholder="ghp_…"
         autocomplete="current-password"
         style="width:100%;box-sizing:border-box;background:var(--night);color:var(--paper);
@@ -477,16 +489,40 @@ async function ghPush(){
 // read a catalogue that is public anyway. A username and password box on a
 // static page would be decoration, since anyone can read the page source.
 async function tryGate(){
+  // Two locks doing different jobs. The password keeps the page shut against
+  // anyone who wanders in; the token is what GitHub checks before anything is
+  // actually changed. Neither alone would be enough — a password on a static
+  // page can be read from the source, and a token alone leaves the dashboard
+  // open on a shared computer.
+  const user = ($('gateUser').value || '').trim().toLowerCase();
+  const pass = $('gatePass').value || '';
   const repo = $('gateRepo').value.trim()
     .replace(/^https?:\/\/github\.com\//,'').replace(/\.git$/,'');
   const token = $('gateToken').value.trim();
-  if(!repo || !token){
-    $('gateNote').textContent = 'Repository болон түлхүүрээ бөглөнө үү.';
+  if(!user || !pass || !repo || !token){
+    $('gateNote').textContent = 'Бүх талбарыг бөглөнө үү.';
     return;
   }
   $('gateGo').disabled = true;
   $('gateNote').textContent = 'Шалгаж байна…';
   try{
+    // The admin list lives in the same users.json the library uses. Anyone
+    // marked админ may open this page; everyone else is refused.
+    const ur = await fetch('users.json', { cache:'no-cache' });
+    if(ur.ok){
+      const list = (await ur.json()).users || [];
+      const found = list.find(p => (p.user||'').toLowerCase() === user);
+      const data = new TextEncoder().encode('gerel:' + user + ':' + pass);
+      const buf = await crypto.subtle.digest('SHA-256', data);
+      const hash = [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
+      if(!found || found.hash !== hash)
+        throw new Error('Нэр эсвэл нууц үг буруу байна.');
+      if(found.role !== 'админ')
+        throw new Error('Энэ хэрэглэгчид удирдах эрх алга.');
+      window.__admin = found;
+    }
+    // No users.json yet means the very first sign-in, so the token alone
+    // decides. Otherwise nobody could ever create the first admin.
     // Ask GitHub whether this token really can write here, rather than
     // accepting anything that looks like one.
     const res = await fetch('https://api.github.com/repos/' + repo, {
@@ -501,6 +537,7 @@ async function tryGate(){
       throw new Error('Энэ түлхүүрт бичих эрх алга.');
 
     gh.repo = repo; gh.token = token;
+    if(window.__admin) log('Сайн байна уу, ' + (window.__admin.name || user), 'good');
     try{
       localStorage.setItem('gerel:ghRepo', repo);
       localStorage.setItem('gerel:ghToken', token);
@@ -523,6 +560,12 @@ $('gateToken').addEventListener('keydown', e => {
 $('gateRepo').addEventListener('keydown', e => {
   if(e.key === 'Enter'){ e.preventDefault(); $('gateToken').focus(); }
 });
+$('gateUser').addEventListener('keydown', e => {
+  if(e.key === 'Enter'){ e.preventDefault(); $('gatePass').focus(); }
+});
+$('gatePass').addEventListener('keydown', e => {
+  if(e.key === 'Enter'){ e.preventDefault(); $('gateRepo').focus(); }
+});
 
 // Someone who signed in before goes straight through.
 (function(){
@@ -530,7 +573,7 @@ $('gateRepo').addEventListener('keydown', e => {
     $('gate').style.display = 'none';
   }else{
     $('gateRepo').value = gh.repo || 'rciu-cmd/gerel-library';
-    setTimeout(()=>$('gateToken').focus(), 100);
+    setTimeout(()=>$('gateUser').focus(), 100);
   }
 })();
 
