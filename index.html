@@ -13,7 +13,9 @@
 <meta property="og:type" content="website">
 <meta property="og:locale" content="mn_MN">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="logo.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Гэрэл">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -244,7 +246,7 @@
   <div class="bar">
     <h1 id="shelfTitle">Тавиурууд</h1>
     <button class="chip mode" id="modeChip">Сонсох</button>
-    <button class="chip hidden" id="installChip">⤓ Суулгах</button>
+    <button class="chip" id="installChip">⤓ Суулгах</button>
     <button class="chip" id="loginChip">Нэвтрэх</button>
     <button class="chip" id="backChip">← Буцах</button>
   </div>
@@ -1177,16 +1179,35 @@ window.addEventListener('beforeinstallprompt', e=>{
   $('installChip').classList.remove('hidden');
 });
 $('installChip').addEventListener('click', async ()=>{
-  if(!installPrompt) return;
-  installPrompt.prompt();
-  const choice=await installPrompt.userChoice;
-  if(choice.outcome==='accepted'){
-    $('installChip').classList.add('hidden');
-    announce('Суулгалаа.');
+  if(installPrompt){
+    installPrompt.prompt();
+    const choice=await installPrompt.userChoice;
+    if(choice.outcome==='accepted'){
+      $('installChip').classList.add('hidden');
+      announce('Суулгалаа.');
+    }
+    installPrompt=null;
+    return;
   }
-  installPrompt=null;
+  // Safari never offers to install, so a button that only worked on Android
+  // looked broken to half the users. Telling them how is better than hiding.
+  const ios=/iPad|iPhone|iPod/.test(navigator.userAgent);
+  alert(ios
+    ? 'Утсанд суулгах:\n\n1. Доорх "Хуваалцах" товчийг дарна уу\n'
+      + '2. "Add to Home Screen" сонгоно уу\n3. "Нэмэх" дарна уу'
+    : 'Утсанд суулгах:\n\n1. Хөтчийн цэсийг (⋮) нээнэ үү\n'
+      + '2. "Add to Home screen" эсвэл "Install app" сонгоно уу');
 });
 window.addEventListener('appinstalled', ()=> $('installChip').classList.add('hidden'));
+// Already running from the home screen: nothing left to install. Wrapped
+// because matchMedia is missing in some environments, and an exception here
+// would stop the rest of the startup — which is exactly what it did once.
+try{
+  const standalone = (window.matchMedia &&
+      window.matchMedia('(display-mode: standalone)').matches) ||
+    window.navigator.standalone;
+  if(standalone) $('installChip').classList.add('hidden');
+}catch(e){}
 
 // ============================================================
 // Keeping a book on this device

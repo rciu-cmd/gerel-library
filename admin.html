@@ -141,14 +141,17 @@
 <header>
   <div class="wordmark">Гэрэл <span>· удирдлага</span></div>
   <div class="grow"></div>
-  <button id="ghBtn">Тохиргоо</button>
-  <button id="loadBtn" disabled>GitHub-аас татах</button>
-  <button id="pushBtn" class="primary" disabled>GitHub руу хадгалах</button>
-  <label class="btn">Файлаас нээх<input type="file" id="openCatalog" accept=".json,application/json"></label>
-  <button id="saveBtn" disabled>Файлаар татах</button>
+  <button id="pushBtn" class="primary" disabled>Хадгалах</button>
+  <button id="ghBtn">Гарах</button>
+  <!-- The file open and download buttons went: with the repository connected
+       they were a second way to do the same thing, and a way to lose work by
+       editing a downloaded copy that never went back. -->
+  <label class="btn hidden">Файлаас нээх<input type="file" id="openCatalog" accept=".json,application/json"></label>
+  <button id="saveBtn" class="hidden" disabled>Файлаар татах</button>
+  <button id="loadBtn" class="hidden" disabled>Дахин ачаалах</button>
 </header>
 
-<div id="ghPanel" class="hidden" style="margin:0 22px 18px;background:var(--night-2);
+<div id="ghPanel" class="hidden" hidden style="margin:0 22px 18px;background:var(--night-2);
      border-radius:16px;padding:18px;max-width:720px">
   <h2 style="font-family:var(--display);font-size:16px;margin:0 0 10px;color:var(--lamp)">
     GitHub холболт</h2>
@@ -296,9 +299,9 @@ function renderStats(){
     ['Ном', books.length],
     ['Хүүхдийн ном', kids.size],
     ['Тавиур', (catalog.shelves || []).length],
-    ['Цаг', Math.round(hours).toLocaleString()],
-    ['Уншуулах өртөг', '$' + (chars/1e6*16).toFixed(0)],
-    ['Дискний хэмжээ', Math.round(hours*26).toLocaleString() + ' MB']
+    ['Цаг', Math.round(hours).toLocaleString()]
+    // Cost and disk size belonged to planning the project, not to running the
+    // library day to day — gerel_storage.py reports them when they are wanted.
   ];
   $('stats').innerHTML = stats.map(([k,v]) =>
     `<div class="stat"><b>${v}</b><span>${k}</span></div>`).join('');
@@ -605,7 +608,9 @@ $('gatePass').addEventListener('keydown', e => {
   }
 })();
 
-$('ghBtn').addEventListener('click', ()=> $('ghPanel').classList.toggle('hidden'));
+$('ghBtn').addEventListener('click', ()=>{
+  if(confirm('Гарах уу?')) $('ghForget').click();
+});
 $('ghSave').addEventListener('click', ()=>{
   gh.repo = $('ghRepo').value.trim().replace(/^https?:\/\/github\.com\//,'').replace(/\.git$/,'');
   gh.token = $('ghToken').value.trim();
