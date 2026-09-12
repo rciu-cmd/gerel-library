@@ -1491,7 +1491,9 @@
      "chars": 36620,
      "minutes": 49,
      "id": "almaasan-huurtai-huuhen-69133b",
-     "cover": "covers/almaasan-huurtai-huuhen-69133b.jpg"
+     "cover": "covers/almaasan-huurtai-huuhen-69133b.jpg",
+     "braille": "braille/almaasan-huurtai-huuhen-69133b.brf",
+     "braillePages": 105
     },
     {
      "title": "АНЧ ХҮҮ",
@@ -1500,7 +1502,9 @@
      "chars": 7738,
      "minutes": 10,
      "id": "anch-huu-6be78b",
-     "cover": "covers/anch-huu-6be78b.jpg"
+     "cover": "covers/anch-huu-6be78b.jpg",
+     "braille": "braille/anch-huu-6be78b.brf",
+     "braillePages": 19
     },
     {
      "title": "АРГА УХААНТ АМЬТДЫН ҮЛГЭР",
@@ -1509,7 +1513,9 @@
      "chars": 50498,
      "minutes": 67,
      "id": "arga-uhaant-amtdyn-ulger-38b4ed",
-     "cover": "covers/arga-uhaant-amtdyn-ulger-38b4ed.jpg"
+     "cover": "covers/arga-uhaant-amtdyn-ulger-38b4ed.jpg",
+     "braille": "braille/arga-uhaant-amtdyn-ulger-38b4ed.brf",
+     "braillePages": 224
     },
     {
      "title": "АРГАЙ ДАРГАЙ ТҮГ",
@@ -1518,7 +1524,9 @@
      "chars": 37862,
      "minutes": 50,
      "id": "argai-dargai-tug-5061f0",
-     "cover": "covers/argai-dargai-tug-5061f0.jpg"
+     "cover": "covers/argai-dargai-tug-5061f0.jpg",
+     "braille": "braille/argai-dargai-tug-5061f0.brf",
+     "braillePages": 217
     },
     {
      "title": "БУЛАН ДЭРС",
@@ -1527,7 +1535,9 @@
      "chars": 36218,
      "minutes": 48,
      "id": "bulan-ders-bfeb31",
-     "cover": "covers/bulan-ders-bfeb31.jpg"
+     "cover": "covers/bulan-ders-bfeb31.jpg",
+     "braille": "braille/bulan-ders-bfeb31.brf",
+     "braillePages": 76
     },
     {
      "title": "БӨӨ МӨРГӨЛИЙН ЯРУУ НАЙРАГ",
@@ -1536,7 +1546,9 @@
      "chars": 93943,
      "minutes": 125,
      "id": "boo-morgoliin-yaruu-nairag-587ca8",
-     "cover": "covers/boo-morgoliin-yaruu-nairag-587ca8.jpg"
+     "cover": "covers/boo-morgoliin-yaruu-nairag-587ca8.jpg",
+     "braille": "braille/boo-morgoliin-yaruu-nairag-587ca8.brf",
+     "braillePages": 220
     },
     {
      "title": "ГАЛУУН ЦУВАА",
@@ -1545,7 +1557,9 @@
      "chars": 13941,
      "minutes": 19,
      "id": "galuun-tsuvaa-51a193",
-     "cover": "covers/galuun-tsuvaa-51a193.jpg"
+     "cover": "covers/galuun-tsuvaa-51a193.jpg",
+     "braille": "braille/galuun-tsuvaa-51a193.brf",
+     "braillePages": 64
     },
     {
      "title": "ДАЛАЙ ЭЭЖ",
@@ -1554,7 +1568,9 @@
      "chars": 12978,
      "minutes": 17,
      "id": "dalai-eej-0a9482",
-     "cover": "covers/dalai-eej-0a9482.jpg"
+     "cover": "covers/dalai-eej-0a9482.jpg",
+     "braille": "braille/dalai-eej-0a9482.brf",
+     "braillePages": 80
     },
     {
      "title": "ДАНДИНЫ ЗОХИСТ АЯЛГУУНЫ ТОЛИЙН МОНГОЛ ТАЙЛБАРЫН ТУХАЙ",
@@ -1563,7 +1579,9 @@
      "chars": 14001,
      "minutes": 19,
      "id": "dandiny-zohist-ayalguuny-toliin-mongol-tailbaryn-d31769",
-     "cover": "covers/dandiny-zohist-ayalguuny-toliin-mongol-tailbaryn-d31769.jpg"
+     "cover": "covers/dandiny-zohist-ayalguuny-toliin-mongol-tailbaryn-d31769.jpg",
+     "braille": "braille/dandiny-zohist-ayalguuny-toliin-mongol-tailbaryn-d31769.brf",
+     "braillePages": 30
     },
     {
      "title": "ДУУ, ШҮЛЭГ",
@@ -1572,7 +1590,9 @@
      "chars": 39268,
      "minutes": 52,
      "id": "duu-shuleg-3c1e4d",
-     "cover": "covers/duu-shuleg-3c1e4d.jpg"
+     "cover": "covers/duu-shuleg-3c1e4d.jpg",
+     "braille": "braille/duu-shuleg-3c1e4d.brf",
+     "braillePages": 90
     },
     {
      "title": "ЕРӨӨЛҮҮД",
@@ -1581,7 +1601,9 @@
      "chars": 47915,
      "minutes": 64,
      "id": "erooluud-ef295b",
-     "cover": "covers/erooluud-ef295b.jpg"
+     "cover": "covers/erooluud-ef295b.jpg",
+     "braille": "braille/erooluud-ef295b.brf",
+     "braillePages": 136
     },
     {
      "title": "ЗАЛБИРАЛ",
@@ -1590,7 +1612,9 @@
      "chars": 23468,
      "minutes": 31,
      "id": "zalbiral-d21413",
-     "cover": "covers/zalbiral-d21413.jpg"
+     "cover": "covers/zalbiral-d21413.jpg",
+     "braille": "braille/zalbiral-d21413.brf",
+     "braillePages": 92
     },
     {
      "title": "КИРГИЗИЙН ЦОМОРЛОГ",
@@ -1599,7 +1623,9 @@
      "chars": 43466,
      "minutes": 58,
      "id": "kirgiziin-tsomorlog-d46c70",
-     "cover": "covers/kirgiziin-tsomorlog-d46c70.jpg"
+     "cover": "covers/kirgiziin-tsomorlog-d46c70.jpg",
+     "braille": "braille/kirgiziin-tsomorlog-d46c70.brf",
+     "braillePages": 133
     },
     {
      "title": "МОНГОЛ АРДЫН ШИЛДЭГ ДУУНУУД",
@@ -1608,7 +1634,9 @@
      "chars": 41398,
      "minutes": 55,
      "id": "mongol-ardyn-shildeg-duunuud-e7c431",
-     "cover": "covers/mongol-ardyn-shildeg-duunuud-e7c431.jpg"
+     "cover": "covers/mongol-ardyn-shildeg-duunuud-e7c431.jpg",
+     "braille": "braille/mongol-ardyn-shildeg-duunuud-e7c431.brf",
+     "braillePages": 148
     },
     {
      "title": "САЙХАН БҮСГҮЙ",
@@ -1617,7 +1645,9 @@
      "chars": 21778,
      "minutes": 29,
      "id": "saihan-busgui-e10434",
-     "cover": "covers/saihan-busgui-e10434.jpg"
+     "cover": "covers/saihan-busgui-e10434.jpg",
+     "braille": "braille/saihan-busgui-e10434.brf",
+     "braillePages": 45
     },
     {
      "title": "СЕРЁЖ СЭРЖ ХОЁР",
@@ -1626,7 +1656,9 @@
      "chars": 9653,
      "minutes": 13,
      "id": "serj-serj-hor-722d74",
-     "cover": "covers/serj-serj-hor-722d74.jpg"
+     "cover": "covers/serj-serj-hor-722d74.jpg",
+     "braille": "braille/serj-serj-hor-722d74.brf",
+     "braillePages": 42
     },
     {
      "title": "СЭТГЭЛД ТАТСАН СОЛОНГО",
@@ -1635,7 +1667,9 @@
      "chars": 140362,
      "minutes": 187,
      "id": "setgeld-tatsan-solongo-382cb0",
-     "cover": "covers/setgeld-tatsan-solongo-382cb0.jpg"
+     "cover": "covers/setgeld-tatsan-solongo-382cb0.jpg",
+     "braille": "braille/setgeld-tatsan-solongo-382cb0.brf",
+     "braillePages": 245
     },
     {
      "title": "ТЭНГЭРЛЭГ ТУУЛЬС : ДИВААЖИН",
@@ -1644,7 +1678,9 @@
      "chars": 219471,
      "minutes": 293,
      "id": "tengerleg-tuuls-divaajin-34ce5d",
-     "cover": "covers/tengerleg-tuuls-divaajin-34ce5d.jpg"
+     "cover": "covers/tengerleg-tuuls-divaajin-34ce5d.jpg",
+     "braille": "braille/tengerleg-tuuls-divaajin-34ce5d.brf",
+     "braillePages": 574
     },
     {
      "title": "ТҮҮВЭР ЗОХИОЛ",
@@ -1653,7 +1689,9 @@
      "chars": 150224,
      "minutes": 200,
      "id": "tuuver-zohiol-f2f220",
-     "cover": "covers/tuuver-zohiol-f2f220.jpg"
+     "cover": "covers/tuuver-zohiol-f2f220.jpg",
+     "braille": "braille/tuuver-zohiol-f2f220.brf",
+     "braillePages": 312
     },
     {
      "title": "ТҮҮВЭР ЗОХИОЛ",
@@ -1662,7 +1700,9 @@
      "chars": 178533,
      "minutes": 238,
      "id": "shidet-mod-71b076",
-     "cover": "covers/shidet-mod-71b076.jpg"
+     "cover": "covers/shidet-mod-71b076.jpg",
+     "braille": "braille/shidet-mod-71b076.brf",
+     "braillePages": 429
     },
     {
      "title": "ХАЙАВАТЫН ДУУЛАЛ",
@@ -1671,7 +1711,9 @@
      "chars": 129297,
      "minutes": 172,
      "id": "haiavatyn-duulal-a40f3d",
-     "cover": "covers/haiavatyn-duulal-a40f3d.jpg"
+     "cover": "covers/haiavatyn-duulal-a40f3d.jpg",
+     "braille": "braille/haiavatyn-duulal-a40f3d.brf",
+     "braillePages": 492
     },
     {
      "title": "ХАЛУУН АМЬСГАЛ",
@@ -1680,7 +1722,9 @@
      "chars": 32012,
      "minutes": 43,
      "id": "haluun-amsgal-6d830c",
-     "cover": "covers/haluun-amsgal-6d830c.jpg"
+     "cover": "covers/haluun-amsgal-6d830c.jpg",
+     "braille": "braille/haluun-amsgal-6d830c.brf",
+     "braillePages": 126
     },
     {
      "title": "ХУЛГАЙЛАГДСАН НАР",
@@ -1689,7 +1733,9 @@
      "chars": 19833,
      "minutes": 26,
      "id": "hulgailagdsan-nar-f6c858",
-     "cover": "covers/hulgailagdsan-nar-f6c858.jpg"
+     "cover": "covers/hulgailagdsan-nar-f6c858.jpg",
+     "braille": "braille/hulgailagdsan-nar-f6c858.brf",
+     "braillePages": 62
     },
     {
      "title": "ХУУЛЬЧ САНДАГИЙН ЗОХИОЛУУДЫН ТҮҮВЭР",
@@ -1698,7 +1744,9 @@
      "chars": 23321,
      "minutes": 31,
      "id": "huulch-sandagiin-zohioluudyn-tuuver-b86d11",
-     "cover": "covers/huulch-sandagiin-zohioluudyn-tuuver-b86d11.jpg"
+     "cover": "covers/huulch-sandagiin-zohioluudyn-tuuver-b86d11.jpg",
+     "braille": "braille/huulch-sandagiin-zohioluudyn-tuuver-b86d11.brf",
+     "braillePages": 61
     },
     {
      "title": "ХУУЛЬЧ САНДАГИЙН ШҮЛГҮҮД",
@@ -1707,7 +1755,9 @@
      "chars": 58710,
      "minutes": 78,
      "id": "huulch-sandagiin-shulguud-100491",
-     "cover": "covers/huulch-sandagiin-shulguud-100491.jpg"
+     "cover": "covers/huulch-sandagiin-shulguud-100491.jpg",
+     "braille": "braille/huulch-sandagiin-shulguud-100491.brf",
+     "braillePages": 105
     },
     {
      "title": "Хэн хэлнэ вэ?",
@@ -1716,7 +1766,9 @@
      "chars": 8577,
      "minutes": 11,
      "id": "hen-helne-ve-8be6f9",
-     "cover": "covers/hen-helne-ve-8be6f9.jpg"
+     "cover": "covers/hen-helne-ve-8be6f9.jpg",
+     "braille": "braille/hen-helne-ve-8be6f9.brf",
+     "braillePages": 45
     },
     {
      "title": "ШЕКСПИР - 1",
@@ -1725,7 +1777,9 @@
      "chars": 247618,
      "minutes": 330,
      "id": "shekspir-1-c6c8b9",
-     "cover": "covers/shekspir-1-c6c8b9.jpg"
+     "cover": "covers/shekspir-1-c6c8b9.jpg",
+     "braille": "braille/shekspir-1-c6c8b9.brf",
+     "braillePages": 325
     },
     {
      "title": "ШЕКСПИР - 2",
@@ -1734,7 +1788,9 @@
      "chars": 277361,
      "minutes": 370,
      "id": "shekspir-2-8c2ae1",
-     "cover": "covers/shekspir-2-8c2ae1.jpg"
+     "cover": "covers/shekspir-2-8c2ae1.jpg",
+     "braille": "braille/shekspir-2-8c2ae1.brf",
+     "braillePages": 365
     },
     {
      "title": "ШҮЛГИЙН ТҮҮВЭР",
@@ -1743,7 +1799,9 @@
      "chars": 21253,
      "minutes": 28,
      "id": "shulgiin-tuuver-7735b8",
-     "cover": "covers/shulgiin-tuuver-7735b8.jpg"
+     "cover": "covers/shulgiin-tuuver-7735b8.jpg",
+     "braille": "braille/shulgiin-tuuver-7735b8.brf",
+     "braillePages": 63
     },
     {
      "title": "ШҮЛГҮҮД",
@@ -1752,7 +1810,9 @@
      "chars": 66571,
      "minutes": 89,
      "id": "shulguud-6794c3",
-     "cover": "covers/shulguud-6794c3.jpg"
+     "cover": "covers/shulguud-6794c3.jpg",
+     "braille": "braille/shulguud-6794c3.brf",
+     "braillePages": 182
     },
     {
      "title": "ШҮЛЭГ, НАЙРАГЛАЛ",
@@ -1761,7 +1821,9 @@
      "chars": 114999,
      "minutes": 153,
      "id": "shuleg-nairaglal-73e978",
-     "cover": "covers/shuleg-nairaglal-73e978.jpg"
+     "cover": "covers/shuleg-nairaglal-73e978.jpg",
+     "braille": "braille/shuleg-nairaglal-73e978.brf",
+     "braillePages": 325
     },
     {
      "title": "ШҮҮГ, ШААГ, ШҮЖИГ, ШАЖИГ",
@@ -1770,7 +1832,9 @@
      "chars": 7220,
      "minutes": 10,
      "id": "shuug-shaag-shujig-shajig-61abbb",
-     "cover": "covers/shuug-shaag-shujig-shajig-61abbb.jpg"
+     "cover": "covers/shuug-shaag-shujig-shajig-61abbb.jpg",
+     "braille": "braille/shuug-shaag-shujig-shajig-61abbb.brf",
+     "braillePages": 45
     },
     {
      "title": "ЯНАГИЙН ДУУЛАЛ",
@@ -1779,7 +1843,9 @@
      "chars": 8070,
      "minutes": 11,
      "id": "yanagiin-duulal-acea20",
-     "cover": "covers/yanagiin-duulal-acea20.jpg"
+     "cover": "covers/yanagiin-duulal-acea20.jpg",
+     "braille": "braille/yanagiin-duulal-acea20.brf",
+     "braillePages": 24
     },
     {
      "title": "ЯРУУ НАЙРГИЙГ ТӨРӨЛ ЗҮЙЛЭЭР АНГИЛАХ НЬ",
@@ -1788,7 +1854,9 @@
      "chars": 164382,
      "minutes": 219,
      "id": "yaruu-nairgiig-torol-zuileer-angilah-n-c9dbdb",
-     "cover": "covers/yaruu-nairgiig-torol-zuileer-angilah-n-c9dbdb.jpg"
+     "cover": "covers/yaruu-nairgiig-torol-zuileer-angilah-n-c9dbdb.jpg",
+     "braille": "braille/yaruu-nairgiig-torol-zuileer-angilah-n-c9dbdb.brf",
+     "braillePages": 205
     },
     {
      "title": "Яруу найргийн уран санаа",
@@ -1797,7 +1865,9 @@
      "chars": 312594,
      "minutes": 417,
      "id": "yaruu-nairgiin-uran-sanaa-aa3009",
-     "cover": "covers/yaruu-nairgiin-uran-sanaa-aa3009.jpg"
+     "cover": "covers/yaruu-nairgiin-uran-sanaa-aa3009.jpg",
+     "braille": "braille/yaruu-nairgiin-uran-sanaa-aa3009.brf",
+     "braillePages": 447
     },
     {
      "title": "ҮҮЛЭН ЗАРДАС",
@@ -1806,7 +1876,9 @@
      "chars": 25019,
      "minutes": 33,
      "id": "uulen-zardas-29dcaf",
-     "cover": "covers/uulen-zardas-29dcaf.jpg"
+     "cover": "covers/uulen-zardas-29dcaf.jpg",
+     "braille": "braille/uulen-zardas-29dcaf.brf",
+     "braillePages": 59
     },
     {
      "title": "ӨРГӨЛИЙН ДУУЛАЛ",
@@ -1815,7 +1887,9 @@
      "chars": 107038,
      "minutes": 143,
      "id": "orgoliin-duulal-5d4848",
-     "cover": "covers/orgoliin-duulal-5d4848.jpg"
+     "cover": "covers/orgoliin-duulal-5d4848.jpg",
+     "braille": "braille/orgoliin-duulal-5d4848.brf",
+     "braillePages": 269
     }
    ]
   },
