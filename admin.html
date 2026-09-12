@@ -176,16 +176,6 @@
   </div>
 </div>
 
-<div class="stats" id="stats"></div>
-
-<div class="toolbar">
-  <input type="search" id="search" placeholder="Ном хайх…">
-  <select id="shelfFilter"><option value="">Бүх тавиур</option></select>
-  <button id="kidsOnlyBtn" class="ghost">Зөвхөн хүүхдийн</button>
-</div>
-
-<div id="shelves"></div>
-
 <div id="usersPanel" style="margin:0 22px 24px;background:var(--night-2);
      border-radius:16px;padding:20px;max-width:720px">
   <h2 style="font-family:var(--display);font-size:16px;margin:0 0 10px;color:var(--lamp)">
@@ -228,6 +218,16 @@
   </div>
 </div>
 
+<div class="stats" id="stats"></div>
+
+<div class="toolbar">
+  <input type="search" id="search" placeholder="Ном хайх…">
+  <select id="shelfFilter"><option value="">Бүх тавиур</option></select>
+  <button id="kidsOnlyBtn" class="ghost">Зөвхөн хүүхдийн</button>
+</div>
+
+<div id="shelves"></div>
+
 <div id="editPanel" class="hidden" style="position:fixed;inset:0;z-index:50;
      background:var(--night);display:flex;flex-direction:column">
   <div style="display:flex;gap:10px;align-items:center;padding:14px 20px;
@@ -258,6 +258,7 @@
   Эхлээд <b>catalog.json</b> файлаа нээнэ үү. Өөрчлөлт хийсний дараа
   <b>catalog.json татах</b> дарж, GitHub дээрх хуучин файлыг солино.
 </p>
+
 
 <div id="log"></div>
 
@@ -560,6 +561,25 @@ async function tryGate(){
     const info = await res.json();
     if(!info.permissions || !info.permissions.push)
       throw new Error('Энэ түлхүүрт бичих эрх алга.');
+
+    // A fine-grained token reports push permission from the account's role,
+    // then refuses the write with a 403 — so check what the token itself was
+    // granted rather than what the person is allowed to do.
+    const scopes = res.headers.get('x-oauth-scopes');
+    if(scopes !== null && !/\brepo\b/.test(scopes))
+      throw new Error('Энэ түлхүүрт "repo" эрх алга. Classic token дээр repo '
+        + 'нүдийг тэмдэглэнэ үү.');
+    if(scopes === null)
+      // Fine-grained tokens send no scope header. Ask GitHub directly whether
+      // this one may write content.
+      try{
+        const t = await fetch('https://api.github.com/repos/' + repo + '/contents/catalog.json',
+          { headers:{ 'Authorization':'Bearer ' + token,
+                      'Accept':'application/vnd.github+json' } });
+        if(t.status === 403)
+          throw new Error('Энэ түлхүүрт бичих эрх алга. Fine-grained token дээр '
+            + '"Contents: Read and write" сонгох, эсвэл classic token үүсгэнэ үү.');
+      }catch(e){ if(/эрх алга/.test(e.message)) throw e; }
 
     gh.repo = repo; gh.token = token;
     if(window.__admin){
