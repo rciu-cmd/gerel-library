@@ -202,6 +202,27 @@
   </div>
   <div id="usersList" style="margin-top:14px;font-size:13px;color:var(--dawn);
        max-height:220px;overflow:auto"></div>
+
+  <div id="pwBox" class="hidden" style="margin-top:20px;padding-top:18px;
+       border-top:1px solid rgba(127,163,204,.25)">
+    <h3 style="font-family:var(--display);font-size:14px;margin:0 0 10px;color:var(--lamp)">
+      Миний нууц үг солих</h3>
+    <div style="display:grid;gap:10px;max-width:420px">
+      <input id="pwNew" type="password" placeholder="Шинэ нууц үг"
+        autocomplete="new-password"
+        style="background:var(--night);color:var(--paper);
+               border:1px solid rgba(127,163,204,.4);border-radius:10px;padding:12px;
+               font-family:var(--body);font-size:14px">
+      <input id="pwAgain" type="password" placeholder="Дахин бичнэ үү"
+        autocomplete="new-password"
+        style="background:var(--night);color:var(--paper);
+               border:1px solid rgba(127,163,204,.4);border-radius:10px;padding:12px;
+               font-family:var(--body);font-size:14px">
+      <button id="pwSave" class="primary" style="justify-self:start;padding:12px 22px">
+        Солих</button>
+    </div>
+    <div id="pwNote" style="margin-top:10px;font-size:13px;color:var(--dawn)"></div>
+  </div>
 </div>
 
 <div id="editPanel" class="hidden" style="position:fixed;inset:0;z-index:50;
@@ -520,6 +541,7 @@ async function tryGate(){
       if(found.role !== 'админ')
         throw new Error('Энэ хэрэглэгчид удирдах эрх алга.');
       window.__admin = found;
+      window.__weakPassword = pass.length < 8 || /^(1234|0000|pass|admin)/i.test(pass);
     }
     // No users.json yet means the very first sign-in, so the token alone
     // decides. Otherwise nobody could ever create the first admin.
@@ -537,7 +559,13 @@ async function tryGate(){
       throw new Error('Энэ түлхүүрт бичих эрх алга.');
 
     gh.repo = repo; gh.token = token;
-    if(window.__admin) log('Сайн байна уу, ' + (window.__admin.name || user), 'good');
+    if(window.__admin){
+      log('Сайн байна уу, ' + (window.__admin.name || user), 'good');
+      $('pwBox').classList.remove('hidden');
+      // A password still at its starting value should not stay there.
+      if(window.__weakPassword)
+        log('Нууц үгээ солино уу — одоогийн нь хэт энгийн байна.', 'warn');
+    }
     try{
       localStorage.setItem('gerel:ghRepo', repo);
       localStorage.setItem('gerel:ghToken', token);
@@ -994,6 +1022,45 @@ function showPeople(){
     '<div>' + esc(p.name || '') + ' — <b>' + esc(p.user) + '</b> (' + esc(p.role) + ')</div>'
   ).join('');
 }
+
+// Changing your own password. Only your own — an admin who could silently
+// change another admin's password would be a way to lock a colleague out.
+async function changeMyPassword(){
+  const who = window.__admin;
+  if(!who){ $('pwNote').textContent = 'Эхлээд нэвтэрнэ үү.'; return; }
+  const a = $('pwNew').value || '', b = $('pwAgain').value || '';
+  if(a.length < 6){ $('pwNote').textContent = 'Дор хаяж 6 тэмдэгт байх ёстой.'; return; }
+  if(a !== b){ $('pwNote').textContent = 'Хоёр нууц үг таарахгүй байна.'; return; }
+
+  $('pwSave').disabled = true;
+  $('pwNote').textContent = 'Хадгалж байна…';
+  try{
+    if(!people.length) await loadPeople();
+    const row = people.find(p => p.user === who.user);
+    if(!row) throw new Error('Хэрэглэгч олдсонгүй.');
+    row.hash = await hashPassword(who.user, a);
+
+    let sha = null;
+    try{ sha = (await ghApi('/contents/users.json')).sha; }catch(err){}
+    const body = { message: 'Нууц үг солив',
+                   content: btoa(unescape(encodeURIComponent(
+                     JSON.stringify({ users: people }, null, 1)))) };
+    if(sha) body.sha = sha;
+    await ghApi('/contents/users.json', { method:'PUT', body: JSON.stringify(body) });
+
+    $('pwNew').value = ''; $('pwAgain').value = '';
+    $('pwNote').textContent = 'Солигдлоо. Дараагийн удаа шинэ нууц үгээ ашиглана уу.';
+    log('Нууц үг солигдлоо.', 'good');
+  }catch(err){
+    $('pwNote').textContent = 'Солиж чадсангүй: ' + err.message;
+  }finally{
+    $('pwSave').disabled = false;
+  }
+}
+$('pwSave').addEventListener('click', changeMyPassword);
+$('pwAgain').addEventListener('keydown', e => {
+  if(e.key === 'Enter'){ e.preventDefault(); changeMyPassword(); }
+});
 
 $('usersFile').addEventListener('change', async e => {
   const file = e.target.files[0];
