@@ -8,7 +8,9 @@ Allow: /
 # collection. Please leave them alone.
 Disallow: /books/
 Disallow: /audio/
-Disallow: /admin.html
-Disallow: /gerel-admin.html
+
+# The admin page is deliberately not named here. Listing a path in robots.txt
+# publishes its existence to anyone who reads the file, which is the opposite
+# of hiding it. It is protected by requiring a GitHub token, not by obscurity.
 
 Sitemap: https://gerelnom.com/sitemap.xml

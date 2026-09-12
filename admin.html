@@ -174,14 +174,15 @@
 <div id="usersPanel" style="margin:0 22px 24px;background:var(--night-2);
      border-radius:16px;padding:20px;max-width:720px">
   <h2 style="font-family:var(--display);font-size:16px;margin:0 0 10px;color:var(--lamp)">
-    Хэрэглэгчид</h2>
+    👥 Сурагчид нэмэх</h2>
   <p style="margin:0 0 14px;font-size:13px;color:var(--dawn);line-height:1.6">
     Excel эсвэл Google Sheets дээр 4 багана бөглөж, CSV болгон хадгална:
     <b>нэр, хэрэглэгчийн нэр, нууц үг, эрх</b>. Эрх нь <b>сурагч</b> эсвэл
     <b>багш</b> байна. Файлыг доор чирж оруулна уу.
   </p>
   <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-    <label class="btn primary">CSV сонгох
+    <label class="btn primary" style="padding:14px 22px;font-size:15px">
+      📄 Excel/CSV файл сонгох
       <input type="file" id="usersFile" accept=".csv,text/csv"></label>
     <a id="usersTemplate" download="hereglegchid.csv"
        style="color:var(--dawn);font-size:13px;align-self:center">Загвар татах ↓</a>
@@ -887,6 +888,108 @@ async function ghPut(path, base64, note){
   if(sha) body.sha = sha;
   await ghApi('/contents/' + path, { method:'PUT', body: JSON.stringify(body) });
 }
+
+// ============================================================
+// People
+// ============================================================
+// Accounts come from a spreadsheet, because a school already knows how to fill
+// one in. Passwords are never stored — only a hash — so the file in the
+// repository cannot hand anyone a child's password.
+const TEMPLATE =
+  'нэр,хэрэглэгчийн нэр,нууц үг,эрх\n' +
+  'Болд Батаа,bold,gerel2026,сурагч\n' +
+  'Сараа Дорж,saraa,nomsan11,сурагч\n' +
+  'Багшийн жишээ,bagsh1,surguuli116,багш\n';
+
+$('usersTemplate').href = 'data:text/csv;charset=utf-8,' +
+  encodeURIComponent('\ufeff' + TEMPLATE);
+
+async function hashPassword(user, password){
+  // The username is mixed in, so two children choosing the same password do
+  // not end up with the same stored value.
+  const data = new TextEncoder().encode('gerel:' + user.toLowerCase() + ':' + password);
+  const buf = await crypto.subtle.digest('SHA-256', data);
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+function parseCsv(text){
+  const rows = [];
+  text = text.replace(/^\ufeff/, '');
+  const head = text.split('\n')[0] || '';
+  // Excel in some locales writes semicolons; accept either.
+  const sep = head.split(';').length > head.split(',').length ? ';' : ',';
+  text.split(/\r?\n/).forEach((line, i) => {
+    if(!line.trim()) return;
+    const cells = line.split(sep).map(c => c.trim().replace(/^"|"$/g, ''));
+    if(i === 0 && /нэр|name/i.test(cells[0] || '') &&
+       /хэрэглэгч|user/i.test(cells[1] || '')) return;
+    if(cells.length < 3) return;
+    rows.push({
+      name: cells[0],
+      user: (cells[1] || '').toLowerCase(),
+      pass: cells[2],
+      role: /багш|teacher|админ|admin/i.test(cells[3] || '') ? 'багш' : 'сурагч'
+    });
+  });
+  return rows;
+}
+
+let people = [];
+
+async function loadPeople(){
+  try{
+    const r = await fetch('users.json', { cache: 'no-cache' });
+    people = r.ok ? ((await r.json()).users || []) : [];
+  }catch(e){ people = []; }
+  showPeople();
+}
+
+function showPeople(){
+  $('usersCount').textContent = people.length
+    ? people.length + ' хэрэглэгч' : 'Хэрэглэгч алга';
+  $('usersList').innerHTML = people.map(p =>
+    '<div>' + esc(p.name || '') + ' — <b>' + esc(p.user) + '</b> (' + esc(p.role) + ')</div>'
+  ).join('');
+}
+
+$('usersFile').addEventListener('change', async e => {
+  const file = e.target.files[0];
+  if(!file) return;
+  if(!ghReady()){ log('Эхлээд нэвтэрнэ үү.', 'warn'); e.target.value=''; return; }
+
+  const rows = parseCsv(await file.text());
+  if(!rows.length){ log('CSV дотор хэрэглэгч олдсонгүй.', 'warn'); e.target.value=''; return; }
+
+  log(rows.length + ' хэрэглэгч уншлаа. Нууц үгийг хувиргаж байна…');
+  const made = [];
+  for(const r of rows){
+    if(!r.user || !r.pass) continue;
+    made.push({ name: r.name, user: r.user, role: r.role,
+                hash: await hashPassword(r.user, r.pass) });
+  }
+  if(!made.length){ log('Бүрэн мөр олдсонгүй.', 'warn'); e.target.value=''; return; }
+
+  // A repeated username is updated rather than duplicated.
+  const byUser = new Map(people.map(p => [p.user, p]));
+  made.forEach(p => byUser.set(p.user, p));
+  people = [...byUser.values()];
+
+  try{
+    let sha = null;
+    try{ sha = (await ghApi('/contents/users.json')).sha; }catch(err){}
+    const body = { message: 'Хэрэглэгч шинэчлэв (' + made.length + ')',
+                   content: btoa(unescape(encodeURIComponent(
+                     JSON.stringify({ users: people }, null, 1)))) };
+    if(sha) body.sha = sha;
+    await ghApi('/contents/users.json', { method:'PUT', body: JSON.stringify(body) });
+    showPeople();
+    log(made.length + ' хэрэглэгч хадгалагдлаа. Нийт ' + people.length + '.', 'good');
+    log('Нууц үг хадгалагдаагүй — зөвхөн шалгах утга. CSV файлаа хадгалж авна уу.', 'warn');
+  }catch(err){
+    log('Хадгалж чадсангүй: ' + err.message, 'warn');
+  }
+  e.target.value = '';
+});
 
 async function addFiles(files){
   if(!catalog){ log('Эхлээд catalog ачаална уу.', 'warn'); return; }

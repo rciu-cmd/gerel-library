@@ -237,15 +237,14 @@
     <button class="mini" id="loginBack">← Буцах</button>
   </div>
   <div id="loginNote" class="note hidden"></div>
-  <a id="adminLink" href="gerel-admin.html"
-     style="margin-top:22px;font-size:14px;color:var(--muted);text-decoration:underline">
-    Удирдлагын хэсэг</a>
+
 </div>
 
 <div id="shelf" class="screen hidden">
   <div class="bar">
     <h1 id="shelfTitle">Тавиурууд</h1>
     <button class="chip mode" id="modeChip">Сонсох</button>
+    <button class="chip hidden" id="installChip">⤓ Суулгах</button>
     <button class="chip" id="loginChip">Нэвтрэх</button>
     <button class="chip" id="backChip">← Буцах</button>
   </div>
@@ -1168,6 +1167,27 @@ function renderHelp(){
 }
 $('helpClose').addEventListener('click',()=>show(lastScreen));
 
+// Putting the library on the home screen. The browser decides when this is
+// possible, so the button appears only when it is — offering it when it cannot
+// work would be worse than not offering it.
+let installPrompt=null;
+window.addEventListener('beforeinstallprompt', e=>{
+  e.preventDefault();
+  installPrompt=e;
+  $('installChip').classList.remove('hidden');
+});
+$('installChip').addEventListener('click', async ()=>{
+  if(!installPrompt) return;
+  installPrompt.prompt();
+  const choice=await installPrompt.userChoice;
+  if(choice.outcome==='accepted'){
+    $('installChip').classList.add('hidden');
+    announce('Суулгалаа.');
+  }
+  installPrompt=null;
+});
+window.addEventListener('appinstalled', ()=> $('installChip').classList.add('hidden'));
+
 // ============================================================
 // Keeping a book on this device
 // ============================================================
@@ -1566,7 +1586,7 @@ document.addEventListener('keydown',e=>{
 
 // Registering this is what lets a kept book play with no signal, and what
 // allows the library to be added to a home screen like an app.
-if('serviceWorker' in navigator){
+if(navigator.serviceWorker){
   window.addEventListener('load',()=>{
     navigator.serviceWorker.register('sw.js').catch(err=>
       console.warn('Gerel: offline support unavailable', err));
