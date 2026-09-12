@@ -1054,6 +1054,7 @@ function renderShelf(){
         announce('Утсанд хадгаллаа. Интернэтгүй сонсож болно.');
       }catch(err){
         keep.textContent='⤓';
+        console.warn('Gerel: download failed for', e.id, err);
         announce('Татаж чадсангүй.');
       }finally{ keep.disabled=false; }
     });
@@ -1226,12 +1227,16 @@ async function isKept(entry){
 }
 
 async function keepBook(entry, onProgress){
+  if(!('caches' in window)) throw new Error('offline storage unavailable');
   const c=await caches.open(KEPT);
   const base=AUDIO_ROOT+'/'+entry.id;
   const r=await fetch(base+'/index.json',{cache:'no-cache'});
   if(!r.ok) throw new Error('unavailable');
+  // Clone BEFORE reading. Reading the body first and cloning after throws,
+  // which is why every download failed.
+  const copy=r.clone();
   const data=await r.json();
-  await c.put(base+'/index.json', r.clone());
+  await c.put(base+'/index.json', copy);
 
   const files=[];
   data.chapters.forEach(ch=>ch.blocks.forEach(b=>{ if(b.audio) files.push(base+'/'+b.audio); }));

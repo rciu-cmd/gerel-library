@@ -141,6 +141,8 @@
 <header>
   <div class="wordmark">Гэрэл <span>· удирдлага</span></div>
   <div class="grow"></div>
+  <span id="roleBadge" class="hidden"
+        style="font-size:13px;color:var(--dawn);margin-right:auto"></span>
   <button id="pushBtn" class="primary" disabled>Хадгалах</button>
   <button id="ghBtn">Гарах</button>
   <!-- The file open and download buttons went: with the repository connected
@@ -176,7 +178,7 @@
   </div>
 </div>
 
-<div id="usersPanel" style="margin:0 22px 24px;background:var(--night-2);
+<div id="usersPanel" class="superOnly hidden" style="margin:0 22px 24px;background:var(--night-2);
      border-radius:16px;padding:20px;max-width:720px">
   <h2 style="font-family:var(--display);font-size:16px;margin:0 0 10px;color:var(--lamp)">
     👥 Сурагчид нэмэх</h2>
@@ -210,9 +212,10 @@
       <select id="oneRole"
         style="background:var(--night);color:var(--paper);border:1px solid rgba(127,163,204,.4);
                border-radius:10px;padding:12px;font-family:var(--body);font-size:14px">
-        <option value="сурагч">Сурагч</option>
-        <option value="багш">Багш</option>
-        <option value="админ">Админ</option>
+        <option value="сурагч">Сурагч — зөвхөн унших, сонсох</option>
+        <option value="багш">Багш — зөвхөн унших, сонсох</option>
+        <option value="админ">Админ — номоо удирдана</option>
+        <option value="супер">Супер админ — бүх эрх</option>
       </select>
       <button id="oneAdd" class="primary" style="padding:12px 20px">Нэмэх</button>
     </div>
@@ -568,9 +571,10 @@ async function tryGate(){
       const hash = [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
       if(!found || found.hash !== hash)
         throw new Error('Нэр эсвэл нууц үг буруу байна.');
-      if(found.role !== 'админ')
+      if(found.role !== 'админ' && found.role !== 'супер')
         throw new Error('Энэ хэрэглэгчид удирдах эрх алга.');
       window.__admin = found;
+      try{ localStorage.setItem('gerel:admin', JSON.stringify(found)); }catch(e){}
       window.__weakPassword = pass.length < 8 || /^(1234|0000|pass|admin)/i.test(pass);
     }
     // No users.json yet means the very first sign-in, so the token alone
@@ -611,6 +615,7 @@ async function tryGate(){
     if(window.__admin){
       log('Сайн байна уу, ' + (window.__admin.name || user), 'good');
       $('pwBox').classList.remove('hidden');
+      applyRole();
       // A password still at its starting value should not stay there.
       if(window.__weakPassword)
         log('Нууц үгээ солино уу — одоогийн нь хэт энгийн байна.', 'warn');
@@ -644,10 +649,22 @@ $('gatePass').addEventListener('keydown', e => {
   if(e.key === 'Enter'){ e.preventDefault(); $('gateRepo').focus(); }
 });
 
-// Someone who signed in before goes straight through.
+// Someone who signed in before goes straight through — and must arrive at a
+// loaded dashboard, not an empty one. Hiding the gate without fetching
+// anything was why a refresh emptied the page.
 (function(){
   if(ghReady()){
     $('gate').style.display = 'none';
+    try{
+      const saved = localStorage.getItem('gerel:admin');
+      if(saved) window.__admin = JSON.parse(saved);
+    }catch(e){}
+    if(window.__admin){
+      $('pwBox').classList.remove('hidden');
+      applyRole();
+    }
+    ghLoad();
+    loadPeople();
   }else{
     $('gateRepo').value = gh.repo || 'rciu-cmd/gerel-library';
     setTimeout(()=>$('gateUser').focus(), 100);
@@ -672,7 +689,9 @@ $('ghSave').addEventListener('click', ()=>{
 });
 $('ghForget').addEventListener('click', ()=>{
   gh = { repo:'', token:'', sha:null };
-  try{ localStorage.removeItem('gerel:ghRepo'); localStorage.removeItem('gerel:ghToken'); }catch(e){}
+  window.__admin = null;
+  try{ localStorage.removeItem('gerel:ghRepo'); localStorage.removeItem('gerel:ghToken');
+       localStorage.removeItem('gerel:admin'); }catch(e){}
   ghRefresh();
   $('gateToken').value = '';
   $('gateNote').textContent = '';
@@ -1050,7 +1069,9 @@ function parseCsv(text){
       name: cells[0],
       user: (cells[1] || '').toLowerCase(),
       pass: cells[2],
-      role: /багш|teacher|админ|admin/i.test(cells[3] || '') ? 'багш' : 'сурагч'
+      role: /супер|super/i.test(cells[3] || '') ? 'супер'
+          : /админ|admin/i.test(cells[3] || '') ? 'админ'
+          : /багш|teacher/i.test(cells[3] || '') ? 'багш' : 'сурагч'
     });
   });
   return rows;
@@ -1072,6 +1093,24 @@ function showPeople(){
   $('usersList').innerHTML = people.map(p =>
     '<div>' + esc(p.name || '') + ' — <b>' + esc(p.user) + '</b> (' + esc(p.role) + ')</div>'
   ).join('');
+}
+
+// Two tiers. A "супер" account does everything, including creating people; an
+// "админ" account manages books and corrects text but cannot make accounts —
+// so a colleague can be given the library to look after without also being
+// given the power to lock everyone else out.
+function applyRole(){
+  const who = window.__admin;
+  const isSuper = who && who.role === 'супер';
+  // Account management belongs to the superadmin alone.
+  document.querySelectorAll('.superOnly').forEach(el =>
+    el.classList.toggle('hidden', !isSuper));
+  const badge = $('roleBadge');
+  if(badge && who){
+    badge.textContent = (who.name || who.user) + ' · ' +
+      (isSuper ? 'Супер админ' : 'Админ');
+    badge.classList.remove('hidden');
+  }
 }
 
 // Adding one person without a spreadsheet. A school enrolling thirty children
