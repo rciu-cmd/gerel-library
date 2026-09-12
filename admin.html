@@ -563,8 +563,14 @@ async function tryGate(){
     // The admin list lives in the same users.json the library uses. Anyone
     // marked админ may open this page; everyone else is refused.
     const ur = await fetch('users.json', { cache:'no-cache' });
+    // No users.json at all means nobody can be looked up — including the
+    // person who is about to create it. Whoever holds a write token can
+    // already change every file by hand, so treating them as the first
+    // superadmin grants nothing they did not have.
+    let firstRun = !ur.ok;
     if(ur.ok){
       const list = (await ur.json()).users || [];
+      if(!list.length) firstRun = true;      // an empty file is no file
       const found = list.find(p => (p.user||'').toLowerCase() === user);
       const data = new TextEncoder().encode('gerel:' + user + ':' + pass);
       const buf = await crypto.subtle.digest('SHA-256', data);
@@ -612,6 +618,11 @@ async function tryGate(){
       }catch(e){ if(/эрх алга/.test(e.message)) throw e; }
 
     gh.repo = repo; gh.token = token;
+    if(firstRun && !window.__admin){
+      window.__admin = { user: user, name: user, role: 'супер', firstRun: true };
+      try{ localStorage.setItem('gerel:admin', JSON.stringify(window.__admin)); }catch(e){}
+      log('Анхны нэвтрэлт — өөрийгөө супер админ болгож нэмнэ үү.', 'warn');
+    }
     if(window.__admin){
       log('Сайн байна уу, ' + (window.__admin.name || user), 'good');
       $('pwBox').classList.remove('hidden');
@@ -664,7 +675,20 @@ $('gatePass').addEventListener('keydown', e => {
       applyRole();
     }
     ghLoad();
-    loadPeople();
+    // Recover the role from users.json rather than leaving the page half
+    // usable: a cleared localStorage should not cost someone their rights.
+    loadPeople().then(()=>{
+      if(!window.__admin){
+        if(!people.length){
+          window.__admin = { user:'admin', name:'admin', role:'супер', firstRun:true };
+        }else{
+          const saved = (()=>{ try{ return JSON.parse(
+            localStorage.getItem('gerel:admin')||'null'); }catch(e){ return null; } })();
+          if(saved) window.__admin = people.find(p=>p.user===saved.user) || null;
+        }
+        if(window.__admin){ $('pwBox').classList.remove('hidden'); applyRole(); }
+      }
+    });
   }else{
     $('gateRepo').value = gh.repo || 'rciu-cmd/gerel-library';
     setTimeout(()=>$('gateUser').focus(), 100);
@@ -1080,6 +1104,8 @@ function parseCsv(text){
 let people = [];
 
 async function loadPeople(){
+  // Returns a promise so callers can wait for it — see the returning-session
+  // check above, which needs the list before it can restore a role.
   try{
     const r = await fetch('users.json', { cache: 'no-cache' });
     people = r.ok ? ((await r.json()).users || []) : [];
@@ -1105,6 +1131,10 @@ function applyRole(){
   // Account management belongs to the superadmin alone.
   document.querySelectorAll('.superOnly').forEach(el =>
     el.classList.toggle('hidden', !isSuper));
+  // A panel that vanishes with no explanation reads as a bug. Say which it is.
+  if(who && !isSuper)
+    log('Хэрэглэгч нэмэх хэсэг зөвхөн супер админд харагдана. '
+      + 'Танд одоогоор "' + (who.role||'?') + '" эрх байна.', 'warn');
   const badge = $('roleBadge');
   if(badge && who){
     badge.textContent = (who.name || who.user) + ' · ' +
