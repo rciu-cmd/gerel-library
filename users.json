@@ -5,6 +5,12 @@
    "user": "admin",
    "role": "супер",
    "hash": "bdc3aa81093929c69b8c385f15693ffd122dd541426cbb3045ad2e6904c334fa"
+  },
+  {
+   "name": "test",
+   "user": "test",
+   "role": "багш",
+   "hash": "640ea9a04ba41dc469c5342ba11fea193e89066970c24755ecf1d606f94d21ff"
   }
  ]
 }
