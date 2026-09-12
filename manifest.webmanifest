@@ -1,5 +1,5 @@
 {
-  "name": "Гэрэл — Хүүхдийн сонсох номын сан",
+  "name": "Гэрэл номын сан",
   "short_name": "Гэрэл",
   "description": "Монгол хэл дээрх үнэгүй сонсох номын сан.",
   "lang": "mn",
@@ -27,11 +27,6 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
-    },
-    {
-      "src": "favicon-64.png",
-      "sizes": "64x64",
-      "type": "image/png"
     }
   ]
 }

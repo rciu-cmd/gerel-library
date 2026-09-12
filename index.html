@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-09-08-g">
+<meta name="gerel-build" content="2026-09-12-a">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -17,6 +17,9 @@
 <meta property="og:url" content="https://gerelnom.com/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="mn_MN">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Гэрэл">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;700&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
@@ -125,6 +128,14 @@
     background:var(--leaf);color:#fff;border-radius:99px;padding:2px 9px;vertical-align:middle;}
   .star{flex:0 0 auto;font-size:27px;padding:10px;line-height:1;color:var(--line);}
   .star.is{color:var(--sun);}
+  /* Keeping a book on the phone. Beside the star and the braille link, same
+     size, so the row still reads as one line to a child crossing it. */
+  .keepBtn{flex:0 0 auto;font-size:20px;padding:10px;line-height:1;min-width:46px;
+    color:var(--muted);border:2px solid var(--line);border-radius:12px;background:#fff;}
+  .keepBtn.is{background:var(--leaf);color:#fff;border-color:transparent;}
+  .field{border:3px solid var(--line);border-radius:18px;padding:17px 19px;
+    font-family:var(--body);font-size:19px;font-weight:600;background:#fff;
+    color:var(--ink);width:100%;box-sizing:border-box;}
 
   #player{justify-content:space-between;}
   .stage{flex:1;display:flex;flex-direction:column;align-items:center;
@@ -210,6 +221,8 @@
   <div class="bar">
     <h1 id="shelfTitle">Тавиурууд</h1>
     <button class="chip mode" id="modeChip">Сонсох</button>
+    <button class="chip" id="installChip">⤓ Суулгах</button>
+    <button class="chip" id="loginChip">Нэвтрэх</button>
     <button class="chip" id="backChip">← Буцах</button>
   </div>
   <div class="shelves" id="shelfList"></div>
@@ -217,6 +230,21 @@
   <div id="letters"></div>
   <div class="books" id="bookList"></div>
   <div class="note hidden" id="shelfNote"></div>
+</div>
+
+<div id="login" class="screen center hidden">
+  <div class="brand" style="font-family:var(--display);font-weight:700;
+       font-size:clamp(30px,7vw,48px)">Нэвтрэх</div>
+  <p class="sub" style="margin:0;color:var(--muted)">Ном татаж авахын тулд нэвтэрнэ үү</p>
+  <div style="display:grid;gap:14px;width:100%;max-width:420px">
+    <input id="loginUser" class="field" type="text" autocomplete="username"
+      placeholder="Хэрэглэгчийн нэр">
+    <input id="loginPass" class="field" type="password" autocomplete="current-password"
+      placeholder="Нууц үг">
+    <button class="key big" id="loginGo" style="min-height:70px">Нэвтрэх</button>
+    <button class="mini" id="loginBack">← Буцах</button>
+  </div>
+  <div id="loginNote" class="note"></div>
 </div>
 
 <div id="player" class="screen hidden">
@@ -789,6 +817,162 @@ function media(){
   set('seekbackward',()=>step(-1)); set('seekforward',()=>step(1));
 }
 
+// ============================================================
+// Keeping a book on this device
+// ============================================================
+// Mobile data costs money and dormitory wifi comes and goes, so a book a child
+// has started should stay on the phone. Each file goes into the browser's own
+// cache; nothing is fetched twice and no app store is involved.
+const KEPT='gerel-books-v1';
+
+async function isKept(entry){
+  if(!window.caches || !entry.id) return false;
+  try{
+    const c=await caches.open(KEPT);
+    return !!(await c.match(AUDIO_ROOT+'/'+entry.id+'/index.json'));
+  }catch(e){ return false; }
+}
+
+async function keepBook(entry, onProgress){
+  if(!window.caches) throw new Error('offline storage unavailable');
+  const c=await caches.open(KEPT);
+  const base=AUDIO_ROOT+'/'+entry.id;
+  const r=await fetch(base+'/index.json',{cache:'no-cache'});
+  if(!r.ok) throw new Error('unavailable');
+  // Copy BEFORE reading the body. Cloning afterwards throws, which is what
+  // made every download fail silently.
+  const copy=r.clone();
+  const data=await r.json();
+  await c.put(base+'/index.json', copy);
+
+  const files=[];
+  data.chapters.forEach(ch=>ch.blocks.forEach(b=>{ if(b.audio) files.push(base+'/'+b.audio); }));
+  if(entry.cover) files.push(entry.cover);
+
+  let done=0;
+  // Four at a time: a hundred at once stalls a slow connection and leaves the
+  // child with no sign that anything is happening.
+  for(let i=0;i<files.length;i+=4){
+    await Promise.all(files.slice(i,i+4).map(async u=>{
+      try{ if(!(await c.match(u))) await c.add(u); }catch(e){}
+      done++;
+      if(onProgress) onProgress(done, files.length);
+    }));
+  }
+  return files.length;
+}
+
+async function forgetBook(entry){
+  if(!window.caches) return;
+  const c=await caches.open(KEPT);
+  const keys=await c.keys();
+  const base=AUDIO_ROOT+'/'+entry.id+'/';
+  await Promise.all(keys.filter(k=>k.url.includes(base)).map(k=>c.delete(k)));
+}
+
+// ============================================================
+// Signing in
+// ============================================================
+// Accounts exist so a child can keep books on their own phone. Nothing about
+// them is sent anywhere: the list of usernames and password hashes is fetched
+// like any other file and checked here in the browser. No reading history is
+// recorded, and using the library creates no account.
+let me=null;
+try{ me=JSON.parse(get('me','null')); }catch(e){ me=null; }
+
+async function hashPassword(user,password){
+  const data=new TextEncoder().encode('gerel:'+user.toLowerCase()+':'+password);
+  const buf=await crypto.subtle.digest('SHA-256',data);
+  return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+function showWho(){
+  $('loginChip').textContent = me ? (me.name||me.user) : 'Нэвтрэх';
+  document.querySelectorAll('.keepBtn').forEach(b=>b.classList.toggle('hidden',!me));
+}
+
+async function signIn(){
+  const user=($('loginUser').value||'').trim().toLowerCase();
+  const pass=$('loginPass').value||'';
+  if(!user||!pass){ $('loginNote').textContent='Нэр болон нууц үгээ бөглөнө үү.'; return; }
+
+  $('loginGo').disabled=true;
+  $('loginNote').textContent='Шалгаж байна…';
+  try{
+    const r=await fetch('users.json',{cache:'no-cache'});
+    if(!r.ok) throw new Error('жагсаалт алга');
+    const list=(await r.json()).users||[];
+    const found=list.find(p=>(p.user||'').toLowerCase()===user);
+    const hash=await hashPassword(user,pass);
+    if(!found || found.hash!==hash){
+      $('loginNote').textContent='Нэр эсвэл нууц үг буруу байна.';
+      say('Нэр эсвэл нууц үг буруу байна.');
+      return;
+    }
+    me={user:found.user,name:found.name||found.user,role:found.role||'сурагч'};
+    put('me',JSON.stringify(me));
+    showWho();
+    $('loginPass').value='';
+    $('loginNote').textContent='';
+    renderShelf();
+    show('shelf');
+    announce('Сайн байна уу, '+(me.name||me.user));
+  }catch(err){
+    $('loginNote').textContent='Нэвтэрч чадсангүй. Дараа дахин оролдоно уу.';
+  }finally{
+    $('loginGo').disabled=false;
+  }
+}
+
+function signOut(){
+  me=null;
+  try{ localStorage.removeItem('gerel:me'); }catch(e){}
+  showWho();
+  announce('Гарлаа.');
+}
+
+$('loginGo').addEventListener('click',signIn);
+$('loginBack').addEventListener('click',()=>show('shelf'));
+$('loginPass').addEventListener('keydown',e=>{
+  if(e.code==='Enter'||e.code==='NumpadEnter'){ e.preventDefault(); signIn(); }
+  e.stopPropagation();
+});
+$('loginUser').addEventListener('keydown',e=>{
+  if(e.code==='Enter'||e.code==='NumpadEnter'){ e.preventDefault(); $('loginPass').focus(); }
+  e.stopPropagation();
+});
+$('loginChip').addEventListener('click',()=>{
+  if(me){ if(confirm((me.name||me.user)+' — гарах уу?')) signOut(); return; }
+  show('login'); $('loginUser').focus(); announce('Нэвтрэх');
+});
+
+// Putting the library on the home screen. Safari never offers this, so the
+// button explains the manual steps there rather than hiding and looking broken
+// on half the devices.
+let installPrompt=null;
+window.addEventListener('beforeinstallprompt', e=>{ e.preventDefault(); installPrompt=e; });
+window.addEventListener('appinstalled', ()=> $('installChip').classList.add('hidden'));
+$('installChip').addEventListener('click', async ()=>{
+  if(installPrompt){
+    installPrompt.prompt();
+    const choice=await installPrompt.userChoice;
+    if(choice.outcome==='accepted'){ $('installChip').classList.add('hidden'); announce('Суулгалаа.'); }
+    installPrompt=null;
+    return;
+  }
+  const ios=/iPad|iPhone|iPod/.test(navigator.userAgent);
+  alert(ios
+    ? 'Утсанд суулгах:\n\n1. Доорх "Хуваалцах" товчийг дарна уу\n'
+      + '2. "Add to Home Screen" сонгоно уу\n3. "Нэмэх" дарна уу'
+    : 'Утсанд суулгах:\n\n1. Хөтчийн цэсийг (⋮) нээнэ үү\n'
+      + '2. "Add to Home screen" эсвэл "Install app" сонгоно уу');
+});
+try{
+  const standalone=(window.matchMedia &&
+      window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone;
+  if(standalone) $('installChip').classList.add('hidden');
+}catch(e){}
+
 // ---- reading ----
 const applySize=()=>{ $('readText').style.setProperty('--size',readSize+'px'); put('size',readSize); };
 function buildRead(){
@@ -809,7 +993,7 @@ function markRead(scroll){
 }
 
 // ---- screens ----
-const SCREENS=['welcome','shelf','player','reader','toc','help','resume'];
+const SCREENS=['welcome','shelf','player','reader','toc','help','resume','login'];
 let openShelf=null, pick=-1, rows=[], catalog=null;
 let lastScreen='welcome';
 function show(n){
@@ -972,6 +1156,7 @@ function renderShelf(){
       +(e.braille?'<a class="brl" href="'+esc(e.braille)+'" download '
         +'aria-label="Брайль татах'+(e.braillePages?', '+e.braillePages+' хуудас':'')
         +'">⠃</a>':'')
+      +'<button class="keepBtn'+(me?'':' hidden')+'" aria-label="Утсанд хадгалах">⤓</button>'
       +'<button class="star'+(isFav(e.file)?' is':'')+'" aria-label="Дуртай">★</button>';
     // Title and author together: a child cannot tell three books called
     // "Үлгэрүүд" apart, and the author is how a library distinguishes them.
@@ -988,6 +1173,30 @@ function renderShelf(){
       brl.addEventListener('focus',()=>say('Брайль татах'));
       brl.addEventListener('click',ev=>{ ev.stopPropagation();
         announce('Брайль файл татагдаж байна.'); });
+    }
+    const keep=r.querySelector('.keepBtn');
+    if(keep){
+      isKept(e).then(yes=>{ if(yes) keep.classList.add('is'); });
+      keep.addEventListener('focus',()=>say('Утсанд хадгалах'));
+      keep.addEventListener('click',async ev=>{
+        ev.stopPropagation();
+        if(!me){ show('login'); $('loginUser').focus(); return; }
+        if(keep.classList.contains('is')){
+          await forgetBook(e); keep.classList.remove('is');
+          announce('Утаснаас устгалаа.'); return;
+        }
+        keep.disabled=true;
+        announce('Татаж байна…');
+        try{
+          await keepBook(e,(done,all)=>{ keep.textContent=Math.round(done/all*100)+'%'; });
+          keep.textContent='⤓'; keep.classList.add('is');
+          announce('Утсанд хадгаллаа. Интернэтгүй сонсож болно.');
+        }catch(err){
+          keep.textContent='⤓';
+          console.warn('Gerel: download failed for', e.id, err);
+          announce('Татаж чадсангүй.');
+        }finally{ keep.disabled=false; }
+      });
     }
     r.querySelector('.star').addEventListener('click',ev=>{
       ev.stopPropagation();
@@ -1244,15 +1453,22 @@ function doJump(what){
 
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-09-08-g');
+console.log('Gerel build 2026-09-12-a');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   // Letters jump straight to a place, from anywhere except a text box.
   if(!e.ctrlKey && !e.altKey && !e.metaKey && e.key && e.key.length===1){
     const j=JUMPS[e.key.toLowerCase()];
-    if(j && !/^(INPUT|TEXTAREA)$/.test((e.target.tagName||''))){
+    if(j && !/^(INPUT|TEXTAREA)$/.test((e.target.tagName||''))
+         && $('login').classList.contains('hidden')){
       e.preventDefault(); doJump(j); return;
     }
+  }
+  if(!$('login').classList.contains('hidden')){
+    // Typing a password must not fire the single-letter shortcuts.
+    if(e.code==='Backspace'||e.code==='Delete'){ return; }
+    if(e.code==='Escape'){ e.preventDefault(); show('shelf'); }
+    return;
   }
   if(!$('help').classList.contains('hidden')){
     e.preventDefault();
@@ -1340,6 +1556,15 @@ document.addEventListener('keydown',e=>{
 });
 
 
+// Registering this is what lets a kept book play with no signal, and what
+// allows the library to be added to a home screen like an app.
+if(navigator.serviceWorker){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('sw.js').catch(err=>
+      console.warn('Gerel: offline support unavailable', err));
+  });
+}
+
 (async function(){
   try{ const r=await fetch('catalog.json',{cache:'no-store'});
     catalog=r.ok?await r.json():{shelves:[]}; }
@@ -1361,6 +1586,7 @@ document.addEventListener('keydown',e=>{
   if(!Object.keys(SPEECH).length && !live())
     console.warn('Gerel: no speech manifest and no key — navigation will be silent.');
   applySize();
+  showWho();
   if(mode){ document.body.dataset.mode=mode; applyMode(); }
   // Always start here. Skipping the question for a returning child saved one
   // tap and cost the only way back to the beginning, which is a bad trade for
