@@ -91,10 +91,45 @@
 </head>
 <body>
 
+<div id="gate" style="position:fixed;inset:0;z-index:90;background:var(--night);
+     display:flex;align-items:center;justify-content:center;padding:24px">
+  <div style="width:100%;max-width:440px">
+    <div style="text-align:center;margin-bottom:26px">
+      <div style="font-family:var(--display);font-weight:700;font-size:38px;color:var(--lamp)">
+        Гэрэл</div>
+      <div style="color:var(--dawn);font-size:15px;margin-top:6px">Удирдлагын хэсэг</div>
+    </div>
+    <div style="background:var(--night-2);border-radius:18px;padding:24px">
+      <label style="display:block;font-size:13px;color:var(--dawn);margin-bottom:6px">
+        Repository</label>
+      <input id="gateRepo" type="text" placeholder="rciu-cmd/gerel-library"
+        style="width:100%;box-sizing:border-box;background:var(--night);color:var(--paper);
+               border:1px solid rgba(127,163,204,.4);border-radius:12px;padding:14px;
+               font-family:var(--body);font-size:15px;margin-bottom:16px">
+      <label style="display:block;font-size:13px;color:var(--dawn);margin-bottom:6px">
+        Нэвтрэх түлхүүр</label>
+      <input id="gateToken" type="password" placeholder="ghp_…"
+        autocomplete="current-password"
+        style="width:100%;box-sizing:border-box;background:var(--night);color:var(--paper);
+               border:1px solid rgba(127,163,204,.4);border-radius:12px;padding:14px;
+               font-family:var(--body);font-size:15px;margin-bottom:18px">
+      <button id="gateGo" class="primary" style="width:100%;padding:15px;font-size:16px">
+        Нэвтрэх</button>
+      <div id="gateNote" style="margin-top:14px;font-size:13px;color:var(--dawn);
+           line-height:1.6"></div>
+    </div>
+    <p style="margin:18px 0 0;font-size:12px;color:var(--dawn);line-height:1.7;text-align:center">
+      Түлхүүр зөвхөн энэ төхөөрөмж дээр хадгалагдана.<br>
+      <a href="https://github.com/settings/tokens/new?scopes=repo&description=Gerel%20admin"
+         target="_blank" rel="noopener" style="color:var(--lamp)">Шинэ түлхүүр үүсгэх ↗</a>
+    </p>
+  </div>
+</div>
+
 <header>
   <div class="wordmark">Гэрэл <span>· удирдлага</span></div>
   <div class="grow"></div>
-  <button id="ghBtn">GitHub холбох</button>
+  <button id="ghBtn">Тохиргоо</button>
   <button id="loadBtn" disabled>GitHub-аас татах</button>
   <button id="pushBtn" class="primary" disabled>GitHub руу хадгалах</button>
   <label class="btn">Файлаас нээх<input type="file" id="openCatalog" accept=".json,application/json"></label>
@@ -433,6 +468,71 @@ async function ghPush(){
   }
 }
 
+// ============================================================
+// The way in
+// ============================================================
+// Nothing here is visible until a working token is given. The token is the
+// real lock — GitHub enforces it, and without one the dashboard could only
+// read a catalogue that is public anyway. A username and password box on a
+// static page would be decoration, since anyone can read the page source.
+async function tryGate(){
+  const repo = $('gateRepo').value.trim()
+    .replace(/^https?:\/\/github\.com\//,'').replace(/\.git$/,'');
+  const token = $('gateToken').value.trim();
+  if(!repo || !token){
+    $('gateNote').textContent = 'Repository болон түлхүүрээ бөглөнө үү.';
+    return;
+  }
+  $('gateGo').disabled = true;
+  $('gateNote').textContent = 'Шалгаж байна…';
+  try{
+    // Ask GitHub whether this token really can write here, rather than
+    // accepting anything that looks like one.
+    const res = await fetch('https://api.github.com/repos/' + repo, {
+      headers: { 'Authorization':'Bearer ' + token,
+                 'Accept':'application/vnd.github+json' }
+    });
+    if(!res.ok) throw new Error(res.status === 404
+      ? 'Repository олдсонгүй, эсвэл энэ түлхүүрт эрх алга.'
+      : 'Түлхүүр буруу байна.');
+    const info = await res.json();
+    if(!info.permissions || !info.permissions.push)
+      throw new Error('Энэ түлхүүрт бичих эрх алга.');
+
+    gh.repo = repo; gh.token = token;
+    try{
+      localStorage.setItem('gerel:ghRepo', repo);
+      localStorage.setItem('gerel:ghToken', token);
+    }catch(e){}
+    $('gate').style.display = 'none';
+    ghRefresh();
+    ghLoad();
+    loadPeople();
+  }catch(err){
+    $('gateNote').textContent = err.message;
+  }finally{
+    $('gateGo').disabled = false;
+  }
+}
+
+$('gateGo').addEventListener('click', tryGate);
+$('gateToken').addEventListener('keydown', e => {
+  if(e.key === 'Enter'){ e.preventDefault(); tryGate(); }
+});
+$('gateRepo').addEventListener('keydown', e => {
+  if(e.key === 'Enter'){ e.preventDefault(); $('gateToken').focus(); }
+});
+
+// Someone who signed in before goes straight through.
+(function(){
+  if(ghReady()){
+    $('gate').style.display = 'none';
+  }else{
+    $('gateRepo').value = gh.repo || 'rciu-cmd/gerel-library';
+    setTimeout(()=>$('gateToken').focus(), 100);
+  }
+})();
+
 $('ghBtn').addEventListener('click', ()=> $('ghPanel').classList.toggle('hidden'));
 $('ghSave').addEventListener('click', ()=>{
   gh.repo = $('ghRepo').value.trim().replace(/^https?:\/\/github\.com\//,'').replace(/\.git$/,'');
@@ -451,7 +551,9 @@ $('ghForget').addEventListener('click', ()=>{
   gh = { repo:'', token:'', sha:null };
   try{ localStorage.removeItem('gerel:ghRepo'); localStorage.removeItem('gerel:ghToken'); }catch(e){}
   ghRefresh();
-  log('Токен устгагдлаа.');
+  $('gateToken').value = '';
+  $('gateNote').textContent = '';
+  $('gate').style.display = 'flex';
 });
 $('loadBtn').addEventListener('click', ghLoad);
 $('pushBtn').addEventListener('click', ghPush);
