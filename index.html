@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-09-12-a">
+<meta name="gerel-build" content="2026-09-12-b">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -97,7 +97,19 @@
     border:2px solid var(--line);font-weight:700;font-size:15px;white-space:nowrap;}
   .chip.mode{background:var(--sun);border-color:transparent;}
 
-  .shelves,.books{display:grid;gap:13px;width:100%;max-width:720px;margin:0 auto;}
+  /* Two columns once there is room for them: eight shelves then fill one
+     screen with nothing to scroll, and a book list is half as long. Below
+     560px a single column still wins — two would squeeze the titles. */
+  .shelves,.books{display:grid;gap:13px;width:100%;max-width:960px;margin:0 auto;
+    grid-template-columns:1fr;}
+  @media(min-width:560px){
+    .shelves,.books{grid-template-columns:1fr 1fr;}
+  }
+  /* Tall enough that four rows reach the bottom of the screen rather than
+     sitting in a band across the middle. */
+  @media(min-width:560px){
+    .shelfCard{min-height:clamp(96px,17vh,168px);}
+  }
   /* A row of letters, the way a phone's contact list works — two taps to reach
      Чиполлино instead of eighty. */
   #letters{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;
@@ -189,6 +201,11 @@
     width:44px;height:44px;border-radius:12px;text-decoration:none;
     font-size:22px;color:var(--ink);background:rgba(34,36,59,.06);}
   .bookRow .brl:hover,.bookRow .brl:focus{background:rgba(34,36,59,.14);}
+  /* Spoken, not shown. The box sat at the foot of the welcome screen
+     reading "Тавиурууд" long after the words had been said. Kept in the
+     page so screen readers still receive announcements. */
+  #status{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+    overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;}
   .note:empty{display:none;}
   .note{background:#fff;border:3px dashed var(--line);border-radius:20px;
     padding:17px;color:var(--muted);font-weight:600;max-width:720px;margin:14px auto;
@@ -200,7 +217,7 @@
 <body>
 
 <div id="welcome" class="screen center">
-  <img id="logo" src="logo.png" alt="Гэрэл номын сан">
+  <div class="lamp lit" id="welcomeLamp" style="--lampSize:170px"></div>
   <div class="brand">Гэрэл номын сан</div>
 
   <div class="doors three">
@@ -226,7 +243,6 @@
     <button class="chip" id="backChip">← Буцах</button>
   </div>
   <div class="shelves" id="shelfList"></div>
-  <button class="chip" id="sortBtn" style="display:none;margin:0 auto 12px">А–Я</button>
   <div id="letters"></div>
   <div class="books" id="bookList"></div>
   <div class="note hidden" id="shelfNote"></div>
@@ -1031,12 +1047,6 @@ function chooseMode(m){
   announce((MODES[m]||'Сонсох')+'. Тавиур сонгоно уу.');
 }
 $('doorBoth').addEventListener('click',()=>chooseMode('both'));
-$('sortBtn').addEventListener('click',()=>{
-  sortIndex=(sortIndex+1)%SORTS.length;
-  put('sort',sortIndex);
-  renderShelf();
-  announce(SORTS[sortIndex][0]);
-});
 
 const everyBook=()=>{
   const m=new Map();
@@ -1076,11 +1086,10 @@ function renderLetters(books){
   box.innerHTML='';
   if(!books.length) return;
   const present=new Set(books.map(b=>firstLetter(b.title)));
-  MN_LETTERS.forEach(L=>{
+  MN_LETTERS.filter(L=>present.has(L)).forEach(L=>{
     const b=document.createElement('button');
     b.textContent=L;
-    if(!present.has(L)) b.className='off';
-    else if(L===letterPick) b.className='on';
+    if(L===letterPick) b.className='on';
     // Spoken on hover and on focus, so a child sweeping across with arrows
     // hears each letter rather than having to see it.
     const speak=()=>{ if(present.has(L)) say(L); };
@@ -1105,7 +1114,6 @@ function renderShelf(){
   L.innerHTML=''; B.innerHTML=''; rows=[]; pick=-1;
   $('shelfNote').classList.add('hidden');
 
-  $('sortBtn').style.display = openShelf===null ? 'none' : '';
   if(openShelf===null){
     $('letters').innerHTML='';
     letterPick='';
@@ -1140,7 +1148,6 @@ function renderShelf(){
   renderLetters(all);
   if(letterPick) all=all.filter(b=>firstLetter(b.title)===letterPick);
   all=all.slice().sort(SORTS[sortIndex][1]);
-  $('sortBtn').textContent=SORTS[sortIndex][0]+' · '+all.length;
   all.forEach((e,i)=>{
     rows.push(e);
     const r=document.createElement('div');
@@ -1453,7 +1460,7 @@ function doJump(what){
 
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-09-12-a');
+console.log('Gerel build 2026-09-12-b');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   // Letters jump straight to a place, from anywhere except a text box.
