@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-09-12-g">
+<meta name="gerel-build" content="2026-09-12-h">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -9,10 +9,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#FFFDF7">
-<title>Гэрэл — Хүүхдийн сонсох номын сан</title>
-<meta name="description" content="Хараагүй болон харааны бэрхшээлтэй хүүхдэд зориулсан үнэгүй сонсох номын сан. Монгол хэлээр 287 ном чанга уншина. A free Mongolian audiobook library for blind and partially sighted children.">
+<title>Гэрэл хүүхдийн номын сан</title>
+<meta name="description" content="Хараагүй болон харааны бэрхшээлтэй хүүхдэд зориулсан үнэгүй сонсох номын сан. Монгол хэлээр 344 ном чанга уншина. A free Mongolian audiobook library for blind and partially sighted children.">
 <link rel="canonical" href="https://gerelnom.com/">
-<meta property="og:title" content="Гэрэл — Хүүхдийн сонсох номын сан">
+<meta property="og:title" content="Гэрэл хүүхдийн номын сан">
 <meta property="og:description" content="Хараагүй хүүхдэд зориулсан үнэгүй сонсох номын сан. Монгол хэлээр.">
 <meta property="og:url" content="https://gerelnom.com/">
 <meta property="og:type" content="website">
@@ -285,7 +285,7 @@
 
 <div id="welcome" class="screen center">
   <div class="lamp lit" id="welcomeLamp" style="--lampSize:170px"></div>
-  <div class="brand">Гэрэл номын сан</div>
+  <div class="brand">Гэрэл хүүхдийн номын сан</div>
 
   <div class="doors three">
     <button class="door listen" id="doorListen">
@@ -1137,7 +1137,10 @@ const begun=t=>!!get('pos:'+t,'');
 // Eighty-six titles in one scroll is unusable by eye and worse by ear, so the
 // list can be ordered three ways and jumped into by letter.
 const SORTS=[
-  ['А–Я',          (a,b)=>(a.title||'').localeCompare(b.title||'','mn')],
+  ['А–Я', (a,b)=> letterField==='author'
+      ? (authorName(a.author)||a.title||'').localeCompare(
+          authorName(b.author)||b.title||'','mn')
+      : (a.title||'').localeCompare(b.title||'','mn')],
   ['Богино эхэлж', (a,b)=>(a.minutes||0)-(b.minutes||0)],
   ['Урт эхэлж',    (a,b)=>(b.minutes||0)-(a.minutes||0)],
 ];
@@ -1149,9 +1152,17 @@ let letterField=get('lfield','title');
 
 const MN_LETTERS='АБВГДЕЁЖЗИЙКЛМНОӨПРСТУҮФХЦЧШЩЭЮЯ'.split('');
 const firstLetter=t=>((t||'').trim().charAt(0)||'').toUpperCase();
+// Mongolian names carry the father's initial in front — Л. Чойжилсүрэн —
+// so the first character is not the name at all. Filing him under Л would
+// put half the library under four letters. Any run of single letters
+// followed by a full stop is dropped, which leaves ААЗ and ЮНЕСКО alone
+// because neither has one.
+const AUTHOR_INITIALS=/^(\s*[А-ЯЁӨҮA-Z]\s*[.．]\s*)+/;
+const authorName=x=>String(x||'').replace(AUTHOR_INITIALS,'').trim();
 // A book with no author still has to appear somewhere, so it falls back to
 // its title rather than vanishing from the author alphabet.
-const keyOf=b=>firstLetter(letterField==='author' ? (b.author||b.title) : b.title);
+const keyOf=b=>firstLetter(letterField==='author'
+  ? (authorName(b.author) || b.title) : b.title);
 
 let letterCounts={};
 const countFor=L=>letterCounts[L]||0;
@@ -1633,7 +1644,7 @@ function doJump(what){
 
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-09-12-g');
+console.log('Gerel build 2026-09-12-h');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   // Letters jump straight to a place, from anywhere except a text box.
