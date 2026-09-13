@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-09-12-e">
+<meta name="gerel-build" content="2026-09-12-f">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -91,17 +91,29 @@
   #welcome .brand{font-family:var(--display);font-weight:700;
     font-size:clamp(34px,9vw,62px);letter-spacing:-.02em;line-height:1.1;}
   #welcome .sub{margin:0;font-size:clamp(17px,4.4vw,21px);color:var(--muted);}
-  .doors{display:grid;gap:18px;width:100%;max-width:620px;}
+  .doors{display:grid;gap:18px;width:100%;max-width:1040px;}
   @media(min-width:640px){.doors{grid-template-columns:1fr 1fr}
     .doors.three{grid-template-columns:1fr 1fr 1fr}}
+  @media(max-width:639px){
+    .door{min-height:clamp(130px,17vh,190px);
+      flex-direction:row;gap:18px;justify-content:flex-start;
+      padding:20px 22px;font-size:clamp(21px,6vw,30px);text-align:left;}
+    .door .ic{width:54px;height:54px;}
+  }
   .door.listen{background:linear-gradient(160deg,#F0455F 0%,#C21B3C 100%);}
   .door.both  {background:linear-gradient(160deg,#2FB574 0%,#127A4B 100%);}
   .door.read  {background:linear-gradient(160deg,#4C8FF0 0%,#1F4FB8 100%);}
-  .door{display:flex;flex-direction:column;align-items:center;gap:18px;
-    padding:clamp(52px,6vw,86px) 22px;border-radius:38px;color:#fff;
+  .door{display:flex;flex-direction:column;align-items:center;
+    gap:clamp(14px,2vw,26px);
+    padding:clamp(26px,3vw,46px) clamp(12px,1.6vw,22px);
+    border-radius:34px;color:#fff;
     font-family:var(--display);font-weight:700;
-    font-size:clamp(32px,3.4vw,52px);
-    min-height:clamp(240px,32vh,420px);justify-content:center;
+    /* Sized against the door's own width, not the screen's: three columns
+       of 190px cannot carry 52px text, which is how the words ended up
+       over the edges. */
+    font-size:clamp(19px,2.1vw,34px);line-height:1.15;text-align:center;
+    hyphens:none;word-break:normal;
+    min-height:clamp(190px,26vh,320px);justify-content:center;
     position:relative;overflow:hidden;
     box-shadow:0 9px 0 rgba(0,0,0,.22), 0 14px 30px rgba(0,0,0,.14);
     text-shadow:0 2px 6px rgba(0,0,0,.28);}
@@ -110,8 +122,8 @@
     background:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,0));
     pointer-events:none;}
   .door small{font-family:var(--body);font-weight:600;font-size:16px;opacity:.75;}
-  .door .ic{width:clamp(76px,8vw,130px);height:clamp(76px,8vw,130px);
-    display:block;position:relative;z-index:1;}
+  .door .ic{width:clamp(52px,5.4vw,96px);height:clamp(52px,5.4vw,96px);
+    display:block;position:relative;z-index:1;flex:0 0 auto;}
   .door .ic svg{width:100%;height:100%;display:block;}
   .door:active{transform:translateY(3px);box-shadow:0 3px 0 rgba(34,36,59,.16);}
 
@@ -1334,9 +1346,10 @@ function bandOf(bands){
   const el=document.activeElement;
   for(let i=0;i<bands.length;i++){
     if(el && el!==document.body && bands[i].contains(el)) return i;
-    if(bands[i].querySelector('.on') && (!el || el===document.body)) return i;
+    if(bands[i].querySelector('.bookRow.on,.shelfCard.on')
+       && (!el || el===document.body)) return i;
   }
-  return bands.length ? (bands.findIndex(b=>b.querySelector('.on'))) : -1;
+  return bands.findIndex(b=>b.querySelector('.bookRow.on,.shelfCard.on'));
 }
 function posIn(band,items){
   const el=document.activeElement;
@@ -1344,7 +1357,8 @@ function posIn(band,items){
     const i=items.indexOf(el.closest('#fieldRow>*,#letters>*,.bookRow,.shelfCard'));
     if(i>=0) return i;
   }
-  return items.findIndex(x=>x.classList.contains('on'));
+  return items.findIndex(x=>x.classList.contains('on') &&
+    (x.classList.contains('bookRow')||x.classList.contains('shelfCard')));
 }
 // Moving into a band: a button takes real focus, a card takes the outline.
 // Either way it says what it is, which is the whole point.
@@ -1614,7 +1628,7 @@ function doJump(what){
 
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-09-12-e');
+console.log('Gerel build 2026-09-12-f');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   // Letters jump straight to a place, from anywhere except a text box.
