@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-09-12-b">
+<meta name="gerel-build" content="2026-09-12-c">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -29,8 +29,13 @@
        enough to carry black text at full contrast, because most children at a
        school for the blind have some sight rather than none. */
     --paper:#FFFDF7; --ink:#22243B; --muted:#6B6F8D; --line:#E8E2D4;
-    --sky:#3D9BE9; --sun:#FFC53D; --berry:#F2637E;
-    --leaf:#58C08B; --lilac:#A98BE0; --coral:#FF8A5B;
+    --sky:#1668CC; --sun:#F5A200; --berry:#C81E38;
+    --leaf:#128A54; --lilac:#6D3FB8; --coral:#DC4E1B;
+    /* The bindings: the same cloth colours the covers are drawn in, so a
+       shelf and the books standing on it belong to each other. */
+    --cloth-1:#242C5C; --cloth-2:#7A222E; --cloth-3:#1A4236;
+    --cloth-4:#5E3414; --cloth-5:#462658; --cloth-6:#804612;
+    --cloth-7:#2C2C30; --gold:#D0AA5C; --gold-lit:#E9CD8C;
     --display:'Comfortaa', system-ui, sans-serif;
     --body:'Nunito', system-ui, -apple-system, sans-serif;
   }
@@ -118,12 +123,27 @@
     border:2px solid var(--line);background:#fff;font-weight:800;font-size:16px;}
   #letters button.off{opacity:.3;}
   #letters button.on{background:var(--sun);border-color:transparent;}
+  /* A shelf card as a bound volume: dark cloth, a gold rule inside the
+     edge, and a spine down the left where the boards would fold. */
   .shelfCard{display:flex;align-items:center;gap:14px;text-align:left;
-    padding:24px 22px;border-radius:26px;color:var(--ink);
-    box-shadow:0 5px 0 rgba(34,36,59,.14);width:100%;}
-  .shelfCard .nm{flex:1;font-family:var(--display);font-weight:700;font-size:24px;}
-  .shelfCard .ct{font-weight:700;font-size:15px;opacity:.72;}
-  .shelfCard.on,.bookRow.on{outline:5px solid var(--ink);outline-offset:3px;}
+    padding:26px 24px 26px 34px;border-radius:14px;color:var(--gold-lit);
+    width:100%;position:relative;overflow:hidden;
+    border:2px solid rgba(208,170,92,.55);
+    box-shadow:0 6px 0 rgba(0,0,0,.30), inset 0 0 0 1px rgba(208,170,92,.25);}
+  /* the spine */
+  .shelfCard::before{content:'';position:absolute;left:0;top:0;bottom:0;width:16px;
+    background:linear-gradient(90deg,rgba(0,0,0,.45),rgba(255,255,255,.10));
+    border-right:2px solid rgba(208,170,92,.55);}
+  /* the inner gold rule */
+  .shelfCard::after{content:'';position:absolute;inset:7px 7px 7px 24px;
+    border:1px solid rgba(208,170,92,.45);border-radius:8px;pointer-events:none;}
+  .shelfCard .nm{flex:1;font-family:Georgia,'Times New Roman',serif;font-weight:700;
+    font-size:25px;letter-spacing:.01em;color:var(--gold-lit);
+    text-shadow:0 2px 3px rgba(0,0,0,.5);position:relative;z-index:1;}
+  .shelfCard .ct{font-weight:800;font-size:14px;position:relative;z-index:1;
+    color:#1A1A22;background:var(--gold);border-radius:99px;padding:5px 12px;}
+  .bookRow.on{outline:5px solid var(--ink);outline-offset:3px;}
+  .shelfCard.on{outline:5px solid var(--gold-lit);outline-offset:3px;}
 
   .bookRow{display:flex;align-items:center;gap:14px;background:#fff;
     border:3px solid var(--line);border-radius:22px;padding:11px;}
@@ -138,13 +158,18 @@
   .bookRow .len{display:block;font-size:13px;color:var(--muted);margin-top:3px;}
   .mark{display:inline-block;margin-left:8px;font-size:12px;font-weight:800;
     background:var(--leaf);color:#fff;border-radius:99px;padding:2px 9px;vertical-align:middle;}
-  .star{flex:0 0 auto;font-size:27px;padding:10px;line-height:1;color:var(--line);}
-  .star.is{color:var(--sun);}
+  .star{flex:0 0 auto;font-size:26px;line-height:1;min-width:48px;height:48px;
+    padding:0;border-radius:14px;color:#9A9482;background:#F3EEE1;
+    border:2px solid var(--line);}
+  .star:hover,.star:focus{background:#EAE2CE;}
+  .star.is{color:#7A5B00;background:var(--sun);border-color:transparent;}
   /* Keeping a book on the phone. Beside the star and the braille link, same
      size, so the row still reads as one line to a child crossing it. */
-  .keepBtn{flex:0 0 auto;font-size:20px;padding:10px;line-height:1;min-width:46px;
-    color:var(--muted);border:2px solid var(--line);border-radius:12px;background:#fff;}
-  .keepBtn.is{background:var(--leaf);color:#fff;border-color:transparent;}
+  .keepBtn{flex:0 0 auto;font-size:21px;line-height:1;min-width:48px;height:48px;
+    padding:0;border-radius:14px;font-weight:800;
+    color:#fff;background:var(--leaf);border:2px solid transparent;}
+  .keepBtn:hover,.keepBtn:focus{background:#0C6B40;}
+  .keepBtn.is{background:#0C6B40;box-shadow:inset 0 0 0 3px var(--gold);}
   .field{border:3px solid var(--line);border-radius:18px;padding:17px 19px;
     font-family:var(--body);font-size:19px;font-weight:600;background:#fff;
     color:var(--ink);width:100%;box-sizing:border-box;}
@@ -198,9 +223,15 @@
   /* Braille download. Beside the star, same size, so the row still reads as
      one line to a child moving across it. */
   .bookRow .brl{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
-    width:44px;height:44px;border-radius:12px;text-decoration:none;
-    font-size:22px;color:var(--ink);background:rgba(34,36,59,.06);}
-  .bookRow .brl:hover,.bookRow .brl:focus{background:rgba(34,36,59,.14);}
+    width:48px;height:48px;border-radius:14px;text-decoration:none;
+    font-size:23px;font-weight:800;color:#fff;background:var(--berry);
+    border:2px solid transparent;}
+  .bookRow .brl:hover,.bookRow .brl:focus{background:#A3162B;}
+  /* Spoken, not shown. The box sat at the foot of the welcome screen
+     reading "Тавиурууд" long after the words had been said. Kept in the
+     page so screen readers still receive announcements. */
+  #status{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+    overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;}
   /* Spoken, not shown. The box sat at the foot of the welcome screen
      reading "Тавиурууд" long after the words had been said. Kept in the
      page so screen readers still receive announcements. */
@@ -347,7 +378,8 @@ let AUDIO_ROOT='audio';
 const SPEECH_ROOT='speech';
 // Only for books not yet voiced. Empty means no key ships in the page.
 const AZURE_SPEECH_KEY="", AZURE_SPEECH_REGION="eastasia", VOICE="mn-MN-YesuiNeural";
-const COLOURS=['var(--sky)','var(--sun)','var(--berry)','var(--leaf)','var(--lilac)','var(--coral)'];
+const COLOURS=['var(--cloth-1)','var(--cloth-2)','var(--cloth-3)','var(--cloth-4)',
+  'var(--cloth-5)','var(--cloth-6)','var(--cloth-7)'];
 // Slower than normal turned out to sound dragged rather than calm, so the
 // choice is normal or faster.
 const SPEEDS=[1.0,1.15,1.3], SLEEPS=[0,15,30,60];
@@ -1163,7 +1195,7 @@ function renderShelf(){
       +(e.braille?'<a class="brl" href="'+esc(e.braille)+'" download '
         +'aria-label="Брайль татах'+(e.braillePages?', '+e.braillePages+' хуудас':'')
         +'">⠃</a>':'')
-      +'<button class="keepBtn'+(me?'':' hidden')+'" aria-label="Утсанд хадгалах">⤓</button>'
+      +'<button class="keepBtn'+(me?'':' hidden')+'" aria-label="Татах">⤓</button>'
       +'<button class="star'+(isFav(e.file)?' is':'')+'" aria-label="Дуртай">★</button>';
     // Title and author together: a child cannot tell three books called
     // "Үлгэрүүд" apart, and the author is how a library distinguishes them.
@@ -1178,13 +1210,15 @@ function renderShelf(){
     if(brl){
       // Downloading is silent, which on a page that talks reads as a failure.
       brl.addEventListener('focus',()=>say('Брайль татах'));
+      brl.addEventListener('mouseenter',onHover(()=>say('Брайль татах')));
       brl.addEventListener('click',ev=>{ ev.stopPropagation();
         announce('Брайль файл татагдаж байна.'); });
     }
     const keep=r.querySelector('.keepBtn');
     if(keep){
       isKept(e).then(yes=>{ if(yes) keep.classList.add('is'); });
-      keep.addEventListener('focus',()=>say('Утсанд хадгалах'));
+      keep.addEventListener('focus',()=>say('Татах'));
+      keep.addEventListener('mouseenter',onHover(()=>say('Татах')));
       keep.addEventListener('click',async ev=>{
         ev.stopPropagation();
         if(!me){ show('login'); $('loginUser').focus(); return; }
@@ -1460,7 +1494,7 @@ function doJump(what){
 
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-09-12-b');
+console.log('Gerel build 2026-09-12-c');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   // Letters jump straight to a place, from anywhere except a text box.
