@@ -1,37 +1,39 @@
-// Гэрэл — service worker
+// Gerel service worker.
 //
-// Two jobs. It keeps the library itself available with no connection, and it
-// serves any book a child has chosen to keep from the cache rather than the
-// network — which is what makes an hour on a bus with no signal work.
+// Chrome will not offer to install a site unless a service worker is
+// registered AND it answers fetch events. An empty worker registers fine and
+// the Install item never appears, which is exactly what was happening.
+//
+// Kept books live in a separate cache written by the page itself
+// (gerel-books-v1); this worker only serves them back when there is no
+// signal, and keeps a copy of the shell so the library opens offline.
 
 const SHELL = 'gerel-shell-v1';
-const BOOKS = 'gerel-books-v1';        // written by the page, read here
+const BOOKS = 'gerel-books-v1';
 
-// The parts of the library that must work before anything is downloaded.
 const SHELL_FILES = [
-  './',
-  './index.html',
-  './catalog.json',
-  './blocklist.json',
+  '/', '/index.html', '/catalog.json',
+  '/logo.png', '/icon-192.png', '/icon-512.png', '/favicon.ico'
 ];
 
 self.addEventListener('install', e => {
-  e.waitUntil(
-    caches.open(SHELL)
-      // A missing optional file should not stop the whole install.
-      .then(c => Promise.allSettled(SHELL_FILES.map(f => c.add(f))))
-      .then(() => self.skipWaiting())
-  );
+  e.waitUntil((async () => {
+    const c = await caches.open(SHELL);
+    // One at a time: a single 404 would reject addAll and leave the whole
+    // worker uninstalled, which is a silly way to lose offline support.
+    await Promise.all(SHELL_FILES.map(u => c.add(u).catch(() => {})));
+    self.skipWaiting();
+  })());
 });
 
 self.addEventListener('activate', e => {
-  e.waitUntil(
-    caches.keys()
-      .then(keys => Promise.all(
-        keys.filter(k => k !== SHELL && k !== BOOKS).map(k => caches.delete(k))
-      ))
-      .then(() => self.clients.claim())
-  );
+  e.waitUntil((async () => {
+    const keys = await caches.keys();
+    await Promise.all(keys
+      .filter(k => k !== SHELL && k !== BOOKS)
+      .map(k => caches.delete(k)));
+    await self.clients.claim();
+  })());
 });
 
 self.addEventListener('fetch', e => {
@@ -40,30 +42,37 @@ self.addEventListener('fetch', e => {
 
   const url = new URL(req.url);
 
-  // A kept book always comes from the cache: it is already on the device, and
-  // fetching it again would spend a child's data for nothing.
-  if (/\.(mp3|jpg|jpeg|png)$/i.test(url.pathname)) {
-    e.respondWith(
-      caches.match(req).then(hit => hit || fetch(req).catch(() => hit))
-    );
+  // Audio and books a child has kept: cache first, because the whole point
+  // is that they play with no connection.
+  if (/\/(audio|books|braille|covers|speech)\//.test(url.pathname)) {
+    e.respondWith((async () => {
+      const hit = await caches.match(req, { ignoreVary: true });
+      if (hit) return hit;
+      try { return await fetch(req); }
+      catch (err) { return new Response('', { status: 504 }); }
+    })());
     return;
   }
 
-  // The catalogue and the speech manifest change, so ask first and fall back
-  // to the cache when there is no signal.
-  if (/(catalog|users|index)\.json$/.test(url.pathname) ||
-      url.pathname.endsWith('/') || url.pathname.endsWith('index.html')) {
-    e.respondWith(
-      fetch(req)
-        .then(res => {
-          const copy = res.clone();
-          caches.open(SHELL).then(c => c.put(req, copy)).catch(() => {});
-          return res;
-        })
-        .catch(() => caches.match(req))
-    );
-    return;
-  }
-
-  e.respondWith(caches.match(req).then(hit => hit || fetch(req)));
+  // Everything else: network first, falling back to the cached shell, so a
+  // fix always reaches the child but a dead connection does not blank the
+  // page.
+  e.respondWith((async () => {
+    try {
+      const res = await fetch(req);
+      if (res && res.ok && url.origin === location.origin) {
+        const c = await caches.open(SHELL);
+        c.put(req, res.clone()).catch(() => {});
+      }
+      return res;
+    } catch (err) {
+      const hit = await caches.match(req, { ignoreVary: true });
+      if (hit) return hit;
+      if (req.mode === 'navigate') {
+        const shell = await caches.match('/index.html');
+        if (shell) return shell;
+      }
+      return new Response('', { status: 504 });
+    }
+  })());
 });
