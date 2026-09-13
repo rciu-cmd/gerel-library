@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-09-12-d">
+<meta name="gerel-build" content="2026-09-12-e">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -94,15 +94,25 @@
   .doors{display:grid;gap:18px;width:100%;max-width:620px;}
   @media(min-width:640px){.doors{grid-template-columns:1fr 1fr}
     .doors.three{grid-template-columns:1fr 1fr 1fr}}
-  .door.both{background:var(--leaf);}
-  .door{display:flex;flex-direction:column;align-items:center;gap:16px;
-    padding:56px 22px;border-radius:36px;color:var(--ink);
-    font-family:var(--display);font-weight:700;font-size:34px;
-    min-height:230px;justify-content:center;
-    box-shadow:0 7px 0 rgba(34,36,59,.16);}
+  .door.listen{background:linear-gradient(160deg,#F0455F 0%,#C21B3C 100%);}
+  .door.both  {background:linear-gradient(160deg,#2FB574 0%,#127A4B 100%);}
+  .door.read  {background:linear-gradient(160deg,#4C8FF0 0%,#1F4FB8 100%);}
+  .door{display:flex;flex-direction:column;align-items:center;gap:18px;
+    padding:clamp(52px,6vw,86px) 22px;border-radius:38px;color:#fff;
+    font-family:var(--display);font-weight:700;
+    font-size:clamp(32px,3.4vw,52px);
+    min-height:clamp(240px,32vh,420px);justify-content:center;
+    position:relative;overflow:hidden;
+    box-shadow:0 9px 0 rgba(0,0,0,.22), 0 14px 30px rgba(0,0,0,.14);
+    text-shadow:0 2px 6px rgba(0,0,0,.28);}
+  /* a highlight across the top, so the door reads as a raised surface */
+  .door::before{content:'';position:absolute;left:0;right:0;top:0;height:38%;
+    background:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,0));
+    pointer-events:none;}
   .door small{font-family:var(--body);font-weight:600;font-size:16px;opacity:.75;}
-  .door .ic{font-size:74px;line-height:1;}
-  .door.listen{background:var(--sun);} .door.read{background:var(--sky);}
+  .door .ic{width:clamp(76px,8vw,130px);height:clamp(76px,8vw,130px);
+    display:block;position:relative;z-index:1;}
+  .door .ic svg{width:100%;height:100%;display:block;}
   .door:active{transform:translateY(3px);box-shadow:0 3px 0 rgba(34,36,59,.16);}
 
   .bar{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
@@ -143,24 +153,21 @@
   /* A shelf card as a bound volume: dark cloth, a gold rule inside the
      edge, and a spine down the left where the boards would fold. */
   .shelfCard{display:flex;align-items:center;gap:14px;text-align:left;
-    padding:26px 24px 26px 34px;border-radius:14px;color:var(--gold-lit);
-    width:100%;position:relative;overflow:hidden;
-    border:2px solid rgba(208,170,92,.55);
-    box-shadow:0 6px 0 rgba(0,0,0,.30), inset 0 0 0 1px rgba(208,170,92,.25);}
-  /* the spine */
-  .shelfCard::before{content:'';position:absolute;left:0;top:0;bottom:0;width:16px;
-    background:linear-gradient(90deg,rgba(0,0,0,.45),rgba(255,255,255,.10));
-    border-right:2px solid rgba(208,170,92,.55);}
-  /* the inner gold rule */
-  .shelfCard::after{content:'';position:absolute;inset:7px 7px 7px 24px;
-    border:1px solid rgba(208,170,92,.45);border-radius:8px;pointer-events:none;}
-  .shelfCard .nm{flex:1;font-family:Georgia,'Times New Roman',serif;font-weight:700;
-    font-size:25px;letter-spacing:.01em;color:var(--gold-lit);
-    text-shadow:0 2px 3px rgba(0,0,0,.5);position:relative;z-index:1;}
+    padding:26px 24px;border-radius:26px;color:#fff;width:100%;
+    position:relative;overflow:hidden;
+    box-shadow:0 7px 0 rgba(0,0,0,.20), 0 12px 24px rgba(0,0,0,.10);}
+  .shelfCard::before{content:'';position:absolute;left:0;right:0;top:0;height:40%;
+    background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,0));
+    pointer-events:none;}
+  .shelfCard .nm{flex:1;font-family:var(--display);font-weight:700;
+    font-size:clamp(21px,2.2vw,27px);color:#fff;position:relative;z-index:1;
+    text-shadow:0 2px 5px rgba(0,0,0,.30);}
   .shelfCard .ct{font-weight:800;font-size:14px;position:relative;z-index:1;
-    color:#1A1A22;background:var(--gold);border-radius:99px;padding:5px 12px;}
+    color:#fff;background:rgba(0,0,0,.26);border-radius:99px;padding:6px 13px;}
   .bookRow.on{outline:5px solid var(--ink);outline-offset:3px;}
-  .shelfCard.on{outline:5px solid var(--gold-lit);outline-offset:3px;}
+  /* White reads against all seven shelf colours; dark ink did not. */
+  .shelfCard.on{outline:5px solid #fff;outline-offset:3px;
+    box-shadow:0 7px 0 rgba(0,0,0,.20), 0 0 0 9px rgba(34,36,59,.30);}
 
   .bookRow{display:flex;align-items:center;gap:14px;background:#fff;
     border:3px solid var(--line);border-radius:22px;padding:11px;}
@@ -265,18 +272,18 @@
 <body>
 
 <div id="welcome" class="screen center">
-  <img id="logo" src="logo.png" alt="Гэрэл номын сан">
+  <div class="lamp lit" id="welcomeLamp" style="--lampSize:170px"></div>
   <div class="brand">Гэрэл номын сан</div>
 
   <div class="doors three">
     <button class="door listen" id="doorListen">
-      <span class="ic">🎧</span>Сонсох
+      <span class="ic"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" stroke-width="5"><path d="M12 38V32a20 20 0 0 1 40 0v6"/><rect x="6" y="36" width="13" height="19" rx="6.5" fill="currentColor" stroke="none"/><rect x="45" y="36" width="13" height="19" rx="6.5" fill="currentColor" stroke="none"/></svg></span>Сонсох
     </button>
     <button class="door both" id="doorBoth">
-      <span class="ic">📖</span>Сонсох ба унших
+      <span class="ic"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" stroke-width="4.5"><path d="M32 18c-5-4-11-6-19-6v34c8 0 14 2 19 6"/><path d="M32 18c5-4 11-6 19-6v20"/><path d="M32 18v34"/><path d="M47 44c3 0 5 2 5 5s-2 5-5 5"/><path d="M56 40c4 3 6 6 6 9s-2 6-6 9"/></svg></span>Сонсох ба унших
     </button>
     <button class="door read" id="doorRead">
-      <span class="ic">🔎</span>Унших
+      <span class="ic"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" stroke-width="4.5"><path d="M14 40V22a4 4 0 0 1 4-4h10"/><path d="M18 46h12"/><path d="M22 34l7-16 7 16"/><path d="M24.5 29h9"/><circle cx="45" cy="34" r="12"/><path d="M54 43l8 8"/></svg></span>Унших
     </button>
   </div>
   <div id="status" class="note" role="status" aria-live="polite"></div>
@@ -396,8 +403,10 @@ let AUDIO_ROOT='audio';
 const SPEECH_ROOT='speech';
 // Only for books not yet voiced. Empty means no key ships in the page.
 const AZURE_SPEECH_KEY="", AZURE_SPEECH_REGION="eastasia", VOICE="mn-MN-YesuiNeural";
-const COLOURS=['var(--cloth-1)','var(--cloth-2)','var(--cloth-3)','var(--cloth-4)',
-  'var(--cloth-5)','var(--cloth-6)','var(--cloth-7)'];
+// Deep enough to hold white text at full contrast, far enough apart that
+// no two shelves are mistaken for each other.
+const COLOURS=['#1668CC','#C81E38','#0E7C86','#6D3FB8',
+  '#B35A00','#128A54','#A3237A'];
 // Slower than normal turned out to sound dragged rather than calm, so the
 // choice is normal or faster.
 const SPEEDS=[1.0,1.15,1.3], SLEEPS=[0,15,30,60];
@@ -1605,7 +1614,7 @@ function doJump(what){
 
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-09-12-d');
+console.log('Gerel build 2026-09-12-e');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   // Letters jump straight to a place, from anywhere except a text box.
@@ -1660,10 +1669,19 @@ document.addEventListener('keydown',e=>{
   }
 
   if(!$('welcome').classList.contains('hidden')){
-    if(down||up||right||left){ e.preventDefault();
-      const d=document.activeElement===$('doorListen')?$('doorRead'):$('doorListen');
-      d.focus(); say(d===$('doorRead')?'Унших':'Сонсох'); }
-    if(enter){ e.preventDefault(); (document.activeElement===$('doorRead')?$('doorRead'):$('doorListen')).click(); }
+    const doors=[[$('doorListen'),'Сонсох'],
+                 [$('doorBoth'),'Сонсох ба унших'],
+                 [$('doorRead'),'Унших']];
+    let at=doors.findIndex(d=>d[0]===document.activeElement);
+    if(down||up||right||left){
+      e.preventDefault();
+      const fwd=down||right;
+      at = at<0 ? (fwd?0:doors.length-1) : (at+(fwd?1:-1)+doors.length)%doors.length;
+      doors[at][0].focus();
+      say(doors[at][1]);
+      return;
+    }
+    if(enter){ e.preventDefault(); (doors[at<0?0:at][0]).click(); }
     return;
   }
   if(!$('shelf').classList.contains('hidden')){
