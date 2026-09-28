@@ -405,8 +405,11 @@
   <div class="books" id="tocList"></div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/microsoft-cognitiveservices-speech-sdk@1.40.0/distrib/browser/microsoft.cognitiveservices.speech.sdk.bundle-min.js"></script>
+<!-- Served from this site, not a CDN: no third party can change the code that
+     runs here, and the service worker keeps it so EPUBs open with no signal.
+     The Azure Speech SDK is gone: the key is empty, so it was 1.5 MB fetched on
+     every visit and never used. -->
+<script src="jszip.min.js"></script>
 <script>
 // Where the voiced books live. The catalogue may point this elsewhere — at
 // Cloudflare R2 — because 21 GB of audio cannot sit in a GitHub repository,
