@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-09-12-h">
+<meta name="gerel-build" content="2026-09-28-a">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -925,6 +925,11 @@ async function isKept(entry){
 
 async function keepBook(entry, onProgress){
   if(!window.caches) throw new Error('offline storage unavailable');
+  // Ask the browser not to clear kept books when the phone runs short of
+  // space. Without it a cheap phone can quietly drop a book the child thinks
+  // is there.
+  if(navigator.storage && navigator.storage.persist)
+    navigator.storage.persist().catch(()=>{});
   const c=await caches.open(KEPT);
   const base=AUDIO_ROOT+'/'+entry.id;
   const r=await fetch(base+'/index.json',{cache:'no-cache'});
@@ -933,22 +938,29 @@ async function keepBook(entry, onProgress){
   // made every download fail silently.
   const copy=r.clone();
   const data=await r.json();
-  await c.put(base+'/index.json', copy);
 
   const files=[];
   data.chapters.forEach(ch=>ch.blocks.forEach(b=>{ if(b.audio) files.push(base+'/'+b.audio); }));
   if(entry.cover) files.push(entry.cover);
 
-  let done=0;
+  let done=0, missing=0;
   // Four at a time: a hundred at once stalls a slow connection and leaves the
   // child with no sign that anything is happening.
   for(let i=0;i<files.length;i+=4){
     await Promise.all(files.slice(i,i+4).map(async u=>{
-      try{ if(!(await c.match(u))) await c.add(u); }catch(e){}
+      try{ if(!(await c.match(u))) await c.add(u); }
+      // The cover is only a picture; a chapter that did not arrive is a hole
+      // the child finds with no signal, when it can no longer be fixed.
+      catch(e){ if(u!==entry.cover) missing++; }
       done++;
       if(onProgress) onProgress(done, files.length);
     }));
   }
+  if(missing) throw new Error(missing+' of '+files.length+' files did not arrive');
+  // index.json goes in last because it is what marks the book as kept. A
+  // dropped connection leaves the chapters already fetched in place, so
+  // pressing again carries on from where it stopped.
+  await c.put(base+'/index.json', copy);
   return files.length;
 }
 
@@ -1647,7 +1659,7 @@ function doJump(what){
 
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-09-12-h');
+console.log('Gerel build 2026-09-28-a');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   // Letters jump straight to a place, from anywhere except a text box.
