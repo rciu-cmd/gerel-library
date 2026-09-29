@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-09-28-a">
+<meta name="gerel-build" content="2026-09-29-a">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -479,7 +479,14 @@ let sayT=null, SPEECH={};
 let speaking=false;
 // Only one thing speaks at a time. Two voices over each other is confusing to
 // anyone and useless to a child who has only sound to go on.
+// Counts every hush, so a run of clips from sayParts can tell it has been cut
+// off and stop, instead of carrying on under whatever is said next. cutRun
+// tells the run's caller it was cut: the next say() takes over the voice's
+// "ended" event, so the run would otherwise never hear back.
+let sayRun=0, cutRun=null;
 function hush(){
+  sayRun++;
+  if(cutRun){ const f=cutRun; cutRun=null; f('cut'); }
   clearTimeout(sayT);
   speaking=false;
   try{ voiceEl.pause(); voiceEl.currentTime=0; }catch(e){}
@@ -517,6 +524,46 @@ function liveSay(t){
     ()=>{ try{s.close()}catch(e){} });
 }
 function announce(t){ $('status').textContent=t; $('playerStatus').textContent=t; say(t); }
+
+// Several clips, one after another. "Шүлэг. 37 ном." is built while the app
+// runs, so it can never be recorded whole — which is why "where am I" and the
+// help were silent. Each piece is recorded once ("Шүлэг", "37 ном") and they
+// are played in turn. A piece with no clip is skipped rather than silencing
+// the rest. Resolves 'done', 'cut' (something else spoke), 'blocked' (the
+// browser allows no sound before the first touch) or 'silent' (no clips).
+function sayParts(parts){
+  hush();
+  const run=sayRun, clips=[];
+  parts.forEach(p=>{
+    const t=(p||'').trim();
+    if(!t) return;
+    if(SPEECH[t]) clips.push(SPEECH[t]);
+    else console.warn('Gerel: no voice clip for:', t, '— run gerel_speak.py');
+  });
+  if(!clips.length) return Promise.resolve('silent');
+  speaking=true;
+  return new Promise(res=>{
+    const done=r=>{ if(cutRun===done) cutRun=null; res(r); };
+    cutRun=done;
+    const playAt=i=>{
+      if(run!==sayRun) return;                // hush() has already said 'cut'
+      if(i>=clips.length){ speaking=false; return done('done'); }
+      voiceEl.src=SPEECH_ROOT+'/'+clips[i];
+      voiceEl.onended=()=>playAt(i+1);
+      voiceEl.play().catch(err=>{
+        if(run!==sayRun) return;
+        speaking=false;
+        done(err && err.name==='NotAllowedError' ? 'blocked' : 'silent');
+      });
+    };
+    sayT=setTimeout(()=>playAt(0),220);
+  });
+}
+function announceParts(parts){
+  const t=parts.filter(Boolean).join('. ');
+  $('status').textContent=t; $('playerStatus').textContent=t;
+  return sayParts(parts);
+}
 
 // Wait for the interface to stop talking before the book begins. Otherwise the
 // title and the first sentence are spoken over each other, which is confusing
@@ -1490,7 +1537,9 @@ function buildToc(){
     b.className='bookRow'; b.style.display='block'; b.style.padding='18px';
     b.innerHTML='<span class="t">'+(i+1)+'. '+esc(c.title)+'</span>';
     b.addEventListener('click',()=>jump(i));
-    b.addEventListener('focus',()=>say(c.title));
+    // The number is always voiced; the title only where it has been, so a
+    // chapter is never silent.
+    b.addEventListener('focus',()=>sayParts([(i+1)+'-р бүлэг', c.title]));
     $('tocList').appendChild(b);
   });
 }
@@ -1535,18 +1584,19 @@ $('helpClose').addEventListener('click',()=>show(lastScreen));
 
 // "Where am I?" — the question a child asks most, and the one a screen cannot
 // answer to someone who cannot see it.
+// Returned as pieces for sayParts, each one a recorded clip: "37 ном" and
+// "5-р бүлэг" are voiced for every number, so any shelf and chapter can be said.
 function whereAmI(){
   if(!$('shelf').classList.contains('hidden')){
-    if(openShelf===null) return 'Тавиурууд. '+shelvesOf().length+' тавиур.';
+    if(openShelf===null) return ['Тавиурууд', shelvesOf().length+' тавиур'];
     const g=shelvesOf()[openShelf];
     const n=(g.books||[]).length;
-    return g.name+'. '+n+' ном.'+(pick>=0?' '+(pick+1)+' дэх ном.':'');
+    // The book the child is on, by name: more use to them than its number.
+    const on=pick>=0 && rows[pick];
+    return [g.name, n ? n+' ном' : 'Ном алга байна.', on ? on.title : ''];
   }
-  if(!book.chapters.length) return 'Ном сонгоогүй байна.';
-  const c=chap();
-  let before=0; for(let i=0;i<bi;i++) before+=c.blocks[i].sentences.length;
-  const total=c.blocks.reduce((n,b)=>n+b.sentences.length,0);
-  return book.title+'. '+c.title+'. '+(before+si+1)+' / '+total+'.';
+  if(!book.chapters.length) return ['Ном сонгоогүй байна.'];
+  return [(book.entry && book.entry.title) || book.title, (ci+1)+'-р бүлэг'];
 }
 
 function openAt(fromStart){
@@ -1581,7 +1631,7 @@ function turn(d){
   if(t<0||t>=book.chapters.length){ announce(d>0?'Ном дууслаа.':'Эхлэл'); return; }
   const was=playing; stop();
   ci=t; bi=0; si=0; paint(); buildRead();
-  announce((ci+1)+' / '+book.chapters.length+'. '+chap().title);
+  announceParts([(ci+1)+'-р бүлэг', chap().title]);
   $('readText').scrollTop=0;
   if(was) play();
 }
@@ -1651,15 +1701,59 @@ function doJump(what){
     case 'toc':   if(book.chapters.length){ show('toc'); announce('Бүлгүүд'); } break;
     case 'read':  if(book.chapters.length){ show('reader'); announce('Том үсгээр'); } break;
     case 'speed': $('speedBtn').click(); break;
-    case 'where': announce(whereAmI()); break;
+    case 'where': announceParts(whereAmI()); break;
+    // One clip per line, so changing one line of the help needs only that
+    // line re-voiced. Recording it as one long sentence is what went silent:
+    // the list changed and the recording no longer matched.
     case 'help':  renderHelp(); show('help');
-                  say(KEYS.map(k=>k[0]+': '+k[1]).join('. ')); break;
+                  sayParts(KEYS.map(k=>k[0]+': '+k[1])); break;
   }
 }
 
+// The first thing a child hears. A child who has never been here is told how
+// to move; one who has is told where they are, briefly. A browser allows no
+// sound before the page is touched or a key pressed — unless the library is
+// installed or used often — so the greeting is tried as the page opens and
+// otherwise waits for that first touch. Until then the page was silent, and a
+// blind child had no way to know anything was there.
+const GREET_FIRST=['Сайн байна уу! Гэрэл хүүхдийн номын санд тавтай морил.',
+  'Сумаар сонгоод Enter дарна уу.',
+  'Тусламж хэрэгтэй бол асуултын тэмдэг дарна уу.'];
+const GREET_AGAIN=['Гэрэл хүүхдийн номын сан','Сонсох эсвэл унших?'];
+let greeted=false;
+function greet(){
+  if(greeted) return;
+  greeted=true;
+  sayParts(get('greeted','') ? GREET_AGAIN : GREET_FIRST).then(r=>{
+    if(r==='blocked') greeted=false;          // try again on the first touch
+    else if(r!=='silent') put('greeted','1');
+  });
+}
+function firstTouch(e){
+  if(greeted || $('welcome').classList.contains('hidden')) return;
+  unlock();
+  const firstVisit=!get('greeted','');
+  // A door touched, or a key that already speaks (an arrow, Enter), is a
+  // child who knows what they are doing: let it through. On a first visit a
+  // key is taken for the greeting instead, so a child pressing Enter to see
+  // what happens does not land in a mode they never heard offered.
+  if(e.type==='pointerdown'){
+    if(e.target.closest && e.target.closest('.door')){ greeted=true; return; }
+    greet(); return;
+  }
+  const acts=/^(Arrow|Enter|NumpadEnter|Numpad[02468]|Space)/.test(e.code||'')
+          || !!(e.key && JUMPS[e.key.toLowerCase()]);
+  if(firstVisit){ e.preventDefault(); e.stopImmediatePropagation(); greet(); return; }
+  if(acts){ greeted=true; return; }
+  e.preventDefault(); e.stopImmediatePropagation(); greet();
+}
+// Capture, so this runs before the keyboard handler below and can take the key.
+document.addEventListener('keydown',firstTouch,true);
+document.addEventListener('pointerdown',firstTouch,true);
+
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-09-28-a');
+console.log('Gerel build 2026-09-29-a');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   // Letters jump straight to a place, from anywhere except a text box.
@@ -1778,7 +1872,31 @@ document.addEventListener('keydown',e=>{
     return;
   }
   if(!$('toc').classList.contains('hidden')){
-    if(back||left){ e.preventDefault(); $('tocClose').click(); }
+    if(back||left){ e.preventDefault(); $('tocClose').click(); return; }
+    // Up and down walk the chapters, each one spoken; right or Enter opens.
+    // Without this the arrows did nothing here and the list could only be
+    // crossed by sight.
+    if(up||down){
+      e.preventDefault();
+      const items=[...$('tocList').children];
+      if(!items.length) return;
+      const was=items.indexOf(document.activeElement);
+      // The first press lands on the chapter being read, not at the top of a
+      // list that can run to hundreds.
+      const at = was<0 ? Math.min(ci,items.length-1)
+               : Math.max(0,Math.min(items.length-1,was+(down?1:-1)));
+      // At either end the same chapter is said again, so a press is never met
+      // with silence.
+      if(at===was) items[at].dispatchEvent(new Event('focus'));
+      else items[at].focus();
+      items[at].scrollIntoView({block:'nearest'});
+      return;
+    }
+    if(right){
+      e.preventDefault();
+      const a=document.activeElement;
+      if(a && a.parentElement===$('tocList')) a.click();
+    }
     return;
   }
   if(e.code==='Space'||enter){ e.preventDefault(); playing?stop():play(); }
@@ -1829,6 +1947,7 @@ if(navigator.serviceWorker){
   show('welcome');
   (mode==='read' ? $('doorRead') : $('doorListen')).focus();
   if(mode) $('modeChip').textContent = mode==='read' ? 'Унших' : 'Сонсох';
+  greet();
 })();
 </script>
 </body>
