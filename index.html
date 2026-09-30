@@ -61,6 +61,14 @@
   .screen{position:fixed;inset:0;background:var(--paper);display:flex;
     flex-direction:column;overflow-y:auto;
     padding:22px 18px calc(22px + env(safe-area-inset-bottom));}
+  /* The Rotary clubs and districts behind the library, as a faint repeating
+     pattern (rotary-bg.webp, made by gerel_rotary_bg.py; the tile is drawn at
+     twice this size so it stays sharp on a phone). Faint on purpose: the
+     children who see the background at all see only a little, and a pattern
+     behind words is the hardest thing for them to read. So it stays off the
+     reading and listening screens, where the story's own text is. */
+  .screen{background-image:url(rotary-bg.webp);background-size:800px auto;}
+  #player,#reader{background-image:none;}
   .screen.center{align-items:center;justify-content:center;text-align:center;gap:24px;}
 
   /* The sun breathes, as the lamp did. It is the one moving thing on the

@@ -12,7 +12,7 @@ const SHELL = 'gerel-shell-v1';
 const BOOKS = 'gerel-books-v1';
 
 const SHELL_FILES = [
-  '/', '/index.html', '/catalog.json', '/jszip.min.js',
+  '/', '/index.html', '/catalog.json', '/jszip.min.js', '/rotary-bg.webp',
   '/logo.png', '/icon-192.png', '/icon-512.png', '/favicon.ico'
 ];
 
