@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-09-30-b">
+<meta name="gerel-build" content="2026-09-30-c">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -146,10 +146,13 @@
      screen with nothing to scroll, and a book list is half as long. Below
      560px a single column still wins — two would squeeze the titles. */
   .shelves,.books{display:grid;gap:13px;width:100%;max-width:960px;margin:0 auto;
-    grid-template-columns:1fr;}
+    grid-template-columns:minmax(0,1fr);}
   @media(min-width:560px){
-    .shelves,.books{grid-template-columns:1fr 1fr;}
+    .shelves,.books{grid-template-columns:minmax(0,1fr) minmax(0,1fr);}
   }
+  /* minmax(0,…), not plain 1fr: a 1fr column grows to fit the longest word in
+     any title, which pushed book rows 48px past a phone's edge and cut the ★
+     in half. */
   /* Tall enough that four rows reach the bottom of the screen rather than
      sitting in a band across the middle. */
   @media(min-width:560px){
@@ -197,8 +200,20 @@
     font-size:28px;color:var(--muted);}
   .bookRow .cover img{width:100%;height:100%;object-fit:cover;display:block;}
   .bookRow .meta{flex:1;min-width:0;text-align:left;padding:4px 0;}
-  .bookRow .t{display:block;font-weight:800;font-size:19px;line-height:1.3;}
-  .bookRow .who{display:block;font-size:14px;color:var(--muted);margin-top:4px;}
+  .bookRow .t{display:block;font-weight:800;font-size:19px;line-height:1.3;
+    overflow-wrap:anywhere;}
+  .bookRow .who{display:block;font-size:14px;color:var(--muted);margin-top:4px;
+    overflow-wrap:anywhere;}
+  /* On a phone the title gets the whole width beside the cover, and the
+     buttons drop to a line of their own under it, on the right. Side by side
+     they left a title 80px wide, broken mid-word — "АЛМАА / САН" — which is
+     hard to read for anyone and harder for a child who sees a little. The
+     buttons stay 48px: the smallest a child's finger reliably hits. */
+  @media(max-width:420px){
+    .bookRow{flex-wrap:wrap;justify-content:flex-end;gap:8px 10px;padding:9px;}
+    .bookRow .cover{flex-basis:52px;width:52px;height:74px;}
+    .bookRow .meta{flex:1 1 calc(100% - 62px);}
+  }
   .bookRow .len{display:block;font-size:13px;color:var(--muted);margin-top:3px;}
   .mark{display:inline-block;margin-left:8px;font-size:12px;font-weight:800;
     background:var(--leaf);color:#fff;border-radius:99px;padding:2px 9px;vertical-align:middle;}
@@ -1871,7 +1886,7 @@ document.addEventListener('pointerdown',firstTouch,true);
 
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-09-30-b');
+console.log('Gerel build 2026-09-30-c');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   const typing=/^(INPUT|TEXTAREA)$/.test(e.target.tagName||'');
