@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-09-30-c">
+<meta name="gerel-build" content="2026-09-30-d">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -61,14 +61,18 @@
   .screen{position:fixed;inset:0;background:var(--paper);display:flex;
     flex-direction:column;overflow-y:auto;
     padding:22px 18px calc(22px + env(safe-area-inset-bottom));}
-  /* The Rotary clubs and districts behind the library, as a faint repeating
-     pattern (rotary-bg.webp, made by gerel_rotary_bg.py; the tile is drawn at
-     twice this size so it stays sharp on a phone). Faint on purpose: the
-     children who see the background at all see only a little, and a pattern
-     behind words is the hardest thing for them to read. So it stays off the
-     reading and listening screens, where the story's own text is. */
-  .screen{background-image:url(rotary-bg.webp);background-size:800px auto;}
+  /* The Rotary clubs and districts behind the library, at full strength so
+     the sponsors can see them (rotary-bg.webp, made by gerel_rotary_bg.py; the
+     tile is drawn at twice this size so it stays sharp on a phone). A pattern
+     behind words is the hardest thing to read for a child who sees a little,
+     so it stays off the reading and listening screens, where the story's own
+     text is, and any words that sit straight on it get a paper-coloured glow
+     that lifts them clear of a logo behind. Cards and buttons are solid. */
+  .screen{background-image:url(rotary-bg.webp);background-size:1000px auto;}
   #player,#reader{background-image:none;}
+  .screen .brand,.screen .sub,.screen .note,.screen h1{
+    text-shadow:0 0 3px var(--paper),0 0 6px var(--paper),0 0 10px var(--paper),
+                0 0 16px var(--paper);}
   .screen.center{align-items:center;justify-content:center;text-align:center;gap:24px;}
 
   /* The sun breathes, as the lamp did. It is the one moving thing on the
@@ -1886,7 +1890,7 @@ document.addEventListener('pointerdown',firstTouch,true);
 
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-09-30-c');
+console.log('Gerel build 2026-09-30-d');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   const typing=/^(INPUT|TEXTAREA)$/.test(e.target.tagName||'');
