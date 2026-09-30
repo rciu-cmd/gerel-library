@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-09-29-a">
+<meta name="gerel-build" content="2026-09-30-a">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -565,6 +565,45 @@ function announceParts(parts){
   return sayParts(parts);
 }
 
+// Short sounds, for what words are too slow for. At the end of a list a press
+// used to meet silence — the item was already focused, so nothing fired — and
+// a child could not tell a wall from a broken key. Now there is a bump. Going
+// in rises, coming back falls, success chimes, failure falls dull. Made here
+// with the Web Audio API: no files to fetch, nothing to voice. Pitched above
+// 200 Hz because a phone speaker cannot play a real thud. Each sound is over
+// before the 220 ms pause ahead of any speech, so the two never overlap.
+// Android phones also buzz for the three that matter most.
+const TONES={
+  bump:{wave:'triangle', notes:[[330,.05],[220,.09]], buzz:[35]},
+  open:{wave:'sine',     notes:[[660,.06],[990,.09]]},
+  back:{wave:'sine',     notes:[[990,.06],[660,.09]]},
+  done:{wave:'sine',     notes:[[660,.06],[830,.06],[990,.09]], buzz:[30,60,30]},
+  fail:{wave:'triangle', notes:[[392,.09],[262,.12]], buzz:[150]}
+};
+let actx=null;
+function earcon(name){
+  const t=TONES[name]; if(!t) return;
+  try{ if(t.buzz && navigator.vibrate) navigator.vibrate(t.buzz); }catch(e){}
+  try{
+    const AC=window.AudioContext||window.webkitAudioContext;
+    if(!AC) return;
+    if(!actx) actx=new AC();
+    if(actx.state==='suspended') actx.resume();
+    let at=actx.currentTime+0.01;
+    t.notes.forEach(([hz,len])=>{
+      const o=actx.createOscillator(), g=actx.createGain();
+      o.type=t.wave; o.frequency.value=hz;
+      // A quick swell and fade, or each note starts and stops with a click.
+      g.gain.setValueAtTime(0.0001,at);
+      g.gain.exponentialRampToValueAtTime(0.2,at+0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001,at+len);
+      o.connect(g); g.connect(actx.destination);
+      o.start(at); o.stop(at+len+0.02);
+      at+=len;
+    });
+  }catch(e){}
+}
+
 // Wait for the interface to stop talking before the book begins. Otherwise the
 // title and the first sentence are spoken over each other, which is confusing
 // for anyone and disorienting for a child who cannot see the screen.
@@ -894,7 +933,7 @@ async function play(){
     try{ await playClip(clip,m?m.t:0,mine); }
     catch(e){ if(playing&&mine===era) notReady(); return; }
     if(!playing||mine!==era) return;
-    if(!nx){ stop(); announce('Ном дууслаа.'); return; }
+    if(!nx){ stop(); earcon('done'); announce('Ном дууслаа.'); return; }
     const newCh=nx.c!==ci; ci=nx.c; bi=nx.b; si=0;
     if(newCh){ announce(chap().title); media(); }
     const a=nextOf(ci,bi);
@@ -910,6 +949,7 @@ function stop(){
 }
 function notReady(){
   stop();
+  earcon('fail');
   $('playerStatus').classList.remove('hidden');
   // A book whose text loaded but whose audio has not been made yet can still
   // be read. Saying "not ready" would hide a book that is half available.
@@ -920,7 +960,7 @@ function notReady(){
   }
 }
 function step(d){
-  const was=playing; stop();
+  if(!book.chapters.length) return;
   let c=ci,b=bi,s=si+d;
   while(s<0){
     if(b>0){b--;s+=book.chapters[c].blocks[b].sentences.length}
@@ -933,6 +973,10 @@ function step(d){
     else if(c+1<book.chapters.length){s-=n;c++;b=0}
     else {s=n-1;break}
   }
+  // First or last sentence of the book: nowhere to go. Say so with the bump
+  // and leave the voice alone, rather than restarting the sentence.
+  if(c===ci && b===bi && s===si){ earcon('bump'); return; }
+  const was=playing; stop();
   ci=c;bi=b;si=s; paint(); if(was) play();
 }
 function jump(i){
@@ -1055,7 +1099,7 @@ async function signIn(){
     const hash=await hashPassword(user,pass);
     if(!found || found.hash!==hash){
       $('loginNote').textContent='Нэр эсвэл нууц үг буруу байна.';
-      say('Нэр эсвэл нууц үг буруу байна.');
+      earcon('fail'); say('Нэр эсвэл нууц үг буруу байна.');
       return;
     }
     me={user:found.user,name:found.name||found.user,role:found.role||'сурагч'};
@@ -1065,7 +1109,7 @@ async function signIn(){
     $('loginNote').textContent='';
     renderShelf();
     show('shelf');
-    announce('Сайн байна уу, '+(me.name||me.user));
+    earcon('done'); announce('Сайн байна уу, '+(me.name||me.user));
   }catch(err){
     $('loginNote').textContent='Нэвтэрч чадсангүй. Дараа дахин оролдоно уу.';
   }finally{
@@ -1172,7 +1216,7 @@ function applyMode(){
 }
 
 function chooseMode(m){
-  unlock(); mode=m; put('mode',m);
+  unlock(); earcon('open'); mode=m; put('mode',m);
   $('modeChip').textContent=MODES[m]||'Сонсох';
   document.body.dataset.mode=m;
   applyMode();
@@ -1303,7 +1347,7 @@ function renderShelf(){
       c.addEventListener('mouseenter',onHover(()=>speak(true)));
       c.addEventListener('mouseleave',()=>clearTimeout(hoverT));
       c.addEventListener('focus',()=>speak(false));
-      c.addEventListener('click',()=>{ unlock(); openShelf=i; renderShelf(); announce(g.name); });
+      c.addEventListener('click',()=>{ unlock(); earcon('open'); openShelf=i; renderShelf(); announce(g.name); });
       L.appendChild(c);
     });
     if(!list.length){
@@ -1366,18 +1410,18 @@ function renderShelf(){
         if(!me){ show('login'); $('loginUser').focus(); return; }
         if(keep.classList.contains('is')){
           await forgetBook(e); keep.classList.remove('is');
-          announce('Утаснаас устгалаа.'); return;
+          earcon('back'); announce('Утаснаас устгалаа.'); return;
         }
         keep.disabled=true;
         announce('Татаж байна…');
         try{
           await keepBook(e,(done,all)=>{ keep.textContent=Math.round(done/all*100)+'%'; });
           keep.textContent='⤓'; keep.classList.add('is');
-          announce('Утсанд хадгаллаа. Интернэтгүй сонсож болно.');
+          earcon('done'); announce('Утсанд хадгаллаа. Интернэтгүй сонсож болно.');
         }catch(err){
           keep.textContent='⤓';
           console.warn('Gerel: download failed for', e.id, err);
-          announce('Татаж чадсангүй.');
+          earcon('fail'); announce('Татаж чадсангүй.');
         }finally{ keep.disabled=false; }
       });
     }
@@ -1386,6 +1430,7 @@ function renderShelf(){
       favs=isFav(e.file)?favs.filter(x=>x!==e.file):favs.concat([e.file]);
       put('favs',JSON.stringify(favs));
       ev.currentTarget.classList.toggle('is');
+      earcon(isFav(e.file)?'done':'back');
       announce(isFav(e.file)?'Дуртай номонд нэмлээ.':'Дуртай номноос хаслаа.');
     });
     B.appendChild(r);
@@ -1480,6 +1525,7 @@ function onHover(fn){
 
 async function openBook(e){
   hush();                       // stop the title being read over the last one
+  earcon('open');
   // Clear the previous book first. Without this a book that fails to open
   // leaves the last one's chapters in place under the new one's title, and a
   // child hears the wrong story.
@@ -1525,7 +1571,7 @@ async function openBook(e){
     if(mode==='listen') play();
   }catch(err){
     $('shelfNote').textContent='Энэ ном хараахан бэлэн болоогүй байна. Өөр ном сонгоно уу.';
-    say('Энэ ном хараахан бэлэн болоогүй байна.');
+    earcon('fail'); say('Энэ ном хараахан бэлэн болоогүй байна.');
     console.error(err);
   }
 }
@@ -1536,7 +1582,7 @@ function buildToc(){
     const b=document.createElement('button');
     b.className='bookRow'; b.style.display='block'; b.style.padding='18px';
     b.innerHTML='<span class="t">'+(i+1)+'. '+esc(c.title)+'</span>';
-    b.addEventListener('click',()=>jump(i));
+    b.addEventListener('click',()=>{ earcon('open'); jump(i); });
     // The number is always voiced; the title only where it has been, so a
     // chapter is never silent.
     b.addEventListener('focus',()=>sayParts([(i+1)+'-р бүлэг', c.title]));
@@ -1620,15 +1666,15 @@ $('playBtn').addEventListener('click',()=>playing?stop():play());
 $('readPlayBtn').addEventListener('click',()=>playing?stop():play());
 $('prevBtn').addEventListener('click',()=>step(-1));
 $('nextBtn').addEventListener('click',()=>step(1));
-$('tocBtn').addEventListener('click',()=>{show('toc');announce('Бүлгүүд')});
-$('readTocBtn').addEventListener('click',()=>{show('toc');announce('Бүлгүүд')});
-$('tocClose').addEventListener('click',()=>show(mode==='read'?'reader':'player'));
+$('tocBtn').addEventListener('click',()=>{earcon('open');show('toc');announce('Бүлгүүд')});
+$('readTocBtn').addEventListener('click',()=>{earcon('open');show('toc');announce('Бүлгүүд')});
+$('tocClose').addEventListener('click',()=>{earcon('back');show(mode==='read'?'reader':'player')});
 $('toReadBtn').addEventListener('click',()=>{show('reader');announce('Том үсгээр')});
 // Turning the page. Reading a book without them meant using the chapter list
 // for every page, which is no way to read a story.
 function turn(d){
   const t=ci+d;
-  if(t<0||t>=book.chapters.length){ announce(d>0?'Ном дууслаа.':'Эхлэл'); return; }
+  if(t<0||t>=book.chapters.length){ earcon('bump'); announce(d>0?'Ном дууслаа.':'Эхлэл'); return; }
   const was=playing; stop();
   ci=t; bi=0; si=0; paint(); buildRead();
   announceParts([(ci+1)+'-р бүлэг', chap().title]);
@@ -1637,9 +1683,10 @@ function turn(d){
 }
 $('readPrev').addEventListener('click',()=>turn(-1));
 $('readNext').addEventListener('click',()=>turn(1));
-$('readBack').addEventListener('click',()=>{stop();show('shelf')});
-$('playerBack').addEventListener('click',()=>{stop();show('shelf')});
+$('readBack').addEventListener('click',()=>{earcon('back');stop();show('shelf')});
+$('playerBack').addEventListener('click',()=>{earcon('back');stop();show('shelf')});
 $('backChip').addEventListener('click',()=>{
+  earcon('back');
   if(openShelf!==null){ openShelf=null; renderShelf(); announce('Тавиурууд'); }
   else { show('welcome'); }
 });
@@ -1698,7 +1745,7 @@ function doJump(what){
       if(!all.length){ announce('Ном алга байна.'); break; }
       openBook(all[Math.floor(Math.random()*all.length)]); break;
     }
-    case 'toc':   if(book.chapters.length){ show('toc'); announce('Бүлгүүд'); } break;
+    case 'toc':   if(book.chapters.length){ earcon('open'); show('toc'); announce('Бүлгүүд'); } break;
     case 'read':  if(book.chapters.length){ show('reader'); announce('Том үсгээр'); } break;
     case 'speed': $('speedBtn').click(); break;
     case 'where': announceParts(whereAmI()); break;
@@ -1753,7 +1800,7 @@ document.addEventListener('pointerdown',firstTouch,true);
 
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-09-29-a');
+console.log('Gerel build 2026-09-30-a');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   // Letters jump straight to a place, from anywhere except a text box.
@@ -1847,14 +1894,18 @@ document.addEventListener('keydown',e=>{
         // so a child sweeping one direction always reaches everything.
         const nb=bi2+(right?1:-1);
         if(nb>=0 && nb<bands.length) enterBand(bands,nb,right?0:-1);
+        else earcon('bump');
         return;
       }
       const to=at+(down?cols:-cols);
       if(to>=0 && to<items.length){ enterBand(bands,bi2,to); return; }
       if(down && bi2+1<bands.length){ enterBand(bands,bi2+1,0); return; }
       if(up && bi2-1>=0){ enterBand(bands,bi2-1,-1); return; }
-      // Nowhere left to go: stay where we are rather than jumping about.
-      enterBand(bands,bi2,Math.max(0,Math.min(items.length-1,to)));
+      // Nowhere left to go: stay where we are rather than jumping about, and
+      // bump, so the press is not met with silence.
+      const stay=Math.max(0,Math.min(items.length-1,to));
+      if(stay===at){ earcon('bump'); return; }
+      enterBand(bands,bi2,stay);
       return;
     }
 
@@ -1885,10 +1936,9 @@ document.addEventListener('keydown',e=>{
       // list that can run to hundreds.
       const at = was<0 ? Math.min(ci,items.length-1)
                : Math.max(0,Math.min(items.length-1,was+(down?1:-1)));
-      // At either end the same chapter is said again, so a press is never met
-      // with silence.
-      if(at===was) items[at].dispatchEvent(new Event('focus'));
-      else items[at].focus();
+      // At either end, the bump: the same sound as the end of any list.
+      if(at===was){ earcon('bump'); return; }
+      items[at].focus();
       items[at].scrollIntoView({block:'nearest'});
       return;
     }
@@ -1902,9 +1952,9 @@ document.addEventListener('keydown',e=>{
   if(e.code==='Space'||enter){ e.preventDefault(); playing?stop():play(); }
   if(right) step(1);
   if(left) step(-1);
-  if(down){ e.preventDefault(); if(ci+1<book.chapters.length) jump(ci+1); }
-  if(up){ e.preventDefault(); if(ci>0) jump(ci-1); }
-  if(back){ e.preventDefault(); stop(); show('shelf'); announce('Номын жагсаалт'); }
+  if(down){ e.preventDefault(); if(ci+1<book.chapters.length) jump(ci+1); else earcon('bump'); }
+  if(up){ e.preventDefault(); if(ci>0) jump(ci-1); else earcon('bump'); }
+  if(back){ e.preventDefault(); earcon('back'); stop(); show('shelf'); announce('Номын жагсаалт'); }
 });
 
 
