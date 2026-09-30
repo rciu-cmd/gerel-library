@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-09-30-d">
+<meta name="gerel-build" content="2026-09-30-e">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -949,17 +949,33 @@ async function play(){
   $('lamp').classList.add('lit');
   $('playBtn').textContent='❚❚ Зогсоох'; $('readPlayBtn').textContent='❚❚ Зогсоох';
   media();
+  let misses=0, firstMiss=null;
   while(playing&&mine===era&&ci<book.chapters.length){
     paint(0);
-    let clip;
-    try{ clip=await getClip(ci,bi); }
-    catch(e){ if(playing&&mine===era) notReady(); return; }
-    if(!playing||mine!==era) return;
-    const nx=nextOf(ci,bi); if(nx) getClip(nx.c,nx.b).catch(()=>{});
-    const m=clip.marks.find(x=>x.s===si);
-    try{ await playClip(clip,m?m.t:0,mine); }
-    catch(e){ if(playing&&mine===era) notReady(); return; }
-    if(!playing||mine!==era) return;
+    const nx=nextOf(ci,bi);
+    // A separator — "* * *", a row of dots — has nothing to say, and no
+    // recording was ever made for one. Reaching it used to stop the book with
+    // "not ready": 692 of them in 81 books (ГЭСЭР stopped after paragraph 41).
+    if(speakable(ci,bi)){
+      let clip;
+      try{ clip=await getClip(ci,bi); }
+      catch(e){ if(playing&&mine===era) notReady(); return; }
+      if(!playing||mine!==era) return;
+      if(nx) getClip(nx.c,nx.b).catch(()=>{});
+      const m=clip.marks.find(x=>x.s===si);
+      try{ await playClip(clip,m?m.t:0,mine); misses=0; firstMiss=null; }
+      catch(e){
+        if(!playing||mine!==era) return;
+        // One paragraph that will not play is skipped, so a single missing
+        // recording cannot end the story. Three in a row is a book, or a
+        // connection, that really is not there: go back to the first one, so
+        // nothing is lost when the signal returns.
+        if(!firstMiss) firstMiss={c:ci,b:bi};
+        if(++misses>=3){ ci=firstMiss.c; bi=firstMiss.b; si=0; notReady(); return; }
+        console.warn('Gerel: skipped a paragraph that would not play:', ci, bi);
+      }
+      if(!playing||mine!==era) return;
+    }
     if(!nx){ stop(); earcon('done'); announce('Ном дууслаа.'); return; }
     const newCh=nx.c!==ci; ci=nx.c; bi=nx.b; si=0;
     if(newCh){ announce(chap().title); media(); }
@@ -967,6 +983,8 @@ async function play(){
     dropClips([ck(ci,bi)].concat(a?[ck(a.c,a.b)]:[]));
   }
 }
+// Whether a paragraph has anything to say: a letter or a digit anywhere in it.
+const speakable=(c,b)=>/[\p{L}\p{N}]/u.test(book.chapters[c].blocks[b].sentences.join(''));
 function stop(){
   playing=false; era++;
   try{ audioEl.pause(); audioEl.removeAttribute('src'); audioEl.load(); }catch(e){}
@@ -1890,7 +1908,7 @@ document.addEventListener('pointerdown',firstTouch,true);
 
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-09-30-d');
+console.log('Gerel build 2026-09-30-e');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   const typing=/^(INPUT|TEXTAREA)$/.test(e.target.tagName||'');
