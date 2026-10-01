@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-09-30-e">
+<meta name="gerel-build" content="2026-10-01-a">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -103,6 +103,17 @@
   #welcome .brand{font-family:var(--display);font-weight:700;
     font-size:clamp(34px,9vw,62px);letter-spacing:-.02em;line-height:1.1;}
   #welcome .sub{margin:0;font-size:clamp(17px,4.4vw,21px);color:var(--muted);}
+  /* Continue the last book: one press from the first screen, instead of a
+     door, a shelf and a search by ear. Wide and dark, above the three doors,
+     so it reads as the obvious way back in. */
+  .contBtn{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;
+    gap:6px 16px;width:100%;max-width:1040px;min-height:clamp(84px,11vh,124px);
+    padding:16px 24px;border-radius:30px;background:var(--ink);color:#fff;
+    font-family:var(--display);font-weight:700;font-size:clamp(22px,2.6vw,34px);
+    box-shadow:0 8px 22px rgba(34,36,59,.22);}
+  .contBtn .ct{font-family:var(--body);font-weight:800;color:var(--sun);
+    font-size:clamp(16px,1.9vw,24px);}
+  .contBtn:focus-visible{outline:5px solid var(--sun);outline-offset:4px;}
   .doors{display:grid;gap:18px;width:100%;max-width:1040px;}
   @media(min-width:640px){.doors{grid-template-columns:1fr 1fr}
     .doors.three{grid-template-columns:1fr 1fr 1fr}}
@@ -313,6 +324,8 @@
 <div id="welcome" class="screen center">
   <div class="lamp lit" id="welcomeLamp" style="--lampSize:170px"></div>
   <div class="brand">Гэрэл хүүхдийн номын сан</div>
+
+  <button class="contBtn hidden" id="contBtn"><span class="cl">▶ Үргэлжлүүлэх</span><span class="ct" id="contTitle"></span></button>
 
   <div class="doors three">
     <button class="door listen" id="doorListen">
@@ -976,7 +989,12 @@ async function play(){
       }
       if(!playing||mine!==era) return;
     }
-    if(!nx){ stop(); earcon('done'); announce('Ном дууслаа.'); return; }
+    if(!nx){
+      stop(); earcon('done');
+      const next=nextPart(book.entry);
+      if(next) continueSeries(next); else announce('Ном дууслаа.');
+      return;
+    }
     const newCh=nx.c!==ci; ci=nx.c; bi=nx.b; si=0;
     if(newCh){ announce(chap().title); media(); }
     const a=nextOf(ci,bi);
@@ -1284,6 +1302,7 @@ const SCREENS=['welcome','shelf','player','reader','toc','help','resume','login'
 let openShelf=null, pick=-1, rows=[], catalog=null;
 let lastScreen='welcome';
 function show(n){
+  if(n==='welcome' && catalog) showContinue();   // the last book may have changed
   if(n!=='help') lastScreen=n;
   SCREENS.forEach(s=>$(s).classList.toggle('hidden',s!==n));
   if(n==='reader') buildRead();
@@ -1319,17 +1338,81 @@ function chooseMode(m){
 }
 $('doorBoth').addEventListener('click',()=>chooseMode('both'));
 
-const everyBook=()=>{
+const allBooks=()=>{
   const m=new Map();
   (catalog?.shelves||[]).forEach(g=>(g.books||[]).forEach(b=>{
     if(b&&b.title&&b.file&&!m.has(b.file)) m.set(b.file,b); }));
   return [...m.values()];
 };
+const everyBook=()=>allBooks().filter(reachable);
+
+// ============================================================
+// Books in parts
+// ============================================================
+// "ШААЛУУ ХҮҮ МАУГЛИ - 2", "МОНТЕ-КРИСТО ГҮН 4", "НУУЦАТ АРАЛ - 1 : АЮУЛД
+// УЧРАГСАД", "ИРГЭНИЙ БОЛОВСРОЛ X": the part is in the title. Read here rather
+// than stored, so a book added later joins its series on its own. Checked
+// against all 344 titles: 34 series, no false matches.
+const ROMAN={I:1,II:2,III:3,IV:4,V:5,VI:6,VII:7,VIII:8,IX:9,X:10,XI:11,XII:12};
+function partOf(title){
+  const m=String(title||'').toUpperCase().trim()
+    .match(/^(.+?)\s*(?:[-–—]\s*|\s)(\d{1,2}|[IVX]{1,4})\s*(?:[:(].*)?$/);
+  if(!m) return null;
+  const n=/^\d+$/.test(m[2])?+m[2]:ROMAN[m[2]];
+  if(!n) return null;
+  // Latin letters that look Cyrillic ("ЭX") are folded, so a spelling slip
+  // does not split a series in two.
+  const key=m[1].replace(/[ABCEHKMOPTXY]/g,c=>'АВСЕНКМОРТХУ'['ABCEHKMOPTXY'.indexOf(c)])
+                .replace(/[^\p{L}\p{N}]/gu,'');
+  return key?{key,n}:null;
+}
+let SERIES=null;                         // series key -> Map(part -> book)
+function series(){
+  if(SERIES) return SERIES;
+  if(!catalog) return new Map();
+  SERIES=new Map();
+  allBooks().forEach(b=>{
+    const p=partOf(b.title); if(!p) return;
+    if(!SERIES.has(p.key)) SERIES.set(p.key,new Map());
+    SERIES.get(p.key).set(p.n,b);
+  });
+  return SERIES;
+}
+// A part is shown only when every part before it is in the library. A lone
+// "МОНТЕ-КРИСТО ГҮН 4" drops a child into the middle of a story with no way
+// back to its beginning. It comes back by itself once the earlier parts are
+// added — 14 books are waiting on this.
+function reachable(b){
+  const p=partOf(b&&b.title); if(!p) return true;
+  const parts=series().get(p.key);
+  if(!parts) return true;
+  for(let i=1;i<p.n;i++) if(!parts.has(i)) return false;
+  return true;
+}
+function nextPart(b){
+  const p=partOf(b&&b.title); if(!p) return null;
+  const parts=series().get(p.key);
+  return (parts&&parts.get(p.n+1))||null;
+}
+// The end of one part opens the next, as one book would: a child should not
+// have to find volume 2 on a shelf by ear to hear how the story goes on.
+async function continueSeries(next){
+  const r=await announceParts(['Ном дууслаа.','Дараагийн боть']);
+  if(r==='cut') return;                  // the child has done something else
+  await openBook(next,{play:true});
+}
+
 function shelvesOf(){
   const base=(catalog?.shelves||[]).filter(g=>g.forChildren!==false)
-    .filter(g=>(g.books||[]).some(b=>b&&b.title&&b.file));
+    .map(g=>Object.assign({},g,{books:(g.books||[]).filter(reachable)}))
+    .filter(g=>g.books.some(b=>b&&b.title&&b.file));
   const f=everyBook().filter(b=>isFav(b.file));
-  return f.length?[{name:'Миний ном',books:f}].concat(base):base;
+  // Short books, for bedtime or one lesson: everything a quarter of an hour
+  // or less, gathered from every shelf.
+  const short=everyBook().filter(b=>b.minutes>0&&b.minutes<=15)
+    .sort((a,b)=>(a.title||'').localeCompare(b.title||'','mn'));
+  const all=f.length?[{name:'Миний ном',books:f}].concat(base):base;
+  return short.length?all.concat([{name:'Богино ном',books:short}]):all;
 }
 const mins=m=>m<60?m+' минут':(m%60?Math.floor(m/60)+' цаг '+(m%60)+' минут':Math.floor(m/60)+' цаг');
 const begun=t=>!!get('pos:'+t,'');
@@ -1617,7 +1700,10 @@ function onHover(fn){
   return ()=>{ clearTimeout(hoverT); hoverT=setTimeout(fn,140); };
 }
 
-async function openBook(e){
+// opts.play: start the voice whatever the mode (the next part of a series).
+// opts.resume: go straight back to where the child stopped, without asking —
+// the Continue button has already asked.
+async function openBook(e, opts={}){
   hush();                       // stop the title being read over the last one
   earcon('open');
   // Clear the previous book first. Without this a book that fails to open
@@ -1650,6 +1736,7 @@ async function openBook(e){
     // the middle of a story with no explanation is disorienting when you
     // cannot see the page.
     if(loadPos()){
+      if(opts.resume){ openAt(false); return; }
       paint();
       $('resumeTitle').textContent = book.title;
       $('resumeWhere').textContent = chap().title;
@@ -1662,7 +1749,7 @@ async function openBook(e){
     show(mode==='read'?'reader':'player');
     media();
     announce(book.title);
-    if(mode==='listen') play();
+    if(mode==='listen' || (opts.play && mode!=='read')) play();
   }catch(err){
     $('shelfNote').textContent='Энэ ном хараахан бэлэн болоогүй байна. Өөр ном сонгоно уу.';
     earcon('fail'); say('Энэ ном хараахан бэлэн болоогүй байна.');
@@ -1752,6 +1839,37 @@ function openAt(fromStart){
   announce(fromStart?'Эхнээс нь':'Үргэлжлүүлэх');
   if(mode==='listen') play();
 }
+// ============================================================
+// Continue where you stopped
+// ============================================================
+// The book last opened, if it is still in the library and its series start is
+// there. Getting back to it used to take a door, a shelf and a search by ear;
+// now it is first on the first screen, and Enter goes straight back into the
+// story at the sentence where the child stopped.
+function lastBook(){
+  let e=null; try{ e=JSON.parse(get('last','null')); }catch(x){}
+  if(!e||!e.file) return null;
+  return everyBook().find(b=>b.file===e.file)||null;
+}
+function showContinue(){
+  const e=lastBook();
+  $('contBtn').classList.toggle('hidden',!e);
+  $('contTitle').textContent=e?e.title:'';
+  return e;
+}
+const sayContinue=()=>{ const e=lastBook(); if(e) sayParts(['Үргэлжлүүлэх',e.title]); };
+$('contBtn').addEventListener('focus',sayContinue);
+$('contBtn').addEventListener('mouseenter',onHover(sayContinue));
+$('contBtn').addEventListener('click',()=>{
+  const e=lastBook(); if(!e) return;
+  unlock();
+  if(!mode){ mode='listen'; put('mode',mode); }
+  $('modeChip').textContent=MODES[mode]||'Сонсох';
+  document.body.dataset.mode=mode; applyMode();
+  openShelf=null; renderShelf();
+  openBook(e,{resume:true});
+});
+
 $('resumeGo').addEventListener('click',()=>{ unlock(); openAt(false); });
 $('resumeStart').addEventListener('click',()=>{ unlock(); openAt(true); });
 
@@ -1773,7 +1891,12 @@ $('toReadBtn').addEventListener('click',()=>{show('reader');announce('Том ү�
 // for every page, which is no way to read a story.
 function turn(d){
   const t=ci+d;
-  if(t<0||t>=book.chapters.length){ earcon('bump'); announce(d>0?'Ном дууслаа.':'Эхлэл'); return; }
+  if(t<0||t>=book.chapters.length){
+    // Turning past the last page of a part opens the next, as when listening.
+    const next=d>0&&nextPart(book.entry);
+    if(next){ earcon('done'); continueSeries(next); return; }
+    earcon('bump'); announce(d>0?'Ном дууслаа.':'Эхлэл'); return;
+  }
   const was=playing; stop();
   ci=t; bi=0; si=0; paint(); buildRead();
   announceParts([(ci+1)+'-р бүлэг', chap().title]);
@@ -1879,7 +2002,11 @@ let greeted=false;
 function greet(){
   if(greeted) return;
   greeted=true;
-  sayParts(get('greeted','') ? GREET_AGAIN : GREET_FIRST).then(r=>{
+  // A child coming back to a book hears its title: Enter takes them to it.
+  const back=get('greeted','') && lastBook();
+  const words=!get('greeted','') ? GREET_FIRST
+             : back ? ['Гэрэл хүүхдийн номын сан','Үргэлжлүүлэх',back.title] : GREET_AGAIN;
+  sayParts(words).then(r=>{
     if(r==='blocked') greeted=false;          // try again on the first touch
     else if(r!=='silent') put('greeted','1');
   });
@@ -1893,7 +2020,7 @@ function firstTouch(e){
   // key is taken for the greeting instead, so a child pressing Enter to see
   // what happens does not land in a mode they never heard offered.
   if(e.type==='pointerdown'){
-    if(e.target.closest && e.target.closest('.door')){ greeted=true; return; }
+    if(e.target.closest && e.target.closest('.door,.contBtn')){ greeted=true; return; }
     greet(); return;
   }
   const acts=/^(Arrow|Enter|NumpadEnter|Numpad[02468]|Space)/.test(e.code||'')
@@ -1908,7 +2035,7 @@ document.addEventListener('pointerdown',firstTouch,true);
 
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-09-30-e');
+console.log('Gerel build 2026-10-01-a');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   const typing=/^(INPUT|TEXTAREA)$/.test(e.target.tagName||'');
@@ -1970,13 +2097,16 @@ document.addEventListener('keydown',e=>{
     const doors=[[$('doorListen'),'Сонсох'],
                  [$('doorBoth'),'Сонсох ба унших'],
                  [$('doorRead'),'Унших']];
+    // Continue comes first when there is a book to go back to; it speaks for
+    // itself on focus ("Үргэлжлүүлэх" and the title).
+    if(!$('contBtn').classList.contains('hidden')) doors.unshift([$('contBtn'),null]);
     let at=doors.findIndex(d=>d[0]===document.activeElement);
     if(down||up||right||left){
       e.preventDefault();
       const fwd=down||right;
       at = at<0 ? (fwd?0:doors.length-1) : (at+(fwd?1:-1)+doors.length)%doors.length;
       doors[at][0].focus();
-      say(doors[at][1]);
+      if(doors[at][1]) say(doors[at][1]);
       return;
     }
     if(enter){ e.preventDefault(); (doors[at<0?0:at][0]).click(); }
@@ -2107,7 +2237,9 @@ if(navigator.serviceWorker){
   // someone navigating by ear. The last choice is focused, so Enter continues.
   renderShelf();
   show('welcome');
-  (mode==='read' ? $('doorRead') : $('doorListen')).focus();
+  // With a book to go back to, Continue is focused, so Enter is back in the
+  // story; otherwise the last mode's door, as before.
+  (showContinue() ? $('contBtn') : mode==='read' ? $('doorRead') : $('doorListen')).focus();
   if(mode) $('modeChip').textContent = mode==='read' ? 'Унших' : 'Сонсох';
   greet();
 })();
