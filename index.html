@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-10-01-a">
+<meta name="gerel-build" content="2026-10-01-b">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -47,16 +47,14 @@
     outline-offset:4px;border-radius:20px;}
   .hidden{display:none !important;}
 
-  /* The app is called light, so the light is the interface: it breathes while
-     the voice speaks and rests when it stops. Readable across a room at a
-     glance, which no small icon is. */
+  /* The player's light: bright while the voice speaks, dim when it stops.
+     Readable across a room at a glance, which no small icon is. It no longer
+     breathes (1 Oct): a pulsing shape was more distraction than help. */
   .lamp{width:var(--lampSize,130px);height:var(--lampSize,130px);border-radius:50%;
     background:radial-gradient(circle at 50% 45%,#FFF6D2 0%,var(--sun) 40%,
       #F5A623 66%,rgba(245,166,35,0) 73%);
     opacity:.3;transition:opacity .5s ease;flex:0 0 auto;}
-  .lamp.lit{opacity:1;animation:breathe 3.6s ease-in-out infinite;}
-  @keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
-  @media (prefers-reduced-motion:reduce){.lamp.lit{animation:none}}
+  .lamp.lit{opacity:1;}
 
   .screen{position:fixed;inset:0;background:var(--paper);display:flex;
     flex-direction:column;overflow-y:auto;
@@ -75,31 +73,14 @@
                 0 0 16px var(--paper);}
   .screen.center{align-items:center;justify-content:center;text-align:center;gap:24px;}
 
-  /* The sun breathes, as the lamp did. It is the one moving thing on the
-     welcome screen, and a child with some sight can find it across a room. */
-  #welcome #logo{width:min(46vw,200px);height:auto;display:block;
-    animation:sunbreathe 3.6s ease-in-out infinite;
-    will-change:transform,filter;}
-  @keyframes sunbreathe{
-    0%,100%{transform:scale(1);
-      filter:drop-shadow(0 0 10px rgba(245,166,35,.30));}
-    50%    {transform:scale(1.07);
-      filter:drop-shadow(0 0 26px rgba(245,166,35,.60));}
-  }
-  @media (prefers-reduced-motion:reduce){
-    #welcome #logo{animation:none;
-      filter:drop-shadow(0 0 14px rgba(245,166,35,.4));}
-  }
-  /* The same mark as the tab icon and the phone icon. It breathes on the
-     lamp's old rhythm, so the welcome screen still has one moving thing a
-     child with some sight can find across a room. */
-  #welcome #logo{width:min(44vw,190px);height:auto;display:block;border-radius:50%;
-    animation:sunbreathe 3.6s ease-in-out infinite;will-change:transform,filter;}
-  @keyframes sunbreathe{
-    0%,100%{transform:scale(1);filter:drop-shadow(0 4px 14px rgba(36,44,92,.35));}
-    50%    {transform:scale(1.06);filter:drop-shadow(0 6px 26px rgba(245,166,35,.45));}
-  }
-  @media (prefers-reduced-motion:reduce){#welcome #logo{animation:none;}}
+  /* The library's own mark — the sun and its letter on a dark blue disc, the
+     same as the tab and phone icons — standing still. The welcome screen used
+     to show a drawn yellow circle that breathed; these rules for the real
+     logo were written but never used. */
+  .logoMark{display:block;height:auto;border-radius:50%;flex:0 0 auto;
+    filter:drop-shadow(0 6px 18px rgba(36,44,92,.28));}
+  #welcome .logoMark{width:min(40vw,170px);}
+  #resume .logoMark{width:110px;}
   #welcome .brand{font-family:var(--display);font-weight:700;
     font-size:clamp(34px,9vw,62px);letter-spacing:-.02em;line-height:1.1;}
   #welcome .sub{margin:0;font-size:clamp(17px,4.4vw,21px);color:var(--muted);}
@@ -322,7 +303,7 @@
 <body>
 
 <div id="welcome" class="screen center">
-  <div class="lamp lit" id="welcomeLamp" style="--lampSize:170px"></div>
+  <img class="logoMark" src="logo.png" alt="" width="170" height="170">
   <div class="brand">Гэрэл хүүхдийн номын сан</div>
 
   <button class="contBtn hidden" id="contBtn"><span class="cl">▶ Үргэлжлүүлэх</span><span class="ct" id="contTitle"></span></button>
@@ -415,7 +396,7 @@
 </div>
 
 <div id="resume" class="screen center">
-  <div class="lamp lit" style="--lampSize:110px"></div>
+  <img class="logoMark" src="logo.png" alt="" width="110" height="110">
   <div class="brand" style="font-family:var(--display);font-weight:700;font-size:clamp(24px,6vw,34px)"
        id="resumeTitle"></div>
   <p class="sub" id="resumeWhere" style="color:var(--muted);margin:0"></p>
@@ -2035,7 +2016,7 @@ document.addEventListener('pointerdown',firstTouch,true);
 
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-10-01-a');
+console.log('Gerel build 2026-10-01-b');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   const typing=/^(INPUT|TEXTAREA)$/.test(e.target.tagName||'');
