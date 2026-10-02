@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-10-02-g">
+<meta name="gerel-build" content="2026-10-02-h">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -833,7 +833,52 @@ async function loadVoiced(e){
                              whole:!!b.whole,secs:b.secs||0,paras:b.paras||null,
                              start:b.start||0,end:b.end||0}))}));
   $('player').lang=$('reader').lang=book.lang;
+  if(book.lang!=='en') markJunk(book.chapters);
   if(!book.chapters.length) throw new Error('unavailable');
+}
+// What a child should not have to sit through: the contents pages of the
+// collections these books were cut from ("… номын Гарчиг", 87 chapters) and
+// printing details ("Редактор: …", "Хэвлэлийн хуудас: …", "ISBN …"). Worked
+// out when a book opens, so no recording or file on R2 changes. A contents
+// chapter is hidden only if most of it is short lines: "ӨГЛӨГИЙН ЭЗНИЙ
+// СОНОРТ" is a misread heading over half of the Nightingale. gerel_junk.py
+// lists the same; the two sets of rules must match. (JavaScript's \W counts
+// Cyrillic as a non-letter, hence [^\p{L}\p{N}].)
+const JUNK={
+  contents:/(гарчиг|агуулга)[^\p{L}\p{N}]*$|хэвлэн нийтлэлийн мэдээлэл/iu,
+  colophon:/^[^\p{L}\p{N}]*(хавтасны (зураг|загвар)|хэвлэлийн (хуудас|газар|тоо|эх)|isbn|цаасны хэмжээ|хэвлэхэд|хэвлэсэн тоо|хянан тохиолдуулсан|зах\.|захиалгын|тираж|компьютерийн|эх бэлтгэсэн|©)/iu,
+  editor:/^[^\p{L}\p{N}]*(ерөнхий |техник |хянан |уран сайхны |зургийн )?редактор(\s|:|$)/iu,
+  head:/хэвлэн нийтлэлийн мэдээлэл/iu,
+};
+function markJunk(chapters){
+  const txt=b=>(b.sentences||[]).join(' ').trim();
+  chapters.forEach(ch=>{
+    if(JUNK.contents.test(ch.title||'') && ch.blocks.length &&
+       ch.blocks.filter(b=>txt(b).length<=80).length>=0.8*ch.blocks.length){
+      ch.hidden=true; ch.blocks.forEach(b=>{b.skip=true}); return;
+    }
+    let tail=false;
+    ch.blocks.forEach(b=>{
+      const t=txt(b), short=t.length<=160;
+      if(JUNK.head.test(t) && short) tail=true;
+      if((tail&&short) || (short&&JUNK.colophon.test(t)) || (t.length<=40&&JUNK.editor.test(t))) b.skip=true;
+      else if(tail) tail=false;
+    });
+    // A chapter with nothing left in it — a colophon of its own — goes too.
+    if(ch.blocks.length && ch.blocks.every(b=>b.skip)) ch.hidden=true;
+  });
+}
+// Chapters as a child meets them: hidden ones are not counted, so the
+// chapter after a contents page is still "5-р бүлэг" if it is the fifth.
+const chNo=i=>{ let n=0; for(let k=0;k<=i&&k<book.chapters.length;k++) if(!book.chapters[k].hidden) n++; return Math.max(n,1); };
+function chapterFrom(i,d){
+  for(let k=i+d;k>=0&&k<book.chapters.length;k+=d) if(!book.chapters[k].hidden) return k;
+  return -1;
+}
+// Where a book begins: its first chapter and paragraph that are not skipped.
+function firstPlace(){
+  const c=Math.max(0,book.chapters.findIndex(ch=>!ch.hidden));
+  return {c, b:Math.max(0,book.chapters[c].blocks.findIndex(x=>!x.skip))};
 }
 async function loadEpub(data,fb){
   const zip=await JSZip.loadAsync(data);
@@ -893,14 +938,32 @@ let ci=0,bi=0,si=0,playing=false;
 // and carries on as a second loop driving the same speaker.
 let era=0;
 const clips=new Map(), ck=(c,b)=>c+':'+b;
+// Where a sentence was said differently from how it is printed — "1253 он"
+// read out as words — the voicing could not find each spoken word in the
+// text and stored position 0, so only the sentence lit up, not the word
+// (about 6,900 paragraphs). Such a sentence's words are placed by share:
+// the third word said lights the word a third of the way along.
+function placeMarks(blk){
+  const out=(blk.marks||[]).map(m=>({s:m.s,c:m.c,l:m.l,t:m.t}));
+  const by=new Map();
+  out.forEach(m=>{ if(!by.has(m.s)) by.set(m.s,[]); by.get(m.s).push(m); });
+  by.forEach((ms,s)=>{
+    if(!ms.every(m=>!m.l)) return;               // positions known: leave them
+    const words=[...(blk.sentences[s]||'').matchAll(/[\p{L}\p{N}]+/gu)];
+    if(!words.length) return;
+    ms.forEach((m,k)=>{
+      const w=words[Math.min(words.length-1,Math.floor(k*words.length/ms.length))];
+      m.c=w.index; m.l=w[0].length;
+    });
+  });
+  return out;
+}
 function getClip(c,b){
   const k=ck(c,b); if(clips.has(k)) return clips.get(k);
   const blk=book.chapters[c].blocks[b];
   let p;
   if(book.audioBase&&blk.audio){
-    p=Promise.resolve({url:book.audioBase+'/'+blk.audio,
-      marks:(blk.marks||[]).map(m=>({s:m.s,c:m.c,l:m.l,t:m.t})),
-      end:blk.end||0});
+    p=Promise.resolve({url:book.audioBase+'/'+blk.audio, marks:placeMarks(blk), end:blk.end||0});
   } else if(live()){ p=synthLive(blk.sentences); }
   else { p=Promise.reject(new Error('unavailable')); }
   clips.set(k,p); return p;
@@ -1075,7 +1138,7 @@ function paint(upto){
   if(!book.chapters.length) return;
   const t=sent(), c=chap();
   const pct=progressPct();
-  $('nowChapter').textContent=(ci+1)+'-р бүлэг · '+pct+'%';
+  $('nowChapter').textContent=chNo(ci)+'-р бүлэг · '+pct+'%';
   $('nowProgress').style.width=pct+'%';
   $('nowText').innerHTML = (upto>0&&upto<t.length)
     ? '<span class="said">'+esc(t.slice(0,upto))+'</span>'+esc(t.slice(upto))
@@ -1105,7 +1168,7 @@ async function play(){
   media();
   let misses=0, firstMiss=null;
   while(playing&&mine===era&&ci<book.chapters.length){
-    paint(0);
+    if(speakable(ci,bi)) paint(0);      // a skipped paragraph is not shown either
     const nx=nextOf(ci,bi);
     // A separator — "* * *", a row of dots — has nothing to say, and no
     // recording was ever made for one. Reaching it used to stop the book with
@@ -1140,13 +1203,17 @@ async function play(){
       return;
     }
     const newCh=nx.c!==ci; ci=nx.c; bi=nx.b; si=0; resumeT=0;
-    if(newCh){ announce(chap().title); media(); }
+    // A new chapter is shown, not spoken: the narration reads its heading
+    // itself, and a title said over the start of the chapter was two voices
+    // at once. The chapter list and "where am I" say it.
+    if(newCh){ if(!chap().hidden) $('status').textContent=$('playerStatus').textContent=chap().title; media(); }
     const a=nextOf(ci,bi);
     dropClips([ck(ci,bi)].concat(a?[ck(a.c,a.b)]:[]));
   }
 }
 // Whether a paragraph has anything to say: a letter or a digit anywhere in it.
-const speakable=(c,b)=>/[\p{L}\p{N}]/u.test(book.chapters[c].blocks[b].sentences.join(''));
+const speakable=(c,b)=>!book.chapters[c].blocks[b].skip
+  && /[\p{L}\p{N}]/u.test(book.chapters[c].blocks[b].sentences.join(''));
 function stop(){
   // Keep the place in a whole-chapter recording before the audio is cleared.
   if(playing && isWhole() && audioEl.currentTime>0) resumeT=audioEl.currentTime;
@@ -1193,9 +1260,15 @@ function step(d){
     else if(c+1<book.chapters.length){s-=n;c++;b=0}
     else {s=n-1;break}
   }
+  // Contents pages and printing details are stepped over, not into.
+  while(book.chapters[c].blocks[b].skip){
+    const n=d>0?nextOf(c,b):(b>0?{c,b:b-1}:(c>0?{c:c-1,b:book.chapters[c-1].blocks.length-1}:null));
+    if(!n) break;
+    c=n.c; b=n.b; s=d>0?0:book.chapters[c].blocks[b].sentences.length-1;
+  }
   // First or last sentence of the book: nowhere to go. Say so with the bump
   // and leave the voice alone, rather than restarting the sentence.
-  if(c===ci && b===bi && s===si){ earcon('bump'); return; }
+  if(book.chapters[c].blocks[b].skip || (c===ci && b===bi && s===si)){ earcon('bump'); return; }
   const was=playing; stop();
   ci=c;bi=b;si=s; resumeT=timeOf(c,b,s); paint(); if(was) play();
 }
@@ -1444,6 +1517,7 @@ function buildRead(){
   // A whole recording is one block holding many paragraphs; "paras" says
   // where each begins, so the page is not one wall of text.
   $('readText').innerHTML=chap().blocks.map((b,bx)=>{
+    if(b.skip && !chap().hidden) return '';
     const starts=new Set(b.paras||[]);
     return '<p>'+b.sentences.map((t,sx)=>
       (sx&&starts.has(sx)?'</p><p>':'')
@@ -1930,7 +2004,7 @@ async function openBook(e, opts={}){
       announce('Үргэлжлүүлэх үү, эхнээс нь үү?');
       return;
     }
-    ci=0; bi=0; si=0; paint();
+    ({c:ci,b:bi}=firstPlace()); si=0; paint();
     show(mode==='read'?'reader':'player');
     media();
     announce(book.title);
@@ -1947,11 +2021,12 @@ function buildToc(){
   book.chapters.forEach((c,i)=>{
     const b=document.createElement('button');
     b.className='bookRow'; b.style.display='block'; b.style.padding='18px';
-    b.innerHTML='<span class="t">'+(i+1)+'. '+esc(c.title)+'</span>';
+    if(c.hidden) return;                    // a contents page: not a chapter to go to
+    b.innerHTML='<span class="t">'+chNo(i)+'. '+esc(c.title)+'</span>';
     b.addEventListener('click',()=>{ earcon('open'); jump(i); });
     // The number is always voiced; the title only where it has been, so a
     // chapter is never silent.
-    b.addEventListener('focus',()=>sayParts([(i+1)+'-р бүлэг', c.title]));
+    b.addEventListener('focus',()=>sayParts([chNo(i)+'-р бүлэг', c.title]));
     $('tocList').appendChild(b);
   });
 }
@@ -2014,11 +2089,11 @@ function whereAmI(){
     return [g.name, n ? n+' ном' : 'Ном алга байна.', on ? on.title : ''];
   }
   if(!book.chapters.length) return ['Ном сонгоогүй байна.'];
-  return [(book.entry && book.entry.title) || book.title, (ci+1)+'-р бүлэг'];
+  return [(book.entry && book.entry.title) || book.title, chNo(ci)+'-р бүлэг', chap().title];
 }
 
 function openAt(fromStart){
-  if(fromStart){ ci=0; bi=0; si=0; resumeT=0; }
+  if(fromStart){ ({c:ci,b:bi}=firstPlace()); si=0; resumeT=0; }
   paint();
   show(mode==='read'?'reader':'player');
   media();
@@ -2076,8 +2151,8 @@ $('toReadBtn').addEventListener('click',()=>{show('reader');announce('Том ү�
 // Turning the page. Reading a book without them meant using the chapter list
 // for every page, which is no way to read a story.
 function turn(d){
-  const t=ci+d;
-  if(t<0||t>=book.chapters.length){
+  const t=chapterFrom(ci,d);
+  if(t<0){
     // Turning past the last page of a part opens the next, as when listening.
     const next=d>0&&nextPart(book.entry);
     if(next){ earcon('done'); continueSeries(next); return; }
@@ -2085,7 +2160,7 @@ function turn(d){
   }
   const was=playing; stop();
   ci=t; bi=0; si=0; resumeT=0; paint(); buildRead();
-  announceParts([(ci+1)+'-р бүлэг', chap().title]);
+  announceParts([chNo(ci)+'-р бүлэг', chap().title]);
   $('readText').scrollTop=0;
   if(was) play();
 }
@@ -2111,7 +2186,7 @@ $('sizeDown').addEventListener('click',()=>{readSize=Math.max(18,readSize-6);app
 // A book resumes where it was left, which is right for a long story and wrong
 // for a short one a child only glanced at. This is the way back.
 $('restartBtn').addEventListener('click',()=>{
-  stop(); ci=0; bi=0; si=0; resumeT=0; paint(); buildRead();
+  stop(); ({c:ci,b:bi}=firstPlace()); si=0; resumeT=0; paint(); buildRead();
   announce('Эхнээс нь'); play();
 });
 
@@ -2221,7 +2296,7 @@ document.addEventListener('pointerdown',firstTouch,true);
 
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-10-02-g');
+console.log('Gerel build 2026-10-02-h');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   const typing=/^(INPUT|TEXTAREA)$/.test(e.target.tagName||'');
@@ -2380,8 +2455,8 @@ document.addEventListener('keydown',e=>{
   if(e.code==='Space'||enter){ e.preventDefault(); playing?stop():play(); }
   if(right) step(1);
   if(left) step(-1);
-  if(down){ e.preventDefault(); if(ci+1<book.chapters.length) jump(ci+1); else earcon('bump'); }
-  if(up){ e.preventDefault(); if(ci>0) jump(ci-1); else earcon('bump'); }
+  if(down){ e.preventDefault(); const k=chapterFrom(ci,1); if(k>=0) jump(k); else earcon('bump'); }
+  if(up){ e.preventDefault(); const k=chapterFrom(ci,-1); if(k>=0) jump(k); else earcon('bump'); }
   if(back){ e.preventDefault(); earcon('back'); stop(); show('shelf'); announce('Номын жагсаалт'); }
 });
 
