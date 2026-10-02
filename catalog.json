@@ -4095,17 +4095,6 @@
      "braillePages": 1151
     },
     {
-     "title": "МӨНГӨ (ФРАНЦ)",
-     "author": "Эмиль Золя",
-     "file": "books/mongo-frants-982b3c.epub",
-     "chars": 886362,
-     "minutes": 1182,
-     "id": "mongo-frants-982b3c",
-     "cover": "covers/mongo-frants-982b3c.jpg",
-     "braille": "braille/mongo-frants-982b3c.brf",
-     "braillePages": 240
-    },
-    {
      "title": "ЗЭР ЗЭВСЭГ МИНЬ БАЯРТАЙ",
      "author": "Эрнест Хемингуэй",
      "file": "books/zer-zevseg-min-bayartai-cd617a.epub",
@@ -5072,6 +5061,21 @@
       "Дэлхийн шилдэг зохиол"
      ],
      "removed": "incomplete text (2026-10-02)"
+    },
+    {
+     "title": "МӨНГӨ (ФРАНЦ)",
+     "author": "Эмиль Золя",
+     "file": "books/mongo-frants-982b3c.epub",
+     "chars": 886362,
+     "minutes": 1182,
+     "id": "mongo-frants-982b3c",
+     "cover": "covers/mongo-frants-982b3c.jpg",
+     "braille": "braille/mongo-frants-982b3c.brf",
+     "braillePages": 240,
+     "from": [
+      "Том хүүхдэд"
+     ],
+     "removed": "text is the French original, read by the Mongolian voice (2026-10-02)"
     }
    ],
    "note": "Taken off the children's shelves on 2 Oct 2026. Files are kept; to restore a book, move it back to the shelves in its \"from\"."

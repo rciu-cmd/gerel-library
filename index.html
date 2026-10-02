@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-10-02-d">
+<meta name="gerel-build" content="2026-10-02-e">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -1538,9 +1538,9 @@ function shelvesOf(){
     .filter(g=>g.books.some(b=>b&&b.title&&b.file));
   const f=everyBook().filter(b=>isFav(b.file));
   // Short books, for bedtime or one lesson: everything a quarter of an hour
-  // or less, gathered from every shelf. English books stay on their own
-  // shelf: a child who has no English should not meet one by chance.
-  const short=everyBook().filter(b=>b.lang!=='en'&&b.minutes>0&&b.minutes<=15)
+  // or less, gathered from every shelf. English ones are included but come
+  // after the Mongolian ones: their level sorts them last under А–Я.
+  const short=everyBook().filter(b=>b.minutes>0&&b.minutes<=15)
     .sort((a,b)=>(a.title||'').localeCompare(b.title||'','mn'));
   const all=f.length?[{name:'Миний ном',books:f}].concat(base):base;
   return short.length?all.concat([{name:'Богино ном',books:short}]):all;
@@ -1555,9 +1555,8 @@ const begun=t=>!!get('pos:'+t,'');
 // meet Aesop before Alice. Books with no level are unaffected.
 const SORTS=[
   ['А–Я', (a,b)=> ((a.level||0)-(b.level||0)) || (letterField==='author'
-      ? (authorName(a.author)||a.title||'').localeCompare(
-          authorName(b.author)||b.title||'','mn')
-      : (a.title||'').localeCompare(b.title||'','mn'))],
+      ? (authorKey(a)||titleKey(a)).localeCompare(authorKey(b)||titleKey(b),'mn')
+      : titleKey(a).localeCompare(titleKey(b),'mn'))],
   ['Богино эхэлж', (a,b)=>(a.minutes||0)-(b.minutes||0)],
   ['Урт эхэлж',    (a,b)=>(b.minutes||0)-(a.minutes||0)],
 ];
@@ -1576,10 +1575,20 @@ const firstLetter=t=>((t||'').trim().charAt(0)||'').toUpperCase();
 // because neither has one.
 const AUTHOR_INITIALS=/^(\s*[А-ЯЁӨҮA-Z]\s*[.．]\s*)+/;
 const authorName=x=>String(x||'').replace(AUTHOR_INITIALS,'').trim();
+// English books are filed under Latin letters the way an English library
+// shelves them: a title without its leading "The", "A" or "An" (The Tale of
+// Peter Rabbit under T for Tale), an author under the surname (Beatrix
+// Potter under P, Brothers Grimm under G). Without this the letter row on
+// the English shelf was empty.
+const EN_LETTERS='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+const titleKey=b=>{ const t=String(b.title||'').trim();
+  return b.lang==='en' ? t.replace(/^(the|an?)\s+/i,'') : t; };
+const authorKey=b=>{ if(b.lang!=='en') return authorName(b.author);
+  const w=String(b.author||'').trim().split(/\s+/); return w[w.length-1]||''; };
 // A book with no author still has to appear somewhere, so it falls back to
 // its title rather than vanishing from the author alphabet.
 const keyOf=b=>firstLetter(letterField==='author'
-  ? (authorName(b.author) || b.title) : b.title);
+  ? (authorKey(b) || titleKey(b)) : titleKey(b));
 
 let letterCounts={};
 const countFor=L=>letterCounts[L]||0;
@@ -1591,7 +1600,7 @@ function renderLetters(books){
   box.innerHTML='';
   if(!books.length) return;
   const present=new Set(books.map(b=>keyOf(b)));
-  MN_LETTERS.filter(L=>present.has(L)).forEach(L=>{
+  MN_LETTERS.concat(EN_LETTERS).filter(L=>present.has(L)).forEach(L=>{
     const b=document.createElement('button');
     b.textContent=L;
     if(L===letterPick) b.className='on';
@@ -2173,7 +2182,7 @@ document.addEventListener('pointerdown',firstTouch,true);
 
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-10-02-d');
+console.log('Gerel build 2026-10-02-e');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   const typing=/^(INPUT|TEXTAREA)$/.test(e.target.tagName||'');
