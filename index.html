@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-10-01-c">
+<meta name="gerel-build" content="2026-10-02-a">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -22,7 +22,7 @@
 <meta name="apple-mobile-web-app-title" content="Гэрэл">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;700&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
   :root{
     /* Daylight, not a reading lamp at midnight. Every shelf colour is dark
@@ -36,7 +36,11 @@
     --cloth-1:#242C5C; --cloth-2:#7A222E; --cloth-3:#1A4236;
     --cloth-4:#5E3414; --cloth-5:#462658; --cloth-6:#804612;
     --cloth-7:#2C2C30; --gold:#D0AA5C; --gold-lit:#E9CD8C;
-    --display:'Comfortaa', system-ui, sans-serif;
+    /* Montserrat for every heading (1 Oct): strong and clear, and it draws
+       Ө and Ү itself — tested, not assumed. Comfortaa's thin rounded letters
+       were not liked. */
+    --display:'Montserrat', system-ui, sans-serif;
+    --navy:#242C5C;                 /* the logo's own blue */
     --body:'Nunito', system-ui, -apple-system, sans-serif;
   }
   *{box-sizing:border-box;}
@@ -82,17 +86,27 @@
   .screen .brand,.screen .sub,.screen .note,.screen h1{
     text-shadow:0 0 3px var(--paper),0 0 6px var(--paper),0 0 10px var(--paper),
                 0 0 16px var(--paper);}
-  .screen.center{align-items:center;justify-content:center;text-align:center;gap:24px;}
+  /* Centred when there is room; when the content is taller than the screen it
+     starts at the top and scrolls. Plain justify-content:center pushed the top
+     beyond reach instead — the title sat 35px above a 375×812 phone, where no
+     scrolling could bring it back. */
+  .screen.center{align-items:center;justify-content:flex-start;text-align:center;gap:24px;}
+  /* Two invisible spacers share the free space and shrink to nothing when
+     there is none. (Margins on the first and last child failed: the last
+     child is often an empty, hidden status line.) */
+  .screen.center::before,.screen.center::after{content:'';flex:1 1 0;min-height:0;}
 
-  /* The library's own mark — the sun and its letter on a dark blue disc, the
-     same as the tab and phone icons — standing still. The welcome screen used
-     to show a drawn yellow circle that breathed; these rules for the real
-     logo were written but never used. */
-  .logoMark{display:block;height:auto;border-radius:50%;flex:0 0 auto;
-    filter:drop-shadow(0 6px 18px rgba(36,44,92,.28));}
-  #welcome .logoMark{width:min(40vw,170px);}
-  #welcome .brand{font-family:var(--display);font-weight:700;
-    font-size:clamp(34px,9vw,62px);letter-spacing:-.02em;line-height:1.1;}
+  /* No logo on the first screen (the user's choice, 1 Oct): the name, Continue
+     and the three doors are enough. The logo stays as the tab and phone icon. */
+  /* The library's name in the logo's navy, with "Гэрэл" — light — in the
+     orange-red of the sun. */
+  #welcome .brand{font-family:var(--display);font-weight:800;color:var(--navy);
+    font-size:clamp(34px,8vw,60px);letter-spacing:-.01em;line-height:1.12;}
+  #welcome .brand .gerel{color:#C2410C;}
+  /* A paper backing, so a Rotary logo in the background never sits inside
+     the letters — on a phone one landed right behind "Гэрэл хүүхдийн". */
+  #welcome .brand{background:rgba(255,253,247,.95);border-radius:22px;
+    padding:6px 18px;box-shadow:0 0 0 10px rgba(255,253,247,.6);}
   #welcome .sub{margin:0;font-size:clamp(17px,4.4vw,21px);color:var(--muted);}
   /* Continue the last book: one press from the first screen, instead of a
      door, a shelf and a search by ear. Wide and dark, above the three doors,
@@ -108,12 +122,6 @@
   .doors{display:grid;gap:18px;width:100%;max-width:1040px;}
   @media(min-width:640px){.doors{grid-template-columns:1fr 1fr}
     .doors.three{grid-template-columns:1fr 1fr 1fr}}
-  @media(max-width:639px){
-    .door{min-height:clamp(130px,17vh,190px);
-      flex-direction:row;gap:18px;justify-content:flex-start;
-      padding:20px 22px;font-size:clamp(21px,6vw,30px);text-align:left;}
-    .door .ic{width:54px;height:54px;}
-  }
   .door.listen{background:linear-gradient(160deg,#F0455F 0%,#C21B3C 100%);}
   .door.both  {background:linear-gradient(160deg,#2FB574 0%,#127A4B 100%);}
   .door.read  {background:linear-gradient(160deg,#4C8FF0 0%,#1F4FB8 100%);}
@@ -139,6 +147,16 @@
   .door .ic{width:clamp(52px,5.4vw,96px);height:clamp(52px,5.4vw,96px);
     display:block;position:relative;z-index:1;flex:0 0 auto;}
   .door .ic svg{width:100%;height:100%;display:block;}
+  /* On a phone the doors are a row each: icon beside the word, shorter, so
+     the name, Continue and all three doors fit on one screen. This must come
+     after the rules above — written before them, it was overridden and phones
+     got three 211px doors that pushed the title off the top. */
+  @media(max-width:639px){
+    .door{min-height:clamp(118px,15vh,170px);
+      flex-direction:row;gap:18px;justify-content:flex-start;
+      padding:20px 22px;font-size:clamp(21px,6vw,30px);text-align:left;}
+    .door .ic{width:54px;height:54px;}
+  }
   .door:active{transform:translateY(3px);box-shadow:0 3px 0 rgba(34,36,59,.16);}
 
   .bar{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
@@ -315,8 +333,7 @@
 <body>
 
 <div id="welcome" class="screen center">
-  <img class="logoMark" src="logo.png" alt="" width="170" height="170">
-  <div class="brand">Гэрэл хүүхдийн номын сан</div>
+  <div class="brand"><span class="gerel">Гэрэл</span> хүүхдийн номын сан</div>
 
   <button class="contBtn hidden" id="contBtn"><span class="cl">▶ Үргэлжлүүлэх</span><span class="ct" id="contTitle"></span></button>
 
@@ -2088,7 +2105,7 @@ document.addEventListener('pointerdown',firstTouch,true);
 
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-10-01-c');
+console.log('Gerel build 2026-10-02-a');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   const typing=/^(INPUT|TEXTAREA)$/.test(e.target.tagName||'');
