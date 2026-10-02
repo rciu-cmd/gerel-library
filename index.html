@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-10-02-b">
+<meta name="gerel-build" content="2026-10-02-c">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -484,6 +484,7 @@ const SHELF_STYLE={
   'Адал явдал':['#C2410C','compass'],       'Байгаль, амьтад':['#128A54','paw'],
   'Дэлхийн шилдэг зохиол':['#A3237A','globe'],
   'Том хүүхдэд':['#BE185D','books'],       // for older children (12+), 2 Oct
+  'Англи хэлний ном':['#0369A1','speech'], // English books, read by people (LibriVox)
   'Миний ном':['#242C5C','star'],          'Богино ном':['#4338CA','moon'],
 };
 // A big simple shape is found faster than a word by a child who sees a
@@ -509,6 +510,9 @@ const SHELF_ICONS={
   moon:svg('<path d="M42 10a22 22 0 1 0 12 30A18 18 0 0 1 42 10z"/>'
     +'<path d="M48 18l1.5 3.5L53 23l-3.5 1.5L48 28l-1.5-3.5L43 23l3.5-1.5z" fill="currentColor"/>'),
   book:svg('<path d="M32 18c-5-4-11-6-19-6v34c8 0 14 2 19 6c5-4 11-6 19-6V12c-8 0-14 2-19 6z"/><path d="M32 18v34"/>'),
+  // A speech bubble with words in it: another language, heard.
+  speech:svg('<path d="M10 14h44a4 4 0 0 1 4 4v22a4 4 0 0 1-4 4H30l-12 10v-10h-8a4 4 0 0 1-4-4V18a4 4 0 0 1 4-4z"/>'
+    +'<path d="M17 24h30"/><path d="M17 33h20"/>'),
   // A stack of three thick books: bigger reading, for older children.
   books:svg('<rect x="10" y="40" width="44" height="12" rx="3"/><rect x="14" y="27" width="38" height="12" rx="3"/>'
     +'<rect x="9" y="14" width="40" height="12" rx="3"/><path d="M17 46h24"/><path d="M21 33h22"/><path d="M16 20h24"/>'),
@@ -820,8 +824,13 @@ async function loadVoiced(e){
   if(!r || !r.ok) throw new Error('unavailable');
   const d=await r.json();
   book.title=d.title||e.title; book.author=d.author||e.author||''; book.audioBase=base;
+  book.lang=d.lang||'mn';
+  // "whole": a recording of the entire chapter by a person (LibriVox), with
+  // no sentence timing — played as one piece and moved through by time.
   book.chapters=d.chapters.map(c=>({title:c.title,
-    blocks:c.blocks.map(b=>({sentences:b.sentences,audio:b.audio,marks:b.marks}))}));
+    blocks:c.blocks.map(b=>({sentences:b.sentences,audio:b.audio,marks:b.marks,
+                             whole:!!b.whole,secs:b.secs||0}))}));
+  $('player').lang=$('reader').lang=book.lang;
   if(!book.chapters.length) throw new Error('unavailable');
 }
 async function loadEpub(data,fb){
@@ -930,6 +939,7 @@ function playClip(clip,from,mine){
   return new Promise((res,rej)=>{
     let frame=null;
     const done=()=>{audioEl.removeEventListener('ended',ok);audioEl.removeEventListener('error',bad);
+      audioEl.removeEventListener('timeupdate',onTime);
       if(frame)cancelAnimationFrame(frame)};
     const ok=()=>{done();res()};
     // One retry before giving up: a dropped connection is far more common than
@@ -945,6 +955,17 @@ function playClip(clip,from,mine){
       }
       done(); rej(new Error('audio'));
     };
+    // A whole-chapter recording has no marks to follow. Its place, the saved
+    // position and the progress bar are kept from the audio's own time
+    // updates instead — these go on with the screen off, which is how a blind
+    // child listens; a screen-refresh timer stops then, and nothing was saved.
+    let lastWhole=-9;
+    const onTime=()=>{
+      if(!playing || (mine!==undefined && mine!==era) || clip.marks.length || !isWhole()) return;
+      const t=audioEl.currentTime;
+      if(Math.abs(t-lastWhole)>=2){ lastWhole=t; resumeT=t; paint(); }
+    };
+    audioEl.addEventListener('timeupdate',onTime);
     const tick=()=>{
       // Settle the promise rather than abandoning it. Leaving it unresolved
       // is what let an old loop sit waiting and then wake up later.
@@ -972,14 +993,39 @@ const sent=()=>blk().sentences[si]||'';
 const nextOf=(c,b)=>b+1<book.chapters[c].blocks.length?{c,b:b+1}
   :(c+1<book.chapters.length?{c:c+1,b:0}:null);
 const posKey=()=>'pos:'+book.title;
-const savePos=()=>put(posKey(),JSON.stringify({ci,bi,si}));
+// In a whole-chapter recording the place is a time, not a sentence. It is
+// kept here and saved with the position, so a child comes back to the minute
+// they stopped at, not the start of a thirty-minute chapter.
+let resumeT=0;
+const isWhole=()=>!!(book.chapters.length && chap() && blk() && blk().whole);
+const wholeT=()=>isWhole()?(playing&&audioEl.src?audioEl.currentTime:resumeT):0;
+const savePos=()=>put(posKey(),JSON.stringify({ci,bi,si,t:Math.round(wholeT())}));
 function loadPos(){
+  resumeT=0;
   try{ const s=JSON.parse(get(posKey(),'null'));
     if(s&&book.chapters[s.ci]){ ci=s.ci;
       bi=Math.min(s.bi||0,book.chapters[ci].blocks.length-1);
       si=Math.min(s.si||0,book.chapters[ci].blocks[bi].sentences.length-1);
+      if(book.chapters[ci].blocks[bi].whole) resumeT=s.t||0;
       return true; } }catch(e){}
   return false;
+}
+// Moving by time inside a whole-chapter recording: the arrows ten seconds, the
+// headset thirty. Past either end, into the next or previous part.
+function seekWhole(sec){
+  const dur=(isFinite(audioEl.duration)&&audioEl.duration)||blk().secs||0;
+  const cur=playing?audioEl.currentTime:resumeT, to=cur+sec;
+  if(to>=0 && (!dur || to<dur-1)){
+    if(playing) audioEl.currentTime=to; else { resumeT=to; paint(); }
+    return;
+  }
+  const prev=bi>0?{c:ci,b:bi-1}:(ci>0?{c:ci-1,b:book.chapters[ci-1].blocks.length-1}:null);
+  const nx= to<0 ? (cur>2?{c:ci,b:bi}:prev) : nextOf(ci,bi);
+  if(!nx){ earcon('bump'); return; }
+  const newCh=nx.c!==ci, was=playing; stop();
+  ci=nx.c; bi=nx.b; si=0; resumeT=0; paint();
+  if(newCh) media();
+  if(was) play();
 }
 // How far through the whole book, by characters: the nearest thing to time
 // without timing every paragraph. Counted once per book.
@@ -988,14 +1034,17 @@ function progressPct(){
   let p=progressOf.get(book.chapters);
   if(!p){
     p={start:[],total:0};
+    // Whole-chapter recordings are measured in seconds instead.
     book.chapters.forEach((ch,c)=>{ p.start[c]=[];
-      ch.blocks.forEach((bl,b)=>{ p.start[c][b]=p.total; p.total+=bl.sentences.join('').length; }); });
+      ch.blocks.forEach((bl,b)=>{ p.start[c][b]=p.total;
+        p.total+=bl.whole?(bl.secs||0):bl.sentences.join('').length; }); });
     progressOf.set(book.chapters,p);
   }
   if(!p.total) return 0;
   const bl=book.chapters[ci].blocks[bi];
   let at=p.start[ci][bi];
-  for(let k=0;k<si;k++) at+=(bl.sentences[k]||'').length;
+  if(bl.whole) at+=wholeT();
+  else for(let k=0;k<si;k++) at+=(bl.sentences[k]||'').length;
   return Math.min(100,Math.round(at/p.total*100));
 }
 function paint(upto){
@@ -1044,7 +1093,8 @@ async function play(){
       if(!playing||mine!==era) return;
       if(nx) getClip(nx.c,nx.b).catch(()=>{});
       const m=clip.marks.find(x=>x.s===si);
-      try{ await playClip(clip,m?m.t:0,mine); misses=0; firstMiss=null; }
+      const from=blk().whole?resumeT:(m?m.t:0);
+      try{ await playClip(clip,from,mine); misses=0; firstMiss=null; }
       catch(e){
         if(!playing||mine!==era) return;
         // One paragraph that will not play is skipped, so a single missing
@@ -1063,7 +1113,7 @@ async function play(){
       if(next) continueSeries(next); else announce('Ном дууслаа.');
       return;
     }
-    const newCh=nx.c!==ci; ci=nx.c; bi=nx.b; si=0;
+    const newCh=nx.c!==ci; ci=nx.c; bi=nx.b; si=0; resumeT=0;
     if(newCh){ announce(chap().title); media(); }
     const a=nextOf(ci,bi);
     dropClips([ck(ci,bi)].concat(a?[ck(a.c,a.b)]:[]));
@@ -1072,6 +1122,8 @@ async function play(){
 // Whether a paragraph has anything to say: a letter or a digit anywhere in it.
 const speakable=(c,b)=>/[\p{L}\p{N}]/u.test(book.chapters[c].blocks[b].sentences.join(''));
 function stop(){
+  // Keep the place in a whole-chapter recording before the audio is cleared.
+  if(playing && isWhole() && audioEl.currentTime>0) resumeT=audioEl.currentTime;
   playing=false; era++;
   try{ audioEl.pause(); audioEl.removeAttribute('src'); audioEl.load(); }catch(e){}
   $('lamp').classList.remove('lit');
@@ -1092,6 +1144,9 @@ function notReady(){
 }
 function step(d){
   if(!book.chapters.length) return;
+  // In a whole-chapter recording the arrows move ten seconds while it plays;
+  // stopped, they move between parts.
+  if(isWhole() && playing){ seekWhole(d*10); return; }
   let c=ci,b=bi,s=si+d;
   while(s<0){
     if(b>0){b--;s+=book.chapters[c].blocks[b].sentences.length}
@@ -1108,10 +1163,10 @@ function step(d){
   // and leave the voice alone, rather than restarting the sentence.
   if(c===ci && b===bi && s===si){ earcon('bump'); return; }
   const was=playing; stop();
-  ci=c;bi=b;si=s; paint(); if(was) play();
+  ci=c;bi=b;si=s; resumeT=0; paint(); if(was) play();
 }
 function jump(i){
-  stop(); ci=i;bi=0;si=0; paint();
+  stop(); ci=i;bi=0;si=0; resumeT=0; paint();
   show(mode==='read'?'reader':'player'); buildRead();
   announce(chap().title); play();
 }
@@ -1142,6 +1197,7 @@ function media(){
 const CHARS_PER_SEC=13;
 function skip(seconds){
   if(!book.chapters.length) return;
+  if(isWhole()){ seekWhole(seconds); return; }    // real time, not estimated
   const d=seconds<0?-1:1;
   const blocks=c=>book.chapters[c].blocks;
   const sents=(c,b)=>blocks(c)[b].sentences;
@@ -1793,7 +1849,7 @@ async function openBook(e, opts={}){
   dropClips();
   book.entry=e; book.chapters=[]; book.audioBase=null;
   book.title=''; book.author='';
-  ci=0; bi=0; si=0;
+  ci=0; bi=0; si=0; resumeT=0;
   $('shelfNote').classList.remove('hidden');
   $('shelfNote').textContent='Ном нээж байна…';
   try{
@@ -1909,7 +1965,7 @@ function whereAmI(){
 }
 
 function openAt(fromStart){
-  if(fromStart){ ci=0; bi=0; si=0; }
+  if(fromStart){ ci=0; bi=0; si=0; resumeT=0; }
   paint();
   show(mode==='read'?'reader':'player');
   media();
@@ -1975,7 +2031,7 @@ function turn(d){
     earcon('bump'); announce(d>0?'Ном дууслаа.':'Эхлэл'); return;
   }
   const was=playing; stop();
-  ci=t; bi=0; si=0; paint(); buildRead();
+  ci=t; bi=0; si=0; resumeT=0; paint(); buildRead();
   announceParts([(ci+1)+'-р бүлэг', chap().title]);
   $('readText').scrollTop=0;
   if(was) play();
@@ -2112,7 +2168,7 @@ document.addEventListener('pointerdown',firstTouch,true);
 
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-10-02-b');
+console.log('Gerel build 2026-10-02-c');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   const typing=/^(INPUT|TEXTAREA)$/.test(e.target.tagName||'');
