@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-10-02-a">
+<meta name="gerel-build" content="2026-10-02-b">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -483,6 +483,7 @@ const SHELF_STYLE={
   'Шүлэг':['#0E7C86','quill'],             'Хөгжилтэй түүхүүд':['#6D3FB8','laugh'],
   'Адал явдал':['#C2410C','compass'],       'Байгаль, амьтад':['#128A54','paw'],
   'Дэлхийн шилдэг зохиол':['#A3237A','globe'],
+  'Том хүүхдэд':['#BE185D','books'],       // for older children (12+), 2 Oct
   'Миний ном':['#242C5C','star'],          'Богино ном':['#4338CA','moon'],
 };
 // A big simple shape is found faster than a word by a child who sees a
@@ -508,6 +509,9 @@ const SHELF_ICONS={
   moon:svg('<path d="M42 10a22 22 0 1 0 12 30A18 18 0 0 1 42 10z"/>'
     +'<path d="M48 18l1.5 3.5L53 23l-3.5 1.5L48 28l-1.5-3.5L43 23l3.5-1.5z" fill="currentColor"/>'),
   book:svg('<path d="M32 18c-5-4-11-6-19-6v34c8 0 14 2 19 6c5-4 11-6 19-6V12c-8 0-14 2-19 6z"/><path d="M32 18v34"/>'),
+  // A stack of three thick books: bigger reading, for older children.
+  books:svg('<rect x="10" y="40" width="44" height="12" rx="3"/><rect x="14" y="27" width="38" height="12" rx="3"/>'
+    +'<rect x="9" y="14" width="40" height="12" rx="3"/><path d="M17 46h24"/><path d="M21 33h22"/><path d="M16 20h24"/>'),
 };
 // Slower than normal turned out to sound dragged rather than calm, so the
 // choice is normal or faster.
@@ -1405,9 +1409,12 @@ function chooseMode(m){
 }
 $('doorBoth').addEventListener('click',()=>chooseMode('both'));
 
+// Only shelves meant for children. A shelf marked forChildren:false — such as
+// "Хасагдсан", where books taken off on 2 Oct wait — must not leak its books
+// into "random", "Богино ном", favourites or Continue.
 const allBooks=()=>{
   const m=new Map();
-  (catalog?.shelves||[]).forEach(g=>(g.books||[]).forEach(b=>{
+  (catalog?.shelves||[]).filter(g=>g.forChildren!==false).forEach(g=>(g.books||[]).forEach(b=>{
     if(b&&b.title&&b.file&&!m.has(b.file)) m.set(b.file,b); }));
   return [...m.values()];
 };
@@ -2105,7 +2112,7 @@ document.addEventListener('pointerdown',firstTouch,true);
 
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-10-02-a');
+console.log('Gerel build 2026-10-02-b');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   const typing=/^(INPUT|TEXTAREA)$/.test(e.target.tagName||'');
