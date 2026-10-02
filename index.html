@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-10-02-f">
+<meta name="gerel-build" content="2026-10-02-g">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -830,7 +830,8 @@ async function loadVoiced(e){
   // starts ("paras") and the time of every word, so the reader follows it.
   book.chapters=d.chapters.map(c=>({title:c.title,
     blocks:c.blocks.map(b=>({sentences:b.sentences,audio:b.audio,marks:b.marks,
-                             whole:!!b.whole,secs:b.secs||0,paras:b.paras||null}))}));
+                             whole:!!b.whole,secs:b.secs||0,paras:b.paras||null,
+                             start:b.start||0,end:b.end||0}))}));
   $('player').lang=$('reader').lang=book.lang;
   if(!book.chapters.length) throw new Error('unavailable');
 }
@@ -898,7 +899,8 @@ function getClip(c,b){
   let p;
   if(book.audioBase&&blk.audio){
     p=Promise.resolve({url:book.audioBase+'/'+blk.audio,
-      marks:(blk.marks||[]).map(m=>({s:m.s,c:m.c,l:m.l,t:m.t}))});
+      marks:(blk.marks||[]).map(m=>({s:m.s,c:m.c,l:m.l,t:m.t})),
+      end:blk.end||0});
   } else if(live()){ p=synthLive(blk.sentences); }
   else { p=Promise.reject(new Error('unavailable')); }
   clips.set(k,p); return p;
@@ -971,6 +973,9 @@ function playClip(clip,from,mine){
     const onTime=()=>{
       if(!playing || (mine!==undefined && mine!==era) || !isWhole()) return;
       const t=audioEl.currentTime; resumeT=t;
+      // The story is over where "end" says: what follows in the recording is
+      // the LibriVox closing, which is not played.
+      if(clip.end && t>=clip.end){ audioEl.pause(); ok(); return; }
       if(Math.abs(t-lastWhole)>=2){ lastWhole=t;
         const m=markAt(clip.marks,t); if(m) si=m.s;
         paint(); }
@@ -1030,15 +1035,16 @@ function loadPos(){
 // Moving by time inside a whole-chapter recording: the arrows ten seconds, the
 // headset thirty. Past either end, into the next or previous part.
 function seekWhole(sec){
-  const dur=(isFinite(audioEl.duration)&&audioEl.duration)||blk().secs||0;
-  const cur=playing?audioEl.currentTime:resumeT, to=cur+sec;
-  if(to>=0 && (!dur || to<dur-1)){
+  const lo=blk().start||0;
+  const dur=blk().end||(isFinite(audioEl.duration)&&audioEl.duration)||blk().secs||0;
+  const cur=Math.max(lo,playing?audioEl.currentTime:resumeT), to=cur+sec;
+  if(to>=lo && (!dur || to<dur-1)){
     if(playing) audioEl.currentTime=to;
     else { resumeT=to; const m=markAt(blk().marks||[],to); if(m) si=m.s; paint(); }
     return;
   }
   const prev=bi>0?{c:ci,b:bi-1}:(ci>0?{c:ci-1,b:book.chapters[ci-1].blocks.length-1}:null);
-  const nx= to<0 ? (cur>2?{c:ci,b:bi}:prev) : nextOf(ci,bi);
+  const nx= to<lo ? (cur>lo+2?{c:ci,b:bi}:prev) : nextOf(ci,bi);
   if(!nx){ earcon('bump'); return; }
   const newCh=nx.c!==ci, was=playing; stop();
   ci=nx.c; bi=nx.b; si=0; resumeT=0; paint();
@@ -1055,13 +1061,13 @@ function progressPct(){
     // Whole-chapter recordings are measured in seconds instead.
     book.chapters.forEach((ch,c)=>{ p.start[c]=[];
       ch.blocks.forEach((bl,b)=>{ p.start[c][b]=p.total;
-        p.total+=bl.whole?(bl.secs||0):bl.sentences.join('').length; }); });
+        p.total+=bl.whole?((bl.end||bl.secs||0)-(bl.start||0)):bl.sentences.join('').length; }); });
     progressOf.set(book.chapters,p);
   }
   if(!p.total) return 0;
   const bl=book.chapters[ci].blocks[bi];
   let at=p.start[ci][bi];
-  if(bl.whole) at+=wholeT();
+  if(bl.whole) at+=Math.max(0,wholeT()-(bl.start||0));
   else for(let k=0;k<si;k++) at+=(bl.sentences[k]||'').length;
   return Math.min(100,Math.round(at/p.total*100));
 }
@@ -1111,7 +1117,9 @@ async function play(){
       if(!playing||mine!==era) return;
       if(nx) getClip(nx.c,nx.b).catch(()=>{});
       const m=clip.marks.find(x=>x.s===si);
-      const from=blk().whole?resumeT:(m?m.t:0);
+      // A LibriVox part starts where its story starts ("start"), after the
+      // recording's own preamble.
+      const from=blk().whole?Math.max(resumeT,blk().start||0):(m?m.t:0);
       try{ await playClip(clip,from,mine); misses=0; firstMiss=null; }
       catch(e){
         if(!playing||mine!==era) return;
@@ -2213,7 +2221,7 @@ document.addEventListener('pointerdown',firstTouch,true);
 
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-10-02-f');
+console.log('Gerel build 2026-10-02-g');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   const typing=/^(INPUT|TEXTAREA)$/.test(e.target.tagName||'');

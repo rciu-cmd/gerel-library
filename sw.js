@@ -72,9 +72,30 @@ self.addEventListener('fetch', e => {
 
   const url = new URL(req.url);
 
+  // Covers can be redrawn — all of them were on 2 Oct — so they are asked for
+  // first and the kept copy is brought up to date. Served cache-first, a kept
+  // book showed its old cover for ever. The cache is for when there is no
+  // signal.
+  if (/\/covers\//.test(url.pathname)) {
+    e.respondWith((async () => {
+      try {
+        const res = await fetch(req);
+        if (res && res.ok) {
+          const c = await caches.open(BOOKS);
+          if (await c.match(req, { ignoreVary: true })) c.put(req, res.clone()).catch(() => {});
+        }
+        return res;
+      } catch (err) {
+        const hit = await caches.match(req, { ignoreVary: true });
+        return hit || new Response('', { status: 504 });
+      }
+    })());
+    return;
+  }
+
   // Audio and books a child has kept: cache first, because the whole point
   // is that they play with no connection.
-  if (/\/(audio|books|braille|covers|speech)\//.test(url.pathname)) {
+  if (/\/(audio|books|braille|speech)\//.test(url.pathname)) {
     e.respondWith((async () => {
       const hit = await caches.match(req, { ignoreVary: true });
       if (hit) return partial(req, hit);
