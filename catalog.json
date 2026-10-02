@@ -14,7 +14,12 @@
      "id": "altan-gurgaldai-16d502",
      "cover": "covers/altan-gurgaldai-16d502.jpg",
      "braille": "braille/altan-gurgaldai-16d502.brf",
-     "braillePages": 30
+     "braillePages": 30,
+     "twins": [
+      {
+       "id": "en-andersen-nightingale"
+      }
+     ]
     },
     {
      "title": "АЛТАН ҮСТ ОХИН",
@@ -168,7 +173,12 @@
      "id": "doloon-hon-heree-18bc03",
      "cover": "covers/doloon-hon-heree-18bc03.jpg",
      "braille": "braille/doloon-hon-heree-18bc03.brf",
-     "braillePages": 8
+     "braillePages": 8,
+     "twins": [
+      {
+       "id": "en-grimm-seven-ravens"
+      }
+     ]
     },
     {
      "title": "ДОМОГ ҮЛГЭРИЙН ЗҮЙЛС",
@@ -432,7 +442,12 @@
      "id": "mergen-emch-38aeb4",
      "cover": "covers/mergen-emch-38aeb4.jpg",
      "braille": "braille/mergen-emch-38aeb4.brf",
-     "braillePages": 6
+     "braillePages": 6,
+     "twins": [
+      {
+       "id": "en-grimm-doctor-knowall"
+      }
+     ]
     },
     {
      "title": "МЭХТ САРМАГЧИН",
@@ -476,7 +491,12 @@
      "id": "nohoi-boljmor-horyn-ulger-b8f34e",
      "cover": "covers/nohoi-boljmor-horyn-ulger-b8f34e.jpg",
      "braille": "braille/nohoi-boljmor-horyn-ulger-b8f34e.brf",
-     "braillePages": 13
+     "braillePages": 13,
+     "twins": [
+      {
+       "id": "en-grimm-dog-and-sparrow"
+      }
+     ]
     },
     {
      "title": "НУУЦ ТОВЧООНЫ НУУЦУУДААС",
@@ -641,7 +661,25 @@
      "id": "ulaan-malgait-8ebad1",
      "cover": "covers/ulaan-malgait-8ebad1.jpg",
      "braille": "braille/ulaan-malgait-8ebad1.brf",
-     "braillePages": 117
+     "braillePages": 117,
+     "twins": [
+      {
+       "id": "en-perrault-red-riding-hood",
+       "ch": 0
+      },
+      {
+       "id": "en-perrault-cinderella",
+       "ch": 1
+      },
+      {
+       "id": "en-perrault-puss-in-boots",
+       "ch": 3
+      },
+      {
+       "id": "en-perrault-sleeping-beauty",
+       "ch": 5
+      }
+     ]
     },
     {
      "title": "ХОЁР ШАГАЙ",
@@ -674,7 +712,12 @@
      "id": "hulgaich-yavsan-eriin-domog-d4d54f",
      "cover": "covers/hulgaich-yavsan-eriin-domog-d4d54f.jpg",
      "braille": "braille/hulgaich-yavsan-eriin-domog-d4d54f.brf",
-     "braillePages": 14
+     "braillePages": 14,
+     "twins": [
+      {
+       "id": "en-grimm-master-thief"
+      }
+     ]
     },
     {
      "title": "ХҮН НИЙГМИЙН ТУХАЙ ҮЛГЭРҮҮД",
@@ -773,7 +816,12 @@
      "id": "shaaluu-khuu-maugli-1-r-kipling-ef0fe2",
      "cover": "covers/shaaluu-khuu-maugli-1-r-kipling-ef0fe2.jpg",
      "braille": "braille/shaaluu-khuu-maugli-1-r-kipling-ef0fe2.brf",
-     "braillePages": 122
+     "braillePages": 122,
+     "twins": [
+      {
+       "id": "en-jungle-book-mowgli"
+      }
+     ]
     },
     {
      "title": "ШААЛУУ ХҮҮ МАУГЛИ - 2",
@@ -784,7 +832,12 @@
      "id": "shaaluu-khuu-maugli-2-r-kipling-d8cbe3",
      "cover": "covers/shaaluu-khuu-maugli-2-r-kipling-d8cbe3.jpg",
      "braille": "braille/shaaluu-khuu-maugli-2-r-kipling-d8cbe3.brf",
-     "braillePages": 46
+     "braillePages": 46,
+     "twins": [
+      {
+       "id": "en-jungle-book-mowgli"
+      }
+     ]
     },
     {
      "title": "ШААЛУУ ХҮҮ МАУГЛИ - 3",
@@ -795,7 +848,12 @@
      "id": "shaaluu-khuu-maugli-3-r-kipling-f386ee",
      "cover": "covers/shaaluu-khuu-maugli-3-r-kipling-f386ee.jpg",
      "braille": "braille/shaaluu-khuu-maugli-3-r-kipling-f386ee.brf",
-     "braillePages": 106
+     "braillePages": 106,
+     "twins": [
+      {
+       "id": "en-second-jungle-book-mowgli"
+      }
+     ]
     },
     {
      "title": "ШААЛУУ ХҮҮ МАУГЛИ - 4",
@@ -806,7 +864,12 @@
      "id": "shaaluu-huu-maugli-4-a64758",
      "cover": "covers/shaaluu-huu-maugli-4-a64758.jpg",
      "braille": "braille/shaaluu-huu-maugli-4-a64758.brf",
-     "braillePages": 48
+     "braillePages": 48,
+     "twins": [
+      {
+       "id": "en-second-jungle-book-mowgli"
+      }
+     ]
     },
     {
      "title": "ШААЛУУ ХҮҮ МАУГЛИ - 5",
@@ -817,7 +880,12 @@
      "id": "shaaluu-khuu-maugli-5-r-kipling-ba4120",
      "cover": "covers/shaaluu-khuu-maugli-5-r-kipling-ba4120.jpg",
      "braille": "braille/shaaluu-khuu-maugli-5-r-kipling-ba4120.brf",
-     "braillePages": 61
+     "braillePages": 61,
+     "twins": [
+      {
+       "id": "en-second-jungle-book-mowgli"
+      }
+     ]
     },
     {
      "title": "ШААЛУУ ХҮҮ МАУГЛИ - 6",
@@ -828,7 +896,12 @@
      "id": "shaaluu-huu-maugli-6-3513e1",
      "cover": "covers/shaaluu-huu-maugli-6-3513e1.jpg",
      "braille": "braille/shaaluu-huu-maugli-6-3513e1.brf",
-     "braillePages": 38
+     "braillePages": 38,
+     "twins": [
+      {
+       "id": "en-second-jungle-book-mowgli"
+      }
+     ]
     },
     {
      "title": "ШАРГА ДААГА",
@@ -927,7 +1000,12 @@
      "id": "erhiin-chinee-huu-83308d",
      "cover": "covers/erhiin-chinee-huu-83308d.jpg",
      "braille": "braille/erhiin-chinee-huu-83308d.brf",
-     "braillePages": 19
+     "braillePages": 19,
+     "twins": [
+      {
+       "id": "en-grimm-thumbling"
+      }
+     ]
     },
     {
      "title": "ЯДУУ ТЭЭРЭМЧИН, МУУР ХОЁР",
@@ -938,7 +1016,12 @@
      "id": "yaduu-teeremchin-muur-hor-5360d4",
      "cover": "covers/yaduu-teeremchin-muur-hor-5360d4.jpg",
      "braille": "braille/yaduu-teeremchin-muur-hor-5360d4.brf",
-     "braillePages": 12
+     "braillePages": 12,
+     "twins": [
+      {
+       "id": "en-grimm-poor-millers-boy"
+      }
+     ]
     },
     {
      "title": "ҮЛГЭР",
@@ -1362,7 +1445,12 @@
      "id": "mergen-emch-38aeb4",
      "cover": "covers/mergen-emch-38aeb4.jpg",
      "braille": "braille/mergen-emch-38aeb4.brf",
-     "braillePages": 6
+     "braillePages": 6,
+     "twins": [
+      {
+       "id": "en-grimm-doctor-knowall"
+      }
+     ]
     },
     {
      "title": "МЭХТ САРМАГЧИН",
@@ -1516,7 +1604,25 @@
      "id": "ulaan-malgait-8ebad1",
      "cover": "covers/ulaan-malgait-8ebad1.jpg",
      "braille": "braille/ulaan-malgait-8ebad1.brf",
-     "braillePages": 117
+     "braillePages": 117,
+     "twins": [
+      {
+       "id": "en-perrault-red-riding-hood",
+       "ch": 0
+      },
+      {
+       "id": "en-perrault-cinderella",
+       "ch": 1
+      },
+      {
+       "id": "en-perrault-puss-in-boots",
+       "ch": 3
+      },
+      {
+       "id": "en-perrault-sleeping-beauty",
+       "ch": 5
+      }
+     ]
     },
     {
      "title": "УРАН ҮСНИЙХНИЙ ГЭР БҮЛИЙН НАМТАР",
@@ -1692,7 +1798,12 @@
      "id": "yamh-ohin-9715ec",
      "cover": "covers/yamh-ohin-9715ec.jpg",
      "braille": "braille/yamh-ohin-9715ec.brf",
-     "braillePages": 40
+     "braillePages": 40,
+     "twins": [
+      {
+       "id": "en-andersen-thumbelina"
+      }
+     ]
     },
     {
      "title": "ҮҮЛЭНХЭН",
@@ -2480,7 +2591,12 @@
      "id": "bingo-2dff2b",
      "cover": "covers/bingo-2dff2b.jpg",
      "braille": "braille/bingo-2dff2b.brf",
-     "braillePages": 43
+     "braillePages": 43,
+     "twins": [
+      {
+       "id": "en-seton-bingo"
+      }
+     ]
     },
     {
      "title": "БУУРАЛ АНЧНЫ ТЭМДЭГЛЭЛ",
@@ -2590,7 +2706,12 @@
      "id": "zurgaan-napoleon-4a0fe3",
      "cover": "covers/zurgaan-napoleon-4a0fe3.jpg",
      "braille": "braille/zurgaan-napoleon-4a0fe3.brf",
-     "braillePages": 46
+     "braillePages": 46,
+     "twins": [
+      {
+       "id": "en-holmes-six-napoleons"
+      }
+     ]
     },
     {
      "title": "КАЛЛИСТО ГАРАГ - 2",
@@ -3669,7 +3790,13 @@
      "id": "ah-duu-arvan-hor-951bc6",
      "cover": "covers/ah-duu-arvan-hor-951bc6.jpg",
      "braille": "braille/ah-duu-arvan-hor-951bc6.brf",
-     "braillePages": 15
+     "braillePages": 15,
+     "twins": [
+      {
+       "id": "en-grimm-twelve-brothers",
+       "ch": 0
+      }
+     ]
     },
     {
      "title": "БАГА НАС",
@@ -3757,7 +3884,12 @@
      "id": "dogshin-araatan-df3973",
      "cover": "covers/dogshin-araatan-df3973.jpg",
      "braille": "braille/dogshin-araatan-df3973.brf",
-     "braillePages": 188
+     "braillePages": 188,
+     "twins": [
+      {
+       "id": "en-abysmal-brute"
+      }
+     ]
     },
     {
      "title": "ЕВГЕНИЙ ОНЕГИН",
@@ -3933,7 +4065,12 @@
      "id": "holmsyn-suulchiin-hereg-e12a50",
      "cover": "covers/holmsyn-suulchiin-hereg-e12a50.jpg",
      "braille": "braille/holmsyn-suulchiin-hereg-e12a50.brf",
-     "braillePages": 45
+     "braillePages": 45,
+     "twins": [
+      {
+       "id": "en-holmes-final-problem"
+      }
+     ]
     },
     {
      "title": "ХООСОН БАЙШИНД БОЛСОН ХЭРЭГ",
@@ -3944,7 +4081,12 @@
      "id": "hooson-baishind-bolson-hereg-4d9d5e",
      "cover": "covers/hooson-baishind-bolson-hereg-4d9d5e.jpg",
      "braille": "braille/hooson-baishind-bolson-hereg-4d9d5e.brf",
-     "braillePages": 63
+     "braillePages": 63,
+     "twins": [
+      {
+       "id": "en-holmes-empty-house"
+      }
+     ]
     },
     {
      "title": "ХОРИН ЗУРГАА БА ГАНЦ",
@@ -4470,7 +4612,10 @@
      "level": 3,
      "source": "librivox",
      "credit": "Read for LibriVox by KHand. Public domain.",
-     "pair": "БИНГО"
+     "pair": "БИНГО",
+     "twin": {
+      "id": "bingo-2dff2b"
+     }
     },
     {
      "title": "Cinderella",
@@ -4483,7 +4628,11 @@
      "level": 3,
      "source": "librivox",
      "credit": "Read for LibriVox by Phil Chenevert. Public domain.",
-     "pair": "УЛААН МАЛГАЙТ"
+     "pair": "УЛААН МАЛГАЙТ",
+     "twin": {
+      "id": "ulaan-malgait-8ebad1",
+      "ch": 1
+     }
     },
     {
      "title": "Doctor Knowall",
@@ -4496,7 +4645,10 @@
      "level": 3,
      "source": "librivox",
      "credit": "Read for LibriVox by Cliff Stone. Public domain.",
-     "pair": "МЭРГЭН ЭМЧ"
+     "pair": "МЭРГЭН ЭМЧ",
+     "twin": {
+      "id": "mergen-emch-38aeb4"
+     }
     },
     {
      "title": "Little Red Riding-Hood",
@@ -4509,7 +4661,11 @@
      "level": 3,
      "source": "librivox",
      "credit": "Read for LibriVox by Phil Chenevert. Public domain.",
-     "pair": "УЛААН МАЛГАЙТ"
+     "pair": "УЛААН МАЛГАЙТ",
+     "twin": {
+      "id": "ulaan-malgait-8ebad1",
+      "ch": 0
+     }
     },
     {
      "title": "Puss in Boots",
@@ -4522,7 +4678,11 @@
      "level": 3,
      "source": "librivox",
      "credit": "Read for LibriVox by Phil Chenevert. Public domain.",
-     "pair": "УЛААН МАЛГАЙТ"
+     "pair": "УЛААН МАЛГАЙТ",
+     "twin": {
+      "id": "ulaan-malgait-8ebad1",
+      "ch": 3
+     }
     },
     {
      "title": "The Dog and the Sparrow",
@@ -4535,7 +4695,10 @@
      "level": 3,
      "source": "librivox",
      "credit": "Read for LibriVox by Cliff Stone. Public domain.",
-     "pair": "НОХОЙ, БОЛЖМОР ХОЁРЫН ҮЛГЭР"
+     "pair": "НОХОЙ, БОЛЖМОР ХОЁРЫН ҮЛГЭР",
+     "twin": {
+      "id": "nohoi-boljmor-horyn-ulger-b8f34e"
+     }
     },
     {
      "title": "The Jungle Book: Mowgli Stories",
@@ -4548,7 +4711,10 @@
      "level": 3,
      "source": "librivox",
      "credit": "Read for LibriVox by Meredith Hughes. Public domain.",
-     "pair": "ШААЛУУ ХҮҮ МАУГЛИ"
+     "pair": "ШААЛУУ ХҮҮ МАУГЛИ",
+     "twin": {
+      "id": "shaaluu-khuu-maugli-1-r-kipling-ef0fe2"
+     }
     },
     {
      "title": "The Master Thief",
@@ -4561,7 +4727,10 @@
      "level": 3,
      "source": "librivox",
      "credit": "Read for LibriVox by DonaldH. Public domain.",
-     "pair": "ХУЛГАЙЧ ЯВСАН ЭРИЙН ДОМОГ"
+     "pair": "ХУЛГАЙЧ ЯВСАН ЭРИЙН ДОМОГ",
+     "twin": {
+      "id": "hulgaich-yavsan-eriin-domog-d4d54f"
+     }
     },
     {
      "title": "The Nightingale",
@@ -4574,7 +4743,10 @@
      "level": 3,
      "source": "librivox",
      "credit": "Read for LibriVox by Kristin G.. Public domain.",
-     "pair": "АЛТАН ГУРГАЛДАЙ"
+     "pair": "АЛТАН ГУРГАЛДАЙ",
+     "twin": {
+      "id": "altan-gurgaldai-16d502"
+     }
     },
     {
      "title": "The Poor Miller's Boy and the Cat",
@@ -4587,7 +4759,10 @@
      "level": 3,
      "source": "librivox",
      "credit": "Read for LibriVox by Melvin Lee. Public domain.",
-     "pair": "ЯДУУ ТЭЭРЭМЧИН, МУУР ХОЁР"
+     "pair": "ЯДУУ ТЭЭРЭМЧИН, МУУР ХОЁР",
+     "twin": {
+      "id": "yaduu-teeremchin-muur-hor-5360d4"
+     }
     },
     {
      "title": "The Second Jungle Book: Mowgli Stories",
@@ -4600,7 +4775,10 @@
      "level": 3,
      "source": "librivox",
      "credit": "Read for LibriVox by Lucy Burgoyne (1950-2014), Magdalena, Matthew_J_Almeida, Reynard T. Fox, wendy. Public domain.",
-     "pair": "ШААЛУУ ХҮҮ МАУГЛИ"
+     "pair": "ШААЛУУ ХҮҮ МАУГЛИ",
+     "twin": {
+      "id": "shaaluu-khuu-maugli-3-r-kipling-f386ee"
+     }
     },
     {
      "title": "The Seven Ravens",
@@ -4613,7 +4791,10 @@
      "level": 3,
      "source": "librivox",
      "credit": "Read for LibriVox by Cliff Stone. Public domain.",
-     "pair": "ДОЛООН ХОН ХЭРЭЭ"
+     "pair": "ДОЛООН ХОН ХЭРЭЭ",
+     "twin": {
+      "id": "doloon-hon-heree-18bc03"
+     }
     },
     {
      "title": "The Sleeping Beauty in the Wood",
@@ -4626,7 +4807,11 @@
      "level": 3,
      "source": "librivox",
      "credit": "Read for LibriVox by Phil Chenevert. Public domain.",
-     "pair": "УЛААН МАЛГАЙТ"
+     "pair": "УЛААН МАЛГАЙТ",
+     "twin": {
+      "id": "ulaan-malgait-8ebad1",
+      "ch": 5
+     }
     },
     {
      "title": "The Twelve Brothers",
@@ -4639,7 +4824,11 @@
      "level": 3,
      "source": "librivox",
      "credit": "Read for LibriVox by Rogthey. Public domain.",
-     "pair": "АХ ДҮҮ АРВАН ХОЁР"
+     "pair": "АХ ДҮҮ АРВАН ХОЁР",
+     "twin": {
+      "id": "ah-duu-arvan-hor-951bc6",
+      "ch": 0
+     }
     },
     {
      "title": "Thumbelina",
@@ -4652,7 +4841,10 @@
      "level": 3,
      "source": "librivox",
      "credit": "Read for LibriVox by Rapunzelina. Public domain.",
-     "pair": "ЯМХ ОХИН"
+     "pair": "ЯМХ ОХИН",
+     "twin": {
+      "id": "yamh-ohin-9715ec"
+     }
     },
     {
      "title": "Thumbling",
@@ -4665,7 +4857,10 @@
      "level": 3,
      "source": "librivox",
      "credit": "Read for LibriVox by Patrick Saville. Public domain.",
-     "pair": "ЭРХИЙН ЧИНЭЭ ХҮҮ"
+     "pair": "ЭРХИЙН ЧИНЭЭ ХҮҮ",
+     "twin": {
+      "id": "erhiin-chinee-huu-83308d"
+     }
     },
     {
      "title": "Alice's Adventures in Wonderland",
@@ -4702,7 +4897,10 @@
      "level": 4,
      "source": "librivox",
      "credit": "Read for LibriVox by Warren Kati. Public domain.",
-     "pair": "ДОГШИН АРААТАН"
+     "pair": "ДОГШИН АРААТАН",
+     "twin": {
+      "id": "dogshin-araatan-df3973"
+     }
     },
     {
      "title": "The Adventure of the Empty House",
@@ -4715,7 +4913,10 @@
      "level": 4,
      "source": "librivox",
      "credit": "Read for LibriVox by David Clarke. Public domain.",
-     "pair": "ХООСОН БАЙШИНД БОЛСОН ХЭРЭГ"
+     "pair": "ХООСОН БАЙШИНД БОЛСОН ХЭРЭГ",
+     "twin": {
+      "id": "hooson-baishind-bolson-hereg-4d9d5e"
+     }
     },
     {
      "title": "The Adventure of the Six Napoleons",
@@ -4728,7 +4929,10 @@
      "level": 4,
      "source": "librivox",
      "credit": "Read for LibriVox by David Clarke. Public domain.",
-     "pair": "ЗУРГААН НАПОЛЕОН"
+     "pair": "ЗУРГААН НАПОЛЕОН",
+     "twin": {
+      "id": "zurgaan-napoleon-4a0fe3"
+     }
     },
     {
      "title": "The Final Problem",
@@ -4741,7 +4945,10 @@
      "level": 4,
      "source": "librivox",
      "credit": "Read for LibriVox by David Clarke. Public domain.",
-     "pair": "ХОЛМСЫН СҮҮЛЧИЙН ХЭРЭГ"
+     "pair": "ХОЛМСЫН СҮҮЛЧИЙН ХЭРЭГ",
+     "twin": {
+      "id": "holmsyn-suulchiin-hereg-e12a50"
+     }
     },
     {
      "title": "The Wonderful Wizard of Oz",
@@ -5083,6 +5290,9 @@
  ],
  "audioBase": "https://audio.gerelnom.com",
  "credits": [
-  "Англи хэлний номуудыг LibriVox (librivox.org) сайтын сайн дурын уншигчид уншсан. Нийтийн өмч."
+  "Гэрэл номын санг Их Өргөө Ротари клуб (Ротари 3450-р дүүрэг), Тайпей Паспорт Ротари клуб (Ротари 3522-р дүүрэг) дэмжин хэрэгжүүлж байна.",
+  "Монгол номуудыг Microsoft Azure-ын Батаа, Есүй дуу хоолойгоор уншуулав. Microsoft-ын тэтгэлгээр.",
+  "Англи хэлний номуудыг LibriVox (librivox.org) сайтын сайн дурын уншигчид уншсан. Нийтийн өмч.",
+  "Англи номын бичвэрийг Project Gutenberg (gutenberg.org)-аас авав."
  ]
 }

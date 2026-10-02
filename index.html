@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-10-02-h">
+<meta name="gerel-build" content="2026-10-02-i">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -404,6 +404,7 @@
       <button class="mini" id="toReadBtn">Том үсгээр</button>
       <button class="mini" id="speedBtn">Хурд 1×</button>
       <button class="mini" id="restartBtn">Эхнээс нь</button>
+      <button class="mini hidden" id="twinBtn">Монголоор</button>
     </div>
     <div id="playerStatus" class="note hidden"></div>
   </div>
@@ -833,7 +834,7 @@ async function loadVoiced(e){
                              whole:!!b.whole,secs:b.secs||0,paras:b.paras||null,
                              start:b.start||0,end:b.end||0}))}));
   $('player').lang=$('reader').lang=book.lang;
-  if(book.lang!=='en') markJunk(book.chapters);
+  if(book.lang!=='en') markJunk(book.chapters, e.title||book.title);
   if(!book.chapters.length) throw new Error('unavailable');
 }
 // What a child should not have to sit through: the contents pages of the
@@ -849,12 +850,26 @@ const JUNK={
   colophon:/^[^\p{L}\p{N}]*(хавтасны (зураг|загвар)|хэвлэлийн (хуудас|газар|тоо|эх)|isbn|цаасны хэмжээ|хэвлэхэд|хэвлэсэн тоо|хянан тохиолдуулсан|зах\.|захиалгын|тираж|компьютерийн|эх бэлтгэсэн|©)/iu,
   editor:/^[^\p{L}\p{N}]*(ерөнхий |техник |хянан |уран сайхны |зургийн )?редактор(\s|:|$)/iu,
   head:/хэвлэн нийтлэлийн мэдээлэл/iu,
+  // A chapter titled with the printer's heading — "“Улсын хэвлэлийн газар”
+  // Улаанбаатар хотноо 1987 онд эрхлэн хэвлүүлсэн …" — over a real story.
+  pubTitle:/эрхлэн хэвлүүлсэн|яамны хэвлэл|хэвлэлийн газар”|оны хэвлэл|хэвлэн нийтлэлийн мэдээлэл/iu,
+  initial:/^\p{Lu}\.\s/u,
+  // After the first chapter, a heading naming another book's printing is that
+  // book's foreword or back matter, cut along with the story (САЙХАН БҮСГҮЙ
+  // carried "…“ЗҮРХНИЙ ХАРАНГА” номын ӨМНӨХ ҮГ").
+  source:/(эрхлэн хэвлүүлсэн|оны хэвлэл).*номын/iu,
 };
-function markJunk(chapters){
+function markJunk(chapters, bookTitle){
   const txt=b=>(b.sentences||[]).join(' ').trim();
   chapters.forEach(ch=>{
-    if(JUNK.contents.test(ch.title||'') && ch.blocks.length &&
-       ch.blocks.filter(b=>txt(b).length<=80).length>=0.8*ch.blocks.length){
+    const L=ch.blocks.map(txt), share=f=>L.filter(f).length/(L.length||1);
+    // A contents list says so in its title, or is an anthology's list of
+    // "Ц. Дамдинсүрэн. Монгол нутаг" lines (ЯМХ ОХИН) under another title.
+    // Never a chapter with a real paragraph in it (БУХ, ХУЦ, УХНА ГУРАВ is its
+    // story under a heading that ends "номын Гарчиг"), nor a book's only one.
+    if(L.length && chapters.length>1 && L.every(t=>t.length<=200)
+       && ((JUNK.contents.test(ch.title||'') && share(t=>t.length<=120)>=0.8)
+        || (L.length>=20 && share(t=>t.length<=60)>=0.9 && share(t=>JUNK.initial.test(t))>=0.3))){
       ch.hidden=true; ch.blocks.forEach(b=>{b.skip=true}); return;
     }
     let tail=false;
@@ -867,6 +882,14 @@ function markJunk(chapters){
     // A chapter with nothing left in it — a colophon of its own — goes too.
     if(ch.blocks.length && ch.blocks.every(b=>b.skip)) ch.hidden=true;
   });
+  const lead=chapters.findIndex(ch=>!ch.hidden);
+  chapters.forEach((ch,i)=>{ if(i>lead && !ch.hidden && JUNK.source.test(ch.title||'')){
+    ch.hidden=true; ch.blocks.forEach(b=>{b.skip=true}); } });
+  // A kept chapter called by the printer's heading is called by the book's
+  // title if it is the first, and "Тайлбар" (notes) after that — which is
+  // what such chapters hold (НЭГЭН АЛХАМ, the 1839 notes in a travel book).
+  const first=chapters.findIndex(ch=>!ch.hidden);
+  chapters.forEach((ch,i)=>{ if(!ch.hidden && JUNK.pubTitle.test(ch.title||'')) ch.title=i===first?bookTitle:'Тайлбар'; });
 }
 // Chapters as a child meets them: hidden ones are not counted, so the
 // chapter after a contents page is still "5-р бүлэг" if it is the fifth.
@@ -1134,8 +1157,37 @@ function progressPct(){
   else for(let k=0;k<si;k++) at+=(bl.sentences[k]||'').length;
   return Math.min(100,Math.round(at/p.total*100));
 }
+// The same story in the other language: an English book and its Mongolian
+// telling, linked in the catalogue ("twin" one way, "twins" the other —
+// УЛААН МАЛГАЙТ holds four Perrault tales, one per chapter). A child learning
+// English can hear a story in Mongolian first, or the other way round.
+function twinOf(){
+  const e=book.entry; if(!e||!book.chapters.length) return null;
+  const t=e.twin || (e.twins||[]).find(x=>x.ch===undefined||x.ch===ci);
+  if(!t) return null;
+  const to=everyBook().find(b=>b.id===t.id);
+  return to?{entry:to, ch:t.ch}:null;
+}
+const twinSaid=()=>book.lang==='en'?'Монгол хэлээр сонсох':'Англи хэлээр сонсох';
+let twinAt='';
+function showTwin(){
+  const at=(book.entry&&book.entry.id)+':'+ci;
+  if(at===twinAt) return;                 // paint runs every frame: look once per chapter
+  twinAt=at;
+  const t=twinOf();
+  $('twinBtn').classList.toggle('hidden',!t);
+  if(t) $('twinBtn').textContent=book.lang==='en'?'Монголоор':'Англиар';
+}
+async function openTwin(){
+  const t=twinOf();
+  if(!t){ earcon('bump'); announce('Энэ ном нөгөө хэлээр алга.'); return; }
+  stop();
+  await announceParts([twinSaid()]);
+  openBook(t.entry,{play:true, ch:t.ch});
+}
 function paint(upto){
   if(!book.chapters.length) return;
+  showTwin();
   const t=sent(), c=chap();
   const pct=progressPct();
   $('nowChapter').textContent=chNo(ci)+'-р бүлэг · '+pct+'%';
@@ -1991,6 +2043,14 @@ async function openBook(e, opts={}){
     $('playerStatus').classList.add('hidden');
     $('bookTitle').textContent=book.title;
     buildToc();
+    // Opened from its twin at one chapter: straight there, no question.
+    if(opts.ch!==undefined && book.chapters[opts.ch]){
+      ci=opts.ch; bi=Math.max(0,book.chapters[ci].blocks.findIndex(x=>!x.skip)); si=0; resumeT=0;
+      paint(); show(mode==='read'?'reader':'player'); media();
+      announce(chap().title);
+      if(mode!=='read') play();
+      return;
+    }
     // A book already begun asks rather than assuming. Dropping a child into
     // the middle of a story with no explanation is disorienting when you
     // cannot see the page.
@@ -2048,6 +2108,7 @@ const KEYS=[
   ['У','Том үсгээр унших'],
   ['Х','Хурд'],
   ['Я','Би хаана байна?'],
+  ['Л','Нөгөө хэлээр сонсох'],
   ['Тоон гарын 8, 2, 4, 6','Сумнууд шиг'],
   ['Тоон гарын 0','Сонгоно'],
   ['Тоон гарын хасах','Буцна'],
@@ -2185,6 +2246,7 @@ $('sizeUp').addEventListener('click',()=>{readSize=Math.min(96,readSize+6);apply
 $('sizeDown').addEventListener('click',()=>{readSize=Math.max(18,readSize-6);applySize();announce('Үсэг '+readSize)});
 // A book resumes where it was left, which is right for a long story and wrong
 // for a short one a child only glanced at. This is the way back.
+$('twinBtn').addEventListener('click',()=>{ unlock(); openTwin(); });
 $('restartBtn').addEventListener('click',()=>{
   stop(); ({c:ci,b:bi}=firstPlace()); si=0; resumeT=0; paint(); buildRead();
   announce('Эхнээс нь'); play();
@@ -2215,6 +2277,7 @@ const JUMPS={
   'у':'read','u':'read',        // унших
   'х':'speed','h':'speed',      // хурд
   'я':'where','y':'where',      // би хаана байна
+  'л':'twin','l':'twin',        // нөгөө хэлээр (хэл)
   '?':'help','/':'help'
 };
 // A number keypad as a remote: a few dollars, and every key is found by feel.
@@ -2241,6 +2304,7 @@ function doJump(what){
     case 'read':  if(book.chapters.length){ show('reader'); announce('Том үсгээр'); } break;
     case 'speed': $('speedBtn').click(); break;
     case 'where': announceParts(whereAmI()); break;
+    case 'twin':  openTwin(); break;
     // One clip per line, so changing one line of the help needs only that
     // line re-voiced. Recording it as one long sentence is what went silent:
     // the list changed and the recording no longer matched.
@@ -2296,7 +2360,7 @@ document.addEventListener('pointerdown',firstTouch,true);
 
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-10-02-h');
+console.log('Gerel build 2026-10-02-i');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   const typing=/^(INPUT|TEXTAREA)$/.test(e.target.tagName||'');
