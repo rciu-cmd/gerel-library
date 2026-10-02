@@ -36,6 +36,36 @@ self.addEventListener('activate', e => {
   })());
 });
 
+// A media element asks for part of a file ("Range: bytes=…") whenever it
+// seeks, but the cache holds whole files and hands back the whole file. For a
+// short clip that hardly matters; an English book is one recording of up to
+// half an hour per chapter, and resuming 20 minutes in, or skipping 30 s, would
+// fail with no connection. So a cached answer to a Range request is cut to the
+// part asked for. Blob.slice does not copy the file.
+async function partial(req, res) {
+  const range = req.headers.get('range');
+  if (!range || !res || res.status !== 200) return res;
+  const m = /^bytes=(\d*)-(\d*)$/.exec(range.trim());
+  if (!m || (m[1] === '' && m[2] === '')) return res;
+  const blob = await res.blob();
+  const size = blob.size;
+  let start, end;
+  if (m[1] === '') { start = Math.max(0, size - Number(m[2])); end = size - 1; }
+  else { start = Number(m[1]); end = m[2] === '' ? size - 1 : Math.min(Number(m[2]), size - 1); }
+  if (start >= size || start > end) {
+    return new Response('', { status: 416, headers: { 'Content-Range': `bytes */${size}` } });
+  }
+  return new Response(blob.slice(start, end + 1), {
+    status: 206,
+    headers: {
+      'Content-Type': res.headers.get('Content-Type') || 'audio/mpeg',
+      'Content-Range': `bytes ${start}-${end}/${size}`,
+      'Content-Length': String(end - start + 1),
+      'Accept-Ranges': 'bytes'
+    }
+  });
+}
+
 self.addEventListener('fetch', e => {
   const req = e.request;
   if (req.method !== 'GET') return;
@@ -47,7 +77,7 @@ self.addEventListener('fetch', e => {
   if (/\/(audio|books|braille|covers|speech)\//.test(url.pathname)) {
     e.respondWith((async () => {
       const hit = await caches.match(req, { ignoreVary: true });
-      if (hit) return hit;
+      if (hit) return partial(req, hit);
       try { return await fetch(req); }
       catch (err) { return new Response('', { status: 504 }); }
     })());
@@ -66,8 +96,9 @@ self.addEventListener('fetch', e => {
       }
       return res;
     } catch (err) {
+      // Kept audio on audio.gerelnom.com lands here when there is no signal.
       const hit = await caches.match(req, { ignoreVary: true });
-      if (hit) return hit;
+      if (hit) return partial(req, hit);
       if (req.mode === 'navigate') {
         const shell = await caches.match('/index.html');
         if (shell) return shell;
