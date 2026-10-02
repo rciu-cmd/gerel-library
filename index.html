@@ -1538,8 +1538,9 @@ function shelvesOf(){
     .filter(g=>g.books.some(b=>b&&b.title&&b.file));
   const f=everyBook().filter(b=>isFav(b.file));
   // Short books, for bedtime or one lesson: everything a quarter of an hour
-  // or less, gathered from every shelf.
-  const short=everyBook().filter(b=>b.minutes>0&&b.minutes<=15)
+  // or less, gathered from every shelf. English books stay on their own
+  // shelf: a child who has no English should not meet one by chance.
+  const short=everyBook().filter(b=>b.lang!=='en'&&b.minutes>0&&b.minutes<=15)
     .sort((a,b)=>(a.title||'').localeCompare(b.title||'','mn'));
   const all=f.length?[{name:'Миний ном',books:f}].concat(base):base;
   return short.length?all.concat([{name:'Богино ном',books:short}]):all;
@@ -2105,7 +2106,7 @@ function doJump(what){
       openShelf=i; renderShelf(); show('shelf'); announce('Миний ном'); break;
     }
     case 'random': {
-      const all=everyBook();
+      const all=everyBook().filter(b=>b.lang!=='en');   // as with "Богино ном"
       if(!all.length){ announce('Ном алга байна.'); break; }
       openBook(all[Math.floor(Math.random()*all.length)]); break;
     }
