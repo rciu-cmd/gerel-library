@@ -1550,11 +1550,14 @@ const begun=t=>!!get('pos:'+t,'');
 
 // Eighty-six titles in one scroll is unusable by eye and worse by ear, so the
 // list can be ordered three ways and jumped into by letter.
+// English books carry a level (1 = first steps … 4 = older learners), and
+// А–Я keeps the easiest first, alphabetical within a level: a beginner should
+// meet Aesop before Alice. Books with no level are unaffected.
 const SORTS=[
-  ['А–Я', (a,b)=> letterField==='author'
+  ['А–Я', (a,b)=> ((a.level||0)-(b.level||0)) || (letterField==='author'
       ? (authorName(a.author)||a.title||'').localeCompare(
           authorName(b.author)||b.title||'','mn')
-      : (a.title||'').localeCompare(b.title||'','mn')],
+      : (a.title||'').localeCompare(b.title||'','mn'))],
   ['Богино эхэлж', (a,b)=>(a.minutes||0)-(b.minutes||0)],
   ['Урт эхэлж',    (a,b)=>(b.minutes||0)-(a.minutes||0)],
 ];
