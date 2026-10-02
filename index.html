@@ -1933,12 +1933,13 @@ function renderHelp(){
   const L=$('helpList'); L.innerHTML='';
   // Where the books came from. Out of a child's way, but never dropped: it is
   // the attribution to the library that allowed all of this.
-  if(catalog && catalog.credit){
+  // "credits" holds any further ones, such as LibriVox for the English shelf.
+  [catalog?.credit].concat(catalog?.credits||[]).filter(Boolean).forEach(t=>{
     const c=document.createElement('p');
     c.className='credit'; c.style.margin='0 0 14px';
-    c.textContent=catalog.credit;
+    c.textContent=t;
     L.appendChild(c);
-  }
+  });
   KEYS.forEach(([k,v])=>{
     const b=document.createElement('div');
     b.className='bookRow'; b.style.display='block'; b.style.padding='16px';
