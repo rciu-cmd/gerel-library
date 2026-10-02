@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-10-02-e">
+<meta name="gerel-build" content="2026-10-02-f">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -825,11 +825,12 @@ async function loadVoiced(e){
   const d=await r.json();
   book.title=d.title||e.title; book.author=d.author||e.author||''; book.audioBase=base;
   book.lang=d.lang||'mn';
-  // "whole": a recording of the entire chapter by a person (LibriVox), with
-  // no sentence timing — played as one piece and moved through by time.
+  // "whole": a recording of the entire chapter by a person (LibriVox), played
+  // as one piece. Since 2 Oct it also carries the printed text, its paragraph
+  // starts ("paras") and the time of every word, so the reader follows it.
   book.chapters=d.chapters.map(c=>({title:c.title,
     blocks:c.blocks.map(b=>({sentences:b.sentences,audio:b.audio,marks:b.marks,
-                             whole:!!b.whole,secs:b.secs||0}))}));
+                             whole:!!b.whole,secs:b.secs||0,paras:b.paras||null}))}));
   $('player').lang=$('reader').lang=book.lang;
   if(!book.chapters.length) throw new Error('unavailable');
 }
@@ -935,6 +936,13 @@ function synthLive(list){
     },()=>{ try{s.close()}catch(e){} rej(new Error('unavailable')); });
   });
 }
+// The word being said at time t: the last mark at or before it. A whole
+// LibriVox part has thousands of marks, so this halves rather than scans.
+function markAt(marks,t){
+  let lo=0, hi=marks.length-1, r=null;
+  while(lo<=hi){ const mid=(lo+hi)>>1; if(marks[mid].t<=t){ r=marks[mid]; lo=mid+1; } else hi=mid-1; }
+  return r;
+}
 function playClip(clip,from,mine){
   return new Promise((res,rej)=>{
     let frame=null;
@@ -955,23 +963,24 @@ function playClip(clip,from,mine){
       }
       done(); rej(new Error('audio'));
     };
-    // A whole-chapter recording has no marks to follow. Its place, the saved
-    // position and the progress bar are kept from the audio's own time
-    // updates instead — these go on with the screen off, which is how a blind
-    // child listens; a screen-refresh timer stops then, and nothing was saved.
+    // In a whole-chapter recording the place, the saved position and the
+    // progress bar are kept from the audio's own time updates — these go on
+    // with the screen off, which is how a blind child listens; the
+    // screen-refresh timer below stops then, and nothing was saved.
     let lastWhole=-9;
     const onTime=()=>{
-      if(!playing || (mine!==undefined && mine!==era) || clip.marks.length || !isWhole()) return;
-      const t=audioEl.currentTime;
-      if(Math.abs(t-lastWhole)>=2){ lastWhole=t; resumeT=t; paint(); }
+      if(!playing || (mine!==undefined && mine!==era) || !isWhole()) return;
+      const t=audioEl.currentTime; resumeT=t;
+      if(Math.abs(t-lastWhole)>=2){ lastWhole=t;
+        const m=markAt(clip.marks,t); if(m) si=m.s;
+        paint(); }
     };
     audioEl.addEventListener('timeupdate',onTime);
     const tick=()=>{
       // Settle the promise rather than abandoning it. Leaving it unresolved
       // is what let an old loop sit waiting and then wake up later.
       if(!playing || (mine!==undefined && mine!==era)){ done(); res(); return; }
-      const t=audioEl.currentTime; let cur=null;
-      for(const m of clip.marks){ if(m.t<=t) cur=m; else break; }
+      const cur=markAt(clip.marks,audioEl.currentTime);
       if(cur){ si=cur.s; paint(cur.c+cur.l); }
       frame=requestAnimationFrame(tick);
     };
@@ -998,6 +1007,14 @@ const posKey=()=>'pos:'+book.title;
 // they stopped at, not the start of a thirty-minute chapter.
 let resumeT=0;
 const isWhole=()=>!!(book.chapters.length && chap() && blk() && blk().whole);
+// When sentence s of a whole recording begins, or 0 when it is not timed.
+function timeOf(c,b,s){
+  const bl=book.chapters[c].blocks[b];
+  if(!bl.whole||!bl.marks) return 0;
+  const m=bl.marks.find(x=>x.s===s); return m?m.t:0;
+}
+// Whether this whole recording knows when each sentence is said.
+const timed=()=>isWhole() && blk().sentences.length>1 && !!(blk().marks||[]).length;
 const wholeT=()=>isWhole()?(playing&&audioEl.src?audioEl.currentTime:resumeT):0;
 const savePos=()=>put(posKey(),JSON.stringify({ci,bi,si,t:Math.round(wholeT())}));
 function loadPos(){
@@ -1016,7 +1033,8 @@ function seekWhole(sec){
   const dur=(isFinite(audioEl.duration)&&audioEl.duration)||blk().secs||0;
   const cur=playing?audioEl.currentTime:resumeT, to=cur+sec;
   if(to>=0 && (!dur || to<dur-1)){
-    if(playing) audioEl.currentTime=to; else { resumeT=to; paint(); }
+    if(playing) audioEl.currentTime=to;
+    else { resumeT=to; const m=markAt(blk().marks||[],to); if(m) si=m.s; paint(); }
     return;
   }
   const prev=bi>0?{c:ci,b:bi-1}:(ci>0?{c:ci-1,b:book.chapters[ci-1].blocks.length-1}:null);
@@ -1144,9 +1162,17 @@ function notReady(){
 }
 function step(d){
   if(!book.chapters.length) return;
-  // In a whole-chapter recording the arrows move ten seconds while it plays;
+  // In a whole recording that knows its sentences, the arrows move a sentence,
+  // as in every other book. Without them, ten seconds while it plays;
   // stopped, they move between parts.
-  if(isWhole() && playing){ seekWhole(d*10); return; }
+  if(timed()){
+    const s=si+d;
+    if(s>=0 && s<blk().sentences.length){
+      si=s; resumeT=timeOf(ci,bi,s);
+      if(playing) audioEl.currentTime=resumeT;
+      paint(); return;
+    }
+  } else if(isWhole() && playing){ seekWhole(d*10); return; }
   let c=ci,b=bi,s=si+d;
   while(s<0){
     if(b>0){b--;s+=book.chapters[c].blocks[b].sentences.length}
@@ -1163,7 +1189,7 @@ function step(d){
   // and leave the voice alone, rather than restarting the sentence.
   if(c===ci && b===bi && s===si){ earcon('bump'); return; }
   const was=playing; stop();
-  ci=c;bi=b;si=s; resumeT=0; paint(); if(was) play();
+  ci=c;bi=b;si=s; resumeT=timeOf(c,b,s); paint(); if(was) play();
 }
 function jump(i){
   stop(); ci=i;bi=0;si=0; resumeT=0; paint();
@@ -1407,9 +1433,14 @@ const applySize=()=>{ $('readText').style.setProperty('--size',readSize+'px'); p
 function buildRead(){
   if(!book.chapters.length) return;
   $('readTitle').textContent=chap().title;
-  $('readText').innerHTML=chap().blocks.map((b,bx)=>
-    '<p>'+b.sentences.map((t,sx)=>
-      '<span class="sent" data-b="'+bx+'" data-s="'+sx+'">'+esc(t)+'</span>').join(' ')+'</p>').join('');
+  // A whole recording is one block holding many paragraphs; "paras" says
+  // where each begins, so the page is not one wall of text.
+  $('readText').innerHTML=chap().blocks.map((b,bx)=>{
+    const starts=new Set(b.paras||[]);
+    return '<p>'+b.sentences.map((t,sx)=>
+      (sx&&starts.has(sx)?'</p><p>':'')
+      +'<span class="sent" data-b="'+bx+'" data-s="'+sx+'">'+esc(t)+'</span>').join(' ')+'</p>';
+  }).join('');
   $('readText').dataset.ch=String(ci);
   applySize(); markRead(true);
 }
@@ -2063,7 +2094,7 @@ $('readText').addEventListener('click',e=>{
   const s=e.target.closest('.sent'); if(!s) return;
   // In reading mode the child is reading, not listening: moving the marker is
   // enough, and starting the voice would be an interruption.
-  unlock(); stop(); bi=+s.dataset.b; si=+s.dataset.s;
+  unlock(); stop(); bi=+s.dataset.b; si=+s.dataset.s; resumeT=timeOf(ci,bi,si);
   paint(); markRead(false);
   if(mode!=='read') play();
 });
@@ -2072,7 +2103,7 @@ $('sizeDown').addEventListener('click',()=>{readSize=Math.max(18,readSize-6);app
 // A book resumes where it was left, which is right for a long story and wrong
 // for a short one a child only glanced at. This is the way back.
 $('restartBtn').addEventListener('click',()=>{
-  stop(); ci=0; bi=0; si=0; paint(); buildRead();
+  stop(); ci=0; bi=0; si=0; resumeT=0; paint(); buildRead();
   announce('Эхнээс нь'); play();
 });
 
@@ -2182,7 +2213,7 @@ document.addEventListener('pointerdown',firstTouch,true);
 
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-10-02-e');
+console.log('Gerel build 2026-10-02-f');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   const typing=/^(INPUT|TEXTAREA)$/.test(e.target.tagName||'');
