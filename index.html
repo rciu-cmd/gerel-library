@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-10-03-h">
+<meta name="gerel-build" content="2026-10-03-i">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -65,7 +65,11 @@
   html[data-theme] body .note,html[data-theme] body input{border:3px solid var(--hc) !important;}
   html[data-theme] body .on,html[data-theme] body .on *,html[data-theme] body .is,
   html[data-theme] body #readText .sent.now,html[data-theme] body #nowText .said,
-  html[data-theme] body .progress i{background-color:var(--hc) !important;color:#000 !important;}
+  html[data-theme] body .progress i,html[data-theme] body .contBtn .cbar i{background-color:var(--hc) !important;color:#000 !important;}
+  html[data-theme] body .contBtn .cbar{border:2px solid var(--hc) !important;}
+  /* The clubs' logos keep their own colours on a white card: Rotary blue on
+     black could not be read. */
+  html[data-theme] body #sponsors img{background-color:#fff !important;border-radius:12px;}
   html[data-theme] body .progress{border:2px solid var(--hc) !important;}
   /* The title area of a book row is a button too, but its row already has the
      border: a second one squeezed the titles into a narrow column. */
@@ -119,32 +123,66 @@
      child is often an empty, hidden status line.) */
   .screen.center::before,.screen.center::after{content:'';flex:1 1 0;min-height:0;}
 
-  /* No logo on the first screen (the user's choice, 1 Oct): the name, Continue
-     and the three doors are enough. The logo stays as the tab and phone icon. */
-  /* The library's name in the logo's navy, with "Гэрэл" — light — in the
-     orange-red of the sun. */
-  #welcome .brand{font-family:var(--display);font-weight:800;color:var(--navy);
-    font-size:clamp(34px,8vw,60px);letter-spacing:-.01em;line-height:1.12;}
-  #welcome .brand .gerel{color:#C2410C;}
-  /* A paper backing, so a Rotary logo in the background never sits inside
-     the letters — on a phone one landed right behind "Гэрэл хүүхдийн". */
-  #welcome .brand{background:rgba(255,253,247,.95);border-radius:22px;
-    padding:6px 18px;box-shadow:0 0 0 10px rgba(255,253,247,.6);}
-  #welcome .sub{margin:0;font-size:clamp(17px,4.4vw,21px);color:var(--muted);}
-  /* Continue the last book: one press from the first screen, instead of a
-     door, a shelf and a search by ear. Wide and dark, above the three doors,
-     so it reads as the obvious way back in. */
-  .contBtn{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;
-    gap:6px 16px;width:100%;max-width:1040px;min-height:clamp(84px,11vh,124px);
-    padding:16px 24px;border-radius:30px;background:var(--ink);color:#fff;
-    font-family:var(--display);font-weight:700;font-size:clamp(22px,2.6vw,34px);
-    box-shadow:0 8px 22px rgba(34,36,59,.22);}
-  .contBtn .ct{font-family:var(--body);font-weight:800;color:var(--sun);
-    font-size:clamp(16px,1.9vw,24px);}
+  /* ---- The first screen (3 Oct): the library itself, not a question ----
+     Libraries for blind readers (BARD Mobile, Victor Reader, Libby) open on
+     the books, not on how to read them. So: the name, small, as a library's
+     sign; Continue; the three ways of reading as one switch; every shelf at
+     once; and the clubs behind it at the foot. The same screen shows a
+     shelf's books once one is opened — .home marks the first view.
+     No logo here (the user's choice, 1 Oct); it stays as the tab and phone
+     icon. "Гэрэл" — light — in the orange-red of the sun. */
+  #shelf .brand{flex:1;min-width:0;font-family:var(--display);font-weight:800;
+    color:var(--navy);font-size:clamp(22px,4.4vw,34px);line-height:1.15;
+    letter-spacing:-.01em;margin:0;}
+  #shelf .brand .gerel{color:#C2410C;}
+  #shelf.home .shelfOnly{display:none !important;}
+  #shelf:not(.home) .homeOnly{display:none !important;}
+  /* No Rotary tile behind the first screen: the clubs' logos stand whole in
+     their own band at the foot instead. Rotary's rules ask for the whole
+     logo with clear space around it, which a tile cut by the screen edge and
+     covered by buttons never gave. */
+  #shelf.home{background-image:none;}
+  .bar,.homeTop,#sponsors{width:100%;max-width:1120px;margin-left:auto;margin-right:auto;}
+  .homeTop{display:grid;gap:10px;margin-bottom:14px;}
+  @media(min-width:1024px){ .homeTop{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);align-items:stretch;} }
+  /* Continue the last book: one press from the first screen. Dark, with the
+     cover, how far the child has got and how long is left. */
+  .contBtn{display:flex;align-items:center;gap:14px;width:100%;height:100%;
+    text-align:left;padding:12px 16px 12px 12px;border-radius:22px;
+    background:var(--navy);color:#fff;}
+  .contBtn img{flex:0 0 auto;width:58px;height:84px;border-radius:10px;object-fit:cover;}
+  .contBtn .cx{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;}
+  .contBtn .cl{font-family:var(--display);font-weight:700;font-size:clamp(19px,2.2vw,24px);}
+  .contBtn .ct{font-weight:800;font-size:clamp(16px,1.9vw,19px);color:var(--sun);
+    overflow-wrap:anywhere;}
+  .contBtn .cbar{display:block;height:8px;border-radius:99px;margin-top:4px;
+    background:rgba(255,255,255,.22);overflow:hidden;}
+  .contBtn .cbar i{display:block;height:100%;width:0;background:var(--sun);}
+  .contBtn .cleft{font-size:14px;font-weight:600;color:#D9DCEE;}
   .contBtn:focus-visible{outline:5px solid var(--sun);outline-offset:4px;}
+  /* The three ways of reading, one chosen. It was three great doors before
+     anything else; now it is a setting, remembered on the device. */
+  #modeRow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;}
+  .modeBtn{display:flex;align-items:center;justify-content:center;gap:8px;
+    min-height:60px;padding:8px 10px;border-radius:16px;background:#fff;
+    border:2px solid var(--navy);color:var(--navy);text-align:center;
+    font-family:var(--display);font-weight:700;font-size:clamp(15px,1.8vw,18px);line-height:1.15;}
+  .modeBtn svg{width:26px;height:26px;flex:0 0 auto;}
+  .modeBtn.is{background:var(--navy);color:#fff;}
+  @media(max-width:520px){
+    .modeBtn{flex-direction:column;gap:4px;font-size:14px;padding:8px 4px;}
+  }
+  /* The clubs behind the library, each logo whole, at the foot of the first
+     screen. The About page names the districts too. */
+  #sponsors{margin-top:24px;padding:14px 16px 16px;border-radius:20px;background:#fff;
+    border:2px solid var(--line);display:flex;flex-wrap:wrap;align-items:center;
+    justify-content:center;gap:6px 26px;}
+  #sponsors .lbl{flex-basis:100%;text-align:center;font-weight:800;font-size:14px;color:var(--muted);}
+  #sponsors img{height:clamp(72px,10vw,104px);width:auto;max-width:100%;}
+  #sponsors a{flex-basis:100%;text-align:center;font-weight:800;font-size:15px;color:var(--navy);
+    padding:8px;}
   .doors{display:grid;gap:18px;width:100%;max-width:1040px;}
-  @media(min-width:640px){.doors{grid-template-columns:1fr 1fr}
-    .doors.three{grid-template-columns:1fr 1fr 1fr}}
+  @media(min-width:640px){.doors{grid-template-columns:1fr 1fr}}
   .door.listen{background:linear-gradient(160deg,#F0455F 0%,#C21B3C 100%);}
   .door.both  {background:linear-gradient(160deg,#2FB574 0%,#127A4B 100%);}
   .door.read  {background:linear-gradient(160deg,#4C8FF0 0%,#1F4FB8 100%);}
@@ -170,10 +208,10 @@
   .door .ic{width:clamp(52px,5.4vw,96px);height:clamp(52px,5.4vw,96px);
     display:block;position:relative;z-index:1;flex:0 0 auto;}
   .door .ic svg{width:100%;height:100%;display:block;}
-  /* On a phone the doors are a row each: icon beside the word, shorter, so
-     the name, Continue and all three doors fit on one screen. This must come
-     after the rules above — written before them, it was overridden and phones
-     got three 211px doors that pushed the title off the top. */
+  /* On a phone the doors (now only on "continue or start again?") are a row
+     each: icon beside the word, shorter, so they fit on one screen. This must
+     come after the rules above — written before them, it was overridden and
+     phones got 211px doors that pushed the title off the top. */
   @media(max-width:639px){
     .door{min-height:clamp(118px,15vh,170px);
       flex-direction:row;gap:18px;justify-content:flex-start;
@@ -187,28 +225,34 @@
     font-size:clamp(23px,6vw,32px);margin:0;flex:1;min-width:120px;}
   .chip{padding:11px 15px;border-radius:16px;background:#fff;
     border:2px solid var(--line);font-weight:700;font-size:15px;white-space:nowrap;}
-  .chip.mode{background:var(--sun);border-color:transparent;}
+  a.chip{color:var(--ink);text-decoration:none;display:inline-flex;align-items:center;}
+  /* The extra buttons: in a row on a laptop; behind "☰ Цэс" on a phone or
+     tablet, where six chips wrapped into three untidy rows above the shelves.
+     A blind child has keys for all of them (Ө, ?), so nothing is lost. */
+  .tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  .menuBtn{display:none;}
+  @media(max-width:1023px){
+    .menuBtn{display:inline-block;}
+    .tools{display:none;flex-basis:100%;order:9;padding:10px;border-radius:18px;
+      background:#fff;border:2px solid var(--line);}
+    .tools.open{display:flex;}
+  }
 
-  /* Two columns once there is room for them: eight shelves then fill one
-     screen with nothing to scroll, and a book list is half as long. Below
-     560px a single column still wins — two would squeeze the titles. */
-  .shelves,.books{display:grid;gap:13px;width:100%;max-width:960px;margin:0 auto;
+  /* Shelves as tiles (3 Oct): two across on a phone, three on a tablet, four
+     on a laptop, so every shelf is on the first screen without scrolling.
+     A book list is one column until each row has room for its buttons. */
+  .shelves,.books{display:grid;gap:13px;width:100%;max-width:1120px;margin:0 auto;
     grid-template-columns:minmax(0,1fr);}
+  .shelves{gap:10px;grid-template-columns:repeat(2,minmax(0,1fr));}
+  @media(min-width:600px){ .shelves{grid-template-columns:repeat(3,minmax(0,1fr));} }
+  @media(min-width:1024px){ .shelves{grid-template-columns:repeat(4,minmax(0,1fr));} }
   /* A book row holds a cover and three buttons beside its title: two
      columns of them from 560px left the title 65px, one letter wide on a
      small tablet. Books pair up only once each row has room (3 Oct). */
   @media(min-width:820px){ .books{grid-template-columns:minmax(0,1fr) minmax(0,1fr);} }
-  @media(min-width:560px){
-    .shelves{grid-template-columns:minmax(0,1fr) minmax(0,1fr);}
-  }
   /* minmax(0,…), not plain 1fr: a 1fr column grows to fit the longest word in
      any title, which pushed book rows 48px past a phone's edge and cut the ★
      in half. */
-  /* Tall enough that four rows reach the bottom of the screen rather than
-     sitting in a band across the middle. */
-  @media(min-width:560px){
-    .shelfCard{min-height:clamp(96px,17vh,168px);}
-  }
   /* A row of letters, the way a phone's contact list works — two taps to reach
      Чиполлино instead of eighty. */
   /* Two ways into the same shelf. A child looking for a story knows its
@@ -224,27 +268,25 @@
     border:2px solid var(--line);background:#fff;font-weight:800;font-size:16px;}
   #letters button.off{opacity:.3;}
   #letters button.on{background:var(--sun);border-color:transparent;}
-  /* A shelf card as a bound volume: dark cloth, a gold rule inside the
-     edge, and a spine down the left where the boards would fold. */
-  .shelfCard{display:flex;align-items:center;gap:14px;text-align:left;
-    padding:26px 24px;border-radius:26px;color:#fff;width:100%;
-    position:relative;overflow:hidden;
-    box-shadow:0 7px 0 rgba(0,0,0,.20), 0 12px 24px rgba(0,0,0,.10);}
-  .shelfCard::before{content:'';position:absolute;left:0;right:0;top:0;height:40%;
-    background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,0));
-    pointer-events:none;}
-  .shelfCard .nm{flex:1;font-family:var(--display);font-weight:700;
-    font-size:clamp(21px,2.2vw,27px);color:#fff;position:relative;z-index:1;
-    text-shadow:0 2px 5px rgba(0,0,0,.30);}
-  .shelfCard .ct{font-weight:800;font-size:14px;position:relative;z-index:1;
-    color:#fff;background:rgba(0,0,0,.26);border-radius:99px;padding:6px 13px;}
-  .shelfCard .sic{flex:0 0 auto;width:clamp(50px,5.2vw,76px);height:clamp(50px,5.2vw,76px);
-    position:relative;z-index:1;color:#fff;filter:drop-shadow(0 2px 4px rgba(0,0,0,.25));}
+  /* A shelf as a tile: its picture and how many books at the top, its name
+     below. One flat colour per shelf, the colour its covers are drawn in —
+     the glossy sheen and deep shadow looked cheap and added nothing a child
+     can use. */
+  .shelfCard{display:flex;flex-direction:column;align-items:flex-start;
+    justify-content:space-between;gap:10px;text-align:left;
+    padding:12px 12px 11px;border-radius:20px;color:#fff;width:100%;
+    min-height:clamp(90px,11.5vh,140px);position:relative;overflow:hidden;}
+  .shelfCard .nm{font-family:var(--display);font-weight:700;
+    font-size:clamp(17px,2vw,22px);line-height:1.2;color:#fff;
+    overflow-wrap:anywhere;hyphens:auto;-webkit-hyphens:auto;}
+  .shelfCard .ct{position:absolute;top:12px;right:12px;font-weight:800;font-size:13px;
+    color:#fff;background:rgba(0,0,0,.24);border-radius:99px;padding:4px 10px;}
+  .shelfCard .sic{flex:0 0 auto;width:clamp(38px,4vw,50px);height:clamp(38px,4vw,50px);color:#fff;}
   .shelfCard .sic svg{width:100%;height:100%;display:block;}
   .bookRow.on{outline:5px solid var(--ink);outline-offset:3px;}
-  /* White reads against all seven shelf colours; dark ink did not. */
-  .shelfCard.on{outline:5px solid #fff;outline-offset:3px;
-    box-shadow:0 7px 0 rgba(0,0,0,.20), 0 0 0 9px rgba(34,36,59,.30);}
+  /* The tile being pointed at: a dark ring outside a white one, so it shows
+     against the paper and against the tile's own colour alike. */
+  .shelfCard.on{outline:5px solid var(--ink);outline-offset:3px;box-shadow:0 0 0 3px #fff;}
 
   .bookRow{display:flex;align-items:center;gap:14px;background:#fff;
     border:3px solid var(--line);border-radius:22px;padding:11px;}
@@ -339,21 +381,14 @@
     font-size:23px;font-weight:800;color:#fff;background:var(--berry);
     border:2px solid transparent;}
   .bookRow .brl:hover,.bookRow .brl:focus{background:#A3162B;}
-  /* Spoken, not shown. The box sat at the foot of the welcome screen
-     reading "Тавиурууд" long after the words had been said. Kept in the
-     page so screen readers still receive announcements. */
-  #status{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
-    overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;}
-  /* Spoken, not shown. The box sat at the foot of the welcome screen
-     reading "Тавиурууд" long after the words had been said. Kept in the
-     page so screen readers still receive announcements. */
-  #status{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  /* Spoken, not shown. The box sat at the foot of the first screen reading
+     "Тавиурууд" long after the words had been said. Kept in the page so
+     screen readers still receive announcements. */
+  #status{position:fixed;width:1px;height:1px;padding:0;margin:-1px;
     overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;}
   .note:empty{display:none;}
   .helpHead{grid-column:1/-1;font-family:var(--display);font-weight:800;color:var(--navy);
     font-size:clamp(19px,3vw,23px);margin:14px 0 2px;}
-  .aboutLink{font-weight:800;font-size:15px;color:var(--navy);text-decoration:underline;
-    background:rgba(255,253,247,.95);border-radius:12px;padding:8px 14px;margin-top:18px;}
   .note{background:#fff;border:3px dashed var(--line);border-radius:20px;
     padding:17px;color:var(--muted);font-weight:600;max-width:720px;margin:14px auto;
     text-align:center;}
@@ -363,44 +398,49 @@
 </head>
 <body>
 
-<div id="welcome" class="screen center">
-  <div class="brand"><span class="gerel">Гэрэл</span> хүүхдийн номын сан</div>
-
-  <button class="contBtn hidden" id="contBtn"><span class="cl">▶ Үргэлжлүүлэх</span><span class="ct" id="contTitle"></span></button>
-
-  <div class="doors three">
-    <button class="door listen" id="doorListen">
-      <span class="ic"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" stroke-width="5"><path d="M12 38V32a20 20 0 0 1 40 0v6"/><rect x="6" y="36" width="13" height="19" rx="6.5" fill="currentColor" stroke="none"/><rect x="45" y="36" width="13" height="19" rx="6.5" fill="currentColor" stroke="none"/></svg></span>Сонсох
-    </button>
-    <button class="door both" id="doorBoth">
-      <span class="ic"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" stroke-width="4.5"><path d="M32 18c-5-4-11-6-19-6v34c8 0 14 2 19 6"/><path d="M32 18c5-4 11-6 19-6v20"/><path d="M32 18v34"/><path d="M47 44c3 0 5 2 5 5s-2 5-5 5"/><path d="M56 40c4 3 6 6 6 9s-2 6-6 9"/></svg></span>Сонсох ба унших
-    </button>
-    <button class="door read" id="doorRead">
-      <span class="ic"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" stroke-width="4.5"><path d="M14 40V22a4 4 0 0 1 4-4h10"/><path d="M18 46h12"/><path d="M22 34l7-16 7 16"/><path d="M24.5 29h9"/><circle cx="45" cy="34" r="12"/><path d="M54 43l8 8"/></svg></span>Унших
-    </button>
-  </div>
-  <!-- For sponsors and visitors: the help screen holds the credits too, but
-       it opens with "?", which a phone has no key for. -->
-  <a class="aboutLink" href="about.html">Гэрэл номын сангийн тухай · About</a>
-  <div id="status" class="note" role="status" aria-live="polite"></div>
-</div>
-
-<div id="shelf" class="screen hidden">
+<!-- The first screen and every shelf's book list are one screen: .home marks
+     the first view (Continue, the three ways of reading, all shelves, the
+     clubs); opening a shelf swaps those for its title and its books. -->
+<div id="shelf" class="screen home">
   <div class="bar">
-    <h1 id="shelfTitle">Тавиурууд</h1>
-    <button class="chip mode" id="modeChip">Сонсох</button>
-    <button class="chip" id="themeChip">◐ Өнгө</button>
-    <button class="chip" id="helpChip">? Тусламж</button>
-    <button class="chip" id="installChip">⤓ Суулгах</button>
-    <button class="chip" id="loginChip">Нэвтрэх</button>
-    <button class="chip" id="backChip">← Буцах</button>
+    <h1 class="brand homeOnly"><span class="gerel">Гэрэл</span> хүүхдийн номын сан</h1>
+    <h1 id="shelfTitle" class="shelfOnly">Тавиурууд</h1>
+    <button class="chip shelfOnly" id="backChip">← Тавиурууд</button>
+    <button class="chip menuBtn" id="menuBtn" aria-expanded="false" aria-controls="tools">☰ Цэс</button>
+    <div class="tools" id="tools">
+      <button class="chip" id="themeChip">◐ Өнгө</button>
+      <button class="chip" id="helpChip">? Тусламж</button>
+      <button class="chip" id="installChip">⤓ Суулгах</button>
+      <button class="chip" id="loginChip">Нэвтрэх</button>
+      <a class="chip" href="about.html">Бидний тухай</a>
+    </div>
   </div>
+
+  <div class="homeTop homeOnly">
+    <div id="contRow" class="hidden">
+      <button class="contBtn" id="contBtn"><img id="contCover" alt=""><span class="cx"><span class="cl">▶ Үргэлжлүүлэх</span><span class="ct" id="contTitle"></span><span class="cbar" id="contBar"><i id="contPct"></i></span><span class="cleft" id="contLeft"></span></span></button>
+    </div>
+    <div id="modeRow" role="group" aria-label="Горим">
+      <button class="modeBtn" data-mode="listen" aria-pressed="false"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" stroke-width="5"><path d="M12 38V32a20 20 0 0 1 40 0v6"/><rect x="6" y="36" width="13" height="19" rx="6.5" fill="currentColor" stroke="none"/><rect x="45" y="36" width="13" height="19" rx="6.5" fill="currentColor" stroke="none"/></svg>Сонсох</button>
+      <button class="modeBtn" data-mode="both" aria-pressed="false"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" stroke-width="4.5"><path d="M32 18c-5-4-11-6-19-6v34c8 0 14 2 19 6"/><path d="M32 18c5-4 11-6 19-6v20"/><path d="M32 18v34"/><path d="M47 44c3 0 5 2 5 5s-2 5-5 5"/><path d="M56 40c4 3 6 6 6 9s-2 6-6 9"/></svg>Сонсох ба унших</button>
+      <button class="modeBtn" data-mode="read" aria-pressed="false"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" stroke-width="4.5"><path d="M14 40V22a4 4 0 0 1 4-4h10"/><path d="M18 46h12"/><path d="M22 34l7-16 7 16"/><path d="M24.5 29h9"/><circle cx="45" cy="34" r="12"/><path d="M54 43l8 8"/></svg>Унших</button>
+    </div>
+  </div>
+
   <div class="shelves" id="shelfList"></div>
   <div id="fieldRow"></div>
   <div id="letters"></div>
   <div class="books" id="bookList"></div>
   <div class="note hidden" id="shelfNote"></div>
+
+  <footer id="sponsors" class="homeOnly">
+    <span class="lbl">Дэмжигч клубууд</span>
+    <img src="logos/rotary-ikh-urgoo.png" alt="Rotary Club of Ikh Urgoo" width="1126" height="513">
+    <img src="logos/rotary-taipei-passport.png" alt="Rotary Club of Taipei Passport" width="1330" height="513">
+    <a href="about.html">Гэрэл номын сангийн тухай · About</a>
+  </footer>
 </div>
+<div id="status" class="note" role="status" aria-live="polite"></div>
 
 <div id="login" class="screen center hidden">
   <div class="brand" style="font-family:var(--display);font-weight:700;
@@ -526,9 +566,8 @@ const SHELF_STYLE={
   'Шүлэг':['#0E7C86','quill'],             'Хөгжилтэй түүхүүд':['#6D3FB8','laugh'],
   'Адал явдал':['#C2410C','compass'],       'Байгаль, амьтад':['#128A54','paw'],
   'Дэлхийн шилдэг зохиол':['#A3237A','globe'],
-  'Том хүүхдэд':['#BE185D','books'],       // for older children (12+), 2 Oct
   'Англи хэлний ном':['#0369A1','speech'], // English books, read by people (LibriVox)
-  'Миний ном':['#242C5C','star'],          'Богино ном':['#4338CA','moon'],
+  'Миний ном':['#242C5C','star'],
 };
 // A big simple shape is found faster than a word by a child who sees a
 // little. Drawn in the same stroke as the three doors.
@@ -1149,7 +1188,9 @@ function timeOf(c,b,s){
 // Whether this whole recording knows when each sentence is said.
 const timed=()=>isWhole() && blk().sentences.length>1 && !!(blk().marks||[]).length;
 const wholeT=()=>isWhole()?(playing&&audioEl.src?audioEl.currentTime:resumeT):0;
-const savePos=()=>put(posKey(),JSON.stringify({ci,bi,si,t:Math.round(wholeT())}));
+// p: how far through, in per cent, for the Continue card on the first screen.
+const savePos=()=>put(posKey(),JSON.stringify({ci,bi,si,t:Math.round(wholeT()),
+  p:book.chapters.length?progressPct():0}));
 function loadPos(){
   resumeT=0;
   try{ const s=JSON.parse(get(posKey(),'null'));
@@ -1695,11 +1736,13 @@ function markRead(scroll){
 }
 
 // ---- screens ----
-const SCREENS=['welcome','shelf','player','reader','toc','help','resume','login'];
+const SCREENS=['shelf','player','reader','toc','help','resume','login'];
 let openShelf=null, pick=-1, rows=[], catalog=null;
-let lastScreen='welcome';
+let lastScreen='shelf';
+// The first screen is the shelves themselves (3 Oct), with openShelf null.
+const atHome=()=>!$('shelf').classList.contains('hidden') && openShelf===null;
 function show(n){
-  if(n==='welcome' && catalog) showContinue();   // the last book may have changed
+  if(n==='shelf' && catalog) showContinue();     // the last book may have changed
   if(n!=='help') lastScreen=n;
   SCREENS.forEach(s=>$(s).classList.toggle('hidden',s!==n));
   if(n==='reader') buildRead();
@@ -1728,15 +1771,28 @@ function applyMode(){
                                                     : 'clamp(120px,20vh,190px)');
 }
 
-function chooseMode(m){
-  unlock(); earcon('open'); mode=m; put('mode',m);
-  $('modeChip').textContent=MODES[m]||'Сонсох';
+// The way of reading is a setting on the first screen (3 Oct), not a door
+// before it: choosing one marks it and says it, and the child stays among
+// the shelves.
+function setMode(m,quiet){
+  mode=m; put('mode',m);
   document.body.dataset.mode=m;
-  applyMode();
-  openShelf=null; renderShelf(); show('shelf');
-  announce((MODES[m]||'Сонсох')+'. Тавиур сонгоно уу.');
+  applyMode(); paintModes();
+  if(!quiet){ earcon('done'); announce(MODES[m]||'Сонсох'); }
 }
-$('doorBoth').addEventListener('click',()=>chooseMode('both'));
+function paintModes(){
+  document.querySelectorAll('.modeBtn').forEach(b=>{
+    const on=b.dataset.mode===mode;
+    b.classList.toggle('is',on); b.setAttribute('aria-pressed',on?'true':'false');
+  });
+}
+document.querySelectorAll('.modeBtn').forEach(b=>{
+  const name=MODES[b.dataset.mode];
+  b.addEventListener('focus',()=>say(name));
+  b.addEventListener('mouseenter',onHover(()=>say(name)));
+  b.addEventListener('mouseleave',()=>clearTimeout(hoverT));
+  b.addEventListener('click',()=>{ unlock(); setMode(b.dataset.mode); });
+});
 
 // Only shelves meant for children. A shelf marked forChildren:false — such as
 // "Хасагдсан", where books taken off on 2 Oct wait — must not leak its books
@@ -1810,13 +1866,9 @@ function shelvesOf(){
     .map(g=>Object.assign({},g,{books:(g.books||[]).filter(reachable)}))
     .filter(g=>g.books.some(b=>b&&b.title&&b.file));
   const f=everyBook().filter(b=>isFav(b.file));
-  // Short books, for bedtime or one lesson: everything a quarter of an hour
-  // or less, gathered from every shelf. English ones are included but come
-  // after the Mongolian ones: their level sorts them last under А–Я.
-  const short=everyBook().filter(b=>b.minutes>0&&b.minutes<=15)
-    .sort((a,b)=>(a.title||'').localeCompare(b.title||'','mn'));
-  const all=f.length?[{name:'Миний ном',books:f}].concat(base):base;
-  return short.length?all.concat([{name:'Богино ном',books:short}]):all;
+  // "Богино ном" (books of a quarter of an hour or less) was taken off the
+  // first screen on 3 Oct, at the user's wish, with "Том хүүхдэд".
+  return f.length?[{name:'Миний ном',books:f}].concat(base):base;
 }
 const mins=m=>m<60?m+' минут':(m%60?Math.floor(m/60)+' цаг '+(m%60)+' минут':Math.floor(m/60)+' цаг');
 const begun=t=>!!get('pos:'+t,'');
@@ -1923,12 +1975,13 @@ function renderShelf(){
   L.innerHTML=''; B.innerHTML=''; rows=[]; pick=-1;
   $('shelfNote').classList.add('hidden');
 
+  $('shelf').classList.toggle('home',openShelf===null);
   if(openShelf===null){
     $('letters').innerHTML='';
     $('fieldRow').innerHTML='';
     letterPick='';
     $('shelfTitle').textContent='Тавиурууд';
-    $('backChip').textContent='← Эхэлье';
+    if(catalog) showContinue();
     const list=shelvesOf();
     list.forEach((g,i)=>{
       const n=(g.books||[]).filter(b=>b&&b.title&&b.file).length;
@@ -2031,15 +2084,17 @@ function renderShelf(){
     B.appendChild(r);
   });
 }
-// The shelf screen is three bands stacked: the two field buttons, the
-// alphabet, the books. On the shelves screen it is one. Empty bands are
-// left out, so the arrows never land somewhere with nothing in it.
+// A shelf is three bands stacked: the two field buttons, the alphabet, the
+// books. The first screen is three too: Continue, the three ways of reading,
+// the shelves. Empty or hidden bands are left out, so the arrows never land
+// somewhere with nothing in it.
 function shelfBands(){
   const list = openShelf===null
-    ? [$('shelfList')]
+    ? [$('contRow'), $('modeRow'), $('shelfList')]
     : [$('fieldRow'), $('letters'), $('bookList')];
-  return list.filter(b=>b && b.children.length);
+  return list.filter(b=>b && b.children.length && b.getClientRects().length);
 }
+const BUTTON_BANDS=['fieldRow','letters','contRow','modeRow'];
 // How many columns the CSS is actually using, so up and down move by a row
 // whatever the screen width turns out to be.
 function colsOf(box){
@@ -2067,7 +2122,7 @@ function bandOf(bands){
 function posIn(band,items){
   const el=document.activeElement;
   if(el && band.contains(el)){
-    const i=items.indexOf(el.closest('#fieldRow>*,#letters>*,.bookRow,.shelfCard'));
+    const i=items.indexOf(el.closest('#fieldRow>*,#letters>*,#contRow>*,#modeRow>*,.bookRow,.shelfCard'));
     if(i>=0) return i;
   }
   return items.findIndex(x=>x.classList.contains('on') &&
@@ -2088,7 +2143,11 @@ function enterBand(bands,bi2,at){
   // quietly drop the author.
   const own = el.querySelector('.meta') || (el.tagName==='BUTTON' ? el : null);
   if(own){
-    pick = (band.id==='fieldRow' || band.id==='letters') ? -1 : at;
+    pick = BUTTON_BANDS.includes(band.id) ? -1 : at;
+    // Leaving the shelves or books for a row of buttons: no tile or row
+    // should still look chosen.
+    if(pick<0) document.querySelectorAll('.shelfCard.on,.bookRow.on')
+      .forEach(x=>x.classList.remove('on'));
     own.focus();
   }else{
     try{ document.activeElement.blur(); }catch(e){}
@@ -2248,9 +2307,12 @@ const KEYS=[
 const BUTTONS=[
   ['▶ Үргэлжлүүлэх','Сүүлд сонссон номоо зогсоосон газраас нь үргэлжлүүлнэ'],
   ['Сонсох · Сонсох ба унших · Унших','Горим сонгоно: зөвхөн сонсох, сонсонгоо унших, зөвхөн унших'],
+  ['☰ Цэс','Утас, таблет дээр доорх товчуудыг нээнэ'],
   ['◐ Өнгө','Өнгө солино: энгийн, хар дээр шар, хар дээр цагаан'],
   ['? Тусламж','Энэ хуудас'],
   ['⤓ Суулгах','Номын санг утсандаа апп болгон суулгана'],
+  ['Бидний тухай','Номын сангийн тухай, дэмжигч клубууд'],
+  ['← Тавиурууд','Тавиурууд руу буцна'],
   ['Номын нэр · Зохиогчийн нэр','Үсгийн мөрийг номын нэрээр эсвэл зохиогчоор ажиллуулна'],
   ['А Б В … · A B C …','Тухайн үсгээр эхэлсэн номуудыг харуулна'],
   ['★','Дуртай номдоо нэмнэ («Миний ном» тавиурт)'],
@@ -2324,8 +2386,20 @@ function lastBook(){
 }
 function showContinue(){
   const e=lastBook();
-  $('contBtn').classList.toggle('hidden',!e);
-  $('contTitle').textContent=e?e.title:'';
+  $('contRow').classList.toggle('hidden',!e);
+  if(!e) return null;
+  $('contTitle').textContent=e.title;
+  const img=$('contCover');
+  if(e.cover){ img.src=e.cover; img.classList.remove('hidden'); } else img.classList.add('hidden');
+  // How far through and how long is left, from the share saved with the
+  // place (savePos) and the book's length in the catalogue. A place saved
+  // before 3 Oct has no share, so it shows the title alone.
+  let p=null;
+  try{ const s=JSON.parse(get('pos:'+e.title,'null')); if(s && typeof s.p==='number') p=s.p; }catch(x){}
+  $('contBar').classList.toggle('hidden',p===null);
+  $('contPct').style.width=(p||0)+'%';
+  const left=(p!==null && e.minutes) ? Math.round(e.minutes*(100-p)/100) : 0;
+  $('contLeft').textContent = p===null ? '' : left>0 ? mins(left)+' үлдсэн' : 'Бараг дууссан';
   return e;
 }
 const sayContinue=()=>{ const e=lastBook(); if(e) sayParts(['Үргэлжлүүлэх',e.title]); };
@@ -2334,9 +2408,7 @@ $('contBtn').addEventListener('mouseenter',onHover(sayContinue));
 $('contBtn').addEventListener('click',()=>{
   const e=lastBook(); if(!e) return;
   unlock();
-  if(!mode){ mode='listen'; put('mode',mode); }
-  $('modeChip').textContent=MODES[mode]||'Сонсох';
-  document.body.dataset.mode=mode; applyMode();
+  if(!MODES[mode]) setMode('listen',true);
   openShelf=null; renderShelf();
   openBook(e,{resume:true});
 });
@@ -2344,11 +2416,9 @@ $('contBtn').addEventListener('click',()=>{
 $('resumeGo').addEventListener('click',()=>{ unlock(); openAt(false); });
 $('resumeStart').addEventListener('click',()=>{ unlock(); openAt(true); });
 
-$('doorListen').addEventListener('click',()=>chooseMode('listen'));
-$('doorRead').addEventListener('click',()=>chooseMode('read'));
-$('modeChip').addEventListener('click',()=>{
-  const order=['listen','both','read'];
-  chooseMode(order[(order.indexOf(mode)+1)%order.length]);
+$('menuBtn').addEventListener('click',()=>{
+  const open=$('tools').classList.toggle('open');
+  $('menuBtn').setAttribute('aria-expanded',open?'true':'false');
 });
 $('playBtn').addEventListener('click',()=>playing?stop():play());
 $('readPlayBtn').addEventListener('click',()=>playing?stop():play());
@@ -2379,9 +2449,8 @@ $('readNext').addEventListener('click',()=>turn(1));
 $('readBack').addEventListener('click',()=>{earcon('back');stop();show('shelf')});
 $('playerBack').addEventListener('click',()=>{earcon('back');stop();show('shelf')});
 $('backChip').addEventListener('click',()=>{
-  earcon('back');
-  if(openShelf!==null){ openShelf=null; renderShelf(); announce('Тавиурууд'); }
-  else { show('welcome'); }
+  if(openShelf===null){ earcon('bump'); return; }   // the first screen: nowhere further back
+  earcon('back'); openShelf=null; renderShelf(); announce('Тавиурууд');
 });
 $('readText').addEventListener('click',e=>{
   const s=e.target.closest('.sent'); if(!s) return;
@@ -2442,15 +2511,16 @@ const JUMPS={
 const PAD_JUMPS={Numpad5:'where', NumpadAdd:'speed'};
 function doJump(what){
   switch(what){
-    case 'home':   stop(); show('welcome'); break;
-    case 'shelves':openShelf=null; renderShelf(); show('shelf'); announce('Тавиурууд'); break;
+    // The beginning and the shelves are one screen since 3 Oct.
+    case 'home':
+    case 'shelves':stop(); openShelf=null; renderShelf(); show('shelf'); announce('Тавиурууд'); break;
     case 'mine': {
       const i=shelvesOf().findIndex(g=>g.name==='Миний ном');
       if(i<0){ announce('Дуртай ном алга байна.'); break; }
       openShelf=i; renderShelf(); show('shelf'); announce('Миний ном'); break;
     }
     case 'random': {
-      const all=everyBook().filter(b=>b.lang!=='en');   // as with "Богино ном"
+      const all=everyBook().filter(b=>b.lang!=='en');   // a Mongolian story
       if(!all.length){ announce('Ном алга байна.'); break; }
       openBook(all[Math.floor(Math.random()*all.length)]); break;
     }
@@ -2478,7 +2548,7 @@ function doJump(what){
 const GREET_FIRST=['Сайн байна уу! Гэрэл хүүхдийн номын санд тавтай морил.',
   'Сумаар сонгоод Enter дарна уу.',
   'Тусламж хэрэгтэй бол асуултын тэмдэг дарна уу.'];
-const GREET_AGAIN=['Гэрэл хүүхдийн номын сан','Сонсох эсвэл унших?'];
+const GREET_AGAIN=['Гэрэл хүүхдийн номын сан','Тавиурууд'];
 let greeted=false;
 function greet(){
   if(greeted) return;
@@ -2493,15 +2563,15 @@ function greet(){
   });
 }
 function firstTouch(e){
-  if(greeted || $('welcome').classList.contains('hidden')) return;
+  if(greeted || !atHome()) return;
   unlock();
   const firstVisit=!get('greeted','');
-  // A door touched, or a key that already speaks (an arrow, Enter), is a
+  // A button touched, or a key that already speaks (an arrow, Enter), is a
   // child who knows what they are doing: let it through. On a first visit a
   // key is taken for the greeting instead, so a child pressing Enter to see
-  // what happens does not land in a mode they never heard offered.
+  // what happens does not land somewhere they never heard offered.
   if(e.type==='pointerdown'){
-    if(e.target.closest && e.target.closest('.door,.contBtn')){ greeted=true; return; }
+    if(e.target.closest && e.target.closest('button,a')){ greeted=true; return; }
     greet(); return;
   }
   const acts=/^(Arrow|Enter|NumpadEnter|Numpad[02468]|Space)/.test(e.code||'')
@@ -2516,7 +2586,7 @@ document.addEventListener('pointerdown',firstTouch,true);
 
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-10-03-h');
+console.log('Gerel build 2026-10-03-i');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   const typing=/^(INPUT|TEXTAREA)$/.test(e.target.tagName||'');
@@ -2574,25 +2644,6 @@ document.addEventListener('keydown',e=>{
     lastNav=now;
   }
 
-  if(!$('welcome').classList.contains('hidden')){
-    const doors=[[$('doorListen'),'Сонсох'],
-                 [$('doorBoth'),'Сонсох ба унших'],
-                 [$('doorRead'),'Унших']];
-    // Continue comes first when there is a book to go back to; it speaks for
-    // itself on focus ("Үргэлжлүүлэх" and the title).
-    if(!$('contBtn').classList.contains('hidden')) doors.unshift([$('contBtn'),null]);
-    let at=doors.findIndex(d=>d[0]===document.activeElement);
-    if(down||up||right||left){
-      e.preventDefault();
-      const fwd=down||right;
-      at = at<0 ? (fwd?0:doors.length-1) : (at+(fwd?1:-1)+doors.length)%doors.length;
-      doors[at][0].focus();
-      if(doors[at][1]) say(doors[at][1]);
-      return;
-    }
-    if(enter){ e.preventDefault(); (doors[at<0?0:at][0]).click(); }
-    return;
-  }
   if(!$('shelf').classList.contains('hidden')){
     const bands=shelfBands();
     if(!bands.length) return;
@@ -2642,7 +2693,7 @@ document.addEventListener('keydown',e=>{
       (el.querySelector('.meta')||el).click();
       return;
     }
-    if(back){ e.preventDefault(); $('backChip').click(); }
+    if(back){ e.preventDefault(); $('backChip').click(); }   // bumps on the first screen
     return;
   }
   if(!$('toc').classList.contains('hidden')){
@@ -2719,16 +2770,15 @@ if(navigator.serviceWorker){
     console.warn('Gerel: no speech manifest and no key — navigation will be silent.');
   applySize();
   showWho();
-  if(mode){ document.body.dataset.mode=mode; applyMode(); }
-  // Always start here. Skipping the question for a returning child saved one
-  // tap and cost the only way back to the beginning, which is a bad trade for
-  // someone navigating by ear. The last choice is focused, so Enter continues.
-  renderShelf();
-  show('welcome');
+  // Listening until a child chooses otherwise: the library is first of all
+  // for children who cannot see.
+  setMode(MODES[mode] ? mode : 'listen', true);
+  // Always start on the first screen, with every shelf in reach.
+  openShelf=null; renderShelf();
+  show('shelf');
   // With a book to go back to, Continue is focused, so Enter is back in the
-  // story; otherwise the last mode's door, as before.
-  (showContinue() ? $('contBtn') : mode==='read' ? $('doorRead') : $('doorListen')).focus();
-  if(mode) $('modeChip').textContent = mode==='read' ? 'Унших' : 'Сонсох';
+  // story; otherwise the first arrow press lands on the ways of reading.
+  if(showContinue()) $('contBtn').focus();
   greet();
 })();
 </script>
