@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-10-03-f">
+<meta name="gerel-build" content="2026-10-03-g">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -350,6 +350,8 @@
   #status{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
     overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;}
   .note:empty{display:none;}
+  .aboutLink{font-weight:800;font-size:15px;color:var(--navy);text-decoration:underline;
+    background:rgba(255,253,247,.95);border-radius:12px;padding:8px 14px;margin-top:18px;}
   .note{background:#fff;border:3px dashed var(--line);border-radius:20px;
     padding:17px;color:var(--muted);font-weight:600;max-width:720px;margin:14px auto;
     text-align:center;}
@@ -375,6 +377,9 @@
       <span class="ic"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" stroke-width="4.5"><path d="M14 40V22a4 4 0 0 1 4-4h10"/><path d="M18 46h12"/><path d="M22 34l7-16 7 16"/><path d="M24.5 29h9"/><circle cx="45" cy="34" r="12"/><path d="M54 43l8 8"/></svg></span>Унших
     </button>
   </div>
+  <!-- For sponsors and visitors: the help screen holds the credits too, but
+       it opens with "?", which a phone has no key for. -->
+  <a class="aboutLink" href="about.html">Гэрэл номын сангийн тухай · About</a>
   <div id="status" class="note" role="status" aria-live="polite"></div>
 </div>
 
@@ -383,6 +388,7 @@
     <h1 id="shelfTitle">Тавиурууд</h1>
     <button class="chip mode" id="modeChip">Сонсох</button>
     <button class="chip" id="themeChip">◐ Өнгө</button>
+    <button class="chip" id="helpChip">? Тусламж</button>
     <button class="chip" id="installChip">⤓ Суулгах</button>
     <button class="chip" id="loginChip">Нэвтрэх</button>
     <button class="chip" id="backChip">← Буцах</button>
@@ -2379,6 +2385,7 @@ $('sizeDown').addEventListener('click',()=>{readSize=Math.max(18,readSize-6);app
 $('twinBtn').addEventListener('click',()=>{ unlock(); openTwin(); });
 $('markBtn').addEventListener('click',()=>{ unlock(); addBookmark(); });
 $('themeChip').addEventListener('click',()=>{ unlock(); nextTheme(); });
+$('helpChip').addEventListener('click',()=>{ unlock(); doJump('help'); });
 $('restartBtn').addEventListener('click',()=>{
   stop(); ({c:ci,b:bi}=firstPlace()); si=0; resumeT=0; paint(); buildRead();
   announce('Эхнээс нь'); play();
@@ -2496,7 +2503,7 @@ document.addEventListener('pointerdown',firstTouch,true);
 
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-10-03-f');
+console.log('Gerel build 2026-10-03-g');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   const typing=/^(INPUT|TEXTAREA)$/.test(e.target.tagName||'');
