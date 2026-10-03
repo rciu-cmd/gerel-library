@@ -53,7 +53,8 @@
   .club{background:#fff;border:2px solid var(--line);border-radius:18px;padding:18px;}
   .club img{display:block;width:100%;height:auto;max-height:150px;object-fit:contain;}
   .club img + img{margin-top:8px;max-height:110px;}
-  .club p{margin-top:10px;font-weight:600;}
+  /* No caption under the logos (3 Oct): each logo already names its club
+     and district, and the alt text reads it to a screen reader. */
   ul.facts{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:12px;}
   ul.facts li{background:#fff;border:2px solid var(--line);border-radius:14px;padding:14px 16px;}
   ul.facts b{font-family:var(--display);color:var(--navy);font-size:1.15em;}
@@ -98,14 +99,10 @@
       <div class="club">
         <img src="logos/rotary-ikh-urgoo.png" alt="Rotary Club of Ikh Urgoo" width="1126" height="513">
         <img src="logos/rotary-d3450.png" alt="Rotary District 3450" width="958" height="513">
-        <p data-l="mn">Их Өргөө Ротари клуб, Ротари 3450-р дүүрэг</p>
-        <p data-l="en">Rotary Club of Ikh Urgoo, District 3450</p>
       </div>
       <div class="club">
         <img src="logos/rotary-taipei-passport.png" alt="Rotary Club of Taipei Passport" width="1330" height="513">
         <img src="logos/rotary-d3522.png" alt="Rotary District 3522" width="958" height="513">
-        <p data-l="mn">Тайпей Паспорт Ротари клуб, Ротари 3522-р дүүрэг</p>
-        <p data-l="en">Rotary Club of Taipei Passport, District 3522</p>
       </div>
     </div>
   </section>

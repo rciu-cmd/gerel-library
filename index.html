@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-10-03-k">
+<meta name="gerel-build" content="2026-10-03-l">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -389,8 +389,22 @@
   #status{position:fixed;width:1px;height:1px;padding:0;margin:-1px;
     overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;}
   .note:empty{display:none;}
-  .helpHead{grid-column:1/-1;font-family:var(--display);font-weight:800;color:var(--navy);
-    font-size:clamp(19px,3vw,23px);margin:14px 0 2px;}
+  /* Help as a cheat sheet: two sections that fold, small rows in columns,
+     keys and buttons drawn as caps. */
+  #helpList{width:100%;max-width:1120px;margin:0 auto;display:grid;gap:12px;}
+  .helpSec{background:#fff;border:2px solid var(--line);border-radius:18px;padding:2px 16px 12px;}
+  .helpSec summary{font-family:var(--display);font-weight:800;color:var(--navy);
+    font-size:clamp(19px,2.6vw,22px);padding:12px 0;cursor:pointer;}
+  .helpGroup{font-family:var(--body);font-weight:800;font-size:14px;color:var(--muted);
+    margin:10px 0 2px;}
+  .helpGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,270px),1fr));gap:0 22px;}
+  .helpGrid.narrow{grid-template-columns:repeat(auto-fill,minmax(min(100%,190px),1fr));}
+  .helpItem{display:flex;align-items:center;gap:10px;padding:7px 0;
+    border-bottom:1px solid var(--line);font-size:16px;line-height:1.3;}
+  .helpItem kbd{flex:0 0 auto;font:800 15px var(--body);min-width:34px;text-align:center;
+    padding:3px 9px;border-radius:9px;border:2px solid var(--navy);background:#fff;
+    color:var(--navy);box-shadow:0 2px 0 var(--navy);max-width:58%;}
+  .helpItem b{flex:0 0 auto;max-width:58%;color:var(--navy);}
   .note{background:#fff;border:3px dashed var(--line);border-radius:20px;
     padding:17px;color:var(--muted);font-weight:600;max-width:720px;margin:14px auto;
     text-align:center;}
@@ -525,7 +539,7 @@
     <h1>Товчлуурууд</h1>
     <button class="chip" id="helpClose">Хаах</button>
   </div>
-  <div class="books" id="helpList"></div>
+  <div id="helpList"></div>
 </div>
 
 <div id="toc" class="screen hidden">
@@ -2307,45 +2321,61 @@ const KEYS=[
 // What each button on the screen does, for a child or teacher using a phone,
 // where the keys above mean nothing. Shown, not spoken: the spoken help is
 // the key list. (The credits moved to the About page, 3 Oct.)
+// Only the buttons whose use is not written on them (3 Oct: the list of 22,
+// each in its own big box, was longer than the screens it explained).
+// "▶ Сонсох", "Хурд", "Эхнээс нь", "← Тавиурууд" say what they do already.
 const BUTTONS=[
-  ['▶ Үргэлжлүүлэх','Сүүлд сонссон номоо зогсоосон газраас нь үргэлжлүүлнэ'],
-  ['Сонсох · Сонсох ба унших · Унших','Горим сонгоно: зөвхөн сонсох, сонсонгоо унших, зөвхөн унших'],
-  ['☰ Цэс','Утас, таблет дээр доорх товчуудыг нээнэ'],
-  ['◐ Өнгө','Өнгө солино: энгийн, хар дээр шар, хар дээр цагаан'],
-  ['? Тусламж','Энэ хуудас'],
-  ['⤓ Суулгах','Номын санг утсандаа апп болгон суулгана'],
-  ['Бидний тухай','Номын сангийн тухай, дэмжигч клубууд'],
-  ['← Тавиурууд','Тавиурууд руу буцна'],
-  ['Номын нэр · Зохиогчийн нэр','Үсгийн мөрийг номын нэрээр эсвэл зохиогчоор ажиллуулна'],
-  ['А Б В … · A B C …','Тухайн үсгээр эхэлсэн номуудыг харуулна'],
-  ['★','Дуртай номдоо нэмнэ («Миний ном» тавиурт)'],
-  ['⠃','Номын брайль файлыг татна'],
-  ['⤓ (номын хажууд)','Номыг интернэтгүй сонсохоор утсандаа хадгална'],
-  ['◀ Өмнөх · Дараах ▶','Өмнөх, дараагийн өгүүлбэр'],
-  ['▶ Сонсох','Уншиж эхэлнэ, зогсооно'],
-  ['Бүлгүүд','Бүлгийн жагсаалт; хавчуургууд эхэнд нь'],
-  ['Том үсгээр','Номыг том үсгээр уншина'],
-  ['Хурд','Уншлагын хурдыг солино'],
-  ['Эхнээс нь','Номыг эхнээс нь эхлүүлнэ'],
-  ['Хавчуурга','Сонсож буй газартаа хавчуурга тавина'],
-  ['Монголоор · Англиар','Ижил номыг нөгөө хэлээр сонсоно'],
-  ['А− · А+','Том үсгээр уншихад үсгийн хэмжээ'],
+  ['Эхний хуудас',[
+    ['▶ Үргэлжлүүлэх','Сүүлийн номоо зогссон газраас нь'],
+    ['Сонсох · Сонсох ба унших · Унших','Зөвхөн сонсох, хамт, зөвхөн унших'],
+    ['☰ Цэс','Өнгө, тусламж, суулгах, нэвтрэх'],
+    ['◐ Өнгө','Энгийн, хар дээр шар, хар дээр цагаан'],
+    ['⤓ Суулгах','Утсандаа апп болгон суулгана'],
+  ]],
+  ['Номын жагсаалт',[
+    ['Номын нэр · Зохиогчийн нэр','Үсгийн мөр юугаар хайхыг сонгоно'],
+    ['А Б В …','Тэр үсгээр эхэлсэн номууд'],
+    ['★','«Миний ном» тавиурт нэмнэ'],
+    ['⠃','Брайль файл татна'],
+    ['⤓','Интернэтгүй сонсохоор хадгална'],
+  ]],
+  ['Ном сонсох үед',[
+    ['Бүлгүүд','Бүлгүүд, хавчуургууд'],
+    ['Хавчуурга','Сонсож буй газраа тэмдэглэнэ'],
+    ['Монголоор · Англиар','Ижил номыг нөгөө хэлээр'],
+    ['Том үсгээр · А− А+','Том үсгээр уншиж, хэмжээг нь солино'],
+  ]],
 ];
+// The keys as key caps, the way a keyboard-shortcut sheet shows them. Only
+// the look changes: the words are KEYS', which are what the help speaks.
+const KEY_CAPS={'Сумнууд':'↑ ↓ ← →','Баруун сум эсвэл Enter':'→ · Enter',
+  'Зүүн сум эсвэл Delete':'← · Delete','Хоосон зай':'Space'};
+// Help as a cheat sheet (3 Oct), like the shortcut sheets of Google Docs or a
+// DAISY player's quick card: grouped, small rows, keys as caps. Two parts —
+// the keys and the screen's buttons — and the one this device uses opens:
+// the buttons on a touch screen, the keys where there is a keyboard. The
+// other is one tap away, never deeper.
 function renderHelp(){
   const L=$('helpList'); L.innerHTML='';
-  const group=(title,list)=>{
-    const h=document.createElement('h2');
-    h.className='helpHead'; h.textContent=title;
-    L.appendChild(h);
-    list.forEach(([k,v])=>{
-      const b=document.createElement('div');
-      b.className='bookRow'; b.style.display='block'; b.style.padding='16px';
-      b.innerHTML='<span class="t">'+esc(k)+'</span><span class="who">'+esc(v)+'</span>';
-      L.appendChild(b);
-    });
+  const touch=matchMedia('(hover: none)').matches;
+  const section=(title,open,groups)=>{
+    const d=document.createElement('details');
+    d.className='helpSec'; d.open=open;
+    d.innerHTML='<summary>'+esc(title)+'</summary>'+groups.map(([name,rows,narrow])=>
+      (name?'<h3 class="helpGroup">'+esc(name)+'</h3>':'')
+      +'<div class="helpGrid'+(narrow?' narrow':'')+'">'+rows.map(([k,v,cap])=>
+        '<div class="helpItem">'+(cap===false?'<b>'+esc(k)+'</b>':'<kbd>'+esc(k)+'</kbd>')
+        +'<span>'+esc(v)+'</span></div>').join('')+'</div>').join('');
+    L.appendChild(d);
   };
-  group('Гарын товч',KEYS);
-  group('Дэлгэц дээрх товч',BUTTONS);
+  const pad=KEYS.filter(([k])=>/^Тоон гарын/.test(k))
+    .map(([k,v])=>[k.replace(/^Тоон гарын\s*/,'').replace(/, /g,' ')
+      .replace('хасах','−').replace('нэмэх','+'),v]);
+  const letters=KEYS.filter(([k])=>k.length===1);
+  const basic=KEYS.filter(([k])=>k.length>1 && !/^Тоон гарын/.test(k))
+    .map(([k,v])=>KEY_CAPS[k]?[KEY_CAPS[k],v]:[k,v,false]);
+  section('Гарын товч',!touch,[['Үндсэн',basic],['Үсгээр шууд',letters,true],['Тоон гар',pad,true]]);
+  section('Дэлгэц дээрх товч',touch,BUTTONS.map(([g,rows])=>[g,rows]));
 }
 $('helpClose').addEventListener('click',()=>show(lastScreen));
 
@@ -2589,7 +2619,7 @@ document.addEventListener('pointerdown',firstTouch,true);
 
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-10-03-k');
+console.log('Gerel build 2026-10-03-l');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   const typing=/^(INPUT|TEXTAREA)$/.test(e.target.tagName||'');
