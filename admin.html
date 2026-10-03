@@ -3,815 +3,827 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Гэрэл — Номын сангийн удирдлага</title>
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+<!-- Not for search engines, and it sends no address to the sites it links to. -->
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<!-- The GitHub key is kept in this page's browser storage, so the page may
+     talk only to this site, GitHub's API and the audio store, and load
+     scripts only from this site: an injected script could not send the key
+     anywhere else. (GitHub Pages cannot send headers, so this is the meta
+     form; it cannot forbid framing — the script below does that.) -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://audio.gerelnom.com; connect-src 'self' https://api.github.com https://audio.gerelnom.com; media-src 'self' https://audio.gerelnom.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+<script>
+  // Never inside another site's frame: a page that shows a signed-in admin
+  // could otherwise be laid under a decoy and its buttons clicked unseen.
+  if(window.top!==window.self){
+    document.documentElement.style.display='none';
+    try{ window.top.location=window.self.location.href; }catch(e){}
+  }
+</script>
+<title>Гэрэл — Удирдлага</title>
+<link rel="icon" href="favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
+  /* The library's own look (3 Oct): daylight paper, navy, Montserrat for
+     headings and Nunito for the rest, the shelf colours and the covers'
+     light. Montserrat and Nunito both draw Ө and Ү — tested. */
   :root{
-    --night:#0A1730; --night-2:#122444; --night-3:#1A2F52;
-    --lamp:#FFC24B; --lamp-dim:#B8862B;
-    --dawn:#7FA3CC; --paper:#F4F1E8;
-    --good:#5BC98C; --warn:#FF8A6A;
-    --display:'Unbounded', system-ui, sans-serif;
-    --body:'Inter', system-ui, -apple-system, sans-serif;
+    --paper:#F6F4EE; --card:#FFFFFF; --soft:#FBFAF6; --ink:#22243B; --muted:#6B6F8D;
+    --line:#E6E0D2; --navy:#242C5C; --navy-2:#323C7A; --ember:#C2410C; --sun:#F5A200;
+    --gold:#FFD25A; --good:#128A54; --good-bg:#E5F3EB; --warn:#A35A06; --warn-bg:#FCF0DE;
+    --bad:#C81E38; --bad-bg:#FBE6EA;
+    --display:'Montserrat',system-ui,sans-serif; --body:'Nunito',system-ui,-apple-system,sans-serif;
   }
   *{box-sizing:border-box;}
-  body{margin:0;background:var(--night);color:var(--paper);font-family:var(--body);}
-
-  header{
-    position:sticky;top:0;z-index:10;background:var(--night);
-    border-bottom:1px solid rgba(127,163,204,0.25);
-    padding:16px 22px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;
-  }
-  .wordmark{font-family:var(--display);font-weight:800;font-size:18px;color:var(--lamp);}
-  .wordmark span{color:var(--paper);font-weight:600;font-size:14px;}
-  .grow{flex:1;}
-
-  button, label.btn{
-    font-family:var(--body);font-size:14px;font-weight:600;
-    background:transparent;color:var(--dawn);
-    border:1px solid rgba(127,163,204,0.45);border-radius:10px;
-    padding:10px 14px;cursor:pointer;
-  }
-  button.primary, label.btn.primary{background:var(--lamp);color:var(--night);border-color:var(--lamp);}
-  button.ghost{border-style:dashed;}
-  button:disabled{opacity:0.4;cursor:default;}
-  input[type=file]{display:none;}
-
-  .stats{
-    display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-    gap:12px;padding:20px 22px;
-  }
-  .stat{background:var(--night-2);border-radius:14px;padding:14px 16px;}
-  .stat b{display:block;font-size:24px;font-family:var(--display);color:var(--lamp);}
-  .stat span{font-size:12px;color:var(--dawn);letter-spacing:0.04em;text-transform:uppercase;}
-
-  .toolbar{padding:0 22px 14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
-  input[type=search], select{
-    font-family:var(--body);font-size:14px;
-    background:var(--night-2);color:var(--paper);
-    border:1px solid rgba(127,163,204,0.35);border-radius:10px;padding:10px 12px;
-  }
-  input[type=search]{min-width:240px;}
-
-  .shelf{margin:0 22px 18px;background:var(--night-2);border-radius:16px;overflow:hidden;}
-  .shelfHead{
-    display:flex;align-items:center;gap:12px;padding:14px 18px;
-    background:var(--night-3);flex-wrap:wrap;
-  }
-  .shelfHead h2{font-family:var(--display);font-size:15px;margin:0;color:var(--paper);}
-  .pill{
-    font-size:11px;letter-spacing:0.06em;text-transform:uppercase;
-    padding:4px 9px;border-radius:99px;border:1px solid currentColor;
-  }
-  .pill.kids{color:var(--lamp);}
-  .pill.count{color:var(--dawn);border-color:rgba(127,163,204,0.4);}
-
-  table{width:100%;border-collapse:collapse;}
-  td{padding:10px 18px;border-top:1px solid rgba(127,163,204,0.13);font-size:14px;vertical-align:middle;}
-  td.title{font-weight:600;}
-  td.author{color:var(--dawn);font-size:13px;}
-  td.len{color:rgba(127,163,204,0.65);font-size:12px;white-space:nowrap;}
-  td.move{width:290px;text-align:right;}
-  td.move button{padding:7px 10px;font-size:12px;margin-left:4px;}
-  td.move select{padding:6px 8px;font-size:13px;}
-  tr.hiddenRow{display:none;}
+  html,body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.5 var(--body);
+    -webkit-text-size-adjust:100%;}
+  a{color:var(--navy);}
+  h1,h2,h3{font-family:var(--display);color:var(--navy);margin:0;}
   .hidden{display:none !important;}
+  button,.btn{font:700 14px var(--body);color:var(--ink);background:#fff;cursor:pointer;
+    border:1.5px solid var(--line);border-radius:12px;padding:9px 14px;line-height:1.2;
+    display:inline-flex;align-items:center;gap:6px;text-decoration:none;}
+  button:hover,.btn:hover{border-color:#CFC6B1;}
+  button:disabled{opacity:.45;cursor:default;}
+  button.primary,.btn.primary{background:var(--navy);border-color:var(--navy);color:#fff;}
+  button.danger{color:var(--bad);border-color:#F1C4CC;}
+  button.small{padding:6px 10px;font-size:13px;border-radius:10px;}
+  button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{
+    outline:3px solid var(--ember);outline-offset:2px;}
+  input,select,textarea{font:600 15px var(--body);color:var(--ink);background:#fff;
+    border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;}
+  input[type=file]{display:none;}
+  label.field{display:block;font-size:13px;font-weight:700;color:var(--muted);margin:0 0 6px;}
 
-  .empty{padding:16px 18px;color:rgba(127,163,204,0.6);font-size:13px;}
-  #drop{
-    margin:0 22px 24px;border:2px dashed rgba(127,163,204,0.35);
-    border-radius:16px;padding:26px;text-align:center;color:var(--dawn);font-size:14px;
+  /* ---- sign-in ---- */
+  #gate{position:fixed;inset:0;z-index:90;background:var(--paper);display:flex;
+    align-items:center;justify-content:center;padding:20px;overflow:auto;}
+  .gateBox{width:100%;max-width:440px;}
+  .gateBrand{text-align:center;margin-bottom:18px;}
+  .gateBrand .nm{font:800 34px var(--display);color:var(--navy);}
+  .gateBrand .nm b{color:var(--ember);}
+  .gateBrand .sub{color:var(--muted);font-weight:700;margin-top:2px;}
+  .gateCard{background:#fff;border:1.5px solid var(--line);border-radius:20px;padding:22px;display:grid;gap:12px;}
+  .gateCard input{width:100%;}
+  .check{display:flex;gap:8px;align-items:center;font-size:14px;font-weight:600;color:var(--ink);}
+  .check input{width:18px;height:18px;}
+  #gateNote{font-size:14px;color:var(--bad);min-height:1em;}
+  .fine{font-size:13px;color:var(--muted);line-height:1.6;}
+
+  /* ---- frame ---- */
+  .top{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1.5px solid var(--line);
+    display:flex;align-items:center;gap:10px;padding:10px 18px;flex-wrap:wrap;}
+  .brand{font:800 19px var(--display);color:var(--navy);white-space:nowrap;}
+  .brand b{color:var(--ember);}
+  .brand span{font:700 14px var(--body);color:var(--muted);}
+  .grow{flex:1;}
+  .pill{font-size:12px;font-weight:800;border-radius:99px;padding:4px 10px;background:var(--soft);
+    border:1.5px solid var(--line);color:var(--muted);white-space:nowrap;}
+  .pill.dirty{background:var(--warn-bg);border-color:#F2D3A5;color:var(--warn);}
+  .shell{display:grid;grid-template-columns:minmax(0,1fr);max-width:1320px;margin:0 auto;}
+  nav.side{display:flex;gap:6px;overflow-x:auto;padding:10px 14px;border-bottom:1.5px solid var(--line);background:var(--soft);}
+  nav.side a{flex:0 0 auto;text-decoration:none;font-weight:800;color:var(--muted);
+    padding:9px 13px;border-radius:12px;white-space:nowrap;}
+  nav.side a.on{background:var(--navy);color:#fff;}
+  @media(min-width:960px){
+    .shell{grid-template-columns:220px minmax(0,1fr);}
+    nav.side{flex-direction:column;border-bottom:0;border-right:1.5px solid var(--line);
+      position:sticky;top:58px;align-self:start;height:calc(100vh - 58px);padding:18px 12px;background:transparent;}
   }
-  #drop.over{border-color:var(--lamp);color:var(--lamp);}
-  #log{margin:0 22px 30px;font-size:13px;color:var(--dawn);line-height:1.7;}
-  .note{margin:0 22px 20px;color:rgba(127,163,204,0.7);font-size:13px;line-height:1.7;max-width:70ch;}
-  .warn{color:var(--warn);}
-  .good{color:var(--good);}
+  main{padding:20px 18px 60px;min-width:0;}
+  section.view{display:grid;gap:16px;}
+  .head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;}
+  .head h1{font-size:clamp(22px,3vw,28px);font-weight:800;}
+  .head .sub{color:var(--muted);font-weight:600;}
+  .grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));}
+  .card{background:var(--card);border:1.5px solid var(--line);border-radius:18px;padding:16px 18px;min-width:0;}
+  .card h2{font-size:16px;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+  .card .note{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.55;}
+  .rows{display:grid;}
+  .row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px;}
+  .row:last-child{border-bottom:0;}
+  .row .k{flex:1;min-width:0;color:var(--ink);}
+  .row .v{font-weight:800;text-align:right;white-space:nowrap;}
+  .row.total .k,.row.total .v{font-family:var(--display);color:var(--navy);font-size:15px;}
+  .bar{height:10px;border-radius:99px;background:#EEEAE0;overflow:hidden;position:relative;margin:6px 0 2px;}
+  .bar i{display:block;height:100%;border-radius:99px;background:var(--navy);}
+  .bar .mark{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ember);}
+  .tag{display:inline-block;font-size:12px;font-weight:800;border-radius:99px;padding:2px 9px;white-space:nowrap;}
+  .tag.good{background:var(--good-bg);color:var(--good);}
+  .tag.warn{background:var(--warn-bg);color:var(--warn);}
+  .tag.bad{background:var(--bad-bg);color:var(--bad);}
+  .tag.mute{background:#EFEDE6;color:var(--muted);}
+  .dot{width:12px;height:12px;border-radius:50%;flex:0 0 auto;}
+
+  /* KPI tiles drawn like the book covers: a colour, lighter at the top, a
+     soft sun behind the corner, the gold bar. */
+  .kpis{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,160px),1fr));}
+  .kpi{position:relative;overflow:hidden;border-radius:18px;padding:14px 16px 13px;color:#fff;
+    background-image:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,0) 75%);min-height:118px;
+    display:flex;flex-direction:column;justify-content:space-between;}
+  .kpi::before{content:'';position:absolute;top:-70px;right:-70px;width:180px;height:180px;border-radius:50%;
+    filter:blur(2px);pointer-events:none;background:radial-gradient(circle,rgba(255,220,120,.45) 0,
+    rgba(255,220,120,.28) 33%,rgba(255,255,255,.14) 35%,rgba(255,255,255,.1) 62%,rgba(255,255,255,0) 66%);}
+  .kpi>*{position:relative;}
+  .kpi .n{font:800 30px var(--display);line-height:1.1;}
+  .kpi .l{font-weight:800;font-size:14px;}
+  .kpi .l::after{content:'';display:block;width:26px;height:4px;border-radius:3px;background:var(--gold);margin:6px 0 4px;}
+  .kpi .s{font-size:12px;opacity:.9;font-weight:600;}
+
+  .checks .row .k{display:flex;gap:8px;align-items:baseline;}
+  details.more summary{cursor:pointer;font-weight:700;color:var(--navy);font-size:13px;padding:4px 0;}
+  details.more ul{margin:6px 0 4px 18px;padding:0;font-size:13px;color:var(--muted);columns:2 240px;}
+  .probe .row .v{font-weight:700;}
+
+  /* ---- books ---- */
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+  .toolbar input[type=search]{flex:1 1 240px;min-width:0;}
+  .shelf{background:#fff;border:1.5px solid var(--line);border-radius:18px;overflow:hidden;}
+  .shelfHead{display:flex;align-items:center;gap:10px;padding:12px 16px;flex-wrap:wrap;
+    border-bottom:1.5px solid var(--line);background:var(--soft);}
+  .shelfHead h2{font-size:16px;font-weight:800;}
+  table.books{width:100%;border-collapse:collapse;}
+  table.books td{padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:middle;font-size:14px;}
+  table.books tr:last-child td{border-bottom:0;}
+  td.cv{width:52px;}
+  td.cv img{width:38px;height:56px;object-fit:cover;border-radius:6px;display:block;background:var(--line);}
+  td.tt b{display:block;font-weight:800;}
+  td.tt small{color:var(--muted);font-size:13px;}
+  td.tt .tags{margin-top:3px;display:flex;gap:4px;flex-wrap:wrap;}
+  td.len{color:var(--muted);white-space:nowrap;font-size:13px;}
+  td.act{text-align:right;}
+  td.act .acts{display:flex;gap:6px;justify-content:flex-end;flex-wrap:wrap;align-items:center;}
+  td.act select{padding:6px 8px;font-size:13px;max-width:170px;}
+  @media(min-width:721px){ td.act .acts{flex-wrap:nowrap;} td.act{width:1%;white-space:nowrap;} }
+  @media(max-width:720px){
+    table.books tr{display:grid;grid-template-columns:52px minmax(0,1fr);}
+    table.books td{border-bottom:0;}
+    table.books tr{border-bottom:1px solid var(--line);}
+    td.len{grid-column:2;padding-top:0 !important;}
+    td.act{grid-column:1/-1;text-align:left;padding-top:0 !important;}
+    td.act .acts{justify-content:flex-start;}
+  }
+
+  /* ---- add ---- */
+  #drop{border:2.5px dashed #CFC6B1;border-radius:18px;padding:28px;text-align:center;color:var(--muted);
+    font-weight:700;background:var(--soft);}
+  #drop.over{border-color:var(--navy);color:var(--navy);background:#EEF0F8;}
+
+  /* ---- guide ---- */
+  .steps{margin:4px 0 0;padding-left:20px;display:grid;gap:8px;font-size:14px;}
+  .steps li{min-width:0;}
+  .cmd{display:flex;gap:8px;align-items:center;background:#1E2246;color:#F2F3FA;border-radius:10px;
+    padding:8px 10px;font:600 13px ui-monospace,Consolas,monospace;margin-top:4px;max-width:100%;}
+  .cmd code{flex:1;min-width:0;white-space:pre;overflow-x:auto;padding-bottom:2px;scrollbar-width:thin;}
+  .cmd button{flex:0 0 auto;}
+  .cmd button{background:#363C70;color:#fff;border-color:#4A519A;padding:4px 9px;font-size:12px;}
+
+  /* ---- activity, toast, editor ---- */
+  #log{font-size:13px;color:var(--muted);line-height:1.7;max-height:260px;overflow:auto;}
+  #log .good{color:var(--good);} #log .warn{color:var(--warn);}
+  #toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:95;background:var(--navy);color:#fff;
+    font-weight:700;padding:10px 16px;border-radius:12px;max-width:min(92vw,620px);box-shadow:0 8px 24px rgba(34,36,59,.25);}
+  #toast.warn{background:var(--warn);}
+  #editPanel{position:fixed;inset:0;z-index:60;background:var(--paper);display:flex;flex-direction:column;}
+  #editPanel .bar2{display:flex;gap:10px;align-items:center;padding:12px 18px;border-bottom:1.5px solid var(--line);background:#fff;}
+  #editText{flex:1;margin:12px 18px 18px;border-radius:14px;padding:16px;font:500 16px/1.7 var(--body);resize:none;}
 </style>
 </head>
 <body>
 
-<div id="gate" style="position:fixed;inset:0;z-index:90;background:var(--night);
-     display:flex;align-items:center;justify-content:center;padding:24px">
-  <div style="width:100%;max-width:440px">
-    <div style="text-align:center;margin-bottom:26px">
-      <div style="font-family:var(--display);font-weight:700;font-size:38px;color:var(--lamp)">
-        Гэрэл</div>
-      <div style="color:var(--dawn);font-size:15px;margin-top:6px">Удирдлагын хэсэг</div>
+<!-- ================================================================ sign-in -->
+<div id="gate">
+  <div class="gateBox">
+    <div class="gateBrand"><div class="nm"><b>Гэрэл</b> номын сан</div><div class="sub">Удирдлагын хэсэг</div></div>
+    <div class="gateCard">
+      <div><label class="field" for="gateUser">Хэрэглэгчийн нэр</label>
+        <input id="gateUser" type="text" autocomplete="username"></div>
+      <div><label class="field" for="gatePass">Нууц үг</label>
+        <input id="gatePass" type="password" autocomplete="current-password"></div>
+      <div><label class="field" for="gateToken">GitHub түлхүүр (token)</label>
+        <input id="gateToken" type="password" placeholder="github_pat_…" autocomplete="off"></div>
+      <details class="more"><summary>Repository</summary>
+        <input id="gateRepo" type="text" style="width:100%;margin-top:6px" placeholder="rciu-cmd/gerel-library"></details>
+      <label class="check"><input id="gateRemember" type="checkbox"> Энэ төхөөрөмж дээр сануулах</label>
+      <button id="gateGo" class="primary" style="justify-content:center;padding:13px;font-size:16px">Нэвтрэх</button>
+      <div id="gateNote"></div>
     </div>
-    <div style="background:var(--night-2);border-radius:18px;padding:24px">
-      <label style="display:block;font-size:13px;color:var(--dawn);margin-bottom:6px">
-        Хэрэглэгчийн нэр</label>
-      <input id="gateUser" type="text" placeholder="админ" autocomplete="username"
-        style="width:100%;box-sizing:border-box;background:var(--night);color:var(--paper);
-               border:1px solid rgba(127,163,204,.4);border-radius:12px;padding:14px;
-               font-family:var(--body);font-size:15px;margin-bottom:16px">
-      <label style="display:block;font-size:13px;color:var(--dawn);margin-bottom:6px">
-        Нууц үг</label>
-      <input id="gatePass" type="password" placeholder="••••••••" autocomplete="current-password"
-        style="width:100%;box-sizing:border-box;background:var(--night);color:var(--paper);
-               border:1px solid rgba(127,163,204,.4);border-radius:12px;padding:14px;
-               font-family:var(--body);font-size:15px;margin-bottom:16px">
-      <label style="display:block;font-size:13px;color:var(--dawn);margin-bottom:6px">
-        Repository</label>
-      <input id="gateRepo" type="text" placeholder="rciu-cmd/gerel-library"
-        style="width:100%;box-sizing:border-box;background:var(--night);color:var(--paper);
-               border:1px solid rgba(127,163,204,.4);border-radius:12px;padding:14px;
-               font-family:var(--body);font-size:15px;margin-bottom:16px">
-      <label style="display:block;font-size:13px;color:var(--dawn);margin-bottom:6px">
-        GitHub түлхүүр</label>
-      <input id="gateToken" type="password" placeholder="ghp_…"
-        autocomplete="current-password"
-        style="width:100%;box-sizing:border-box;background:var(--night);color:var(--paper);
-               border:1px solid rgba(127,163,204,.4);border-radius:12px;padding:14px;
-               font-family:var(--body);font-size:15px;margin-bottom:18px">
-      <button id="gateGo" class="primary" style="width:100%;padding:15px;font-size:16px">
-        Нэвтрэх</button>
-      <div id="gateNote" style="margin-top:14px;font-size:13px;color:var(--dawn);
-           line-height:1.6"></div>
-    </div>
-    <p style="margin:18px 0 0;font-size:12px;color:var(--dawn);line-height:1.7;text-align:center">
-      Түлхүүр зөвхөн энэ төхөөрөмж дээр хадгалагдана.<br>
-      <a href="https://github.com/settings/tokens/new?scopes=repo&description=Gerel%20admin"
-         target="_blank" rel="noopener" style="color:var(--lamp)">Шинэ түлхүүр үүсгэх ↗</a>
+    <p class="fine" style="text-align:center">
+      Түлхүүр зөвхөн энэ хөтөч дээр хадгалагдана. Хамтын компьютер дээр
+      «сануулах»-г бүү тэмдэглээрэй — хөтчийг хаахад түлхүүр устана.<br>
+      <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Шинэ түлхүүр үүсгэх ↗</a>
+      (зөвхөн gerel-library, Contents: Read and write)
     </p>
   </div>
 </div>
 
-<header>
-  <div class="wordmark">Гэрэл <span>· удирдлага</span></div>
+<!-- ================================================================ frame -->
+<header class="top">
+  <div class="brand"><b>Гэрэл</b> <span>· удирдлага</span></div>
+  <span class="pill" id="buildPill">—</span>
   <div class="grow"></div>
-  <span id="roleBadge" class="hidden"
-        style="font-size:13px;color:var(--dawn);margin-right:auto"></span>
+  <span class="pill dirty hidden" id="dirtyPill">Хадгалаагүй өөрчлөлт</span>
   <button id="pushBtn" class="primary" disabled>Хадгалах</button>
-  <button id="ghBtn">Гарах</button>
-  <!-- The file open and download buttons went: with the repository connected
-       they were a second way to do the same thing, and a way to lose work by
-       editing a downloaded copy that never went back. -->
-  <label class="btn hidden">Файлаас нээх<input type="file" id="openCatalog" accept=".json,application/json"></label>
-  <button id="saveBtn" class="hidden" disabled>Файлаар татах</button>
-  <button id="loadBtn" class="hidden" disabled>Дахин ачаалах</button>
+  <span class="pill" id="whoPill">—</span>
+  <button id="outBtn">Гарах</button>
 </header>
 
-<div id="ghPanel" class="hidden" hidden style="margin:0 22px 18px;background:var(--night-2);
-     border-radius:16px;padding:18px;max-width:720px">
-  <h2 style="font-family:var(--display);font-size:16px;margin:0 0 10px;color:var(--lamp)">
-    GitHub холболт</h2>
-  <p style="margin:0 0 14px;font-size:13px;color:var(--dawn);line-height:1.6">
-    Токен зөвхөн энэ төхөөрөмж дээр хадгалагдана. Хэн нэгэн энэ хуудсыг нээсэн ч
-    токенгүйгээр юу ч өөрчилж чадахгүй.
-  </p>
-  <div style="display:grid;gap:10px">
-    <input id="ghRepo" type="text" placeholder="rciu-cmd/gerel-library"
-      style="background:var(--night);color:var(--paper);border:1px solid rgba(127,163,204,.4);
-             border-radius:10px;padding:11px 13px;font-family:var(--body);font-size:14px">
-    <input id="ghToken" type="password" placeholder="ghp_… (Personal access token)"
-      style="background:var(--night);color:var(--paper);border:1px solid rgba(127,163,204,.4);
-             border-radius:10px;padding:11px 13px;font-family:var(--body);font-size:14px">
-    <div style="display:flex;gap:10px;flex-wrap:wrap">
-      <button id="ghSave" class="primary">Холбох</button>
-      <button id="ghForget">Токен устгах</button>
-      <a href="https://github.com/settings/tokens/new?scopes=repo&description=Gerel%20admin"
-         target="_blank" rel="noopener"
-         style="color:var(--dawn);font-size:13px;align-self:center">Токен үүсгэх ↗</a>
+<div class="shell">
+  <nav class="side" id="nav">
+    <a href="#dash" data-sec="dash">📊 Самбар</a>
+    <a href="#books" data-sec="books">📚 Номууд</a>
+    <a href="#add" data-sec="add">➕ Ном нэмэх</a>
+    <a href="#users" data-sec="users" class="superOnly">👥 Хэрэглэгчид</a>
+    <a href="#guide" data-sec="guide">🧭 Заавар</a>
+    <a href="#settings" data-sec="settings">⚙️ Тохиргоо</a>
+  </nav>
+
+  <main>
+  <!-- ============================================================ dashboard -->
+  <section class="view" id="sec-dash">
+    <div class="head"><h1>Самбар</h1><span class="sub" id="statsWhen"></span></div>
+    <div class="kpis" id="kpis"></div>
+    <div class="grid">
+      <div class="card">
+        <h2>🌐 Сайтын байдал</h2>
+        <div class="rows" id="siteRows"></div>
+        <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+          <button id="probeBtn" class="primary">Одоо шалгах</button>
+          <a class="btn" href="./" target="_blank" rel="noopener">Сайтыг нээх ↗</a>
+        </div>
+        <div class="rows probe" id="probeRows" style="margin-top:8px"></div>
+      </div>
+      <div class="card">
+        <h2>💵 Жилийн зардал</h2>
+        <div class="rows" id="costRows"></div>
+        <div class="note" id="costNote"></div>
+      </div>
+      <div class="card">
+        <h2>🎙️ Microsoft Azure тэтгэлэг</h2>
+        <div id="azure"></div>
+      </div>
+      <div class="card">
+        <h2>💾 Хадгалах сан</h2>
+        <div id="storage"></div>
+      </div>
+      <div class="card">
+        <h2>📚 Тавиурууд</h2>
+        <div class="rows" id="shelfRows"></div>
+      </div>
+      <div class="card">
+        <h2>🩺 Анхаарах зүйлс</h2>
+        <div class="rows checks" id="checkRows"></div>
+      </div>
+      <div class="card">
+        <h2>🔒 Аюулгүй байдал</h2>
+        <div class="rows checks" id="secRows"></div>
+      </div>
+      <div class="card">
+        <h2>🕓 Сүүлийн өөрчлөлтүүд</h2>
+        <div class="rows" id="commitRows"><div class="row"><span class="k fine">Ачаалж байна…</span></div></div>
+      </div>
     </div>
-  </div>
+    <p class="fine">Тоонуудыг шинэчлэх: <code>python gerel_stats.py</code> ажиллуулаад GitHub Desktop-оор push хийнэ.
+      Azure-ийн бодит зарцуулалт, домэйны үнэ, түлхүүрийн хугацааг <code>C:\Users\Ouqi\gerel_money.json</code> дотор засна.</p>
+  </section>
+
+  <!-- ============================================================ books -->
+  <section class="view hidden" id="sec-books">
+    <div class="head"><h1>Номууд</h1><span class="sub" id="bookCount"></span></div>
+    <div class="toolbar">
+      <input type="search" id="search" placeholder="Ном эсвэл зохиогч хайх…">
+      <select id="shelfFilter"><option value="">Бүх тавиур</option></select>
+      <label class="check"><input type="checkbox" id="showHidden"> Нуугдсан тавиурыг харуулах</label>
+    </div>
+    <p class="fine">Зөөх, нуух, сэргээх нь энд хийгдэнэ — дараа нь дээрх <b>Хадгалах</b> дарахад сайт 1–2 минутад шинэчлэгдэнэ.
+      <b>Нуух</b> нь номыг «Хасагдсан» тавиурт хийж, хаанаас ирснийг санана; <b>Сэргээх</b> нь буцааж тавина.</p>
+    <div id="shelves" style="display:grid;gap:14px"></div>
+  </section>
+
+  <!-- ============================================================ add -->
+  <section class="view hidden" id="sec-add">
+    <div class="head"><h1>Ном нэмэх</h1></div>
+    <div class="card">
+      <h2>EPUB файл нэмэх</h2>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px">
+        <label class="field" for="addTarget" style="margin:0">Аль тавиурт:</label>
+        <select id="addTarget"></select>
+      </div>
+      <div id="drop">EPUB файлаа энд чирж оруулна уу<br>
+        <label class="btn" style="margin-top:12px">Файл сонгох<input type="file" id="addBooks" accept=".epub" multiple></label></div>
+      <p class="note">Шинэ ном дуугүй байна. Тиймээс анхдагч нь <b>«Шинэ ном — дуугүй»</b> гэсэн нуугдмал
+        тавиур: хүүхдэд харагдахгүй. Дуу оруулсны дараа <b>Номууд</b> хэсгээс жинхэнэ тавиурт зөөнө.
+        Дуу оруулах алхмууд <a href="#guide">Заавар</a> хэсэгт бий. 12 MB-аас том файлыг <code>gerel_add.py</code>-оор нэмнэ.</p>
+    </div>
+  </section>
+
+  <!-- ============================================================ users -->
+  <section class="view hidden" id="sec-users">
+    <div class="head"><h1>Хэрэглэгчид</h1><span class="sub" id="usersCount"></span></div>
+    <div class="grid">
+      <div class="card">
+        <h2>Нэг хүн нэмэх</h2>
+        <div style="display:grid;gap:10px">
+          <input id="oneName" type="text" placeholder="Нэр">
+          <input id="oneUser" type="text" placeholder="Хэрэглэгчийн нэр" autocomplete="off">
+          <input id="onePass" type="text" placeholder="Нууц үг (8+ тэмдэгт)" autocomplete="off">
+          <select id="oneRole">
+            <option value="сурагч">Сурагч — унших, сонсох, татах</option>
+            <option value="багш">Багш — унших, сонсох, татах</option>
+            <option value="админ">Админ — номоо удирдана</option>
+            <option value="супер">Супер админ — бүх эрх</option>
+          </select>
+          <button id="oneAdd" class="primary" style="justify-self:start">Нэмэх</button>
+          <div id="oneNote" class="fine"></div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Олноор нь (Excel → CSV)</h2>
+        <p class="fine" style="margin-top:0">4 багана: <b>нэр, хэрэглэгчийн нэр, нууц үг, эрх</b>
+          (сурагч / багш / админ / супер). CSV болгон хадгалаад оруулна.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+          <label class="btn primary">CSV файл сонгох<input type="file" id="usersFile" accept=".csv,text/csv"></label>
+          <a id="usersTemplate" download="hereglegchid.csv">Загвар татах ↓</a>
+        </div>
+        <p class="note">Нууц үг файлд хадгалагдахгүй — зөвхөн шалгах утга (PBKDF2). CSV-гээ найдвартай газар хадгална уу.
+          Хүүхдийн бүтэн нэрийг бүү оруул: users.json нийтэд харагддаг.</p>
+      </div>
+      <div class="card" style="grid-column:1/-1">
+        <h2>Бүртгэлтэй хүмүүс</h2>
+        <div class="rows" id="usersList"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ guide -->
+  <section class="view hidden" id="sec-guide">
+    <div class="head"><h1>Заавар</h1><span class="sub">Сайтыг цаашид ажиллуулах</span></div>
+    <div class="grid" id="guide"></div>
+  </section>
+
+  <!-- ============================================================ settings -->
+  <section class="view hidden" id="sec-settings">
+    <div class="head"><h1>Тохиргоо</h1></div>
+    <div class="grid">
+      <div class="card">
+        <h2>Миний нууц үг</h2>
+        <div style="display:grid;gap:10px">
+          <input id="pwNew" type="password" placeholder="Шинэ нууц үг (8+ тэмдэгт)" autocomplete="new-password">
+          <input id="pwAgain" type="password" placeholder="Дахин бичнэ үү" autocomplete="new-password">
+          <button id="pwSave" class="primary" style="justify-self:start">Солих</button>
+          <div id="pwNote" class="fine"></div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Энэ төхөөрөмж</h2>
+        <div class="rows" id="deviceRows"></div>
+        <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+          <button id="rememberBtn"></button>
+          <button id="outBtn2" class="danger">Гарах, түлхүүрийг устгах</button>
+        </div>
+      </div>
+      <div class="card" style="grid-column:1/-1">
+        <h2>Үйлдлийн түүх</h2>
+        <div id="log"></div>
+      </div>
+    </div>
+  </section>
+  </main>
 </div>
 
-<div id="usersPanel" class="superOnly hidden" style="margin:0 22px 24px;background:var(--night-2);
-     border-radius:16px;padding:20px;max-width:720px">
-  <h2 style="font-family:var(--display);font-size:16px;margin:0 0 10px;color:var(--lamp)">
-    👥 Сурагчид нэмэх</h2>
-  <p style="margin:0 0 14px;font-size:13px;color:var(--dawn);line-height:1.6">
-    Excel эсвэл Google Sheets дээр 4 багана бөглөж, CSV болгон хадгална:
-    <b>нэр, хэрэглэгчийн нэр, нууц үг, эрх</b>. Эрх нь <b>сурагч</b> эсвэл
-    <b>багш</b> байна. Файлыг доор чирж оруулна уу.
-  </p>
-  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-    <label class="btn primary" style="padding:14px 22px;font-size:15px">
-      📄 Excel/CSV файл сонгох
-      <input type="file" id="usersFile" accept=".csv,text/csv"></label>
-    <a id="usersTemplate" download="hereglegchid.csv"
-       style="color:var(--dawn);font-size:13px;align-self:center">Загвар татах ↓</a>
-    <span id="usersCount" style="font-size:13px;color:var(--dawn)"></span>
-  </div>
-  <div style="margin-top:18px;padding-top:16px;border-top:1px solid rgba(127,163,204,.25)">
-    <h3 style="font-family:var(--display);font-size:14px;margin:0 0 10px;color:var(--lamp)">
-      Нэг хүн нэмэх</h3>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-                gap:10px;align-items:end">
-      <input id="oneName" type="text" placeholder="Нэр"
-        style="background:var(--night);color:var(--paper);border:1px solid rgba(127,163,204,.4);
-               border-radius:10px;padding:12px;font-family:var(--body);font-size:14px">
-      <input id="oneUser" type="text" placeholder="Хэрэглэгчийн нэр"
-        style="background:var(--night);color:var(--paper);border:1px solid rgba(127,163,204,.4);
-               border-radius:10px;padding:12px;font-family:var(--body);font-size:14px">
-      <input id="onePass" type="text" placeholder="Нууц үг"
-        style="background:var(--night);color:var(--paper);border:1px solid rgba(127,163,204,.4);
-               border-radius:10px;padding:12px;font-family:var(--body);font-size:14px">
-      <select id="oneRole"
-        style="background:var(--night);color:var(--paper);border:1px solid rgba(127,163,204,.4);
-               border-radius:10px;padding:12px;font-family:var(--body);font-size:14px">
-        <option value="сурагч">Сурагч — зөвхөн унших, сонсох</option>
-        <option value="багш">Багш — зөвхөн унших, сонсох</option>
-        <option value="админ">Админ — номоо удирдана</option>
-        <option value="супер">Супер админ — бүх эрх</option>
-      </select>
-      <button id="oneAdd" class="primary" style="padding:12px 20px">Нэмэх</button>
-    </div>
-    <div id="oneNote" style="margin-top:10px;font-size:13px;color:var(--dawn)"></div>
-  </div>
-
-  <div id="usersList" style="margin-top:14px;font-size:13px;color:var(--dawn);
-       max-height:220px;overflow:auto"></div>
-
-  <div id="pwBox" class="hidden" style="margin-top:20px;padding-top:18px;
-       border-top:1px solid rgba(127,163,204,.25)">
-    <h3 style="font-family:var(--display);font-size:14px;margin:0 0 10px;color:var(--lamp)">
-      Миний нууц үг солих</h3>
-    <div style="display:grid;gap:10px;max-width:420px">
-      <input id="pwNew" type="password" placeholder="Шинэ нууц үг"
-        autocomplete="new-password"
-        style="background:var(--night);color:var(--paper);
-               border:1px solid rgba(127,163,204,.4);border-radius:10px;padding:12px;
-               font-family:var(--body);font-size:14px">
-      <input id="pwAgain" type="password" placeholder="Дахин бичнэ үү"
-        autocomplete="new-password"
-        style="background:var(--night);color:var(--paper);
-               border:1px solid rgba(127,163,204,.4);border-radius:10px;padding:12px;
-               font-family:var(--body);font-size:14px">
-      <button id="pwSave" class="primary" style="justify-self:start;padding:12px 22px">
-        Солих</button>
-    </div>
-    <div id="pwNote" style="margin-top:10px;font-size:13px;color:var(--dawn)"></div>
-  </div>
-</div>
-
-<div class="stats" id="stats"></div>
-
-<div class="toolbar">
-  <input type="search" id="search" placeholder="Ном хайх…">
-  <select id="shelfFilter"><option value="">Бүх тавиур</option></select>
-  <button id="kidsOnlyBtn" class="ghost">Зөвхөн хүүхдийн</button>
-</div>
-
-<div id="shelves"></div>
-
-<div id="editPanel" class="hidden" style="position:fixed;inset:0;z-index:50;
-     background:var(--night);display:flex;flex-direction:column">
-  <div style="display:flex;gap:10px;align-items:center;padding:14px 20px;
-              border-bottom:1px solid rgba(127,163,204,.25)">
-    <strong id="editTitle" style="flex:1;min-width:0;overflow:hidden;
-            text-overflow:ellipsis;white-space:nowrap"></strong>
-    <span id="editState" style="font-size:13px;color:var(--dawn)"></span>
+<!-- ================================================================ text editor -->
+<div id="editPanel" class="hidden">
+  <div class="bar2">
+    <strong id="editTitle" style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></strong>
+    <span id="editState" class="fine"></span>
     <button id="editSave" class="primary">Хадгалах</button>
     <button id="editClose">Хаах</button>
   </div>
-  <p style="margin:10px 20px 0;font-size:13px;color:var(--dawn);line-height:1.6">
-    ## тэмдэгээр бүлгийн нэр эхэлнэ. Хоосон мөр догол мөрийг тусгаарлана.
-    Хадгалахад эх EPUB хөндөгдөхгүй — засвар тусад нь хадгалагдаж, дуу оруулахад
-    ашиглагдана.
-  </p>
-  <textarea id="editText" spellcheck="false" style="flex:1;margin:12px 20px 20px;
-    background:var(--night-2);color:var(--paper);border:1px solid rgba(127,163,204,.3);
-    border-radius:14px;padding:16px;font-family:var(--body);font-size:15px;
-    line-height:1.7;resize:none"></textarea>
+  <p class="fine" style="margin:10px 18px 0">## тэмдэгээр бүлгийн нэр эхэлнэ. Хоосон мөр догол мөрийг тусгаарлана.
+    Эх EPUB хөндөгдөхгүй — засвар text/&lt;id&gt;.txt болж хадгалагдана, дуу оруулахад түүнийг ашиглана.</p>
+  <textarea id="editText" spellcheck="false"></textarea>
 </div>
-
-<div id="drop">
-  EPUB файлыг энд чирж оруулаад номын санд нэмнэ үү
-  <br><label class="btn" style="margin-top:12px;display:inline-block">Файл сонгох<input type="file" id="addBooks" accept=".epub" multiple></label>
-</div>
-
-<p class="note" id="hint">
-  Эхлээд <b>catalog.json</b> файлаа нээнэ үү. Өөрчлөлт хийсний дараа
-  <b>catalog.json татах</b> дарж, GitHub дээрх хуучин файлыг солино.
-</p>
-
-
-<div id="log"></div>
+<div id="toast" class="hidden" role="status" aria-live="polite"></div>
 
 <!-- From this site, not a CDN: a script altered at a CDN would run here with
      the GitHub token in reach. -->
 <script src="jszip.min.js"></script>
 <script>
-// The library is a set of static files, so there is no server to talk to and
-// nothing here is saved automatically. This page edits catalog.json in the
-// browser and hands it back for you to upload. Nothing leaves the machine.
-let catalog = null;
-let kidsOnly = false;
-
+// The library is a set of static files with no server of its own, so this
+// page edits catalog.json in the browser and saves it through GitHub's API.
+// The token stays in this browser and goes nowhere but api.github.com.
 const $ = id => document.getElementById(id);
-const esc = s => String(s || '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt = n => Number(n || 0).toLocaleString('en-US');
+const money = n => '$' + Number(n || 0).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+const days = d => Math.ceil((new Date(d) - new Date()) / 864e5);
 
+let catalog = null, stats = null, people = [], dirty = false;
+const HIDDEN_SHELF = 'Хасагдсан';
+const NEW_SHELF = 'Шинэ ном — дуугүй';
+// The app's shelf colours (SHELF_STYLE in index.html).
+const SHELF_COLOUR = {'Үлгэр':'#1668CC','Хүүхдийн ном':'#C81E38','Шүлэг':'#0E7C86',
+  'Хөгжилтэй түүхүүд':'#6D3FB8','Адал явдал':'#C2410C','Байгаль, амьтад':'#128A54',
+  'Дэлхийн шилдэг зохиол':'#A3237A','Англи хэлний ном':'#0369A1'};
+const colourOf = name => SHELF_COLOUR[name] || '#6B6F8D';
+
+// ---------------------------------------------------------------- messages
+const logLines = [];
 function log(msg, cls){
-  const p = document.createElement('div');
-  if(cls) p.className = cls;
-  p.textContent = msg;
-  $('log').prepend(p);
+  const d = document.createElement('div');
+  if(cls) d.className = cls;
+  d.textContent = new Date().toTimeString().slice(0,5) + '  ' + msg;
+  $('log').prepend(d);
+  toast(msg, cls);
 }
-
-function allBooks(){
-  const seen = new Map();
-  (catalog.shelves || []).forEach(sh => (sh.books || []).forEach(b => {
-    if(!seen.has(b.file)) seen.set(b.file, b);
-  }));
-  return [...seen.values()];
+let toastT = null;
+function toast(msg, cls){
+  const t = $('toast'); t.textContent = msg; t.className = cls === 'warn' ? 'warn' : '';
+  clearTimeout(toastT); toastT = setTimeout(() => t.classList.add('hidden'), cls === 'warn' ? 7000 : 3500);
 }
-
-function renderStats(){
-  const books = allBooks();
-  const kids = new Set();
-  (catalog.shelves || []).forEach(sh => {
-    if(sh.forChildren) (sh.books || []).forEach(b => kids.add(b.file));
-  });
-  const chars = books.reduce((n,b) => n + (b.chars || 0), 0);
-  const hours = chars / 5 / 150 / 60;
-  const stats = [
-    ['Ном', books.length],
-    ['Хүүхдийн ном', kids.size],
-    ['Тавиур', (catalog.shelves || []).length],
-    ['Цаг', Math.round(hours).toLocaleString()]
-    // Cost and disk size belonged to planning the project, not to running the
-    // library day to day — gerel_storage.py reports them when they are wanted.
-  ];
-  $('stats').innerHTML = stats.map(([k,v]) =>
-    `<div class="stat"><b>${v}</b><span>${k}</span></div>`).join('');
+function setDirty(on){
+  dirty = on;
+  $('dirtyPill').classList.toggle('hidden', !on);
+  $('pushBtn').disabled = !(on && ghReady() && catalog);
 }
+window.addEventListener('beforeunload', e => { if(dirty){ e.preventDefault(); e.returnValue = ''; } });
 
-function shelfOptions(current){
-  return (catalog.shelves || []).map(sh =>
-    `<option value="${esc(sh.name)}"${sh.name===current?' selected':''}>${esc(sh.name)}</option>`
-  ).join('') + '<option value="__remove__">— хасах —</option>';
+// ---------------------------------------------------------------- sections
+const SECTIONS = ['dash','books','add','users','guide','settings'];
+function go(sec){
+  if(!SECTIONS.includes(sec)) sec = 'dash';
+  if(sec === 'users' && !isSuper()) sec = 'dash';
+  SECTIONS.forEach(s => $('sec-' + s).classList.toggle('hidden', s !== sec));
+  document.querySelectorAll('#nav a').forEach(a => a.classList.toggle('on', a.dataset.sec === sec));
+  window.scrollTo(0, 0);
 }
+window.addEventListener('hashchange', () => go(location.hash.slice(1)));
 
-function renderShelves(){
-  const q = $('search').value.trim().toLowerCase();
-  const only = $('shelfFilter').value;
-  const wrap = $('shelves');
-  wrap.innerHTML = '';
-
-  (catalog.shelves || []).forEach(sh => {
-    if(only && sh.name !== only) return;
-    if(kidsOnly && !sh.forChildren) return;
-
-    const div = document.createElement('div');
-    div.className = 'shelf';
-
-    const books = (sh.books || []);
-    const matching = books.filter(b =>
-      !q || (b.title||'').toLowerCase().includes(q) || (b.author||'').toLowerCase().includes(q));
-
-    div.innerHTML = `
-      <div class="shelfHead">
-        <h2>${esc(sh.name)}</h2>
-        <span class="pill count">${books.length}</span>
-        ${sh.forChildren ? '<span class="pill kids">хүүхдийн</span>' : ''}
-        <div class="grow"></div>
-        <button data-kids="${esc(sh.name)}">${sh.forChildren ? 'Хүүхдийн болиулах' : 'Хүүхдийн болгох'}</button>
-        <button data-up="${esc(sh.name)}">↑</button>
-        <button data-down="${esc(sh.name)}">↓</button>
-      </div>`;
-
-    if(!matching.length){
-      div.insertAdjacentHTML('beforeend', '<div class="empty">Ном алга.</div>');
-    } else {
-      const rows = matching.map(b => `
-        <tr>
-          <td class="title">${esc(b.title)}</td>
-          <td class="author">${esc(b.author)}</td>
-          <td class="len">${b.minutes ? b.minutes + ' мин' : ''}</td>
-          <td class="move">
-            <button data-edit="${esc(b.file)}" title="Текст засах">Засах</button>
-            <button data-kill="${esc(b.file)}" title="Бүрмөсөн устгах">Устгах</button>
-            <select data-move="${esc(b.file)}" data-from="${esc(sh.name)}">
-              ${shelfOptions(sh.name)}
-            </select>
-          </td>
-        </tr>`).join('');
-      div.insertAdjacentHTML('beforeend', `<table>${rows}</table>`);
-    }
-    wrap.appendChild(div);
-  });
-
-  $('shelfFilter').innerHTML = '<option value="">Бүх тавиур</option>' +
-    (catalog.shelves||[]).map(sh => `<option${sh.name===only?' selected':''}>${esc(sh.name)}</option>`).join('');
-  $('shelfFilter').value = only;
-  renderStats();
-}
-
-// ---- edits ----
-document.addEventListener('change', e => {
-  const sel = e.target.closest('[data-move]');
-  if(!sel || !catalog) return;
-  const file = sel.dataset.move, from = sel.dataset.from, to = sel.value;
-  const fromShelf = catalog.shelves.find(s => s.name === from);
-  const book = fromShelf.books.find(b => b.file === file);
-  fromShelf.books = fromShelf.books.filter(b => b.file !== file);
-  if(to !== '__remove__'){
-    const toShelf = catalog.shelves.find(s => s.name === to);
-    if(toShelf && !toShelf.books.some(b => b.file === file)){
-      toShelf.books.push(book);
-      toShelf.books.sort((a,b) => (a.title||'').localeCompare(b.title||'', 'mn'));
-    }
-    log(`«${book.title}» → ${to}`);
-  } else {
-    log(`«${book.title}» хасагдлаа`, 'warn');
-  }
-  renderShelves();
-});
-
-document.addEventListener('click', e => {
-  if(!catalog) return;
-  const ed = e.target.closest('[data-edit]');
-  if(ed){ editBook(ed.dataset.edit); return; }
-  const kill = e.target.closest('[data-kill]');
-  if(kill){ killBook(kill.dataset.kill); return; }
-  const kids = e.target.closest('[data-kids]');
-  const up = e.target.closest('[data-up]');
-  const down = e.target.closest('[data-down]');
-
-  if(kids){
-    const sh = catalog.shelves.find(s => s.name === kids.dataset.kids);
-    sh.forChildren = !sh.forChildren;
-    log(`«${sh.name}» ${sh.forChildren ? 'хүүхдийн тавиур боллоо' : 'хүүхдийн тавиураас гарлаа'}`);
-    renderShelves();
-  }
-  if(up || down){
-    const name = (up || down).dataset[up ? 'up' : 'down'];
-    const i = catalog.shelves.findIndex(s => s.name === name);
-    const j = up ? i-1 : i+1;
-    if(j >= 0 && j < catalog.shelves.length){
-      [catalog.shelves[i], catalog.shelves[j]] = [catalog.shelves[j], catalog.shelves[i]];
-      renderShelves();
-    }
-  }
-});
-
-$('search').addEventListener('input', renderShelves);
-$('shelfFilter').addEventListener('change', renderShelves);
-$('kidsOnlyBtn').addEventListener('click', () => {
-  kidsOnly = !kidsOnly;
-  $('kidsOnlyBtn').classList.toggle('primary', kidsOnly);
-  renderShelves();
-});
-
-// ============================================================
-// GitHub
-// ============================================================
-// A static site cannot write to itself, so this talks to GitHub's API
-// directly. The token stays in this browser and is never sent anywhere except
-// to github.com — which means this page can be public and still be safe: it is
-// useless to anyone who does not hold a token for the repository.
-let gh = { repo: '', token: '', sha: null };
-try{
-  gh.repo = localStorage.getItem('gerel:ghRepo') || '';
-  gh.token = localStorage.getItem('gerel:ghToken') || '';
-}catch(e){}
-
+// ---------------------------------------------------------------- storage of the key
+// "Remember on this device" keeps the key in localStorage; otherwise it lives
+// in sessionStorage and is gone when the browser closes.
+const store = {
+  get(k){ try{ return localStorage.getItem(k) ?? sessionStorage.getItem(k); }catch(e){ return null; } },
+  set(k, v, keep){ try{ (keep ? localStorage : sessionStorage).setItem(k, v);
+    (keep ? sessionStorage : localStorage).removeItem(k); }catch(e){} },
+  del(k){ try{ localStorage.removeItem(k); sessionStorage.removeItem(k); }catch(e){} },
+  kept(k){ try{ return localStorage.getItem(k) !== null; }catch(e){ return false; } }
+};
+let gh = { repo: store.get('gerel:ghRepo') || '', token: store.get('gerel:ghToken') || '' };
 function ghReady(){ return !!(gh.repo && gh.token); }
-function ghRefresh(){
-  $('ghRepo').value = gh.repo;
-  $('ghToken').value = gh.token;
-  const on = ghReady();
-  $('loadBtn').disabled = !on;
-  $('pushBtn').disabled = !(on && catalog);
-  $('ghBtn').textContent = on ? 'GitHub: ' + gh.repo.split('/')[1] : 'GitHub холбох';
-}
 
 async function ghApi(path, options){
   const res = await fetch('https://api.github.com/repos/' + gh.repo + path, Object.assign({
-    headers: {
-      'Authorization': 'Bearer ' + gh.token,
-      'Accept': 'application/vnd.github+json'
-    }
+    headers: { 'Authorization': 'Bearer ' + gh.token, 'Accept': 'application/vnd.github+json' }
   }, options || {}));
   if(!res.ok){
+    // In words a person can act on, not GitHub's JSON.
+    if(res.status === 401) throw new Error('GitHub түлхүүр хүчингүй эсвэл хугацаа нь дууссан — Гарах дараад шинэ түлхүүрээр нэвтэрнэ үү.');
+    if(res.status === 403) throw new Error('Энэ түлхүүрт эрх хүрэлцэхгүй байна (Contents: Read and write хэрэгтэй).');
+    if(res.status === 409) throw new Error('Файлыг өөр хүн дөнгөж өөрчилсөн — хуудсаа дахин ачаалаад давтана уу.');
     const detail = await res.text();
-    throw new Error(res.status + ' ' + detail.slice(0, 160));
+    throw new Error(res.status + ' ' + detail.slice(0, 120));
   }
-  return res.json();
+  return res.status === 204 ? null : res.json();
+}
+const b64 = s => btoa(unescape(encodeURIComponent(s)));
+const unb64 = s => decodeURIComponent(escape(atob(s.replace(/\n/g, ''))));
+
+// ---------------------------------------------------------------- passwords
+// New passwords are PBKDF2 (150,000 rounds of SHA-256, a random salt each),
+// so the public users.json cannot be guessed against quickly. Rows from
+// before 3 Oct (one round of SHA-256) still sign in until they are next set.
+async function legacyHash(user, password){
+  const data = new TextEncoder().encode('gerel:' + user.toLowerCase() + ':' + password);
+  const buf = await crypto.subtle.digest('SHA-256', data);
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2,'0')).join('');
+}
+async function pbkdf2Hex(password, saltB64, iter){
+  const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveBits']);
+  const salt = Uint8Array.from(atob(saltB64), c => c.charCodeAt(0));
+  const bits = await crypto.subtle.deriveBits({name:'PBKDF2', hash:'SHA-256', salt, iterations:iter}, key, 256);
+  return [...new Uint8Array(bits)].map(b => b.toString(16).padStart(2,'0')).join('');
+}
+async function passwordMatches(row, user, password){
+  if(row.kdf === 'pbkdf2-sha256') return (await pbkdf2Hex(password, row.salt, row.iter || 150000)) === row.hash;
+  return (await legacyHash(user, password)) === row.hash;
+}
+async function passwordFields(password){
+  const salt = btoa(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(16))));
+  return { kdf:'pbkdf2-sha256', iter:150000, salt, hash: await pbkdf2Hex(password, salt, 150000) };
+}
+const weak = p => p.length < 8 || /^(1234|0000|pass|admin|gerel)/i.test(p);
+
+// ---------------------------------------------------------------- who
+let me = null;
+try{ me = JSON.parse(store.get('gerel:admin') || 'null'); }catch(e){ me = null; }
+const isSuper = () => !!(me && me.role === 'супер');
+function applyRole(){
+  document.querySelectorAll('.superOnly').forEach(el => el.classList.toggle('hidden', !isSuper()));
+  $('whoPill').textContent = me ? (me.name || me.user) + ' · ' + (isSuper() ? 'Супер админ' : 'Админ') : '—';
 }
 
-// GitHub needs the file's current sha to accept a change. Fetching it first is
-// also what stops two people overwriting each other without noticing.
-async function ghLoad(){
-  log('GitHub-аас татаж байна…');
-  try{
-    const file = await ghApi('/contents/catalog.json');
-    gh.sha = file.sha;
-    const text = decodeURIComponent(escape(atob(file.content.replace(/\n/g, ''))));
-    catalog = JSON.parse(text);
-    if(!catalog.shelves) throw new Error('shelves байхгүй');
-    $('saveBtn').disabled = false;
-    $('pushBtn').disabled = false;
-    renderShelves();
-    log(`${allBooks().length} ном GitHub-аас ачааллаа.`, 'good');
-  }catch(err){
-    log('Татаж чадсангүй: ' + err.message, 'warn');
-  }
-}
-
-async function ghPush(){
-  if(!catalog){ log('Эхлээд catalog ачаална уу.', 'warn'); return; }
-  const note = prompt('Юу өөрчилснөө бичнэ үү', 'Номын сангийн жагсаалт шинэчлэв');
-  if(note === null) return;
-  $('pushBtn').disabled = true;
-  log('GitHub руу хадгалж байна…');
-  try{
-    // Re-read the sha first: someone else may have changed the file since we
-    // loaded it, and overwriting their work silently would be worse than failing.
-    const current = await ghApi('/contents/catalog.json');
-    const body = JSON.stringify(catalog, null, 1);
-    const encoded = btoa(unescape(encodeURIComponent(body)));
-    await ghApi('/contents/catalog.json', {
-      method: 'PUT',
-      body: JSON.stringify({ message: note || 'Update catalog', content: encoded, sha: current.sha })
-    });
-    gh.sha = null;
-    log('Хадгаллаа. Сайт 1-2 минутын дараа шинэчлэгдэнэ.', 'good');
-  }catch(err){
-    log('Хадгалж чадсангүй: ' + err.message, 'warn');
-  }finally{
-    $('pushBtn').disabled = !ghReady();
-  }
-}
-
-// ============================================================
-// The way in
-// ============================================================
-// Nothing here is visible until a working token is given. The token is the
-// real lock — GitHub enforces it, and without one the dashboard could only
-// read a catalogue that is public anyway. A username and password box on a
-// static page would be decoration, since anyone can read the page source.
+// ---------------------------------------------------------------- the way in
+// Two locks doing different jobs. The password keeps the page shut against
+// anyone who wanders in; the token is what GitHub checks before anything is
+// changed. A password on a static page can be read from its source, and a
+// token alone would leave the page open on a shared computer.
 async function tryGate(){
-  // Two locks doing different jobs. The password keeps the page shut against
-  // anyone who wanders in; the token is what GitHub checks before anything is
-  // actually changed. Neither alone would be enough — a password on a static
-  // page can be read from the source, and a token alone leaves the dashboard
-  // open on a shared computer.
   const user = ($('gateUser').value || '').trim().toLowerCase();
   const pass = $('gatePass').value || '';
-  const repo = $('gateRepo').value.trim()
-    .replace(/^https?:\/\/github\.com\//,'').replace(/\.git$/,'');
+  const repo = ($('gateRepo').value || 'rciu-cmd/gerel-library').trim()
+    .replace(/^https?:\/\/github\.com\//, '').replace(/\.git$/, '');
   const token = $('gateToken').value.trim();
-  if(!user || !pass || !repo || !token){
-    $('gateNote').textContent = 'Бүх талбарыг бөглөнө үү.';
-    return;
-  }
+  const keep = $('gateRemember').checked;
+  if(!user || !pass || !token){ $('gateNote').textContent = 'Бүх талбарыг бөглөнө үү.'; return; }
   $('gateGo').disabled = true;
   $('gateNote').textContent = 'Шалгаж байна…';
   try{
-    // The admin list lives in the same users.json the library uses. Anyone
-    // marked админ may open this page; everyone else is refused.
     const ur = await fetch('users.json', { cache:'no-cache' });
-    // No users.json at all means nobody can be looked up — including the
-    // person who is about to create it. Whoever holds a write token can
-    // already change every file by hand, so treating them as the first
-    // superadmin grants nothing they did not have.
-    let firstRun = !ur.ok;
-    if(ur.ok){
-      const list = (await ur.json()).users || [];
-      if(!list.length) firstRun = true;      // an empty file is no file
-      const found = list.find(p => (p.user||'').toLowerCase() === user);
-      const data = new TextEncoder().encode('gerel:' + user + ':' + pass);
-      const buf = await crypto.subtle.digest('SHA-256', data);
-      const hash = [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
-      if(!found || found.hash !== hash)
-        throw new Error('Нэр эсвэл нууц үг буруу байна.');
-      if(found.role !== 'админ' && found.role !== 'супер')
-        throw new Error('Энэ хэрэглэгчид удирдах эрх алга.');
-      window.__admin = found;
-      try{ localStorage.setItem('gerel:admin', JSON.stringify(found)); }catch(e){}
-      window.__weakPassword = pass.length < 8 || /^(1234|0000|pass|admin)/i.test(pass);
+    const list = ur.ok ? ((await ur.json()).users || []) : [];
+    let found = null;
+    if(list.length){
+      found = list.find(p => (p.user || '').toLowerCase() === user);
+      if(!found || !(await passwordMatches(found, user, pass))) throw new Error('Нэр эсвэл нууц үг буруу байна.');
+      if(found.role !== 'админ' && found.role !== 'супер') throw new Error('Энэ хэрэглэгчид удирдах эрх алга.');
     }
-    // No users.json yet means the very first sign-in, so the token alone
-    // decides. Otherwise nobody could ever create the first admin.
-    // Ask GitHub whether this token really can write here, rather than
-    // accepting anything that looks like one.
+    // Ask GitHub whether this token really can write here.
     const res = await fetch('https://api.github.com/repos/' + repo, {
-      headers: { 'Authorization':'Bearer ' + token,
-                 'Accept':'application/vnd.github+json' }
-    });
-    if(!res.ok) throw new Error(res.status === 404
-      ? 'Repository олдсонгүй, эсвэл энэ түлхүүрт эрх алга.'
-      : 'Түлхүүр буруу байна.');
+      headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json' } });
+    if(!res.ok) throw new Error(res.status === 404 ? 'Repository олдсонгүй, эсвэл энэ түлхүүрт эрх алга.' : 'Түлхүүр буруу байна.');
     const info = await res.json();
-    if(!info.permissions || !info.permissions.push)
-      throw new Error('Энэ түлхүүрт бичих эрх алга.');
+    if(!info.permissions || !info.permissions.push) throw new Error('Энэ түлхүүрт бичих эрх алга.');
 
-    // A fine-grained token reports push permission from the account's role,
-    // then refuses the write with a 403 — so check what the token itself was
-    // granted rather than what the person is allowed to do.
-    const scopes = res.headers.get('x-oauth-scopes');
-    if(scopes !== null && !/\brepo\b/.test(scopes))
-      throw new Error('Энэ түлхүүрт "repo" эрх алга. Classic token дээр repo '
-        + 'нүдийг тэмдэглэнэ үү.');
-    if(scopes === null)
-      // Fine-grained tokens send no scope header. Ask GitHub directly whether
-      // this one may write content.
-      try{
-        const t = await fetch('https://api.github.com/repos/' + repo + '/contents/catalog.json',
-          { headers:{ 'Authorization':'Bearer ' + token,
-                      'Accept':'application/vnd.github+json' } });
-        if(t.status === 403)
-          throw new Error('Энэ түлхүүрт бичих эрх алга. Fine-grained token дээр '
-            + '"Contents: Read and write" сонгох, эсвэл classic token үүсгэнэ үү.');
-      }catch(e){ if(/эрх алга/.test(e.message)) throw e; }
-
-    gh.repo = repo; gh.token = token;
-    if(firstRun && !window.__admin){
-      window.__admin = { user: user, name: user, role: 'супер', firstRun: true };
-      try{ localStorage.setItem('gerel:admin', JSON.stringify(window.__admin)); }catch(e){}
-      log('Анхны нэвтрэлт — өөрийгөө супер админ болгож нэмнэ үү.', 'warn');
-    }
-    if(window.__admin){
-      log('Сайн байна уу, ' + (window.__admin.name || user), 'good');
-      $('pwBox').classList.remove('hidden');
-      applyRole();
-      // A password still at its starting value should not stay there.
-      if(window.__weakPassword)
-        log('Нууц үгээ солино уу — одоогийн нь хэт энгийн байна.', 'warn');
-    }
-    try{
-      localStorage.setItem('gerel:ghRepo', repo);
-      localStorage.setItem('gerel:ghToken', token);
-    }catch(e){}
+    gh = { repo, token };
+    store.set('gerel:ghRepo', repo, keep);
+    store.set('gerel:ghToken', token, keep);
+    // No users.json yet: the first person in, holding a write token, is the
+    // superadmin — they could change every file by hand anyway.
+    me = found ? { user: found.user, name: found.name || found.user, role: found.role }
+               : { user, name: user, role: 'супер', firstRun: true };
+    store.set('gerel:admin', JSON.stringify(me), keep);
+    $('gatePass').value = ''; $('gateToken').value = '';
     $('gate').style.display = 'none';
-    ghRefresh();
-    ghLoad();
-    loadPeople();
+    start();
+    if(me.firstRun) log('Анхны нэвтрэлт — Хэрэглэгчид хэсэгт өөрийгөө супер админаар нэмнэ үү.', 'warn');
+    else log('Сайн байна уу, ' + me.name, 'good');
+    if(weak(pass)) log('Нууц үгээ солино уу — хэт энгийн байна (Тохиргоо).', 'warn');
+    // A row still on the old one-round hash is upgraded now that the right
+    // password is in hand.
+    if(found && found.kdf !== 'pbkdf2-sha256') upgradeOwnRow(pass).catch(() => {});
   }catch(err){
     $('gateNote').textContent = err.message;
   }finally{
     $('gateGo').disabled = false;
   }
 }
-
 $('gateGo').addEventListener('click', tryGate);
-$('gateToken').addEventListener('keydown', e => {
-  if(e.key === 'Enter'){ e.preventDefault(); tryGate(); }
-});
-$('gateRepo').addEventListener('keydown', e => {
-  if(e.key === 'Enter'){ e.preventDefault(); $('gateToken').focus(); }
-});
-$('gateUser').addEventListener('keydown', e => {
-  if(e.key === 'Enter'){ e.preventDefault(); $('gatePass').focus(); }
-});
-$('gatePass').addEventListener('keydown', e => {
-  if(e.key === 'Enter'){ e.preventDefault(); $('gateRepo').focus(); }
-});
+['gateUser','gatePass','gateToken','gateRepo'].forEach((id, i, all) =>
+  $(id).addEventListener('keydown', e => {
+    if(e.key !== 'Enter') return;
+    e.preventDefault();
+    if(id === 'gateToken' || id === 'gateRepo') tryGate(); else $(all[i + 1]).focus();
+  }));
 
-// Someone who signed in before goes straight through — and must arrive at a
-// loaded dashboard, not an empty one. Hiding the gate without fetching
-// anything was why a refresh emptied the page.
-(function(){
-  if(ghReady()){
-    $('gate').style.display = 'none';
-    try{
-      const saved = localStorage.getItem('gerel:admin');
-      if(saved) window.__admin = JSON.parse(saved);
-    }catch(e){}
-    if(window.__admin){
-      $('pwBox').classList.remove('hidden');
-      applyRole();
-    }
-    ghLoad();
-    // Recover the role from users.json rather than leaving the page half
-    // usable: a cleared localStorage should not cost someone their rights.
-    loadPeople().then(()=>{
-      if(!window.__admin){
-        if(!people.length){
-          window.__admin = { user:'admin', name:'admin', role:'супер', firstRun:true };
-        }else{
-          const saved = (()=>{ try{ return JSON.parse(
-            localStorage.getItem('gerel:admin')||'null'); }catch(e){ return null; } })();
-          if(saved) window.__admin = people.find(p=>p.user===saved.user) || null;
-        }
-        if(window.__admin){ $('pwBox').classList.remove('hidden'); applyRole(); }
-      }
-    });
-  }else{
-    $('gateRepo').value = gh.repo || 'rciu-cmd/gerel-library';
-    setTimeout(()=>$('gateUser').focus(), 100);
-  }
-})();
+function signOut(){
+  if(dirty && !confirm('Хадгалаагүй өөрчлөлт устна. Гарах уу?')) return;
+  dirty = false;
+  ['gerel:ghRepo','gerel:ghToken','gerel:admin'].forEach(k => store.del(k));
+  location.hash = '';
+  location.reload();
+}
+$('outBtn').addEventListener('click', () => { if(confirm('Гарах уу?')) signOut(); });
+$('outBtn2').addEventListener('click', signOut);
 
-$('ghBtn').addEventListener('click', ()=>{
-  if(confirm('Гарах уу?')) $('ghForget').click();
-});
-$('ghSave').addEventListener('click', ()=>{
-  gh.repo = $('ghRepo').value.trim().replace(/^https?:\/\/github\.com\//,'').replace(/\.git$/,'');
-  gh.token = $('ghToken').value.trim();
+// ---------------------------------------------------------------- catalogue
+async function ghLoad(){
   try{
-    localStorage.setItem('gerel:ghRepo', gh.repo);
-    localStorage.setItem('gerel:ghToken', gh.token);
-  }catch(e){}
-  ghRefresh();
-  $('ghPanel').classList.add('hidden');
-  log(ghReady() ? 'Холбогдлоо: ' + gh.repo : 'Repo болон токен хоёуланг бөглөнө үү.',
-      ghReady() ? 'good' : 'warn');
-  if(ghReady()) ghLoad();
-});
-$('ghForget').addEventListener('click', ()=>{
-  gh = { repo:'', token:'', sha:null };
-  window.__admin = null;
-  try{ localStorage.removeItem('gerel:ghRepo'); localStorage.removeItem('gerel:ghToken');
-       localStorage.removeItem('gerel:admin'); }catch(e){}
-  ghRefresh();
-  $('gateToken').value = '';
-  $('gateNote').textContent = '';
-  $('gate').style.display = 'flex';
-});
-$('loadBtn').addEventListener('click', ghLoad);
-$('pushBtn').addEventListener('click', ghPush);
-ghRefresh();
-
-// ---- open / save ----
-$('openCatalog').addEventListener('change', async e => {
-  const file = e.target.files[0];
-  if(!file) return;
-  try{
-    catalog = JSON.parse(await file.text());
+    const file = await ghApi('/contents/catalog.json');
+    catalog = JSON.parse(unb64(file.content));
     if(!catalog.shelves) throw new Error('shelves байхгүй');
-    $('saveBtn').disabled = false;
-    if(ghReady()) $('pushBtn').disabled = false;
-    $('hint').innerHTML = 'GitHub-той холбогдсон бол <b>GitHub руу хадгалах</b> дарахад '
-      + 'сайт шууд шинэчлэгдэнэ. Эсвэл <b>Файлаар татах</b> дарж гараар байршуулна.';
-    renderShelves();
-    loadPeople();
-    log(`${allBooks().length} ном ачааллаа.`, 'good');
+    setDirty(false);
+    renderShelves(); renderAddTargets(); renderDash();
   }catch(err){
-    log('Уншиж чадсангүй: ' + err.message, 'warn');
-  }
-});
-
-$('saveBtn').addEventListener('click', () => {
-  const blob = new Blob([JSON.stringify(catalog, null, 2)], {type:'application/json'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'catalog.json';
-  a.click();
-  URL.revokeObjectURL(a.href);
-  log('catalog.json татагдлаа. GitHub дээрх файлыг солино уу.', 'good');
-});
-
-// ============================================================
-// Deleting a book properly
-// ============================================================
-// Taking a book off a shelf leaves its file on the server. That is fine for a
-// book moved elsewhere and wrong for one that should not exist, so this
-// removes the file and its cover as well.
-async function ghDelete(path, note){
-  try{
-    const file = await ghApi('/contents/' + path.split('/').map(encodeURIComponent).join('/'));
-    await ghApi('/contents/' + path.split('/').map(encodeURIComponent).join('/'), {
-      method: 'DELETE',
-      body: JSON.stringify({ message: note, sha: file.sha })
-    });
-    return true;
-  }catch(err){
-    return false;      // already gone, which is the outcome we wanted anyway
+    log('Каталог татаж чадсангүй: ' + err.message, 'warn');
   }
 }
-
-async function killBook(file){
-  const book = allBooks().find(b => b.file === file);
-  if(!book) return;
-  if(!confirm('«' + book.title + '» — номыг бүрмөсөн устгах уу?\n\n'
-    + 'Жагсаалтаас хасаад, файлыг нь ч сервэрээс устгана.')) return;
-  if(!ghReady()){ log('Эхлээд GitHub-той холбогдоно уу.', 'warn'); return; }
-
-  // Off the shelves first, so a half-finished delete never leaves a book
-  // listed but unreadable.
-  catalog.shelves.forEach(sh => { sh.books = sh.books.filter(b => b.file !== file); });
-  renderShelves();
-
-  log('«' + book.title + '» устгаж байна…');
+async function saveCatalog(note){
+  // Re-read the sha first: someone else may have changed the file since it
+  // was loaded, and overwriting their work silently would be worse than failing.
+  const current = await ghApi('/contents/catalog.json');
+  await ghApi('/contents/catalog.json', { method:'PUT',
+    body: JSON.stringify({ message: note, content: b64(JSON.stringify(catalog, null, 1)), sha: current.sha }) });
+}
+let changes = [];
+function changed(msg){ changes.push(msg); setDirty(true); log(msg); }
+$('pushBtn').addEventListener('click', async () => {
+  if(!catalog) return;
+  const def = changes.length === 1 ? changes[0] : 'Номын сан: ' + changes.length + ' өөрчлөлт';
+  const note = prompt('Юу өөрчилснөө бичнэ үү', def);
+  if(note === null) return;
+  $('pushBtn').disabled = true;
   try{
-    const current = await ghApi('/contents/catalog.json');
-    const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(catalog, null, 1))));
-    await ghApi('/contents/catalog.json', {
-      method: 'PUT',
-      body: JSON.stringify({ message: 'Remove ' + book.title, content: encoded, sha: current.sha })
-    });
-    const note = 'Remove ' + book.title;
-    const gone = [];
-    if(book.id){
-      if(await ghDelete('books/' + book.id + '.epub', note)) gone.push('EPUB');
-      if(book.cover && await ghDelete(book.cover, note)) gone.push('cover');
+    await saveCatalog(note || def);
+    changes = []; setDirty(false);
+    log('Хадгаллаа. Сайт 1–2 минутын дараа шинэчлэгдэнэ.', 'good');
+    loadCommits();
+  }catch(err){
+    log('Хадгалж чадсангүй: ' + err.message, 'warn'); setDirty(true);
+  }
+});
+
+// The same rule as the app: a part shows only when every earlier part is here.
+const ROMAN = {I:1,II:2,III:3,IV:4,V:5,VI:6,VII:7,VIII:8,IX:9,X:10,XI:11,XII:12};
+function partOf(title){
+  const m = String(title || '').toUpperCase().trim().match(/^(.+?)\s*(?:[-–—]\s*|\s)(\d{1,2}|[IVX]{1,4})\s*(?:[:(].*)?$/);
+  if(!m) return null;
+  const n = /^\d+$/.test(m[2]) ? +m[2] : ROMAN[m[2]];
+  if(!n) return null;
+  const key = m[1].replace(/[ABCEHKMOPTXY]/g, c => 'АВСЕНКМОРТХУ'['ABCEHKMOPTXY'.indexOf(c)]).replace(/[^\p{L}\p{N}]/gu, '');
+  return key ? {key, n} : null;
+}
+function seriesMap(){
+  const s = new Map();
+  (catalog.shelves || []).filter(g => g.forChildren !== false).forEach(g => g.books.forEach(b => {
+    const p = partOf(b.title); if(!p) return;
+    if(!s.has(p.key)) s.set(p.key, new Set()); s.get(p.key).add(p.n);
+  }));
+  return s;
+}
+function reachable(b, s){
+  const p = partOf(b.title); if(!p) return true;
+  for(let i = 1; i < p.n; i++) if(!(s.get(p.key) || new Set()).has(i)) return false;
+  return true;
+}
+function allBooks(){
+  const m = new Map();
+  (catalog.shelves || []).forEach(g => (g.books || []).forEach(b => { if(!m.has(b.file)) m.set(b.file, b); }));
+  return [...m.values()];
+}
+const shelfNamed = n => (catalog.shelves || []).find(g => g.name === n);
+function hiddenShelf(name, note){
+  let g = shelfNamed(name);
+  if(!g){ g = { name, forChildren:false, note, books:[] }; catalog.shelves.push(g); }
+  return g;
+}
+
+// ---------------------------------------------------------------- books view
+function renderShelves(){
+  if(!catalog) return;
+  const q = $('search').value.trim().toLowerCase();
+  const only = $('shelfFilter').value;
+  const showHidden = $('showHidden').checked;
+  const s = seriesMap();
+  const wrap = $('shelves'); wrap.innerHTML = '';
+  const visibleShelves = catalog.shelves.filter(g => g.forChildren !== false);
+  const shelfOpts = cur => visibleShelves.map(g =>
+    `<option value="${esc(g.name)}"${g.name === cur ? ' selected' : ''}>→ ${esc(g.name)}</option>`).join('');
+
+  catalog.shelves.forEach((g, gi) => {
+    const hidden = g.forChildren === false;
+    if(only && g.name !== only) return;
+    if(hidden && !showHidden && only !== g.name) return;
+    const books = (g.books || []).filter(b => !q || (b.title || '').toLowerCase().includes(q)
+      || (b.author || '').toLowerCase().includes(q));
+    if(q && !books.length) return;
+    const div = document.createElement('div'); div.className = 'shelf';
+    div.innerHTML = `<div class="shelfHead">
+        <span class="dot" style="background:${hidden ? '#9A9AA8' : colourOf(g.name)}"></span>
+        <h2>${esc(g.name)}</h2><span class="tag mute">${fmt(g.books.length)} ном</span>
+        ${hidden ? '<span class="tag warn">хүүхдэд харагдахгүй</span>' : ''}
+        <div class="grow"></div>
+        <button class="small" data-up="${gi}" title="Дээш">↑</button>
+        <button class="small" data-down="${gi}" title="Доош">↓</button></div>`;
+    if(!books.length){
+      div.insertAdjacentHTML('beforeend', '<p class="fine" style="padding:12px 16px;margin:0">Ном алга.</p>');
+    }else{
+      div.insertAdjacentHTML('beforeend', '<table class="books"><tbody>' + books.map(b => {
+        const tags = [];
+        if(b.lang === 'en') tags.push('<span class="tag mute">англи</span>');
+        if(b.braille) tags.push('<span class="tag mute">⠃ брайль</span>');
+        if(!hidden && !reachable(b, s)) tags.push('<span class="tag warn">өмнөх боть дутуу — нуугдсан</span>');
+        if(hidden && b.removed) tags.push('<span class="tag mute">' + esc(b.removed) + '</span>');
+        const f = esc(b.file);
+        return `<tr>
+          <td class="cv">${b.cover ? `<img src="${esc(b.cover)}" alt="" loading="lazy">` : ''}</td>
+          <td class="tt"><b>${esc(b.title)}</b><small>${esc(b.author || '')}</small>
+            ${tags.length ? '<div class="tags">' + tags.join('') + '</div>' : ''}</td>
+          <td class="len">${b.minutes ? fmt(b.minutes) + ' мин' : ''}</td>
+          <td class="act"><div class="acts">
+            ${b.lang !== 'en' ? `<button class="small" data-edit="${f}">Текст засах</button>` : ''}
+            ${hidden
+              ? `<button class="small" data-restore="${f}" data-from="${esc(g.name)}">Сэргээх</button>`
+              : `<select data-move="${f}" data-from="${esc(g.name)}"><option value="">Зөөх…</option>${shelfOpts('')}</select>
+                 <button class="small" data-hide="${f}">Нуух</button>`}
+            <button class="small danger" data-kill="${f}">Устгах</button>
+          </div></td></tr>`;
+      }).join('') + '</tbody></table>');
     }
+    wrap.appendChild(div);
+  });
+  $('shelfFilter').innerHTML = '<option value="">Бүх тавиур</option>' + catalog.shelves.map(g =>
+    `<option${g.name === only ? ' selected' : ''}>${esc(g.name)}</option>`).join('');
+  const vis = new Set(); visibleShelves.forEach(g => g.books.forEach(b => { if(reachable(b, s)) vis.add(b.id || b.file); }));
+  $('bookCount').textContent = fmt(vis.size) + ' ном хүүхдэд харагдана · ' + catalog.shelves.length + ' тавиур';
+}
+['search','shelfFilter','showHidden'].forEach(id => $(id).addEventListener(id === 'search' ? 'input' : 'change', renderShelves));
+
+function hideBook(file){
+  const book = allBooks().find(b => b.file === file); if(!book) return;
+  const from = catalog.shelves.filter(g => g.forChildren !== false && g.books.some(b => b.file === file)).map(g => g.name);
+  const reason = prompt('«' + book.title + '»-г яагаад нуух вэ? (заавал биш)', '');
+  if(reason === null) return;
+  catalog.shelves.forEach(g => { if(g.forChildren !== false) g.books = g.books.filter(b => b.file !== file); });
+  const h = hiddenShelf(HIDDEN_SHELF, 'Books taken off the children\'s shelves. To restore one, move it back to the shelves in its "from".');
+  if(!h.books.some(b => b.file === file))
+    h.books.push(Object.assign({}, book, { from, removed: (reason || 'hidden') + ' (' + new Date().toISOString().slice(0,10) + ')' }));
+  changed('«' + book.title + '» нуугдлаа (' + from.join(', ') + ')');
+  renderShelves();
+}
+function restoreBook(file, shelfName){
+  const g = shelfNamed(shelfName); if(!g) return;
+  const book = g.books.find(b => b.file === file); if(!book) return;
+  let to = (book.from || []).filter(n => { const s = shelfNamed(n); return s && s.forChildren !== false; });
+  if(!to.length){
+    const names = catalog.shelves.filter(s => s.forChildren !== false).map(s => s.name);
+    const pick = prompt('Аль тавиурт буцаах вэ?\n' + names.join('\n'), names[0]);
+    if(!pick || !shelfNamed(pick)) return;
+    to = [pick];
+  }
+  const clean = Object.assign({}, book); delete clean.from; delete clean.removed;
+  to.forEach(n => { const s = shelfNamed(n); if(!s.books.some(b => b.file === file)){ s.books.push(clean);
+    s.books.sort((a, b) => (a.title || '').localeCompare(b.title || '', 'mn')); } });
+  g.books = g.books.filter(b => b.file !== file);
+  changed('«' + book.title + '» сэргээгдлээ → ' + to.join(', '));
+  renderShelves();
+}
+document.addEventListener('change', e => {
+  const sel = e.target.closest('[data-move]');
+  if(!sel || !catalog || !sel.value) return;
+  const file = sel.dataset.move, from = shelfNamed(sel.dataset.from), to = shelfNamed(sel.value);
+  const book = from.books.find(b => b.file === file);
+  if(!book || !to || to === from){ sel.value = ''; return; }
+  from.books = from.books.filter(b => b.file !== file);
+  if(!to.books.some(b => b.file === file)){ to.books.push(book);
+    to.books.sort((a, b) => (a.title || '').localeCompare(b.title || '', 'mn')); }
+  changed('«' + book.title + '» ' + from.name + ' → ' + to.name);
+  renderShelves();
+});
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-edit],[data-kill],[data-hide],[data-restore],[data-up],[data-down],[data-copy],[data-deluser]');
+  if(!t) return;
+  if(t.dataset.copy !== undefined){ copyCmd(t); return; }
+  if(t.dataset.deluser !== undefined){ deleteUser(t.dataset.deluser); return; }
+  if(!catalog) return;
+  if(t.dataset.edit) editBook(t.dataset.edit);
+  else if(t.dataset.kill) killBook(t.dataset.kill);
+  else if(t.dataset.hide) hideBook(t.dataset.hide);
+  else if(t.dataset.restore) restoreBook(t.dataset.restore, t.dataset.from);
+  else if(t.dataset.up || t.dataset.down){
+    const i = +(t.dataset.up || t.dataset.down), j = t.dataset.up ? i - 1 : i + 1;
+    if(j < 0 || j >= catalog.shelves.length) return;
+    [catalog.shelves[i], catalog.shelves[j]] = [catalog.shelves[j], catalog.shelves[i]];
+    changed('Тавиурын дараалал: ' + catalog.shelves[j].name);
+    renderShelves();
+  }
+});
+
+// Deleting a book for good: off every shelf and saved at once, then its cover
+// (and an EPUB added here) removed from the repository. Audio and EPUBs on R2
+// stay — they cost almost nothing, and a mistake can still be undone.
+async function ghDelete(path, note){
+  try{
+    const enc = '/contents/' + path.split('/').map(encodeURIComponent).join('/');
+    const file = await ghApi(enc);
+    await ghApi(enc, { method:'DELETE', body: JSON.stringify({ message: note, sha: file.sha }) });
+    return true;
+  }catch(err){ return false; }
+}
+async function killBook(file){
+  const book = allBooks().find(b => b.file === file); if(!book) return;
+  if(!confirm('«' + book.title + '» — номыг бүрмөсөн устгах уу?\n\nБүх тавиураас хасаад шууд хадгална. '
+    + 'Нуух нь ихэнхдээ хангалттай — тэгвэл буцааж сэргээж болно.')) return;
+  if(dirty && !confirm('Өмнөх хадгалаагүй өөрчлөлтүүд хамт хадгалагдана. Үргэлжлүүлэх үү?')) return;
+  catalog.shelves.forEach(g => { g.books = g.books.filter(b => b.file !== file); });
+  renderShelves();
+  try{
+    const note = 'Remove ' + book.title;
+    await saveCatalog(note); changes = []; setDirty(false);
+    const gone = [];
+    if(book.id && await ghDelete('books/' + book.id + '.epub', note)) gone.push('EPUB');
+    if(book.cover && await ghDelete(book.cover, note)) gone.push('хавтас');
     log('«' + book.title + '» устгагдлаа' + (gone.length ? ' (' + gone.join(', ') + ')' : ''), 'good');
   }catch(err){
     log('Устгаж чадсангүй: ' + err.message, 'warn');
+    ghLoad();
   }
 }
 
-// ============================================================
-// Correcting a book's text
-// ============================================================
-// Some of these books were digitised badly. The EPUB is never changed: the
-// correction is saved beside it as text/<id>.txt, which voicing prefers.
+// ---------------------------------------------------------------- correcting a book's text
+// The EPUB is never changed: the correction is saved beside it as
+// text/<id>.txt, which voicing prefers.
 const PUBLISHER=['эрхлэн хэвлүүлсэн','эрхлэн гаргав','хэвлэлийн газар','хэвлэлийн мэдээлэл',
   'хэвлэн нийтлэл','яамны хэвлэл','хэвлэлд бэлтгэсэн','редактор','хянан тохиолдуулсан',
   'эмхэтгэсэн','эх бэлтгэсэн','нүүр зургийг','зохиогчийн эрх','isbn','удк','ббк',
@@ -825,8 +837,7 @@ const hits=(t,w)=>{const l=t.toLowerCase();return w.reduce((n,x)=>n+(l.includes(
 function stripTail(ps){
   for(let i=0;i<ps.length;i++){
     const tail=ps.slice(i).join(' ');
-    if((SEP.test(ps[i])||NOTE.test(ps[i])) && hits(tail,SELLING.concat(PUBLISHER))>=2)
-      return ps.slice(0,i);
+    if((SEP.test(ps[i])||NOTE.test(ps[i])) && hits(tail,SELLING.concat(PUBLISHER))>=2) return ps.slice(0,i);
   }
   return ps;
 }
@@ -840,20 +851,17 @@ function notStory(title, ps){
   if(FOREWORD.some(w=>head.includes(w)) && hits(whole,PUBLISHER)>=1) return true;
   return false;
 }
-
 async function epubToText(url){
   const res = await fetch(url);
   if(!res.ok) throw new Error('ном татагдсангүй (' + res.status + ')');
   const zip = await JSZip.loadAsync(await res.arrayBuffer());
   const cont = await zip.file('META-INF/container.xml').async('string');
-  const opfPath = new DOMParser().parseFromString(cont,'application/xml')
-    .querySelector('rootfile').getAttribute('full-path');
+  const opfPath = new DOMParser().parseFromString(cont,'application/xml').querySelector('rootfile').getAttribute('full-path');
   const dir = opfPath.includes('/') ? opfPath.replace(/\/[^/]*$/,'/') : '';
   const opf = new DOMParser().parseFromString(await zip.file(opfPath).async('string'),'application/xml');
   const href = {};
   opf.querySelectorAll('manifest > item').forEach(i=>href[i.getAttribute('id')]=i.getAttribute('href'));
-  const spine = [...opf.querySelectorAll('spine > itemref')]
-    .map(r=>href[r.getAttribute('idref')]).filter(Boolean);
+  const spine = [...opf.querySelectorAll('spine > itemref')].map(r=>href[r.getAttribute('idref')]).filter(Boolean);
   const titles = {};
   const ncx = Object.values(href).find(h=>h&&h.endsWith('.ncx'));
   if(ncx && zip.file(dir+ncx)){
@@ -884,7 +892,6 @@ async function epubToText(url){
   }
   return out.join('\n\n');
 }
-
 let editing = null;
 async function editBook(file){
   const book = allBooks().find(b => b.file === file);
@@ -894,465 +901,531 @@ async function editBook(file){
   $('editState').textContent = 'ачаалж байна…';
   $('editText').value = '';
   $('editPanel').classList.remove('hidden');
-
-  const base = location.href.replace(/\/[^/]*$/, '/');
+  const base = location.href.replace(/[#?].*$/, '').replace(/\/[^/]*$/, '/');
   try{
-    // An existing correction wins; otherwise take the text out of the EPUB.
     let text = null, from = 'EPUB';
-    try{
-      const r = await fetch(base + 'text/' + book.id + '.txt?t=' + Date.now());
-      if(r.ok){ text = await r.text(); from = 'хадгалсан засвар'; }
-    }catch(e){}
-    // The EPUBs are on R2 beside the audio since 3 Oct (catalogue
-    // "booksBase"); a book added here since then is still in the site.
-    if(text === null && catalog && catalog.booksBase){
-      try{ text = await epubToText(catalog.booksBase.replace(/\/+$/,'') + '/books/' + book.id + '.epub'); }
-      catch(e){ text = null; }
+    try{ const r = await fetch(base + 'text/' + book.id + '.txt?t=' + Date.now());
+      if(r.ok){ text = await r.text(); from = 'хадгалсан засвар'; } }catch(e){}
+    if(text === null && catalog.booksBase){
+      try{ text = await epubToText(catalog.booksBase.replace(/\/+$/,'') + '/books/' + book.id + '.epub'); }catch(e){ text = null; }
     }
     if(text === null) text = await epubToText(base + 'books/' + book.id + '.epub');
     $('editText').value = text;
-    $('editState').textContent = from + ' · ' + text.length.toLocaleString() + ' тэмдэгт';
+    $('editState').textContent = from + ' · ' + fmt(text.length) + ' тэмдэгт';
   }catch(err){
     $('editState').textContent = 'алдаа';
-    $('editText').value = '';
     log('Нээж чадсангүй: ' + err.message, 'warn');
   }
 }
-
 async function saveEdit(){
   if(!editing) return;
-  if(!ghReady()){ log('Эхлээд GitHub-той холбогдоно уу.', 'warn'); return; }
   const path = 'text/' + editing.id + '.txt';
-  $('editSave').disabled = true;
-  $('editState').textContent = 'хадгалж байна…';
+  $('editSave').disabled = true; $('editState').textContent = 'хадгалж байна…';
   try{
     let sha = null;
     try{ sha = (await ghApi('/contents/' + path)).sha; }catch(e){}
-    const encoded = btoa(unescape(encodeURIComponent($('editText').value)));
-    const body = { message: 'Correct text: ' + editing.title, content: encoded };
+    const body = { message: 'Correct text: ' + editing.title, content: b64($('editText').value) };
     if(sha) body.sha = sha;
     await ghApi('/contents/' + path, { method:'PUT', body: JSON.stringify(body) });
     $('editState').textContent = 'хадгалагдлаа';
-    log('«' + editing.title + '» текст хадгалагдлаа. Дуу оруулахын өмнө GitHub Desktop дээр Pull хийнэ үү.', 'good');
+    log('«' + editing.title + '» текст хадгалагдлаа. Дахин дуу оруулах: Заавар → «Текст засах».', 'good');
   }catch(err){
     $('editState').textContent = 'алдаа';
     log('Хадгалж чадсангүй: ' + err.message, 'warn');
-  }finally{
-    $('editSave').disabled = false;
-  }
+  }finally{ $('editSave').disabled = false; }
 }
-
-$('editClose').addEventListener('click', ()=>{ $('editPanel').classList.add('hidden'); editing=null; });
+$('editClose').addEventListener('click', () => { $('editPanel').classList.add('hidden'); editing = null; });
 $('editSave').addEventListener('click', saveEdit);
 
-// ============================================================
-// Adding a book
-// ============================================================
-// The whole job, from the browser: read the book, pull out its cover, upload
-// both to the repository and list it. Nothing to copy by hand.
-
-// Mongolian Cyrillic to Latin, matching the Python side. Stripping non-Latin
-// characters instead would collapse most Mongolian filenames to nothing, and
-// every book would end up sharing one id.
-const TRANSLIT = {
-  'а':'a','б':'b','в':'v','г':'g','д':'d','е':'e','ё':'yo','ж':'j','з':'z',
-  'и':'i','й':'i','к':'k','л':'l','м':'m','н':'n','о':'o','ө':'o','п':'p',
-  'р':'r','с':'s','т':'t','у':'u','ү':'u','ф':'f','х':'h','ц':'ts','ч':'ch',
-  'ш':'sh','щ':'sh','ъ':'','ы':'y','ь':'','э':'e','ю':'yu','я':'ya'
-};
-function shortHash(str){
-  // Not cryptography — just enough to keep two similar titles apart.
-  let h = 5381;
-  for(let i=0;i<str.length;i++) h = ((h<<5)+h+str.charCodeAt(i))>>>0;
-  return h.toString(16).padStart(8,'0').slice(0,6);
-}
+// ---------------------------------------------------------------- adding a book
+// Read the book, take its cover, upload both and list it — on a hidden shelf
+// by default, because a book with no voice yet must not reach a blind child.
+const TRANSLIT = {'а':'a','б':'b','в':'v','г':'g','д':'d','е':'e','ё':'yo','ж':'j','з':'z','и':'i','й':'i',
+  'к':'k','л':'l','м':'m','н':'n','о':'o','ө':'o','п':'p','р':'r','с':'s','т':'t','у':'u','ү':'u','ф':'f',
+  'х':'h','ц':'ts','ч':'ch','ш':'sh','щ':'sh','ъ':'','ы':'y','ь':'','э':'e','ю':'yu','я':'ya'};
+function shortHash(str){ let h = 5381; for(let i=0;i<str.length;i++) h = ((h<<5)+h+str.charCodeAt(i))>>>0;
+  return h.toString(16).padStart(8,'0').slice(0,6); }
 function makeId(name){
   const stem = name.replace(/\.epub$/i,'');
-  const latin = [...stem].map(ch=>{
-    const low = ch.toLowerCase();
-    const t = TRANSLIT[low];
-    if(t === undefined) return ch;
-    return ch === low ? t : t.toUpperCase();
-  }).join('');
+  const latin = [...stem].map(ch => { const low = ch.toLowerCase(), t = TRANSLIT[low];
+    return t === undefined ? ch : (ch === low ? t : t.toUpperCase()); }).join('');
   const slug = latin.replace(/[^0-9A-Za-z]+/g,'-').replace(/^-|-$/g,'').toLowerCase().slice(0,48);
   return (slug || 'book') + '-' + shortHash(stem);
 }
-
 async function coverFrom(zip, opfPath, opf){
   const dir = opfPath.includes('/') ? opfPath.replace(/\/[^/]*$/,'/') : '';
   const names = Object.keys(zip.files);
   const resolve = h => names.find(n => n === dir+h || n === h);
-
   let href = null;
-  opf.querySelectorAll('manifest > item').forEach(i=>{
-    if(!href && (i.getAttribute('properties')||'').includes('cover-image')) href = i.getAttribute('href');
-  });
+  opf.querySelectorAll('manifest > item').forEach(i => { if(!href && (i.getAttribute('properties')||'').includes('cover-image')) href = i.getAttribute('href'); });
   if(!href){
-    const meta = [...opf.querySelectorAll('metadata > meta')]
-      .find(m => (m.getAttribute('name')||'').toLowerCase()==='cover');
-    if(meta){
-      const id = meta.getAttribute('content');
-      const item = [...opf.querySelectorAll('manifest > item')].find(i=>i.getAttribute('id')===id);
-      if(item) href = item.getAttribute('href');
-    }
+    const meta = [...opf.querySelectorAll('metadata > meta')].find(m => (m.getAttribute('name')||'').toLowerCase() === 'cover');
+    if(meta){ const item = [...opf.querySelectorAll('manifest > item')].find(i => i.getAttribute('id') === meta.getAttribute('content'));
+      if(item) href = item.getAttribute('href'); }
   }
   if(!href){
-    const item = [...opf.querySelectorAll('manifest > item')].find(i=>{
-      const h=(i.getAttribute('href')||'').toLowerCase();
-      return /\.(jpe?g|png|gif|webp)$/.test(h) &&
-             (h.includes('cover') || (i.getAttribute('id')||'').toLowerCase().includes('cover'));
-    });
+    const item = [...opf.querySelectorAll('manifest > item')].find(i => { const h = (i.getAttribute('href')||'').toLowerCase();
+      return /\.(jpe?g|png|gif|webp)$/.test(h) && (h.includes('cover') || (i.getAttribute('id')||'').toLowerCase().includes('cover')); });
     if(item) href = item.getAttribute('href');
   }
-  const path = href ? resolve(href) : names.find(n=>/\.(jpe?g|png)$/i.test(n));
+  const path = href ? resolve(href) : names.find(n => /\.(jpe?g|png)$/i.test(n));
   if(!path) return null;
-
-  // Shrunk to a thumbnail, or 287 covers would weigh more than the books.
-  const blob = await zip.file(path).async('blob');
-  const url = URL.createObjectURL(blob);
+  const url = URL.createObjectURL(await zip.file(path).async('blob'));
   try{
-    const img = await new Promise((res,rej)=>{
-      const i=new Image(); i.onload=()=>res(i); i.onerror=rej; i.src=url;
-    });
-    const w = Math.min(320, img.width || 320);
-    const c = document.createElement('canvas');
-    c.width = w; c.height = Math.round((img.height||w) * w / (img.width||w));
+    const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = url; });
+    const w = Math.min(320, img.width || 320), c = document.createElement('canvas');
+    c.width = w; c.height = Math.round((img.height || w) * w / (img.width || w));
     c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
     return c.toDataURL('image/jpeg', 0.82).split(',')[1];
-  }catch(e){
-    return null;
-  }finally{
-    URL.revokeObjectURL(url);
-  }
+  }catch(e){ return null; }finally{ URL.revokeObjectURL(url); }
 }
-
 async function readEpub(file){
   const zip = await JSZip.loadAsync(file);
   const cont = await zip.file('META-INF/container.xml').async('string');
-  const opfPath = new DOMParser().parseFromString(cont,'application/xml')
-    .querySelector('rootfile').getAttribute('full-path');
+  const opfPath = new DOMParser().parseFromString(cont,'application/xml').querySelector('rootfile').getAttribute('full-path');
   const opf = new DOMParser().parseFromString(await zip.file(opfPath).async('string'),'application/xml');
   const title = (opf.querySelector('metadata > *|title')||opf.querySelector('title'))?.textContent?.trim();
   const author = (opf.querySelector('metadata > *|creator')||opf.querySelector('creator'))?.textContent?.trim();
-
   let chars = 0;
   for(const n of Object.keys(zip.files)){
     if(!/\.x?html?$/i.test(n)) continue;
     const doc = new DOMParser().parseFromString(await zip.file(n).async('string'),'text/html');
-    doc.querySelectorAll('script,style').forEach(x=>x.remove());
-    chars += (doc.body?.textContent||'').replace(/\s+/g,' ').trim().length;
+    doc.querySelectorAll('script,style').forEach(x => x.remove());
+    chars += (doc.body?.textContent || '').replace(/\s+/g,' ').trim().length;
   }
-  const cover = await coverFrom(zip, opfPath, opf);
-  return { title: title || file.name.replace(/\.epub$/i,''), author: author || '', chars, cover };
+  return { title: title || file.name.replace(/\.epub$/i,''), author: author || '', chars, cover: await coverFrom(zip, opfPath, opf) };
 }
-
 function toBase64(buffer){
-  const bytes = new Uint8Array(buffer);
-  let binary = '';
-  for(let i=0;i<bytes.length;i+=0x8000)
-    binary += String.fromCharCode.apply(null, bytes.subarray(i, i+0x8000));
-  return btoa(binary);
+  const bytes = new Uint8Array(buffer); let s = '';
+  for(let i = 0; i < bytes.length; i += 0x8000) s += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+  return btoa(s);
 }
-
 async function ghPut(path, base64, note){
   let sha = null;
   try{ sha = (await ghApi('/contents/' + path)).sha; }catch(e){}
-  const body = { message: note, content: base64 };
-  if(sha) body.sha = sha;
+  const body = { message: note, content: base64 }; if(sha) body.sha = sha;
   await ghApi('/contents/' + path, { method:'PUT', body: JSON.stringify(body) });
 }
-
-// ============================================================
-// People
-// ============================================================
-// Accounts come from a spreadsheet, because a school already knows how to fill
-// one in. Passwords are never stored — only a hash — so the file in the
-// repository cannot hand anyone a child's password.
-const TEMPLATE =
-  'нэр,хэрэглэгчийн нэр,нууц үг,эрх\n' +
-  'Болд Батаа,bold,gerel2026,сурагч\n' +
-  'Сараа Дорж,saraa,nomsan11,сурагч\n' +
-  'Багшийн жишээ,bagsh1,surguuli116,багш\n';
-
-$('usersTemplate').href = 'data:text/csv;charset=utf-8,' +
-  encodeURIComponent('\ufeff' + TEMPLATE);
-
-async function hashPassword(user, password){
-  // The username is mixed in, so two children choosing the same password do
-  // not end up with the same stored value.
-  const data = new TextEncoder().encode('gerel:' + user.toLowerCase() + ':' + password);
-  const buf = await crypto.subtle.digest('SHA-256', data);
-  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2,'0')).join('');
+function renderAddTargets(){
+  if(!catalog) return;
+  const cur = $('addTarget').value || NEW_SHELF;
+  const names = [NEW_SHELF].concat(catalog.shelves.filter(g => g.forChildren !== false).map(g => g.name));
+  $('addTarget').innerHTML = names.map(n => `<option${n === cur ? ' selected' : ''}>${esc(n)}</option>`).join('');
 }
+async function addFiles(files){
+  if(!catalog){ log('Каталог ачаалагдаагүй байна.', 'warn'); return; }
+  if(dirty && !confirm('Хадгалаагүй өөрчлөлтүүд хамт хадгалагдана. Үргэлжлүүлэх үү?')) return;
+  const tname = $('addTarget').value || NEW_SHELF;
+  for(const file of files){
+    if(!/\.epub$/i.test(file.name)) continue;
+    if(file.size > 12 * 1024 * 1024){ log(file.name + ' хэт том (' + (file.size/1048576).toFixed(0) + ' MB) — gerel_add.py ашиглана уу.', 'warn'); continue; }
+    try{
+      log(file.name + ' уншиж байна…');
+      const info = await readEpub(file), id = makeId(file.name);
+      if(allBooks().some(b => b.id === id)){ log('«' + info.title + '» аль хэдийн байна.', 'warn'); continue; }
+      await ghPut('books/' + id + '.epub', toBase64(await file.arrayBuffer()), 'Add book: ' + info.title);
+      const entry = { title: info.title, author: info.author, file: 'books/' + id + '.epub', chars: info.chars,
+        minutes: Math.round(info.chars / 5 / 150), id };
+      if(info.cover){ await ghPut('covers/' + id + '.jpg', info.cover, 'Cover: ' + info.title); entry.cover = 'covers/' + id + '.jpg'; }
+      const target = tname === NEW_SHELF
+        ? hiddenShelf(NEW_SHELF, 'Added on the admin page, not voiced yet. Voice, then move to a shelf.')
+        : shelfNamed(tname);
+      target.books.push(entry);
+      target.books.sort((a, b) => (a.title || '').localeCompare(b.title || '', 'mn'));
+      await saveCatalog('Add ' + info.title); changes = []; setDirty(false);
+      renderShelves(); renderAddTargets();
+      log('«' + info.title + '» нэмэгдлээ → ' + target.name + ' (id: ' + id + ')', 'good');
+    }catch(err){ log(file.name + ': ' + err.message, 'warn'); }
+  }
+  log('Дараа нь: GitHub Desktop → Pull, тэгээд Заавар → «Шинэ ном нэмэх»-ийн алхмууд.');
+}
+$('addBooks').addEventListener('change', e => { addFiles([...e.target.files]); e.target.value = ''; });
+const drop = $('drop');
+['dragenter','dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); }));
+['dragleave','drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over'); }));
+drop.addEventListener('drop', e => addFiles([...e.dataTransfer.files]));
 
+// ---------------------------------------------------------------- people
+// Accounts only unlock the ⤓ (keep on this phone) button and this page. The
+// list is public, so it holds no full names of children and no passwords.
+const TEMPLATE = 'нэр,хэрэглэгчийн нэр,нууц үг,эрх\nБолд Б.,bold,gerel-2026-nom,сурагч\nБагшийн жишээ,bagsh1,surguuli-116-nom,багш\n';
+$('usersTemplate').href = 'data:text/csv;charset=utf-8,' + encodeURIComponent('\ufeff' + TEMPLATE);
 function parseCsv(text){
-  const rows = [];
-  text = text.replace(/^\ufeff/, '');
+  const rows = []; text = text.replace(/^\ufeff/, '');
   const head = text.split('\n')[0] || '';
-  // Excel in some locales writes semicolons; accept either.
   const sep = head.split(';').length > head.split(',').length ? ';' : ',';
   text.split(/\r?\n/).forEach((line, i) => {
     if(!line.trim()) return;
-    const cells = line.split(sep).map(c => c.trim().replace(/^"|"$/g, ''));
-    if(i === 0 && /нэр|name/i.test(cells[0] || '') &&
-       /хэрэглэгч|user/i.test(cells[1] || '')) return;
-    if(cells.length < 3) return;
-    rows.push({
-      name: cells[0],
-      user: (cells[1] || '').toLowerCase(),
-      pass: cells[2],
-      role: /супер|super/i.test(cells[3] || '') ? 'супер'
-          : /админ|admin/i.test(cells[3] || '') ? 'админ'
-          : /багш|teacher/i.test(cells[3] || '') ? 'багш' : 'сурагч'
-    });
+    const c = line.split(sep).map(x => x.trim().replace(/^"|"$/g, ''));
+    if(i === 0 && /нэр|name/i.test(c[0] || '') && /хэрэглэгч|user/i.test(c[1] || '')) return;
+    if(c.length < 3) return;
+    rows.push({ name: c[0], user: (c[1] || '').toLowerCase(), pass: c[2],
+      role: /супер|super/i.test(c[3] || '') ? 'супер' : /админ|admin/i.test(c[3] || '') ? 'админ'
+          : /багш|teacher/i.test(c[3] || '') ? 'багш' : 'сурагч' });
   });
   return rows;
 }
-
-let people = [];
-
 async function loadPeople(){
-  // Returns a promise so callers can wait for it — see the returning-session
-  // check above, which needs the list before it can restore a role.
-  try{
-    const r = await fetch('users.json', { cache: 'no-cache' });
-    people = r.ok ? ((await r.json()).users || []) : [];
-  }catch(e){ people = []; }
+  try{ const r = await fetch('users.json', { cache:'no-cache' }); people = r.ok ? ((await r.json()).users || []) : []; }
+  catch(e){ people = []; }
   showPeople();
 }
-
+const ROLE_NAME = { 'супер':'Супер админ', 'админ':'Админ', 'багш':'Багш', 'сурагч':'Сурагч' };
 function showPeople(){
-  $('usersCount').textContent = people.length
-    ? people.length + ' хэрэглэгч' : 'Хэрэглэгч алга';
-  $('usersList').innerHTML = people.map(p =>
-    '<div>' + esc(p.name || '') + ' — <b>' + esc(p.user) + '</b> (' + esc(p.role) + ')</div>'
-  ).join('');
+  $('usersCount').textContent = people.length ? people.length + ' хэрэглэгч' : 'Хэрэглэгч алга';
+  $('usersList').innerHTML = people.map(p => `<div class="row"><span class="k"><b>${esc(p.user)}</b>
+      <span class="fine">${esc(p.name || '')}</span></span>
+      <span class="tag ${p.role === 'супер' || p.role === 'админ' ? 'warn' : 'mute'}">${esc(ROLE_NAME[p.role] || p.role)}</span>
+      <span class="tag ${p.kdf === 'pbkdf2-sha256' ? 'good' : 'mute'}">${p.kdf === 'pbkdf2-sha256' ? 'PBKDF2' : 'хуучин хэш'}</span>
+      ${me && p.user === me.user ? '<span class="tag good">та</span>' : `<button class="small danger" data-deluser="${esc(p.user)}">Хасах</button>`}</div>`).join('')
+    || '<p class="fine">Хэрэглэгч алга.</p>';
+  renderDash();
 }
-
-// Two tiers. A "супер" account does everything, including creating people; an
-// "админ" account manages books and corrects text but cannot make accounts —
-// so a colleague can be given the library to look after without also being
-// given the power to lock everyone else out.
-function applyRole(){
-  const who = window.__admin;
-  const isSuper = who && who.role === 'супер';
-  // Account management belongs to the superadmin alone.
-  document.querySelectorAll('.superOnly').forEach(el =>
-    el.classList.toggle('hidden', !isSuper));
-  // A panel that vanishes with no explanation reads as a bug. Say which it is.
-  if(who && !isSuper)
-    log('Хэрэглэгч нэмэх хэсэг зөвхөн супер админд харагдана. '
-      + 'Танд одоогоор "' + (who.role||'?') + '" эрх байна.', 'warn');
-  const badge = $('roleBadge');
-  if(badge && who){
-    badge.textContent = (who.name || who.user) + ' · ' +
-      (isSuper ? 'Супер админ' : 'Админ');
-    badge.classList.remove('hidden');
-  }
+async function savePeople(message){
+  let sha = null;
+  try{ sha = (await ghApi('/contents/users.json')).sha; }catch(e){}
+  const body = { message, content: b64(JSON.stringify({ users: people }, null, 1)) };
+  if(sha) body.sha = sha;
+  await ghApi('/contents/users.json', { method:'PUT', body: JSON.stringify(body) });
 }
-
-// Adding one person without a spreadsheet. A school enrolling thirty children
-// wants the CSV; a teacher joining in March wants this.
-async function addOnePerson(){
-  const name = ($('oneName').value || '').trim();
-  const user = ($('oneUser').value || '').trim().toLowerCase();
-  const pass = $('onePass').value || '';
-  const role = $('oneRole').value;
-
-  // What is wrong with the form first, then whether we can save it — being
-  // told to sign in when the real problem is an empty box helps nobody.
-  if(!user || !pass){ $('oneNote').textContent = 'Нэр болон нууц үгээ бөглөнө үү.'; return; }
-  if(pass.length < 4){ $('oneNote').textContent = 'Нууц үг хэт богино байна.'; return; }
+async function upgradeOwnRow(pass){
+  await loadPeople();
+  const row = people.find(p => p.user === me.user);
+  if(!row || row.kdf === 'pbkdf2-sha256') return;
+  Object.assign(row, await passwordFields(pass));
+  await savePeople('Нууц үгийн хадгалалтыг PBKDF2 болгов: ' + me.user);
+  showPeople(); log('Таны нууц үгийн хадгалалт сайжирлаа (PBKDF2).', 'good');
+}
+$('oneAdd').addEventListener('click', async () => {
+  const name = $('oneName').value.trim(), user = $('oneUser').value.trim().toLowerCase(), pass = $('onePass').value, role = $('oneRole').value;
+  if(!user || !pass){ $('oneNote').textContent = 'Хэрэглэгчийн нэр, нууц үгээ бөглөнө үү.'; return; }
   if(/[\s,;]/.test(user)){ $('oneNote').textContent = 'Хэрэглэгчийн нэрэнд зай байж болохгүй.'; return; }
-  if(!ghReady()){ $('oneNote').textContent = 'Эхлээд нэвтэрнэ үү.'; return; }
-
-  $('oneAdd').disabled = true;
-  $('oneNote').textContent = 'Хадгалж байна…';
+  if(pass.length < 8){ $('oneNote').textContent = 'Нууц үг дор хаяж 8 тэмдэгт байна.'; return; }
+  $('oneAdd').disabled = true; $('oneNote').textContent = 'Хадгалж байна…';
   try{
-    if(!people.length) await loadPeople();
+    await loadPeople();
     const existing = people.find(p => p.user === user);
-    if(existing && !confirm(user + ' аль хэдийн байна. Нууц үгийг нь солих уу?')){
-      $('oneNote').textContent = '';
-      return;
-    }
-    const row = { name: name || user, user, role,
-                  hash: await hashPassword(user, pass) };
+    if(existing && !confirm(user + ' аль хэдийн байна. Нууц үгийг нь солих уу?')){ $('oneNote').textContent = ''; return; }
+    const row = Object.assign({ name: name || user, user, role }, await passwordFields(pass));
     people = people.filter(p => p.user !== user).concat([row]);
-
-    let sha = null;
-    try{ sha = (await ghApi('/contents/users.json')).sha; }catch(err){}
-    const body = { message: (existing ? 'Хэрэглэгч шинэчлэв: ' : 'Хэрэглэгч нэмэв: ') + user,
-                   content: btoa(unescape(encodeURIComponent(
-                     JSON.stringify({ users: people }, null, 1)))) };
-    if(sha) body.sha = sha;
-    await ghApi('/contents/users.json', { method:'PUT', body: JSON.stringify(body) });
-
+    await savePeople((existing ? 'Хэрэглэгч шинэчлэв: ' : 'Хэрэглэгч нэмэв: ') + user);
     showPeople();
-    $('oneName').value = ''; $('oneUser').value = ''; $('onePass').value = '';
-    $('oneNote').textContent = (existing ? 'Шинэчлэгдлээ: ' : 'Нэмэгдлээ: ') + user;
+    $('oneName').value = $('oneUser').value = $('onePass').value = '';
+    $('oneNote').textContent = (existing ? 'Шинэчлэгдлээ: ' : 'Нэмэгдлээ: ') + user + ' — нууц үгийг бичиж авна уу.';
     log((existing ? 'Шинэчлэв: ' : 'Нэмэв: ') + user + ' (' + role + ')', 'good');
-    // The password cannot be read back, so it must be written down now.
-    log('Нууц үгийг нь бичиж авна уу — дахин харах боломжгүй.', 'warn');
-  }catch(err){
-    $('oneNote').textContent = 'Хадгалж чадсангүй: ' + err.message;
-  }finally{
-    $('oneAdd').disabled = false;
-  }
-}
-$('oneAdd').addEventListener('click', addOnePerson);
-$('onePass').addEventListener('keydown', e => {
-  if(e.key === 'Enter'){ e.preventDefault(); addOnePerson(); }
+  }catch(err){ $('oneNote').textContent = 'Хадгалж чадсангүй: ' + err.message; }
+  finally{ $('oneAdd').disabled = false; }
 });
-
-// Changing your own password. Only your own — an admin who could silently
-// change another admin's password would be a way to lock a colleague out.
-async function changeMyPassword(){
-  const who = window.__admin;
-  if(!who){ $('pwNote').textContent = 'Эхлээд нэвтэрнэ үү.'; return; }
-  const a = $('pwNew').value || '', b = $('pwAgain').value || '';
-  if(a.length < 6){ $('pwNote').textContent = 'Дор хаяж 6 тэмдэгт байх ёстой.'; return; }
-  if(a !== b){ $('pwNote').textContent = 'Хоёр нууц үг таарахгүй байна.'; return; }
-
-  $('pwSave').disabled = true;
-  $('pwNote').textContent = 'Хадгалж байна…';
+async function deleteUser(user){
+  if(!confirm(user + ' — хэрэглэгчийг хасах уу?')) return;
   try{
-    if(!people.length) await loadPeople();
-    const row = people.find(p => p.user === who.user);
-    if(!row) throw new Error('Хэрэглэгч олдсонгүй.');
-    row.hash = await hashPassword(who.user, a);
-
-    let sha = null;
-    try{ sha = (await ghApi('/contents/users.json')).sha; }catch(err){}
-    const body = { message: 'Нууц үг солив',
-                   content: btoa(unescape(encodeURIComponent(
-                     JSON.stringify({ users: people }, null, 1)))) };
-    if(sha) body.sha = sha;
-    await ghApi('/contents/users.json', { method:'PUT', body: JSON.stringify(body) });
-
-    $('pwNew').value = ''; $('pwAgain').value = '';
-    $('pwNote').textContent = 'Солигдлоо. Дараагийн удаа шинэ нууц үгээ ашиглана уу.';
-    log('Нууц үг солигдлоо.', 'good');
-  }catch(err){
-    $('pwNote').textContent = 'Солиж чадсангүй: ' + err.message;
-  }finally{
-    $('pwSave').disabled = false;
-  }
+    await loadPeople();
+    people = people.filter(p => p.user !== user);
+    await savePeople('Хэрэглэгч хасав: ' + user);
+    showPeople(); log(user + ' хасагдлаа.', 'good');
+  }catch(err){ log('Хасаж чадсангүй: ' + err.message, 'warn'); }
 }
-$('pwSave').addEventListener('click', changeMyPassword);
-$('pwAgain').addEventListener('keydown', e => {
-  if(e.key === 'Enter'){ e.preventDefault(); changeMyPassword(); }
-});
-
 $('usersFile').addEventListener('change', async e => {
-  const file = e.target.files[0];
+  const file = e.target.files[0]; e.target.value = '';
   if(!file) return;
-  if(!ghReady()){ log('Эхлээд нэвтэрнэ үү.', 'warn'); e.target.value=''; return; }
-
-  const rows = parseCsv(await file.text());
-  if(!rows.length){ log('CSV дотор хэрэглэгч олдсонгүй.', 'warn'); e.target.value=''; return; }
-
+  const rows = parseCsv(await file.text()).filter(r => r.user && r.pass);
+  if(!rows.length){ log('CSV дотор хэрэглэгч олдсонгүй.', 'warn'); return; }
+  const short = rows.filter(r => r.pass.length < 8).map(r => r.user);
+  if(short.length && !confirm('Эдгээрийн нууц үг 8 тэмдэгтээс богино: ' + short.join(', ') + '\nҮргэлжлүүлэх үү?')) return;
   log(rows.length + ' хэрэглэгч уншлаа. Нууц үгийг хувиргаж байна…');
-  const made = [];
-  for(const r of rows){
-    if(!r.user || !r.pass) continue;
-    made.push({ name: r.name, user: r.user, role: r.role,
-                hash: await hashPassword(r.user, r.pass) });
-  }
-  if(!made.length){ log('Бүрэн мөр олдсонгүй.', 'warn'); e.target.value=''; return; }
-
-  // A repeated username is updated rather than duplicated.
+  await loadPeople();
   const byUser = new Map(people.map(p => [p.user, p]));
-  made.forEach(p => byUser.set(p.user, p));
+  for(const r of rows) byUser.set(r.user, Object.assign({ name: r.name, user: r.user, role: r.role }, await passwordFields(r.pass)));
   people = [...byUser.values()];
-
+  try{ await savePeople('Хэрэглэгч шинэчлэв (' + rows.length + ')'); showPeople();
+    log(rows.length + ' хэрэглэгч хадгалагдлаа. Нийт ' + people.length + '.', 'good'); }
+  catch(err){ log('Хадгалж чадсангүй: ' + err.message, 'warn'); }
+});
+$('pwSave').addEventListener('click', async () => {
+  const a = $('pwNew').value || '', b = $('pwAgain').value || '';
+  if(a.length < 8){ $('pwNote').textContent = 'Дор хаяж 8 тэмдэгт байх ёстой.'; return; }
+  if(a !== b){ $('pwNote').textContent = 'Хоёр нууц үг таарахгүй байна.'; return; }
+  $('pwSave').disabled = true; $('pwNote').textContent = 'Хадгалж байна…';
   try{
-    let sha = null;
-    try{ sha = (await ghApi('/contents/users.json')).sha; }catch(err){}
-    const body = { message: 'Хэрэглэгч шинэчлэв (' + made.length + ')',
-                   content: btoa(unescape(encodeURIComponent(
-                     JSON.stringify({ users: people }, null, 1)))) };
-    if(sha) body.sha = sha;
-    await ghApi('/contents/users.json', { method:'PUT', body: JSON.stringify(body) });
-    showPeople();
-    log(made.length + ' хэрэглэгч хадгалагдлаа. Нийт ' + people.length + '.', 'good');
-    log('Нууц үг хадгалагдаагүй — зөвхөн шалгах утга. CSV файлаа хадгалж авна уу.', 'warn');
-  }catch(err){
-    log('Хадгалж чадсангүй: ' + err.message, 'warn');
-  }
-  e.target.value = '';
+    await loadPeople();
+    const row = people.find(p => p.user === me.user);
+    if(!row) throw new Error('Хэрэглэгч олдсонгүй.');
+    Object.assign(row, await passwordFields(a));
+    await savePeople('Нууц үг солив: ' + me.user);
+    $('pwNew').value = $('pwAgain').value = '';
+    $('pwNote').textContent = 'Солигдлоо.'; log('Нууц үг солигдлоо.', 'good'); showPeople();
+  }catch(err){ $('pwNote').textContent = 'Солиж чадсангүй: ' + err.message; }
+  finally{ $('pwSave').disabled = false; }
+});
+function renderDevice(){
+  const kept = store.kept('gerel:ghToken');
+  $('deviceRows').innerHTML = `
+    <div class="row"><span class="k">Repository</span><span class="v">${esc(gh.repo)}</span></div>
+    <div class="row"><span class="k">Түлхүүр хадгалагдсан</span><span class="v">${kept ? 'энэ төхөөрөмж дээр' : 'хөтөч хаагдтал'}</span></div>
+    <div class="row"><span class="k">Түлхүүрийн хугацаа</span><span class="v">${stats && stats.security ? esc(stats.security.githubTokenExpires) : '—'}</span></div>`;
+  $('rememberBtn').textContent = kept ? 'Энэ төхөөрөмж дээр сануулахгүй' : 'Энэ төхөөрөмж дээр сануулах';
+}
+$('rememberBtn').addEventListener('click', () => {
+  const keep = !store.kept('gerel:ghToken');
+  ['gerel:ghRepo','gerel:ghToken','gerel:admin'].forEach(k => { const v = store.get(k); if(v !== null) store.set(k, v, keep); });
+  renderDevice(); log(keep ? 'Энэ төхөөрөмж дээр сануулна.' : 'Хөтөч хаахад түлхүүр устна.', 'good');
 });
 
-async function addFiles(files){
-  if(!catalog){ log('Эхлээд catalog ачаална уу.', 'warn'); return; }
-  if(!ghReady()){ log('Ном нэмэхийн тулд GitHub-той холбогдоно уу.', 'warn'); return; }
+// ---------------------------------------------------------------- dashboard
+async function loadStats(){
+  try{ const r = await fetch('stats.json?t=' + Date.now(), { cache:'no-store' }); stats = r.ok ? await r.json() : null; }
+  catch(e){ stats = null; }
+  renderDash(); renderDevice();
+}
+function kpi(colour, n, label, sub){
+  return `<div class="kpi" style="background-color:${colour}"><div class="n">${n}</div>
+    <div><div class="l">${esc(label)}</div><div class="s">${esc(sub || '')}</div></div></div>`;
+}
+function bar(pct, mark, colour){
+  return `<div class="bar"><i style="width:${Math.max(0, Math.min(100, pct))}%${colour ? ';background:' + colour : ''}"></i>${mark != null ? `<span class="mark" style="left:${mark}%"></span>` : ''}</div>`;
+}
+function checkRow(state, text, detail){
+  const t = { ok:['good','✓'], warn:['warn','!'], bad:['bad','✗'], info:['mute','i'], todo:['warn','→'] }[state] || ['mute','·'];
+  return `<div class="row"><span class="k"><span class="tag ${t[0]}">${t[1]}</span><span>${text}</span></span></div>${detail || ''}`;
+}
+function listDetail(title, items){
+  if(!items || !items.length) return '';
+  return `<details class="more"><summary>${esc(title)} (${items.length})</summary><ul>${items.map(x => '<li>' + esc(x) + '</li>').join('')}</ul></details>`;
+}
+function renderDash(){
+  const S = stats, L = S && S.library;
+  $('statsWhen').textContent = S ? 'Тоо баримт: ' + S.generated.replace('T', ' ') : 'stats.json алга — python gerel_stats.py';
+  $('buildPill').textContent = 'Хувилбар ' + (S ? S.build : '—');
+  // KPI tiles, from stats.json (or the live catalogue when there is none).
+  let books = L ? L.books : 0, mn = L ? L.mongolian : 0, en = L ? L.english : 0;
+  if(!L && catalog){ const v = allBooks(); books = v.length; en = v.filter(b => b.lang === 'en').length; mn = books - en; }
+  $('kpis').innerHTML = [
+    kpi('#242C5C', fmt(books), 'Ном', fmt(mn) + ' монгол · ' + fmt(en) + ' англи'),
+    kpi('#1668CC', L ? fmt(L.hoursMongolian + L.hoursEnglish) : '—', 'Сонсох цаг', L ? fmt(L.hoursMongolian) + ' монгол · ' + fmt(L.hoursEnglish) + ' англи' : ''),
+    kpi('#0E7C86', L ? L.shelves.length : '—', 'Тавиур', 'хүүхдэд харагдах'),
+    kpi('#6D3FB8', L ? fmt(L.braille) : '—', 'Брайль ном', L ? fmt(L.braillePages) + ' хуудас' : ''),
+    kpi('#C2410C', L ? fmt(L.interfaceClips) : '—', 'Дуут хэллэг', 'дэлгэц бүр ярина'),
+    kpi('#128A54', fmt(people.length || (L && L.accounts) || 0), 'Хэрэглэгч', 'админ, багш, сурагч'),
+  ].join('');
+  if(!S) return;
 
-  const target = catalog.shelves.find(s => s.forChildren) || catalog.shelves[0];
-  for(const file of files){
-    if(!/\.epub$/i.test(file.name)) continue;
+  const c = S.costs, st = S.storage;
+  $('siteRows').innerHTML = `
+    <div class="row"><span class="k">Сайт дээрх хувилбар</span><span class="v" id="liveBuild">шалгаж байна…</span></div>
+    <div class="row"><span class="k">GitHub дээрх хувилбар</span><span class="v" id="headBuild">—</span></div>
+    <div class="row"><span class="k">Сүүлийн commit</span><span class="v">${esc((S.lastCommit.hash || '') + ' · ' + (S.lastCommit.when || '').slice(0, 16).replace('T', ' '))}</span></div>`;
+  liveBuild();
 
-    // Very large books are unreliable through the API. GitHub Desktop handles
-    // those better, and saying so beats a failure halfway through an upload.
-    if(file.size > 12*1024*1024){
-      log(`${file.name} хэт том (${(file.size/1024/1024).toFixed(0)} MB). `
-        + 'GitHub Desktop ашиглана уу.', 'warn');
-      continue;
-    }
+  $('costRows').innerHTML = `
+    <div class="row"><span class="k">Cloudflare R2 — дуу, ном (${st.r2GB} GB, эхний ${st.r2FreeGB} GB үнэгүй)</span><span class="v">${money(c.r2PerYear)}</span></div>
+    <div class="row"><span class="k">Домэйн gerelnom.com</span><span class="v">${money(c.domainPerYear)}</span></div>
+    <div class="row"><span class="k">GitHub Pages — сайт</span><span class="v">${money(0)}</span></div>
+    <div class="row"><span class="k">R2-аас татах (bandwidth)</span><span class="v">${money(0)}</span></div>
+    <div class="row total"><span class="k">Нийт жилд</span><span class="v">${money(c.totalPerYear)}</span></div>`;
+  $('costNote').innerHTML = `Сард ойролцоогоор <b>${fmt(c.freeListeningHoursPerMonth)} цаг</b> сонсох хүртэл R2 уншилтын
+    төлбөр гарахгүй (сард 10 сая хүсэлт үнэгүй). Давбал 1 сая хүсэлт тутамд $0.36.`;
 
-    try{
-      log(`${file.name} уншиж байна…`);
-      const info = await readEpub(file);
-      const id = makeId(file.name);
+  const spentPct = c.azureGrantPerYear ? c.azureSpent / c.azureGrantPerYear * 100 : 0;
+  const left = days(c.azureGrantExpires);
+  $('azure').innerHTML = `
+    <div class="rows">
+      <div class="row"><span class="k">Зарцуулсан${c.azureSpentIsEstimate ? ' (тооцоо)' : ''}</span><span class="v">${money(c.azureSpent)}</span></div>
+      <div class="row"><span class="k">Үлдсэн</span><span class="v">${money(c.azureLeft)}</span></div>
+    </div>${bar(spentPct)}
+    <div class="note">Тэтгэлэг жилд ${money(c.azureGrantPerYear)}, <b>${esc(c.azureGrantExpires)}</b>-нд дуусна
+      (${left > 0 ? left + ' өдөр үлдсэн' : 'дууссан'}), дараа жил шилжихгүй. Бодит дүнг Azure портал →
+      Cost Management-аас харж gerel_money.json-д засна (${esc(c.azureSpentAsOf)}-ны байдлаар).</div>`;
 
-      if(allBooks().some(b => b.id === id)){
-        log(`«${info.title}» аль хэдийн байна.`, 'warn');
-        continue;
-      }
+  const sitePct = st.siteMB / st.siteLimitMB * 100;
+  const r2Max = Math.max(st.r2GB * 1.25, 12);
+  $('storage').innerHTML = `
+    <div class="row" style="border:0;padding-bottom:0"><span class="k">Сайт (GitHub Pages)</span><span class="v">${fmt(st.siteMB)} / ${fmt(st.siteLimitMB)} MB</span></div>
+    ${bar(sitePct)}
+    <div class="row" style="border:0;padding-bottom:0"><span class="k">Cloudflare R2 (дуу + ном) — улаан зураас: үнэгүй 10 GB</span><span class="v">${st.r2GB} GB</span></div>
+    ${bar(st.r2GB / r2Max * 100, st.r2FreeGB / r2Max * 100)}
+    <div class="rows" style="margin-top:6px">
+      <div class="row"><span class="k">R2 файл</span><span class="v">${fmt(st.r2Files)}</span></div>
+      <div class="row"><span class="k">— дуу</span><span class="v">${st.r2AudioGB} GB · ${fmt(st.r2AudioFiles)}</span></div>
+      <div class="row"><span class="k">— EPUB ном</span><span class="v">${fmt(st.r2BooksMB)} MB · ${fmt(st.r2BooksFiles)}</span></div>
+      <div class="row"><span class="k">Git түүх (зөвхөн компьютер дээр)</span><span class="v">${fmt(st.gitHistoryMB)} MB</span></div>
+    </div>
+    ${listDetail('Сайтын хавтас тус бүр (MB)', Object.entries(st.siteFolders).map(([k, v]) => k + ': ' + v))}`;
 
-      log(`«${info.title}» байршуулж байна…`);
-      await ghPut('books/' + id + '.epub', toBase64(await file.arrayBuffer()),
-                  'Add book: ' + info.title);
-      const entry = {
-        title: info.title,
-        author: info.author,
-        file: 'books/' + id + '.epub',
-        chars: info.chars,
-        minutes: Math.round(info.chars/5/150),
-        id
-      };
-      if(info.cover){
-        await ghPut('covers/' + id + '.jpg', info.cover, 'Cover: ' + info.title);
-        entry.cover = 'covers/' + id + '.jpg';
-      }
+  const maxBooks = Math.max(...L.shelves.map(g => g.books), 1);
+  $('shelfRows').innerHTML = L.shelves.map(g => `<div class="row"><span class="dot" style="background:${colourOf(g.name)}"></span>
+    <span class="k">${esc(g.name)}${bar(g.books / maxBooks * 100, null, colourOf(g.name))}</span><span class="v">${fmt(g.books)}</span></div>`).join('');
 
-      target.books.push(entry);
-      target.books.sort((a,b)=>(a.title||'').localeCompare(b.title||'','mn'));
+  const ck = S.checks, bk = S.backup;
+  const backupDays = bk ? Math.floor((new Date() - new Date(bk.when)) / 864e5) : null;
+  const backupStale = !bk || backupDays > 7 || (S.lastCommit.when && new Date(bk.when) < new Date(S.lastCommit.when));
+  $('checkRows').innerHTML =
+    checkRow(ck.noCover.length ? 'bad' : 'ok', ck.noCover.length ? ck.noCover.length + ' ном хавтасгүй' : 'Бүх ном хавтастай', listDetail('Хавтасгүй', ck.noCover)) +
+    checkRow(ck.noAudio.length ? 'bad' : 'ok', ck.noAudio.length ? ck.noAudio.length + ' ном дуугүй' : 'Бүх ном дуутай', listDetail('Дуугүй', ck.noAudio)) +
+    checkRow(ck.noBraille.length ? 'warn' : 'ok', ck.noBraille.length ? ck.noBraille.length + ' брайль файл дутуу' : 'Брайль файлууд бүрэн', listDetail('Брайль дутуу', ck.noBraille)) +
+    checkRow('info', L.waitingForEarlierParts.length + ' боть өмнөх боть нь дутуу тул нуугдсан', listDetail('Нуугдсан боть', L.waitingForEarlierParts)) +
+    checkRow('info', L.removed.length + ' ном «Хасагдсан» тавиурт', listDetail('Хасагдсан', L.removed)) +
+    ((L.awaitingVoice || []).length ? checkRow('warn', L.awaitingVoice.length + ' шинэ ном дуу хүлээж байна (нуугдмал)',
+      listDetail('Дуу хүлээж буй', L.awaitingVoice)) : '') +
+    checkRow('warn', L.missingChapters.length + ' номд нэг бүлэг дутуу (хэвлэлд байхгүй)', listDetail('Дутуу бүлэг', L.missingChapters.map(x => x.join(' — ')))) +
+    checkRow(backupStale ? 'warn' : 'ok', bk ? 'Сүүлийн нөөцлөлт: ' + esc(bk.when.replace('T', ' ')) + (backupStale ? ' — gerel_backup.bat ажиллуулна уу' : '') : 'Нөөцлөлт олдсонгүй');
 
-      const current = await ghApi('/contents/catalog.json');
-      const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(catalog, null, 1))));
-      await ghApi('/contents/catalog.json', {
-        method:'PUT',
-        body: JSON.stringify({ message:'Add '+info.title, content: encoded, sha: current.sha })
-      });
-
-      renderShelves();
-      log(`«${info.title}» нэмэгдлээ → ${target.name} (${entry.minutes} мин)`
-        + (info.cover ? ', хавтастай' : ', хавтасгүй'), 'good');
-    }catch(err){
-      log(`${file.name}: ${err.message}`, 'warn');
-    }
+  const sec = S.security, tdays = days(sec.githubTokenExpires);
+  $('secRows').innerHTML =
+    checkRow(tdays > 21 ? 'ok' : 'warn', 'GitHub түлхүүр ' + esc(sec.githubTokenExpires) + (sec.githubTokenExpiryIsEstimate ? ' орчим' : '') +
+      ' дуусна (' + tdays + ' өдөр)' + (tdays <= 21 ? ' — шинийг үүсгэнэ үү' : '')) +
+    (people.length ? checkRow(people.every(p => p.kdf === 'pbkdf2-sha256') ? 'ok' : 'warn',
+      people.every(p => p.kdf === 'pbkdf2-sha256') ? 'Бүх нууц үг PBKDF2-оор хадгалагдсан'
+        : people.filter(p => p.kdf !== 'pbkdf2-sha256').length + ' хэрэглэгчийн нууц үг хуучин хэштэй — дараагийн нэвтрэлт/солиход шинэчлэгдэнэ') : '') +
+    sec.items.map(([s, t]) => checkRow(s === 'ok' ? 'ok' : 'todo', esc(t))).join('');
+}
+// What the site serves, against what GitHub holds now: the same means the
+// last push has reached the children; different means it is still on its
+// way (a minute or two) or the push did not happen.
+async function liveBuild(){
+  const stamp = t => ((t || '').match(/name="gerel-build" content="([^"]+)"/) || [])[1] || '?';
+  let live = '?', head = null;
+  try{ live = stamp(await (await fetch('index.html?fresh=' + Date.now(), { cache:'no-store' })).text()); }catch(e){}
+  try{ if(ghReady()) head = stamp(unb64((await ghApi('/contents/index.html')).content)); }catch(e){}
+  const el = $('liveBuild'), hd = $('headBuild'); if(!el) return;
+  hd.textContent = head || (stats ? stats.build + ' (stats.json)' : '—');
+  const ref = head || (stats && stats.build);
+  el.innerHTML = esc(live) + ' ' + (live === ref ? '<span class="tag good">шинэ</span>'
+    : '<span class="tag warn">хуучин — push хийгээд 1–2 минут хүлээнэ</span>');
+}
+// A few real requests, as the app makes them, timed from this browser.
+async function probe(){
+  $('probeBtn').disabled = true;
+  const rows = $('probeRows'); rows.innerHTML = '';
+  const add = (name, ok, ms, extra) => rows.insertAdjacentHTML('beforeend',
+    `<div class="row"><span class="k">${esc(name)}</span><span class="v">${ok ? '<span class="tag good">хэвийн</span>' : '<span class="tag bad">алдаа</span>'}
+     ${ms != null ? Math.round(ms) + ' ms' : ''} ${esc(extra || '')}</span></div>`);
+  async function timed(name, url, opts){
+    const t = performance.now();
+    try{ const r = await fetch(url, Object.assign({ cache:'no-store' }, opts || {})); const body = await r.arrayBuffer();
+      // A file only checked for being there (no-cors) comes back opaque: it
+      // answered, which is all that is asked.
+      const ok = r.ok || r.type === 'opaque';
+      add(name, ok, performance.now() - t, r.type === 'opaque' ? '' : (body.byteLength / 1024).toFixed(0) + ' KB');
+      return r.ok ? body : null; }
+    catch(e){ add(name, false, null, e.message); return null; }
   }
-  log('Дуу оруулахын өмнө GitHub Desktop дээр Pull хийнэ үү.');
+  const t = Date.now();
+  await timed('Нүүр хуудас', 'index.html?fresh=' + t);
+  const catBuf = await timed('Каталог', 'catalog.json?fresh=' + t);
+  await timed('Дууны жагсаалт', 'speech/index.json?fresh=' + t);
+  let cat = null; try{ cat = JSON.parse(new TextDecoder().decode(catBuf)); }catch(e){}
+  if(cat){
+    const books = cat.shelves.filter(g => g.forChildren !== false).flatMap(g => g.books).filter(b => b.lang !== 'en');
+    const b = books[Math.floor(Math.random() * books.length)];
+    await timed('Хавтас — ' + b.title, b.cover + '?fresh=' + t);
+    const base = (cat.audioBase || '').replace(/\/+$/, '');
+    const idxBuf = await timed('R2: номын жагсаалт — ' + b.title, base + '/' + b.id + '/index.json?fresh=' + t);
+    try{
+      const idx = JSON.parse(new TextDecoder().decode(idxBuf));
+      const blk = idx.chapters.flatMap(c => c.blocks).find(x => x.audio);
+      if(blk) await timed('R2: өгүүлбэрийн дуу', base + '/' + b.id + '/' + blk.audio, { cache:'default', mode:'no-cors' });
+    }catch(e){ add('R2: өгүүлбэрийн дуу', false, null, 'жагсаалт уншигдсангүй'); }
+    if(cat.booksBase) await timed('R2: EPUB ном', cat.booksBase.replace(/\/+$/, '') + '/books/' + b.id + '.epub', { method:'HEAD', mode:'no-cors' });
+  }
+  $('probeBtn').disabled = false;
+}
+$('probeBtn').addEventListener('click', probe);
+async function loadCommits(){
+  try{
+    const list = await ghApi('/commits?per_page=6');
+    $('commitRows').innerHTML = list.map(c => `<div class="row"><span class="k">${esc(c.commit.message.split('\n')[0])}</span>
+      <span class="v fine">${esc(c.sha.slice(0, 7))} · ${esc((c.commit.committer.date || '').slice(0, 10))}</span></div>`).join('');
+  }catch(e){
+    $('commitRows').innerHTML = '<div class="row"><span class="k fine">GitHub-аас уншиж чадсангүй.</span></div>';
+  }
 }
 
-$('addBooks').addEventListener('change', e => addFiles([...e.target.files]));
-const drop = $('drop');
-['dragenter','dragover'].forEach(ev => drop.addEventListener(ev, e => {
-  e.preventDefault(); drop.classList.add('over');
-}));
-['dragleave','drop'].forEach(ev => drop.addEventListener(ev, e => {
-  e.preventDefault(); drop.classList.remove('over');
-}));
-drop.addEventListener('drop', e => addFiles([...e.dataTransfer.files]));
+// ---------------------------------------------------------------- guide
+// How the library is run from now on, step by step, with the commands. The
+// scripts live in C:\Users\Ouqi; voicing and R2 need the keys set in a
+// Command Prompt opened from the Start menu (never typed into a file).
+const CD = 'cd C:\\Users\\Ouqi';
+const GUIDE = [
+  ['📚', 'Номыг зөөх, нуух, сэргээх', 'Зөвхөн энэ хуудсаар.', [
+    ['Номууд хэсэгт номоо хайна.'],
+    ['«Зөөх…» — өөр тавиурт; «Нуух» — хүүхдээс нуух; «Сэргээх» — буцаах.'],
+    ['Дээрх «Хадгалах» дарна. Сайт 1–2 минутад шинэчлэгдэнэ.'],
+    ['Дараа нь компьютер дээр каталогоо тааруулна (доорх «Хуудсаар хийснийг гэрт авах»).']]],
+  ['🔁', 'Хуудсаар хийснийг гэрт авах', 'gerel_build.py ажиллуулахаас өмнө заавал.', [
+    ['GitHub Desktop → Fetch origin → Pull.'],
+    ['Command Prompt:', CD],
+    ['Юу өөрчлөгдөхийг харах:', 'python gerel_sync_catalog.py --dry-run'],
+    ['Гэрийн каталогийг шинэчлэх:', 'python gerel_sync_catalog.py']]],
+  ['➕', 'Шинэ ном нэмэх (бүрэн)', 'EPUB → дуу → хавтас → брайль → сайт.', [
+    ['EPUB-ээ тавиурт нэмэх:', 'python gerel_add.py "%USERPROFILE%\\Downloads" --shelf "Үлгэр"'],
+    ['Дуу оруулах (Start цэснээс нээсэн Command Prompt, Azure түлхүүр set хийсэн):', 'python gerel_voice.py --shelf "Үлгэр" --workers 3'],
+    ['Хавтсуудыг шинээр зурах:', 'python gerel_covers4.py --force'],
+    ['Брайль:', 'python gerel_braille.py'],
+    ['Номын нэр, бүлгийн нэрийн дуу:', 'python gerel_speak.py'],
+    ['Сайтыг бүрдүүлэх:', 'python gerel_build.py'],
+    ['Дууг R2 руу (R2 түлхүүр set хийсэн):', 'python gerel_r2.py'],
+    ['EPUB-ийг R2 руу:', 'python gerel_r2.py --audio r2-books --prefix books/'],
+    ['site\\ доторхыг репо руу хуулж, GitHub Desktop → Commit → Push.']]],
+  ['🎙️', 'Хуудсаар нэмсэн номд дуу оруулах', '«Шинэ ном — дуугүй» тавиураас.', [
+    ['GitHub Desktop → Pull, тэгээд:', 'python gerel_sync_catalog.py'],
+    ['Дуу оруулах (Батаа: Үлгэр, Адал явдал, Байгаль, Дэлхийн шилдэг; Есүй: Хүүхдийн ном, Шүлэг, Хөгжилтэй):',
+      'python gerel_voice.py --id <номын-id> --voice mn-MN-BataaNeural --workers 3'],
+    ['R2 руу:', 'python gerel_r2.py'],
+    ['Номууд хэсгээс жинхэнэ тавиурт «Зөөх…» → Хадгалах. Дараа нь хавтас, брайлийг «Шинэ ном нэмэх»-ийн 3–4-р алхмаар.']]],
+  ['✏️', 'Номын текст засах', 'Буруу үг, илүү хэсэг.', [
+    ['Номууд → «Текст засах» → засаад «Хадгалах».'],
+    ['GitHub Desktop → Pull.'],
+    ['Зөвхөн өөрчлөгдсөн догол мөрийг дахин уншуулах:', 'python gerel_voice.py --id <номын-id> --refresh'],
+    ['R2 руу:', 'python gerel_r2.py']]],
+  ['📊', 'Самбарын тоо шинэчлэх', 'Ном нэмсэн, хассаны дараа.', [
+    [CD, 'python gerel_stats.py'],
+    ['GitHub Desktop → stats.json → Commit → Push.']]],
+  ['💾', 'Нөөцлөх', 'Ажилласан өдөр бүрийн төгсгөлд.', [
+    ['C:\\Users\\Ouqi\\gerel_backup.bat файлыг давхар товшино. OneDrive\\gerel-backup руу хуулна.'],
+    ['C:\\Users\\Ouqi хавтсыг хэзээ ч бүү устга — репо зөвхөн бэлэн сайтыг агуулна.']]],
+  ['↩️', 'Алдаа гарвал буцаах', 'Сайт эвдэрсэн, буруу юм хадгалсан.', [
+    ['GitHub Desktop → History → өөрчлөлт дээр баруун товч → Revert changes in commit.'],
+    ['Push. Сайт 1–2 минутад өмнөх байдалдаа орно.']]],
+  ['🔑', 'GitHub түлхүүр солих', '90 хоног тутам (самбар сануулна).', [
+    ['github.com/settings/personal-access-tokens/new — Repository: зөвхөн gerel-library; Permissions → Contents: Read and write; 90 days.'],
+    ['Энэ хуудаснаас Гарах → шинэ түлхүүрээр нэвтрэх.'],
+    ['gerel_money.json дотор github_token_expires огноог засах.']]],
+  ['🧾', 'Зардал, хадгалах сан шалгах', 'Сар бүр нэг удаа хангалттай.', [
+    ['Azure: portal.azure.com → Cost Management → Cost analysis. Дүнг gerel_money.json-д azure_spent_usd болгож засна.'],
+    ['R2: dash.cloudflare.com → R2 → gerel-audio → Metrics (хадгалсан GB, хүсэлтийн тоо).'],
+    ['Домэйн: dash.cloudflare.com → Domain Registration → gerelnom.com (auto-renew асаалттай эсэх).']]],
+];
+function renderGuide(){
+  $('guide').innerHTML = GUIDE.map(([icon, title, sub, steps]) => `<div class="card"><h2>${icon} ${esc(title)}</h2>
+    <p class="fine" style="margin:-4px 0 6px">${esc(sub)}</p><ol class="steps">${steps.map(([text, cmd]) =>
+      `<li>${esc(text)}${cmd ? `<div class="cmd"><code>${esc(cmd)}</code><button data-copy>Хуулах</button></div>` : ''}</li>`).join('')}</ol></div>`).join('');
+}
+function copyCmd(btn){
+  const text = btn.parentElement.querySelector('code').textContent;
+  (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject()).then(
+    () => { btn.textContent = 'Хуулсан ✓'; setTimeout(() => btn.textContent = 'Хуулах', 1500); },
+    () => { prompt('Хуулна уу:', text); });
+}
+
+// ---------------------------------------------------------------- start
+function start(){
+  applyRole();
+  renderGuide();
+  go(location.hash.slice(1) || 'dash');
+  loadStats();
+  ghLoad();
+  loadPeople();
+  loadCommits();
+}
+(function(){
+  if(ghReady() && me){
+    $('gate').style.display = 'none';
+    start();
+  }else{
+    $('gateRepo').value = gh.repo || 'rciu-cmd/gerel-library';
+    setTimeout(() => $('gateUser').focus(), 100);
+  }
+})();
 </script>
 </body>
 </html>

@@ -1,0 +1,187 @@
+{
+ "generated": "2026-10-03T22:57",
+ "build": "2026-10-03-n",
+ "lastCommit": {
+  "hash": "e751ab8",
+  "when": "2026-10-03T22:31:02+08:00",
+  "message": "District logos beside the club logos on the first screen"
+ },
+ "library": {
+  "books": 349,
+  "mongolian": 307,
+  "english": 42,
+  "shelves": [
+   {
+    "name": "Үлгэр",
+    "books": 93,
+    "entries": 94
+   },
+   {
+    "name": "Хүүхдийн ном",
+    "books": 64,
+    "entries": 65
+   },
+   {
+    "name": "Шүлэг",
+    "books": 35,
+    "entries": 35
+   },
+   {
+    "name": "Хөгжилтэй түүхүүд",
+    "books": 34,
+    "entries": 34
+   },
+   {
+    "name": "Адал явдал",
+    "books": 34,
+    "entries": 39
+   },
+   {
+    "name": "Байгаль, амьтад",
+    "books": 67,
+    "entries": 67
+   },
+   {
+    "name": "Дэлхийн шилдэг зохиол",
+    "books": 42,
+    "entries": 45
+   },
+   {
+    "name": "Англи хэлний ном",
+    "books": 42,
+    "entries": 42
+   }
+  ],
+  "hoursMongolian": 882,
+  "hoursEnglish": 43,
+  "braille": 307,
+  "braillePages": 55916,
+  "interfaceClips": 9335,
+  "accounts": 2,
+  "removed": [
+   "АЛСЫГ ЗОРЬСОН АЛТАН ЗАГАС",
+   "АНХНЫ БАГШ",
+   "БОВАРИ ХАТАГТАЙ - 1",
+   "БОВАРИ ХАТАГТАЙ - 2",
+   "БУЛАН ДЭРС",
+   "ГАНЦ ДАЙЧИН ГАНЦААРДАХГҮЙ - 3",
+   "ДУУ, ШҮЛЭГ",
+   "ЗАЙЛШГҮЙ ШИЙТГЭЛ-17 (АГААРЫН ТАГНУУЛ)",
+   "ЗАЙЛШГҮЙ ШИЙТГЭЛ-18 (ДАВЖ ЗААЛДАХ ЭРХГҮЙ)",
+   "ЗАМЫН ЭХЭН",
+   "ЗӨВЛӨЛҮҮДИЙН ОРНООР",
+   "КВЕНТИН ДОРВАРДЫН АЯН ЗАМЫН УЧРАЛ - 1",
+   "КВЕНТИН ДОРВАРДЫН АЯН ЗАМЫН УЧРАЛ - 2",
+   "МАНАН ДОТОРХИ ОРОС ОРОН",
+   "МАШ НУУЦ - 3",
+   "МӨНГӨ (ФРАНЦ)",
+   "НАРАН ХОТ",
+   "НУУЦ АЛБАДЫН НУУЦААС - 1",
+   "НУУЦАТ АРАЛ - 1 : АЮУЛД УЧРАГСАД",
+   "ХАВРЫН АРВАН ДОЛООН УЧРАЛ - 1",
+   "ХАВРЫН АРВАН ДОЛООН УЧРАЛ - 2",
+   "ХАРЬ ГАЗАР НУУЦ АЛБАНД - 1",
+   "ХЭНЭГГҮЙ АМЕРИК",
+   "ЦӨГӨРЗГӨНИЙ ТУХАЙ ЦӨӨХӨН ҮГ",
+   "ЧИЧЛҮҮР ХУТГА - 1",
+   "ЭX - 1",
+   "ӨВӨӨГИЙН ӨГҮҮЛСЭН ТҮҮХ"
+  ],
+  "awaitingVoice": [],
+  "waitingForEarlierParts": [
+   "БРАЖЕЛОН БЭЙЛ - 2",
+   "ЗУУН ЖИЛИЙН ГАНЦААРДАЛ - 2",
+   "ИРГЭНИЙ БОЛОВСРОЛ X",
+   "КАЛЛИСТО ГАРАГ - 2",
+   "КВЕНТИН ДОРВАРДЫН АЯН ЗАМЫН УЧРАЛ - 4",
+   "КЛИМ САМГИНЫ АМЬДРАЛ-4",
+   "МОНТЕ-КРИСТО ГҮН 4",
+   "НУУЦАТ АРАЛ - 3 : АРЛЫН НУУЦ",
+   "Сүүлэнхүү 6",
+   "УЛААНЫХАН БА ХАРЫНХАН - 4"
+  ],
+  "missingChapters": [
+   [
+    "ПИНОККИО",
+    "XIX бүлэг"
+   ],
+   [
+    "УСАН ДООГУУР 20000 БЭЭР - 1",
+    "XIV бүлэг"
+   ]
+  ]
+ },
+ "checks": {
+  "noCover": [],
+  "noAudio": [],
+  "noBraille": []
+ },
+ "storage": {
+  "siteMB": 384.5,
+  "siteLimitMB": 1024,
+  "siteFolders": {
+   "speech": 187.3,
+   "braille": 175.6,
+   "covers": 11.0,
+   "audio": 9.5,
+   "(pages)": 1.1,
+   "logos": 0.1,
+   "text": 0.0
+  },
+  "gitHistoryMB": 610,
+  "r2GB": 23.38,
+  "r2Files": 304599,
+  "r2AudioGB": 23.0,
+  "r2AudioFiles": 304255,
+  "r2BooksMB": 388,
+  "r2BooksFiles": 344,
+  "r2FreeGB": 10
+ },
+ "costs": {
+  "r2PerYear": 2.41,
+  "domainPerYear": 12.0,
+  "githubPerYear": 0,
+  "totalPerYear": 14.41,
+  "freeListeningHoursPerMonth": 30400,
+  "azureGrantPerYear": 2000.0,
+  "azureSpent": 802.0,
+  "azureLeft": 1198.0,
+  "azureSpentAsOf": "2026-10-03",
+  "azureSpentIsEstimate": true,
+  "azureGrantExpires": "2027-09-04"
+ },
+ "security": {
+  "githubTokenExpires": "2026-12-28",
+  "githubTokenExpiryIsEstimate": true,
+  "items": [
+   [
+    "ok",
+    "Azure-ийн хоёр түлхүүр 29 Sept солигдсон; хуучин түлхүүр ажиллахгүй."
+   ],
+   [
+    "ok",
+    "GitHub түлхүүр — fine-grained, зөвхөн gerel-library, Contents: Read and write."
+   ],
+   [
+    "ok",
+    "Репод түлхүүр, нууц үг алга (3 Oct шалгав)."
+   ],
+   [
+    "todo",
+    "GitHub, Cloudflare, Azure, Microsoft бүртгэлд хоёр шаттай баталгаажуулалт (2FA) асаах."
+   ],
+   [
+    "todo",
+    "Cloudflare → audio.gerelnom.com дээр хурдны хязгаар (Rate limiting) нэг дүрэм."
+   ],
+   [
+    "todo",
+    "Azure Cost Management дээр төсвийн анхааруулга (жишээ нь сард $20)."
+   ]
+  ]
+ },
+ "backup": {
+  "when": "2026-10-03T16:47",
+  "text": "Last backup: 2026-10-03 16:47\n10,519 files kept; 9,516 copied this time (902 MB).\nMade by gerel_backup.py. The recordings are on Cloudflare R2; braille is in the GitHub repository."
+ }
+}

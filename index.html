@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-10-03-m">
+<meta name="gerel-build" content="2026-10-03-n">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -1645,6 +1645,21 @@ async function hashPassword(user,password){
   const buf=await crypto.subtle.digest('SHA-256',data);
   return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
 }
+// Since 3 Oct a password set on the admin page is stored as PBKDF2 — 150,000
+// rounds of SHA-256 with a salt of its own — so a copy of the public
+// users.json cannot be tried against millions of guesses a second. A row
+// made before then (one round of SHA-256) still works until that person's
+// password is next set.
+async function pbkdf2Hex(password,saltB64,iter){
+  const key=await crypto.subtle.importKey('raw',new TextEncoder().encode(password),'PBKDF2',false,['deriveBits']);
+  const salt=Uint8Array.from(atob(saltB64),c=>c.charCodeAt(0));
+  const bits=await crypto.subtle.deriveBits({name:'PBKDF2',hash:'SHA-256',salt,iterations:iter},key,256);
+  return [...new Uint8Array(bits)].map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+async function passwordMatches(row,user,password){
+  if(row.kdf==='pbkdf2-sha256') return (await pbkdf2Hex(password,row.salt,row.iter||150000))===row.hash;
+  return (await hashPassword(user,password))===row.hash;
+}
 
 function showWho(){
   $('loginChip').textContent = me ? (me.name||me.user) : 'Нэвтрэх';
@@ -1663,8 +1678,7 @@ async function signIn(){
     if(!r.ok) throw new Error('жагсаалт алга');
     const list=(await r.json()).users||[];
     const found=list.find(p=>(p.user||'').toLowerCase()===user);
-    const hash=await hashPassword(user,pass);
-    if(!found || found.hash!==hash){
+    if(!found || !(await passwordMatches(found,user,pass))){
       $('loginNote').textContent='Нэр эсвэл нууц үг буруу байна.';
       earcon('fail'); say('Нэр эсвэл нууц үг буруу байна.');
       return;
@@ -2590,16 +2604,22 @@ const GREET_FIRST=['Сайн байна уу! Гэрэл хүүхдийн ном
   'Тусламж хэрэгтэй бол асуултын тэмдэг дарна уу.'];
 const GREET_AGAIN=['Гэрэл хүүхдийн номын сан','Тавиурууд'];
 let greeted=false;
+// Settles when the voice list has arrived (set as the page starts). The
+// shelves are drawn before it, so a touch can come first; the greeting waits
+// for the list rather than being said with no clips and lost.
+let speechReady=Promise.resolve();
 function greet(){
   if(greeted) return;
   greeted=true;
-  // A child coming back to a book hears its title: Enter takes them to it.
-  const back=get('greeted','') && lastBook();
-  const words=!get('greeted','') ? GREET_FIRST
-             : back ? ['Гэрэл хүүхдийн номын сан','Үргэлжлүүлэх',back.title] : GREET_AGAIN;
-  sayParts(words).then(r=>{
-    if(r==='blocked') greeted=false;          // try again on the first touch
-    else if(r!=='silent') put('greeted','1');
+  speechReady.then(()=>{
+    // A child coming back to a book hears its title: Enter takes them to it.
+    const back=get('greeted','') && lastBook();
+    const words=!get('greeted','') ? GREET_FIRST
+               : back ? ['Гэрэл хүүхдийн номын сан','Үргэлжлүүлэх',back.title] : GREET_AGAIN;
+    return sayParts(words).then(r=>{
+      if(r==='blocked') greeted=false;          // try again on the first touch
+      else if(r!=='silent') put('greeted','1');
+    });
   });
 }
 function firstTouch(e){
@@ -2626,7 +2646,7 @@ document.addEventListener('pointerdown',firstTouch,true);
 
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-10-03-m');
+console.log('Gerel build 2026-10-03-n');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   const typing=/^(INPUT|TEXTAREA)$/.test(e.target.tagName||'');
@@ -2789,25 +2809,28 @@ if(navigator.serviceWorker){
 }
 
 (async function(){
-  try{ const r=await fetch('catalog.json',{cache:'no-store'});
-    catalog=r.ok?await r.json():{shelves:[]}; }
-  catch(e){ catalog={shelves:[]}; }
-  if(catalog && catalog.audioBase) AUDIO_ROOT=catalog.audioBase.replace(/\/+$/,'');
-
-  try{ const r=await fetch('blocklist.json',{cache:'no-cache'});
-    if(r.ok) BLOCKED=new Set(((await r.json()).lines||[]).map(x=>x.trim()).filter(Boolean)); }
-  catch(e){}
-
+  // All three asked for at once (3 Oct). One after another, the first screen
+  // waited for the voice list too — 273 KB, the largest thing the page loads
+  // — which on a slow phone connection was seconds of empty paper. Now the
+  // shelves appear as soon as the catalogue is here, and the voice follows.
+  const catalogP=fetch('catalog.json',{cache:'no-store'}).then(r=>r.ok?r.json():{shelves:[]})
+    .catch(()=>({shelves:[]}));
+  const blockedP=fetch('blocklist.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null)
+    .then(j=>{ if(j) BLOCKED=new Set((j.lines||[]).map(x=>x.trim()).filter(Boolean)); })
+    .catch(()=>{});
   // Which phrases have been voiced already. Without this the interface is
   // silent unless an Azure key is present, and a child hears nothing move.
   // 'no-cache' revalidates with the server. The manifest changes whenever a
   // shelf is renamed or a book added, and a cached copy leaves those names
   // silent forever with nothing to show why.
-  try{ const r=await fetch(speechList(),{cache:'no-cache'});
-    if(r.ok) SPEECH=await r.json(); }
-  catch(e){ console.warn('speech manifest not loaded', e); }
-  if(!Object.keys(SPEECH).length && !live())
-    console.warn('Gerel: no speech manifest and no key — navigation will be silent.');
+  const speechP=fetch(speechList(),{cache:'no-cache'}).then(r=>r.ok?r.json():null)
+    .then(j=>{ if(j) SPEECH=j; })
+    .catch(e=>console.warn('speech manifest not loaded', e));
+  speechReady=speechP;
+
+  catalog=await catalogP;
+  if(catalog && catalog.audioBase) AUDIO_ROOT=catalog.audioBase.replace(/\/+$/,'');
+  await blockedP;
   applySize();
   showWho();
   // Listening until a child chooses otherwise: the library is first of all
@@ -2816,9 +2839,14 @@ if(navigator.serviceWorker){
   // Always start on the first screen, with every shelf in reach.
   openShelf=null; renderShelf();
   show('shelf');
+
+  await speechP;
+  if(!Object.keys(SPEECH).length && !live())
+    console.warn('Gerel: no speech manifest and no key — navigation will be silent.');
   // With a book to go back to, Continue is focused, so Enter is back in the
   // story; otherwise the first arrow press lands on the ways of reading.
-  if(showContinue()) $('contBtn').focus();
+  // After the voice list, so the focus can say its name.
+  if(showContinue() && atHome()) $('contBtn').focus();
   greet();
 })();
 </script>
