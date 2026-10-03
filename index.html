@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-10-03-i">
+<meta name="gerel-build" content="2026-10-03-j">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -149,7 +149,8 @@
      cover, how far the child has got and how long is left. */
   .contBtn{display:flex;align-items:center;gap:14px;width:100%;height:100%;
     text-align:left;padding:12px 16px 12px 12px;border-radius:22px;
-    background:var(--navy);color:#fff;}
+    position:relative;overflow:hidden;color:#fff;background-color:var(--navy);
+    background-image:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,0) 75%);}
   .contBtn img{flex:0 0 auto;width:58px;height:84px;border-radius:10px;object-fit:cover;}
   .contBtn .cx{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;}
   .contBtn .cl{font-family:var(--display);font-weight:700;font-size:clamp(19px,2.2vw,24px);}
@@ -268,18 +269,29 @@
     border:2px solid var(--line);background:#fff;font-weight:800;font-size:16px;}
   #letters button.off{opacity:.3;}
   #letters button.on{background:var(--sun);border-color:transparent;}
-  /* A shelf as a tile: its picture and how many books at the top, its name
-     below. One flat colour per shelf, the colour its covers are drawn in —
-     the glossy sheen and deep shadow looked cheap and added nothing a child
-     can use. */
+  /* A shelf as a tile drawn like the covers of its books (gerel_covers4.py,
+     style B): the shelf colour, lighter at the top, a soft sun rising behind
+     the top corner, white words and the covers' gold bar. A shelf and the
+     books on it look like one family — and like no one else's library. The
+     colour itself is set on each tile (background-color, so the light and
+     the sun here stay); nothing moves. */
   .shelfCard{display:flex;flex-direction:column;align-items:flex-start;
     justify-content:space-between;gap:10px;text-align:left;
     padding:12px 12px 11px;border-radius:20px;color:#fff;width:100%;
-    min-height:clamp(90px,11.5vh,140px);position:relative;overflow:hidden;}
+    min-height:clamp(90px,11.5vh,140px);position:relative;overflow:hidden;
+    background-image:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,0) 75%);}
+  .shelfCard::before,.contBtn::before{content:'';position:absolute;top:-70px;right:-70px;
+    width:190px;height:190px;border-radius:50%;pointer-events:none;filter:blur(2px);
+    background:radial-gradient(circle,rgba(255,220,120,.48) 0,rgba(255,220,120,.30) 33%,
+      rgba(255,255,255,.15) 35%,rgba(255,255,255,.11) 62%,rgba(255,255,255,0) 66%);}
+  .shelfCard>*,.contBtn>*{position:relative;z-index:1;}
   .shelfCard .nm{font-family:var(--display);font-weight:700;
     font-size:clamp(17px,2vw,22px);line-height:1.2;color:#fff;
     overflow-wrap:anywhere;hyphens:auto;-webkit-hyphens:auto;}
-  .shelfCard .ct{position:absolute;top:12px;right:12px;font-weight:800;font-size:13px;
+  /* The gold bar under the name, as under every title on the covers. */
+  .shelfCard .nm::after{content:'';display:block;width:30px;height:5px;
+    border-radius:3px;background:#FFD25A;margin-top:7px;}
+  .shelfCard .ct{position:absolute;top:12px;right:12px;z-index:1;font-weight:800;font-size:13px;
     color:#fff;background:rgba(0,0,0,.24);border-radius:99px;padding:4px 10px;}
   .shelfCard .sic{flex:0 0 auto;width:clamp(38px,4vw,50px);height:clamp(38px,4vw,50px);color:#fff;}
   .shelfCard .sic svg{width:100%;height:100%;display:block;}
@@ -1988,7 +2000,8 @@ function renderShelf(){
       const c=document.createElement('button');
       c.className='shelfCard';
       const st=SHELF_STYLE[g.name];
-      c.style.background=st?st[0]:COLOURS[i%COLOURS.length];
+      // The colour only: the light and the sun drawn over it are in the CSS.
+      c.style.backgroundColor=st?st[0]:COLOURS[i%COLOURS.length];
       c.innerHTML='<span class="sic">'+SHELF_ICONS[st?st[1]:'book']+'</span>'
         +'<span class="nm">'+esc(g.name)+'</span><span class="ct">'+n+' ном</span>';
       const speak=(noScroll)=>{ pick=i; hi(L,i,true,noScroll); say(g.name); };
@@ -2586,7 +2599,7 @@ document.addEventListener('pointerdown',firstTouch,true);
 
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-10-03-i');
+console.log('Gerel build 2026-10-03-j');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   const typing=/^(INPUT|TEXTAREA)$/.test(e.target.tagName||'');
