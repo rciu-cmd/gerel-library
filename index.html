@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-10-03-c">
+<meta name="gerel-build" content="2026-10-03-d">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -2132,12 +2132,23 @@ function renderHelp(){
   // Where the books came from. Out of a child's way, but never dropped: it is
   // the attribution to the library that allowed all of this.
   // "credits" holds any further ones, such as LibriVox for the English shelf.
-  [catalog?.credit].concat(catalog?.credits||[]).filter(Boolean).forEach(t=>{
+  // In the order the catalogue gives (initiator, clubs, sources …); the older
+  // single "credit" line goes first only if the list does not hold it.
+  const lines=(catalog?.credits||[]).slice();
+  if(catalog?.credit && !lines.includes(catalog.credit)) lines.unshift(catalog.credit);
+  lines.filter(Boolean).forEach(t=>{
     const c=document.createElement('p');
     c.className='credit'; c.style.margin='0 0 14px';
     c.textContent=t;
     L.appendChild(c);
   });
+  // The whole story — the initiator, the clubs with their logos, partners
+  // and numbers — is on its own page, for sponsors and visitors.
+  const about=document.createElement('a');
+  about.href='about.html'; about.className='credit';
+  about.style.display='block'; about.style.margin='0 0 18px'; about.style.fontWeight='800';
+  about.textContent='Гэрэл номын сангийн тухай · About Gerel';
+  L.appendChild(about);
   KEYS.forEach(([k,v])=>{
     const b=document.createElement('div');
     b.className='bookRow'; b.style.display='block'; b.style.padding='16px';
@@ -2371,7 +2382,7 @@ document.addEventListener('pointerdown',firstTouch,true);
 
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-10-03-c');
+console.log('Gerel build 2026-10-03-d');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   const typing=/^(INPUT|TEXTAREA)$/.test(e.target.tagName||'');

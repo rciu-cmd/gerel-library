@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Гэрэл хүүхдийн номын сан — Бидний тухай · About</title>
+<meta name="description" content="Хараагүй болон хараа муу хүүхдэд зориулсан үнэгүй аудио номын сан. A free audiobook library for blind and partially sighted children in Mongolia.">
+<meta property="og:title" content="Гэрэл хүүхдийн номын сан · Gerel Children's Library">
+<meta property="og:description" content="A free audiobook library for blind and partially sighted children in Mongolia, started on the initiative of a student, O. Gerelt-Od, and supported by the Rotary Club of Ikh Urgoo and the Rotary Club of Taipei Passport.">
+<link rel="icon" href="favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  /* The library's own look: daylight paper, navy headings in Montserrat. Read
+     by sponsors and teachers, and by screen readers — so plain, large and in
+     order, with every passage marked with its language. */
+  :root{
+    --paper:#FFFDF7; --ink:#22243B; --muted:#5E6280; --line:#E8E2D4;
+    --navy:#242C5C; --ember:#C2410C; --gold:#D0AA5C;
+    --display:'Montserrat', system-ui, sans-serif;
+    --body:'Nunito', system-ui, -apple-system, sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--paper);color:var(--ink);
+    font-family:var(--body);font-size:18px;line-height:1.6;-webkit-text-size-adjust:100%;}
+  main{max-width:860px;margin:0 auto;padding:28px 16px 56px;}
+  a{color:var(--navy);}
+  a:focus-visible{outline:3px solid var(--ember);outline-offset:3px;border-radius:6px;}
+  .back{display:inline-block;font-weight:800;text-decoration:none;padding:10px 16px;
+    border:2px solid var(--line);border-radius:999px;background:#fff;}
+  header{margin:28px 0 8px;}
+  h1{font-family:var(--display);font-weight:800;color:var(--navy);
+    font-size:clamp(30px,6vw,46px);line-height:1.15;margin:0;}
+  h1 .gerel{color:var(--ember);}
+  .en-title{font-family:var(--display);font-weight:700;color:var(--muted);
+    font-size:clamp(18px,3.4vw,24px);margin:6px 0 0;}
+  .lead{font-size:20px;margin:18px 0 0;}
+  section{margin-top:40px;padding-top:28px;border-top:2px solid var(--line);}
+  h2{font-family:var(--display);font-weight:800;color:var(--navy);
+    font-size:clamp(22px,4vw,28px);margin:0 0 4px;}
+  h2 .en{display:block;font-family:var(--display);font-weight:700;color:var(--muted);
+    font-size:.68em;}
+  p{margin:12px 0 0;}
+  p[lang="en"], li [lang="en"]{color:var(--muted);}
+  .initiator{font-family:var(--display);font-weight:800;color:var(--ember);
+    font-size:clamp(26px,5vw,34px);margin:16px 0 0;}
+  .clubs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));
+    gap:18px;margin-top:20px;}
+  .club{background:#fff;border:2px solid var(--line);border-radius:18px;padding:18px;}
+  .club img{display:block;width:100%;height:auto;max-height:150px;object-fit:contain;}
+  .club img + img{margin-top:8px;max-height:110px;}
+  .club p{margin-top:10px;font-weight:600;}
+  ul.facts{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:12px;}
+  ul.facts li{background:#fff;border:2px solid var(--line);border-radius:14px;padding:14px 16px;}
+  ul.facts b{font-family:var(--display);color:var(--navy);font-size:1.15em;}
+  ul.facts span[lang="en"]{display:block;font-size:.92em;}
+  ul.thanks{margin:14px 0 0;padding-left:1.2em;}
+  ul.thanks li{margin-top:12px;}
+  ul.thanks span[lang="en"]{display:block;font-size:.92em;}
+  footer{margin-top:48px;color:var(--muted);font-size:15px;}
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="./">← Гэрэл номын сан руу буцах <span lang="en">· Back to the library</span></a>
+
+  <header>
+    <h1><span class="gerel">Гэрэл</span> хүүхдийн номын сан</h1>
+    <p class="en-title" lang="en">Gerel Children's Library</p>
+    <p class="lead">Хараагүй болон хараа муу хүүхдэд зориулсан үнэгүй аудио номын сан.</p>
+    <p lang="en">A free audiobook library for blind and partially sighted children in Mongolia.</p>
+  </header>
+
+  <section aria-labelledby="h-idea">
+    <h2 id="h-idea">Санаачлагч <span class="en" lang="en">Whose idea it was</span></h2>
+    <p class="initiator">О.Гэрэлт-Од</p>
+    <p>Гэрэл номын сан сурагч О.Гэрэлт-Одын санаачилгаар бий болсон.</p>
+    <p lang="en">Gerel was started on the initiative of a student, O. Gerelt-Od.</p>
+  </section>
+
+  <section aria-labelledby="h-clubs">
+    <h2 id="h-clubs">Дэмжигч клубууд <span class="en" lang="en">Supported by</span></h2>
+    <div class="clubs">
+      <div class="club">
+        <img src="logos/rotary-ikh-urgoo.png" alt="Rotary Club of Ikh Urgoo" width="1126" height="513">
+        <img src="logos/rotary-d3450.png" alt="Rotary District 3450" width="958" height="513">
+        <p>Их Өргөө Ротари клуб, Ротари 3450-р дүүрэг</p>
+        <p lang="en">Rotary Club of Ikh Urgoo, District 3450</p>
+      </div>
+      <div class="club">
+        <img src="logos/rotary-taipei-passport.png" alt="Rotary Club of Taipei Passport" width="1330" height="513">
+        <img src="logos/rotary-d3522.png" alt="Rotary District 3522" width="958" height="513">
+        <p>Тайпей Паспорт Ротари клуб, Ротари 3522-р дүүрэг</p>
+        <p lang="en">Rotary Club of Taipei Passport, District 3522</p>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-today">
+    <h2 id="h-today">Номын сан өнөөдөр <span class="en" lang="en">The library today</span></h2>
+    <ul class="facts">
+      <li><b>365 ном</b> — 323 монгол, 42 англи хэлээр.
+        <span lang="en">365 books — 323 in Mongolian, 42 in English.</span></li>
+      <li><b>1,000 гаруй цаг</b> сонсох ном: 969 цаг монгол, 41 цаг англи уншлага.
+        <span lang="en">Over 1,000 hours of listening: 969 hours in Mongolian, 41 in English.</span></li>
+      <li><b>323 номын брайль хувилбар</b>, нийт 63,049 хуудас.
+        <span lang="en">Braille editions of 323 books, 63,049 pages in all.</span></li>
+      <li><b>Дэлгэц бүр ярьдаг.</b> Гар, чихэвч, тоон гараар удирдана; том үсгээр уншиж болно.
+        <span lang="en">Every screen speaks. It is used with the keyboard, a headset or a number keypad, and books can be read in large print.</span></li>
+      <li><b>Үнэгүй, зар сурталчилгаагүй.</b> Номыг утсандаа хадгалаад интернэтгүй сонсож болно.
+        <span lang="en">Free, with no advertising. Books can be saved on a phone and heard without internet.</span></li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="h-thanks">
+    <h2 id="h-thanks">Талархал <span class="en" lang="en">With thanks</span></h2>
+    <ul class="thanks">
+      <li>«Цогт охин тэнгэр» сангийн Цахим номын сан (<a href="https://e-nom.mn">e-nom.mn</a>) — номуудаа зөвшөөрөлтэйгээр ашиглуулсан.
+        <span lang="en">The Tsogt Okhin Tenger Foundation's e-library (e-nom.mn), whose books are used with permission.</span></li>
+      <li>Microsoft — Azure-ын Батаа, Есүй дуу хоолой болон тэтгэлэг.
+        <span lang="en">Microsoft — the Azure voices Bataa and Yesui, and a nonprofit grant.</span></li>
+      <li>LibriVox-ын сайн дурын уншигчид (<a href="https://librivox.org">librivox.org</a>) — англи номын уншлага, нийтийн өмч.
+        <span lang="en">The volunteer readers of LibriVox — the English recordings, in the public domain.</span></li>
+      <li>Project Gutenberg (<a href="https://www.gutenberg.org">gutenberg.org</a>) — англи номын бичвэр.
+        <span lang="en">Project Gutenberg — the texts of the English books.</span></li>
+    </ul>
+  </section>
+
+  <footer>
+    <p><a href="./">gerelnom.com</a> · 2026</p>
+  </footer>
+</main>
+</body>
+</html>
