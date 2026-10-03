@@ -14,7 +14,8 @@
 <style>
   /* The library's own look: daylight paper, navy headings in Montserrat. Read
      by sponsors and teachers, and by screen readers — so plain, large and in
-     order, with every passage marked with its language. */
+     order. One language at a time (3 Oct): the switch at the top shows the
+     Mongolian or the English, and about.html?lang=en opens in English. */
   :root{
     --paper:#FFFDF7; --ink:#22243B; --muted:#5E6280; --line:#E8E2D4;
     --navy:#242C5C; --ember:#C2410C; --gold:#D0AA5C;
@@ -26,23 +27,25 @@
     font-family:var(--body);font-size:18px;line-height:1.6;-webkit-text-size-adjust:100%;}
   main{max-width:860px;margin:0 auto;padding:28px 16px 56px;}
   a{color:var(--navy);}
-  a:focus-visible{outline:3px solid var(--ember);outline-offset:3px;border-radius:6px;}
+  a:focus-visible,button:focus-visible{outline:3px solid var(--ember);outline-offset:3px;border-radius:8px;}
+  .top{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;}
   .back{display:inline-block;font-weight:800;text-decoration:none;padding:10px 16px;
     border:2px solid var(--line);border-radius:999px;background:#fff;}
+  .langs{display:inline-flex;border:2px solid var(--navy);border-radius:999px;overflow:hidden;}
+  .langs button{font:800 16px var(--body);padding:10px 18px;border:0;background:#fff;
+    color:var(--navy);cursor:pointer;min-height:44px;}
+  .langs button[aria-pressed="true"]{background:var(--navy);color:#fff;}
+  /* Only the chosen language is shown. */
+  html[lang="mn"] [data-l="en"], html[lang="en"] [data-l="mn"]{display:none !important;}
   header{margin:28px 0 8px;}
   h1{font-family:var(--display);font-weight:800;color:var(--navy);
     font-size:clamp(30px,6vw,46px);line-height:1.15;margin:0;}
   h1 .gerel{color:var(--ember);}
-  .en-title{font-family:var(--display);font-weight:700;color:var(--muted);
-    font-size:clamp(18px,3.4vw,24px);margin:6px 0 0;}
   .lead{font-size:20px;margin:18px 0 0;}
   section{margin-top:40px;padding-top:28px;border-top:2px solid var(--line);}
   h2{font-family:var(--display);font-weight:800;color:var(--navy);
     font-size:clamp(22px,4vw,28px);margin:0 0 4px;}
-  h2 .en{display:block;font-family:var(--display);font-weight:700;color:var(--muted);
-    font-size:.68em;}
   p{margin:12px 0 0;}
-  p[lang="en"], li [lang="en"]{color:var(--muted);}
   .initiator{font-family:var(--display);font-weight:800;color:var(--ember);
     font-size:clamp(26px,5vw,34px);margin:16px 0 0;}
   .clubs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));
@@ -54,62 +57,74 @@
   ul.facts{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:12px;}
   ul.facts li{background:#fff;border:2px solid var(--line);border-radius:14px;padding:14px 16px;}
   ul.facts b{font-family:var(--display);color:var(--navy);font-size:1.15em;}
-  ul.facts span[lang="en"]{display:block;font-size:.92em;}
-  ul.thanks{margin:14px 0 0;padding-left:1.2em;}
-  ul.thanks li{margin-top:12px;}
-  ul.thanks span[lang="en"]{display:block;font-size:.92em;}
   footer{margin-top:48px;color:var(--muted);font-size:15px;}
 </style>
+<script>
+  // Chosen before the page is drawn, so it never flashes the other language:
+  // ?lang=en (a link sent to the Taipei club), else the last choice, else Mongolian.
+  (function(){
+    var q=(location.search.match(/[?&]lang=(en|mn)\b/)||[])[1], saved=null;
+    try{ saved=localStorage.getItem('gerel:aboutLang'); }catch(e){}
+    document.documentElement.lang=q||saved||'mn';
+  })();
+</script>
 </head>
 <body>
 <main>
-  <a class="back" href="./">← Гэрэл номын сан руу буцах <span lang="en">· Back to the library</span></a>
+  <div class="top">
+    <a class="back" href="./"><span data-l="mn">← Гэрэл номын сан руу буцах</span><span data-l="en">← Back to the library</span></a>
+    <div class="langs" role="group" aria-label="Хэл · Language">
+      <button type="button" data-set="mn" lang="mn">Монгол</button>
+      <button type="button" data-set="en" lang="en">English</button>
+    </div>
+  </div>
 
   <header>
-    <h1><span class="gerel">Гэрэл</span> хүүхдийн номын сан</h1>
-    <p class="en-title" lang="en">Gerel Children's Library</p>
-    <p class="lead">Хараагүй болон хараа муу хүүхдэд зориулсан үнэгүй аудио номын сан.</p>
-    <p lang="en">A free audiobook library for blind and partially sighted children in Mongolia.</p>
+    <h1><span data-l="mn"><span class="gerel">Гэрэл</span> хүүхдийн номын сан</span><span data-l="en"><span class="gerel">Gerel</span> Children's Library</span></h1>
+    <p class="lead" data-l="mn">Хараагүй болон хараа муу хүүхдэд зориулсан үнэгүй аудио номын сан.</p>
+    <p class="lead" data-l="en">A free audiobook library for blind and partially sighted children in Mongolia.</p>
   </header>
 
   <section aria-labelledby="h-idea">
-    <h2 id="h-idea">Санаачлагч <span class="en" lang="en">Whose idea it was</span></h2>
-    <p class="initiator">О.Гэрэлт-Од</p>
-    <p>Гэрэл номын сан сурагч О.Гэрэлт-Одын санаачилгаар бий болсон.</p>
-    <p lang="en">Gerel was started on the initiative of a student, O. Gerelt-Od.</p>
+    <h2 id="h-idea"><span data-l="mn">Санаачлагч</span><span data-l="en">Whose idea it was</span></h2>
+    <p class="initiator"><span data-l="mn">О.Гэрэлт-Од</span><span data-l="en">O. Gerelt-Od</span></p>
+    <p data-l="mn">Гэрэл номын сан сурагч О.Гэрэлт-Одын санаачилгаар бий болсон.</p>
+    <p data-l="en">Gerel was started on the initiative of a student, O. Gerelt-Od.</p>
   </section>
 
   <section aria-labelledby="h-clubs">
-    <h2 id="h-clubs">Дэмжигч клубууд <span class="en" lang="en">Supported by</span></h2>
+    <h2 id="h-clubs"><span data-l="mn">Дэмжигч клубууд</span><span data-l="en">Supported by</span></h2>
     <div class="clubs">
       <div class="club">
         <img src="logos/rotary-ikh-urgoo.png" alt="Rotary Club of Ikh Urgoo" width="1126" height="513">
         <img src="logos/rotary-d3450.png" alt="Rotary District 3450" width="958" height="513">
-        <p>Их Өргөө Ротари клуб, Ротари 3450-р дүүрэг</p>
-        <p lang="en">Rotary Club of Ikh Urgoo, District 3450</p>
+        <p data-l="mn">Их Өргөө Ротари клуб, Ротари 3450-р дүүрэг</p>
+        <p data-l="en">Rotary Club of Ikh Urgoo, District 3450</p>
       </div>
       <div class="club">
         <img src="logos/rotary-taipei-passport.png" alt="Rotary Club of Taipei Passport" width="1330" height="513">
         <img src="logos/rotary-d3522.png" alt="Rotary District 3522" width="958" height="513">
-        <p>Тайпей Паспорт Ротари клуб, Ротари 3522-р дүүрэг</p>
-        <p lang="en">Rotary Club of Taipei Passport, District 3522</p>
+        <p data-l="mn">Тайпей Паспорт Ротари клуб, Ротари 3522-р дүүрэг</p>
+        <p data-l="en">Rotary Club of Taipei Passport, District 3522</p>
       </div>
     </div>
   </section>
 
   <section aria-labelledby="h-today">
-    <h2 id="h-today">Номын сан өнөөдөр <span class="en" lang="en">The library today</span></h2>
-    <ul class="facts">
-      <li><b>365 ном</b> — 323 монгол, 42 англи хэлээр.
-        <span lang="en">365 books — 323 in Mongolian, 42 in English.</span></li>
-      <li><b>1,000 гаруй цаг</b> сонсох ном: 969 цаг монгол, 41 цаг англи уншлага.
-        <span lang="en">Over 1,000 hours of listening: 969 hours in Mongolian, 41 in English.</span></li>
-      <li><b>323 номын брайль хувилбар</b>, нийт 63,049 хуудас.
-        <span lang="en">Braille editions of 323 books, 63,049 pages in all.</span></li>
-      <li><b>Дэлгэц бүр ярьдаг.</b> Гар, чихэвч, тоон гараар удирдана; том үсгээр уншиж болно.
-        <span lang="en">Every screen speaks. It is used with the keyboard, a headset or a number keypad, and books can be read in large print.</span></li>
-      <li><b>Үнэгүй, зар сурталчилгаагүй.</b> Номыг утсандаа хадгалаад интернэтгүй сонсож болно.
-        <span lang="en">Free, with no advertising. Books can be saved on a phone and heard without internet.</span></li>
+    <h2 id="h-today"><span data-l="mn">Номын сан өнөөдөр</span><span data-l="en">The library today</span></h2>
+    <ul class="facts" data-l="mn">
+      <li><b>340 гаруй ном</b> — 300 гаруй нь монгол, 42 нь англи хэлээр.</li>
+      <li><b>900 орчим цаг</b> сонсох ном: 860 орчим цаг монгол, 41 цаг англи уншлага.</li>
+      <li><b>Брайль хувилбар</b> — монгол ном бүрийн брайль файлыг татаж болно.</li>
+      <li><b>Дэлгэц бүр ярьдаг.</b> Гар, чихэвч, тоон гараар удирдана; том үсгээр уншиж, өнгөө сольж болно.</li>
+      <li><b>Үнэгүй, зар сурталчилгаагүй.</b> Номыг утсандаа хадгалаад интернэтгүй сонсож болно.</li>
+    </ul>
+    <ul class="facts" data-l="en">
+      <li><b>Over 340 books</b> — more than 300 in Mongolian, 42 in English.</li>
+      <li><b>About 900 hours</b> of listening: about 860 hours in Mongolian, 41 in English.</li>
+      <li><b>Braille</b> — every Mongolian book can be downloaded as a braille file.</li>
+      <li><b>Every screen speaks.</b> It is used with the keyboard, a headset or a number keypad; books can be read in large print, with high-contrast colours.</li>
+      <li><b>Free, with no advertising.</b> Books can be saved on a phone and heard without internet.</li>
     </ul>
   </section>
 
@@ -117,5 +132,18 @@
     <p><a href="./">gerelnom.com</a> · 2026</p>
   </footer>
 </main>
+<script>
+  // The switch: shows one language, says which is chosen, and remembers it.
+  (function(){
+    var btns=document.querySelectorAll('.langs button');
+    function set(l){
+      document.documentElement.lang=l;
+      for(var i=0;i<btns.length;i++) btns[i].setAttribute('aria-pressed', btns[i].dataset.set===l?'true':'false');
+      try{ localStorage.setItem('gerel:aboutLang', l); }catch(e){}
+    }
+    for(var i=0;i<btns.length;i++) btns[i].addEventListener('click', function(){ set(this.dataset.set); });
+    set(document.documentElement.lang==='en'?'en':'mn');
+  })();
+</script>
 </body>
 </html>

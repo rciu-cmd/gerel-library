@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-10-03-g">
+<meta name="gerel-build" content="2026-10-03-h">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -350,6 +350,8 @@
   #status{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
     overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;}
   .note:empty{display:none;}
+  .helpHead{grid-column:1/-1;font-family:var(--display);font-weight:800;color:var(--navy);
+    font-size:clamp(19px,3vw,23px);margin:14px 0 2px;}
   .aboutLink{font-weight:800;font-size:15px;color:var(--navy);text-decoration:underline;
     background:rgba(255,253,247,.95);border-radius:12px;padding:8px 14px;margin-top:18px;}
   .note{background:#fff;border:3px dashed var(--line);border-radius:20px;
@@ -2240,34 +2242,45 @@ const KEYS=[
   ['Тоон гарын нэмэх','Хурд'],
   ['?','Энэ жагсаалт']
 ];
+// What each button on the screen does, for a child or teacher using a phone,
+// where the keys above mean nothing. Shown, not spoken: the spoken help is
+// the key list. (The credits moved to the About page, 3 Oct.)
+const BUTTONS=[
+  ['▶ Үргэлжлүүлэх','Сүүлд сонссон номоо зогсоосон газраас нь үргэлжлүүлнэ'],
+  ['Сонсох · Сонсох ба унших · Унших','Горим сонгоно: зөвхөн сонсох, сонсонгоо унших, зөвхөн унших'],
+  ['◐ Өнгө','Өнгө солино: энгийн, хар дээр шар, хар дээр цагаан'],
+  ['? Тусламж','Энэ хуудас'],
+  ['⤓ Суулгах','Номын санг утсандаа апп болгон суулгана'],
+  ['Номын нэр · Зохиогчийн нэр','Үсгийн мөрийг номын нэрээр эсвэл зохиогчоор ажиллуулна'],
+  ['А Б В … · A B C …','Тухайн үсгээр эхэлсэн номуудыг харуулна'],
+  ['★','Дуртай номдоо нэмнэ («Миний ном» тавиурт)'],
+  ['⠃','Номын брайль файлыг татна'],
+  ['⤓ (номын хажууд)','Номыг интернэтгүй сонсохоор утсандаа хадгална'],
+  ['◀ Өмнөх · Дараах ▶','Өмнөх, дараагийн өгүүлбэр'],
+  ['▶ Сонсох','Уншиж эхэлнэ, зогсооно'],
+  ['Бүлгүүд','Бүлгийн жагсаалт; хавчуургууд эхэнд нь'],
+  ['Том үсгээр','Номыг том үсгээр уншина'],
+  ['Хурд','Уншлагын хурдыг солино'],
+  ['Эхнээс нь','Номыг эхнээс нь эхлүүлнэ'],
+  ['Хавчуурга','Сонсож буй газартаа хавчуурга тавина'],
+  ['Монголоор · Англиар','Ижил номыг нөгөө хэлээр сонсоно'],
+  ['А− · А+','Том үсгээр уншихад үсгийн хэмжээ'],
+];
 function renderHelp(){
   const L=$('helpList'); L.innerHTML='';
-  // Where the books came from. Out of a child's way, but never dropped: it is
-  // the attribution to the library that allowed all of this.
-  // "credits" holds any further ones, such as LibriVox for the English shelf.
-  // In the order the catalogue gives (initiator, clubs, sources …); the older
-  // single "credit" line goes first only if the list does not hold it.
-  const lines=(catalog?.credits||[]).slice();
-  if(catalog?.credit && !lines.includes(catalog.credit)) lines.unshift(catalog.credit);
-  lines.filter(Boolean).forEach(t=>{
-    const c=document.createElement('p');
-    c.className='credit'; c.style.margin='0 0 14px';
-    c.textContent=t;
-    L.appendChild(c);
-  });
-  // The whole story — the initiator, the clubs with their logos, partners
-  // and numbers — is on its own page, for sponsors and visitors.
-  const about=document.createElement('a');
-  about.href='about.html'; about.className='credit';
-  about.style.display='block'; about.style.margin='0 0 18px'; about.style.fontWeight='800';
-  about.textContent='Гэрэл номын сангийн тухай · About Gerel';
-  L.appendChild(about);
-  KEYS.forEach(([k,v])=>{
-    const b=document.createElement('div');
-    b.className='bookRow'; b.style.display='block'; b.style.padding='16px';
-    b.innerHTML='<span class="t">'+esc(k)+'</span><span class="who">'+esc(v)+'</span>';
-    L.appendChild(b);
-  });
+  const group=(title,list)=>{
+    const h=document.createElement('h2');
+    h.className='helpHead'; h.textContent=title;
+    L.appendChild(h);
+    list.forEach(([k,v])=>{
+      const b=document.createElement('div');
+      b.className='bookRow'; b.style.display='block'; b.style.padding='16px';
+      b.innerHTML='<span class="t">'+esc(k)+'</span><span class="who">'+esc(v)+'</span>';
+      L.appendChild(b);
+    });
+  };
+  group('Гарын товч',KEYS);
+  group('Дэлгэц дээрх товч',BUTTONS);
 }
 $('helpClose').addEventListener('click',()=>show(lastScreen));
 
@@ -2503,7 +2516,7 @@ document.addEventListener('pointerdown',firstTouch,true);
 
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-10-03-g');
+console.log('Gerel build 2026-10-03-h');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   const typing=/^(INPUT|TEXTAREA)$/.test(e.target.tagName||'');
