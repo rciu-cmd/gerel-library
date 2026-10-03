@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-10-03-a">
+<meta name="gerel-build" content="2026-10-03-b">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -468,6 +468,11 @@
 // and R2 charges nothing for the downloads.
 let AUDIO_ROOT='audio';
 const SPEECH_ROOT='speech';
+// The voice list is asked for under this build's name. A phone still run by
+// an old offline worker answered speech/index.json from its own store —
+// September's list, so every phrase since was silent; a name it has never
+// stored has to come from the site.
+const speechList=()=>SPEECH_ROOT+'/index.json?v='+((document.querySelector('meta[name=gerel-build]')||{}).content||Date.now());
 // Only for books not yet voiced. Empty means no key ships in the page.
 const AZURE_SPEECH_KEY="", AZURE_SPEECH_REGION="eastasia", VOICE="mn-MN-YesuiNeural";
 // Deep enough to hold white text at full contrast, far enough apart that
@@ -2360,7 +2365,7 @@ document.addEventListener('pointerdown',firstTouch,true);
 
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-10-03-a');
+console.log('Gerel build 2026-10-03-b');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   const typing=/^(INPUT|TEXTAREA)$/.test(e.target.tagName||'');
@@ -2536,7 +2541,7 @@ if(navigator.serviceWorker){
   // come from the old one's store (September's, on some phones). Ask again,
   // so new phrases speak without a second reload.
   navigator.serviceWorker.addEventListener('controllerchange',async()=>{
-    try{ const r=await fetch(SPEECH_ROOT+'/index.json',{cache:'no-cache'});
+    try{ const r=await fetch(speechList(),{cache:'no-cache'});
       if(r.ok) SPEECH=await r.json(); }catch(e){}
   });
 }
@@ -2556,7 +2561,7 @@ if(navigator.serviceWorker){
   // 'no-cache' revalidates with the server. The manifest changes whenever a
   // shelf is renamed or a book added, and a cached copy leaves those names
   // silent forever with nothing to show why.
-  try{ const r=await fetch(SPEECH_ROOT+'/index.json',{cache:'no-cache'});
+  try{ const r=await fetch(speechList(),{cache:'no-cache'});
     if(r.ok) SPEECH=await r.json(); }
   catch(e){ console.warn('speech manifest not loaded', e); }
   if(!Object.keys(SPEECH).length && !live())
