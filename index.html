@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-10-03-j">
+<meta name="gerel-build" content="2026-10-03-k">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -101,18 +101,13 @@
   .screen{position:fixed;inset:0;background:var(--paper);display:flex;
     flex-direction:column;overflow-y:auto;
     padding:22px 18px calc(22px + env(safe-area-inset-bottom));}
-  /* The Rotary clubs and districts behind the library, at full strength so
-     the sponsors can see them (rotary-bg.webp, made by gerel_rotary_bg.py; the
-     tile is drawn at twice this size so it stays sharp on a phone). A pattern
-     behind words is the hardest thing to read for a child who sees a little,
-     so it stays off the reading and listening screens, where the story's own
-     text is, and any words that sit straight on it get a paper-coloured glow
-     that lifts them clear of a logo behind. Cards and buttons are solid. */
-  .screen{background-image:url(rotary-bg.webp);background-size:1000px auto;}
-  #player,#reader{background-image:none;}
-  .screen .brand,.screen .sub,.screen .note,.screen h1{
-    text-shadow:0 0 3px var(--paper),0 0 6px var(--paper),0 0 10px var(--paper),
-                0 0 16px var(--paper);}
+  /* Plain paper behind every screen (3 Oct). The Rotary logo tile that was
+     here (rotary-bg.webp, 30 Sept) is gone: a pattern behind words is the
+     hardest thing to read for a child who sees a little, and Rotary's own
+     rules ask for each logo whole, with clear space round it — a tile cut by
+     the screen edge and covered by buttons gave neither. The clubs are
+     credited by their logos, whole, at the foot of the first screen and on
+     the About page. */
   /* Centred when there is room; when the content is taller than the screen it
      starts at the top and scrolls. Plain justify-content:center pushed the top
      beyond reach instead — the title sat 35px above a 375×812 phone, where no
@@ -137,11 +132,6 @@
   #shelf .brand .gerel{color:#C2410C;}
   #shelf.home .shelfOnly{display:none !important;}
   #shelf:not(.home) .homeOnly{display:none !important;}
-  /* No Rotary tile behind the first screen: the clubs' logos stand whole in
-     their own band at the foot instead. Rotary's rules ask for the whole
-     logo with clear space around it, which a tile cut by the screen edge and
-     covered by buttons never gave. */
-  #shelf.home{background-image:none;}
   .bar,.homeTop,#sponsors{width:100%;max-width:1120px;margin-left:auto;margin-right:auto;}
   .homeTop{display:grid;gap:10px;margin-bottom:14px;}
   @media(min-width:1024px){ .homeTop{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);align-items:stretch;} }
@@ -2599,7 +2589,7 @@ document.addEventListener('pointerdown',firstTouch,true);
 
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-10-03-j');
+console.log('Gerel build 2026-10-03-k');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   const typing=/^(INPUT|TEXTAREA)$/.test(e.target.tagName||'');

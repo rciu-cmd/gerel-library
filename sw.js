@@ -15,8 +15,11 @@
 const SHELL = 'gerel-shell-v2';
 const BOOKS = 'gerel-books-v1';
 
+// The Rotary tile left the screens on 3 Oct; the two club logos at the foot
+// of the first screen are kept instead, so it is whole with no signal.
 const SHELL_FILES = [
-  '/', '/index.html', '/catalog.json', '/jszip.min.js', '/rotary-bg.webp',
+  '/', '/index.html', '/catalog.json', '/jszip.min.js',
+  '/logos/rotary-ikh-urgoo.png', '/logos/rotary-taipei-passport.png',
   '/logo.png', '/icon-192.png', '/icon-512.png', '/favicon.ico'
 ];
 
