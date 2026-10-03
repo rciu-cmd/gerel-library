@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-10-02-i">
+<meta name="gerel-build" content="2026-10-03-a">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -2360,7 +2360,7 @@ document.addEventListener('pointerdown',firstTouch,true);
 
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-10-02-i');
+console.log('Gerel build 2026-10-03-a');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   const typing=/^(INPUT|TEXTAREA)$/.test(e.target.tagName||'');
@@ -2531,6 +2531,13 @@ if(navigator.serviceWorker){
   window.addEventListener('load',()=>{
     navigator.serviceWorker.register('sw.js').catch(err=>
       console.warn('Gerel: offline support unavailable', err));
+  });
+  // A new worker taking over means the voice list this page loaded may have
+  // come from the old one's store (September's, on some phones). Ask again,
+  // so new phrases speak without a second reload.
+  navigator.serviceWorker.addEventListener('controllerchange',async()=>{
+    try{ const r=await fetch(SPEECH_ROOT+'/index.json',{cache:'no-cache'});
+      if(r.ok) SPEECH=await r.json(); }catch(e){}
   });
 }
 

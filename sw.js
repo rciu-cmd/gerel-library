@@ -8,7 +8,11 @@
 // (gerel-books-v1); this worker only serves them back when there is no
 // signal, and keeps a copy of the shell so the library opens offline.
 
-const SHELL = 'gerel-shell-v1';
+// v2 (3 Oct): the September worker stored speech/index.json in v1, and this
+// one reads speech/ from the cache first — so a phone that ever ran the old
+// worker kept September's voice list for ever, and every phrase added since
+// was silent. A new name makes activate() delete v1 and everything in it.
+const SHELL = 'gerel-shell-v2';
 const BOOKS = 'gerel-books-v1';
 
 const SHELL_FILES = [
@@ -94,8 +98,9 @@ self.addEventListener('fetch', e => {
   }
 
   // Audio and books a child has kept: cache first, because the whole point
-  // is that they play with no connection.
-  if (/\/(audio|books|braille|speech)\//.test(url.pathname)) {
+  // is that they play with no connection. Not the lists (index.json): those
+  // change, and are asked for first below like everything else.
+  if (/\/(audio|books|braille|speech)\//.test(url.pathname) && !url.pathname.endsWith('.json')) {
     e.respondWith((async () => {
       const hit = await caches.match(req, { ignoreVary: true });
       if (hit) return partial(req, hit);
