@@ -15,11 +15,12 @@
 const SHELL = 'gerel-shell-v2';
 const BOOKS = 'gerel-books-v1';
 
-// The Rotary tile left the screens on 3 Oct; the two club logos at the foot
-// of the first screen are kept instead, so it is whole with no signal.
+// The Rotary tile left the screens on 3 Oct; the club and district logos at
+// the foot of the first screen are kept instead, so it is whole with no signal.
 const SHELL_FILES = [
   '/', '/index.html', '/catalog.json', '/jszip.min.js',
-  '/logos/rotary-ikh-urgoo.png', '/logos/rotary-taipei-passport.png',
+  '/logos/rotary-d3450.png', '/logos/rotary-ikh-urgoo.png',
+  '/logos/rotary-taipei-passport.png', '/logos/rotary-d3522.png',
   '/logo.png', '/icon-192.png', '/icon-512.png', '/favicon.ico'
 ];
 

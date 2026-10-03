@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-10-03-l">
+<meta name="gerel-build" content="2026-10-03-m">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -163,13 +163,17 @@
   @media(max-width:520px){
     .modeBtn{flex-direction:column;gap:4px;font-size:14px;padding:8px 4px;}
   }
-  /* The clubs behind the library, each logo whole, at the foot of the first
-     screen. The About page names the districts too. */
+  /* The clubs and their districts behind the library, each logo whole, at
+     the foot of the first screen: one row on a tablet or laptop, a club and
+     its district per row on a phone. */
   #sponsors{margin-top:24px;padding:14px 16px 16px;border-radius:20px;background:#fff;
     border:2px solid var(--line);display:flex;flex-wrap:wrap;align-items:center;
     justify-content:center;gap:6px 26px;}
   #sponsors .lbl{flex-basis:100%;text-align:center;font-weight:800;font-size:14px;color:var(--muted);}
-  #sponsors img{height:clamp(72px,10vw,104px);width:auto;max-width:100%;}
+  #sponsors .pair{display:flex;align-items:center;justify-content:center;gap:12px;max-width:100%;}
+  /* Sized by height so a pair fits a 320px phone; object-fit keeps a logo
+     its own shape if a very narrow screen squeezes it anyway. */
+  #sponsors img{height:clamp(50px,8.6vw,96px);width:auto;min-width:0;object-fit:contain;}
   #sponsors a{flex-basis:100%;text-align:center;font-weight:800;font-size:15px;color:var(--navy);
     padding:8px;}
   .doors{display:grid;gap:18px;width:100%;max-width:1040px;}
@@ -451,8 +455,11 @@
 
   <footer id="sponsors" class="homeOnly">
     <span class="lbl">Дэмжигч клубууд</span>
-    <img src="logos/rotary-ikh-urgoo.png" alt="Rotary Club of Ikh Urgoo" width="1126" height="513">
-    <img src="logos/rotary-taipei-passport.png" alt="Rotary Club of Taipei Passport" width="1330" height="513">
+    <!-- Each club beside its district: D3450 · Ikh Urgoo | Taipei Passport ·
+         D3522. Paired, so a narrow screen breaks the row between the clubs,
+         never between a club and its district. -->
+    <span class="pair"><img src="logos/rotary-d3450.png" alt="Rotary District 3450" width="958" height="513"><img src="logos/rotary-ikh-urgoo.png" alt="Rotary Club of Ikh Urgoo" width="1126" height="513"></span>
+    <span class="pair"><img src="logos/rotary-taipei-passport.png" alt="Rotary Club of Taipei Passport" width="1330" height="513"><img src="logos/rotary-d3522.png" alt="Rotary District 3522" width="958" height="513"></span>
     <a href="about.html">Гэрэл номын сангийн тухай · About</a>
   </footer>
 </div>
@@ -2619,7 +2626,7 @@ document.addEventListener('pointerdown',firstTouch,true);
 
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-10-03-l');
+console.log('Gerel build 2026-10-03-m');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   const typing=/^(INPUT|TEXTAREA)$/.test(e.target.tagName||'');
