@@ -1746,17 +1746,6 @@
      "braillePages": 195
     },
     {
-     "title": "ЧИЧЛҮҮР ХУТГА - 1",
-     "author": "А. Рыбаков",
-     "file": "books/chichluur-hutga-1-f7702b.epub",
-     "chars": 218072,
-     "minutes": 291,
-     "id": "chichluur-hutga-1-f7702b",
-     "cover": "covers/chichluur-hutga-1-f7702b.jpg",
-     "braille": "braille/chichluur-hutga-1-f7702b.brf",
-     "braillePages": 337
-    },
-    {
      "title": "ШАЛЬДАР БУЛДАР НАС",
      "author": "З. Сандагаа",
      "file": "books/shaldar-buldar-nas-b4482e.epub",
@@ -2725,28 +2714,6 @@
      "braillePages": 318
     },
     {
-     "title": "КВЕНТИН ДОРВАРДЫН АЯН ЗАМЫН УЧРАЛ - 1",
-     "author": "ВАЛЬТЕР СКОТТ",
-     "file": "books/kventin-dorvardyn-ayan-zamyn-uchral-1-970a2d.epub",
-     "chars": 255212,
-     "minutes": 340,
-     "id": "kventin-dorvardyn-ayan-zamyn-uchral-1-970a2d",
-     "cover": "covers/kventin-dorvardyn-ayan-zamyn-uchral-1-970a2d.jpg",
-     "braille": "braille/kventin-dorvardyn-ayan-zamyn-uchral-1-970a2d.brf",
-     "braillePages": 320
-    },
-    {
-     "title": "КВЕНТИН ДОРВАРДЫН АЯН ЗАМЫН УЧРАЛ - 2",
-     "author": "ВАЛЬТЕР СКОТТ",
-     "file": "books/kventin-dorvardyn-ayan-zamyn-uchral-2-f6821d.epub",
-     "chars": 267897,
-     "minutes": 357,
-     "id": "kventin-dorvardyn-ayan-zamyn-uchral-2-f6821d",
-     "cover": "covers/kventin-dorvardyn-ayan-zamyn-uchral-2-f6821d.jpg",
-     "braille": "braille/kventin-dorvardyn-ayan-zamyn-uchral-2-f6821d.brf",
-     "braillePages": 336
-    },
-    {
      "title": "КВЕНТИН ДОРВАРДЫН АЯН ЗАМЫН УЧРАЛ - 4",
      "author": "ВАЛЬТЕР СКОТТ",
      "file": "books/kventin-dorvardyn-ayan-zamyn-uchral-4-003d69.epub",
@@ -2833,17 +2800,6 @@
      "cover": "covers/naizuud-9ff770.jpg",
      "braille": "braille/naizuud-9ff770.brf",
      "braillePages": 57
-    },
-    {
-     "title": "НУУЦАТ АРАЛ - 1 : АЮУЛД УЧРАГСАД",
-     "author": "Жюль Верн",
-     "file": "books/nuutsat-aral-1-ayuuld-uchragsad-00b294.epub",
-     "chars": 319040,
-     "minutes": 425,
-     "id": "nuutsat-aral-1-ayuuld-uchragsad-00b294",
-     "cover": "covers/nuutsat-aral-1-ayuuld-uchragsad-00b294.jpg",
-     "braille": "braille/nuutsat-aral-1-ayuuld-uchragsad-00b294.brf",
-     "braillePages": 440
     },
     {
      "title": "НУУЦАТ АРАЛ - 3 : АРЛЫН НУУЦ",
@@ -4204,28 +4160,6 @@
    "name": "Том хүүхдэд",
    "books": [
     {
-     "title": "БОВАРИ ХАТАГТАЙ - 1",
-     "author": "ГЮСТАВ ФЛОБЕР",
-     "file": "books/bovari-hatagtai-1-13c857.epub",
-     "chars": 119718,
-     "minutes": 160,
-     "id": "bovari-hatagtai-1-13c857",
-     "cover": "covers/bovari-hatagtai-1-13c857.jpg",
-     "braille": "braille/bovari-hatagtai-1-13c857.brf",
-     "braillePages": 148
-    },
-    {
-     "title": "БОВАРИ ХАТАГТАЙ - 2",
-     "author": "ГЮСТАВ ФЛОБЕР",
-     "file": "books/bovari-hatagtai-2-a23424.epub",
-     "chars": 285487,
-     "minutes": 381,
-     "id": "bovari-hatagtai-2-a23424",
-     "cover": "covers/bovari-hatagtai-2-a23424.jpg",
-     "braille": "braille/bovari-hatagtai-2-a23424.brf",
-     "braillePages": 391
-    },
-    {
      "title": "УРХИ",
      "author": "Эмиль ЗОЛЯ",
      "file": "books/urhi-cf3da2.epub",
@@ -5283,6 +5217,96 @@
       "Том хүүхдэд"
      ],
      "removed": "text is the French original, read by the Mongolian voice (2026-10-02)"
+    },
+    {
+     "title": "ЧИЧЛҮҮР ХУТГА - 1",
+     "author": "А. Рыбаков",
+     "file": "books/chichluur-hutga-1-f7702b.epub",
+     "chars": 218072,
+     "minutes": 291,
+     "id": "chichluur-hutga-1-f7702b",
+     "cover": "covers/chichluur-hutga-1-f7702b.jpg",
+     "braille": "braille/chichluur-hutga-1-f7702b.brf",
+     "braillePages": 337,
+     "from": [
+      "Хүүхдийн ном"
+     ],
+     "removed": "incomplete: part 2 is missing, the story stops at chapter 41 (2026-10-03)"
+    },
+    {
+     "title": "КВЕНТИН ДОРВАРДЫН АЯН ЗАМЫН УЧРАЛ - 1",
+     "author": "ВАЛЬТЕР СКОТТ",
+     "file": "books/kventin-dorvardyn-ayan-zamyn-uchral-1-970a2d.epub",
+     "chars": 255212,
+     "minutes": 340,
+     "id": "kventin-dorvardyn-ayan-zamyn-uchral-1-970a2d",
+     "cover": "covers/kventin-dorvardyn-ayan-zamyn-uchral-1-970a2d.jpg",
+     "braille": "braille/kventin-dorvardyn-ayan-zamyn-uchral-1-970a2d.brf",
+     "braillePages": 320,
+     "from": [
+      "Адал явдал"
+     ],
+     "removed": "incomplete: part 3 of the series is missing (2026-10-03)"
+    },
+    {
+     "title": "КВЕНТИН ДОРВАРДЫН АЯН ЗАМЫН УЧРАЛ - 2",
+     "author": "ВАЛЬТЕР СКОТТ",
+     "file": "books/kventin-dorvardyn-ayan-zamyn-uchral-2-f6821d.epub",
+     "chars": 267897,
+     "minutes": 357,
+     "id": "kventin-dorvardyn-ayan-zamyn-uchral-2-f6821d",
+     "cover": "covers/kventin-dorvardyn-ayan-zamyn-uchral-2-f6821d.jpg",
+     "braille": "braille/kventin-dorvardyn-ayan-zamyn-uchral-2-f6821d.brf",
+     "braillePages": 336,
+     "from": [
+      "Адал явдал"
+     ],
+     "removed": "incomplete: part 3 of the series is missing (2026-10-03)"
+    },
+    {
+     "title": "НУУЦАТ АРАЛ - 1 : АЮУЛД УЧРАГСАД",
+     "author": "Жюль Верн",
+     "file": "books/nuutsat-aral-1-ayuuld-uchragsad-00b294.epub",
+     "chars": 319040,
+     "minutes": 425,
+     "id": "nuutsat-aral-1-ayuuld-uchragsad-00b294",
+     "cover": "covers/nuutsat-aral-1-ayuuld-uchragsad-00b294.jpg",
+     "braille": "braille/nuutsat-aral-1-ayuuld-uchragsad-00b294.brf",
+     "braillePages": 440,
+     "from": [
+      "Адал явдал"
+     ],
+     "removed": "incomplete: part 2 of the series is missing (2026-10-03)"
+    },
+    {
+     "title": "БОВАРИ ХАТАГТАЙ - 1",
+     "author": "ГЮСТАВ ФЛОБЕР",
+     "file": "books/bovari-hatagtai-1-13c857.epub",
+     "chars": 119718,
+     "minutes": 160,
+     "id": "bovari-hatagtai-1-13c857",
+     "cover": "covers/bovari-hatagtai-1-13c857.jpg",
+     "braille": "braille/bovari-hatagtai-1-13c857.brf",
+     "braillePages": 148,
+     "from": [
+      "Том хүүхдэд"
+     ],
+     "removed": "incomplete: Part Three of the novel is missing (2026-10-03)"
+    },
+    {
+     "title": "БОВАРИ ХАТАГТАЙ - 2",
+     "author": "ГЮСТАВ ФЛОБЕР",
+     "file": "books/bovari-hatagtai-2-a23424.epub",
+     "chars": 285487,
+     "minutes": 381,
+     "id": "bovari-hatagtai-2-a23424",
+     "cover": "covers/bovari-hatagtai-2-a23424.jpg",
+     "braille": "braille/bovari-hatagtai-2-a23424.brf",
+     "braillePages": 391,
+     "from": [
+      "Том хүүхдэд"
+     ],
+     "removed": "incomplete: Part Three of the novel is missing (2026-10-03)"
     }
    ],
    "note": "Taken off the children's shelves on 2 Oct 2026. Files are kept; to restore a book, move it back to the shelves in its \"from\"."
