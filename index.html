@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-10-03-e">
+<meta name="gerel-build" content="2026-10-03-f">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -50,6 +50,29 @@
   button:focus-visible,[tabindex]:focus-visible{outline:5px solid var(--ink);
     outline-offset:4px;border-radius:20px;}
   .hidden{display:none !important;}
+  /* High contrast (3 Oct), for children with some sight: Ө cycles the normal
+     look, yellow on black and white on black, and the device remembers it.
+     Every surface goes black and every word, border and icon takes the one
+     bright colour; what is chosen or being read is turned round, black on
+     the bright colour, so it stands out at a glance. */
+  html[data-theme]{--hc:#FFE600;}
+  html[data-theme="white"]{--hc:#FFFFFF;}
+  html[data-theme],html[data-theme] body{background:#000 !important;color:var(--hc) !important;}
+  html[data-theme] body *{background-color:#000 !important;background-image:none !important;
+    color:var(--hc) !important;border-color:var(--hc) !important;
+    box-shadow:none !important;text-shadow:none !important;filter:none !important;}
+  html[data-theme] body button,html[data-theme] body .bookRow,html[data-theme] body .shelfCard,
+  html[data-theme] body .note,html[data-theme] body input{border:3px solid var(--hc) !important;}
+  html[data-theme] body .on,html[data-theme] body .on *,html[data-theme] body .is,
+  html[data-theme] body #readText .sent.now,html[data-theme] body #nowText .said,
+  html[data-theme] body .progress i{background-color:var(--hc) !important;color:#000 !important;}
+  html[data-theme] body .progress{border:2px solid var(--hc) !important;}
+  /* The title area of a book row is a button too, but its row already has the
+     border: a second one squeezed the titles into a narrow column. */
+  html[data-theme] body .bookRow .meta,html[data-theme] body .bookRow .cover{border:none !important;}
+  /* Decorative sheens on the big buttons and shelf cards. */
+  html[data-theme] body *::before,html[data-theme] body *::after{background:none !important;box-shadow:none !important;}
+  html[data-theme] body *:focus-visible{outline:5px solid var(--hc) !important;outline-offset:4px;}
 
   /* The book's own cover where the sun used to be: large when only
      listening, smaller when the words are shown too. Bright with a gold ring
@@ -171,8 +194,12 @@
      560px a single column still wins — two would squeeze the titles. */
   .shelves,.books{display:grid;gap:13px;width:100%;max-width:960px;margin:0 auto;
     grid-template-columns:minmax(0,1fr);}
+  /* A book row holds a cover and three buttons beside its title: two
+     columns of them from 560px left the title 65px, one letter wide on a
+     small tablet. Books pair up only once each row has room (3 Oct). */
+  @media(min-width:820px){ .books{grid-template-columns:minmax(0,1fr) minmax(0,1fr);} }
   @media(min-width:560px){
-    .shelves,.books{grid-template-columns:minmax(0,1fr) minmax(0,1fr);}
+    .shelves{grid-template-columns:minmax(0,1fr) minmax(0,1fr);}
   }
   /* minmax(0,…), not plain 1fr: a 1fr column grows to fit the longest word in
      any title, which pushed book rows 48px past a phone's edge and cut the ★
@@ -355,6 +382,7 @@
   <div class="bar">
     <h1 id="shelfTitle">Тавиурууд</h1>
     <button class="chip mode" id="modeChip">Сонсох</button>
+    <button class="chip" id="themeChip">◐ Өнгө</button>
     <button class="chip" id="installChip">⤓ Суулгах</button>
     <button class="chip" id="loginChip">Нэвтрэх</button>
     <button class="chip" id="backChip">← Буцах</button>
@@ -405,6 +433,7 @@
       <button class="mini" id="speedBtn">Хурд 1×</button>
       <button class="mini" id="restartBtn">Эхнээс нь</button>
       <button class="mini hidden" id="twinBtn">Монголоор</button>
+      <button class="mini" id="markBtn">Хавчуурга</button>
     </div>
     <div id="playerStatus" class="note hidden"></div>
   </div>
@@ -1162,6 +1191,72 @@ function progressPct(){
   else for(let k=0;k<si;k++) at+=(bl.sentences[k]||'').length;
   return Math.min(100,Math.round(at/p.total*100));
 }
+// The look: normal, yellow on black, white on black (3 Oct). Kept on the
+// device, since it belongs to the child's eyes, not to a book.
+const THEMES=[['','Энгийн өнгө'],['yellow','Хар дээр шар'],['white','Хар дээр цагаан']];
+let themeAt=Math.max(0,THEMES.findIndex(t=>t[0]===get('theme','')));
+function applyTheme(){
+  const t=THEMES[themeAt][0];
+  if(t) document.documentElement.dataset.theme=t; else delete document.documentElement.dataset.theme;
+}
+function nextTheme(){
+  themeAt=(themeAt+1)%THEMES.length; put('theme',THEMES[themeAt][0]);
+  applyTheme(); announce(THEMES[themeAt][1]);
+}
+applyTheme();
+
+// Bookmarks (3 Oct): Ц marks the place being heard; the chapter list shows
+// them first. Five a book, the newest putting out the oldest — enough for a
+// child, and a list a child can still get through by ear.
+const bmKey=()=>'bm:'+book.title;
+function bookmarks(){
+  let l=[]; try{ l=JSON.parse(get(bmKey(),'[]'))||[]; }catch(e){}
+  return l.filter(b=>book.chapters[b.ci] && book.chapters[b.ci].blocks[b.bi]);
+}
+function addBookmark(){
+  if(!book.chapters.length){ earcon('bump'); return; }
+  const here={ci,bi,si,t:Math.round(wholeT())};
+  const l=bookmarks().filter(b=>!(b.ci===ci && b.bi===bi && b.si===si));
+  l.unshift(here);
+  put(bmKey(),JSON.stringify(l.slice(0,5)));
+  buildToc(); earcon('done'); announce('Хавчуурга тавилаа.');
+}
+function goBookmark(b){
+  stop(); ci=b.ci; bi=b.bi; si=b.si;
+  resumeT=book.chapters[ci].blocks[bi].whole?(b.t||0):0;
+  paint(); show(mode==='read'?'reader':'player'); buildRead();
+  if(mode!=='read') play();
+}
+
+// How long until the book ends, at the speed chosen: a recorded paragraph
+// lasts about until its last word, a LibriVox part from its story's start to
+// its end; skipped and hidden parts take no time.
+function blockSecs(bl){
+  if(bl.skip) return 0;
+  if(bl.whole) return Math.max(0,(bl.end||bl.secs||0)-(bl.start||0));
+  const m=bl.marks||[];
+  return m.length ? m[m.length-1].t+1.3 : bl.sentences.join(' ').length/CHARS_PER_SEC;
+}
+function secsLeft(){
+  let s=0;
+  book.chapters.forEach((ch,c)=>{
+    if(c<ci || ch.hidden) return;
+    ch.blocks.forEach((bl,b)=>{
+      if(c===ci && b<bi) return;
+      if(c===ci && b===bi){
+        if(bl.whole) s+=Math.max(0,(bl.end||bl.secs||0)-Math.max(wholeT(),bl.start||0));
+        else { const m=(bl.marks||[]).find(x=>x.s===si); s+=Math.max(0,blockSecs(bl)-(m?m.t:0)); }
+      } else s+=blockSecs(bl);
+    });
+  });
+  return s/(book.audioBase?(SPEEDS[speedIndex]||1):1);
+}
+// "Үлдсэн хугацаа", "2 цаг", "15 минут" — each a recorded clip.
+function leftParts(){
+  const m=Math.max(1,Math.round(secsLeft()/60)), h=Math.floor(m/60), r=m%60;
+  return ['Үлдсэн хугацаа'].concat(h?[h+' цаг']:[]).concat(r?[r+' минут']:[]);
+}
+
 // The same story in the other language: an English book and its Mongolian
 // telling, linked in the catalogue ("twin" one way, "twins" the other —
 // УЛААН МАЛГАЙТ holds four Perrault tales, one per chapter). A child learning
@@ -2089,10 +2184,20 @@ async function openBook(e, opts={}){
 
 function buildToc(){
   $('tocList').innerHTML='';
+  bookmarks().forEach(m=>{
+    const b=document.createElement('button');
+    const c=book.chapters[m.ci];
+    b.className='bookRow'; b.style.display='block'; b.style.padding='18px';
+    b.innerHTML='<span class="t">★ Хавчуурга — '+chNo(m.ci)+'. '+esc(c.title)+'</span>';
+    b.addEventListener('click',()=>{ earcon('open'); goBookmark(m); });
+    b.addEventListener('focus',()=>sayParts(['Хавчуурга', chNo(m.ci)+'-р бүлэг', c.title]));
+    $('tocList').appendChild(b);
+  });
   book.chapters.forEach((c,i)=>{
     const b=document.createElement('button');
     b.className='bookRow'; b.style.display='block'; b.style.padding='18px';
     if(c.hidden) return;                    // a contents page: not a chapter to go to
+    b.dataset.ch=String(i);
     b.innerHTML='<span class="t">'+chNo(i)+'. '+esc(c.title)+'</span>';
     b.addEventListener('click',()=>{ earcon('open'); jump(i); });
     // The number is always voiced; the title only where it has been, so a
@@ -2120,6 +2225,8 @@ const KEYS=[
   ['Х','Хурд'],
   ['Я','Би хаана байна?'],
   ['Л','Нөгөө хэлээр сонсох'],
+  ['Ц','Хавчуурга тавих'],
+  ['Ө','Өнгө солих'],
   ['Тоон гарын 8, 2, 4, 6','Сумнууд шиг'],
   ['Тоон гарын 0','Сонгоно'],
   ['Тоон гарын хасах','Буцна'],
@@ -2172,7 +2279,8 @@ function whereAmI(){
     return [g.name, n ? n+' ном' : 'Ном алга байна.', on ? on.title : ''];
   }
   if(!book.chapters.length) return ['Ном сонгоогүй байна.'];
-  return [(book.entry && book.entry.title) || book.title, chNo(ci)+'-р бүлэг', chap().title];
+  return [(book.entry && book.entry.title) || book.title, chNo(ci)+'-р бүлэг', chap().title]
+    .concat(leftParts());
 }
 
 function openAt(fromStart){
@@ -2269,6 +2377,8 @@ $('sizeDown').addEventListener('click',()=>{readSize=Math.max(18,readSize-6);app
 // A book resumes where it was left, which is right for a long story and wrong
 // for a short one a child only glanced at. This is the way back.
 $('twinBtn').addEventListener('click',()=>{ unlock(); openTwin(); });
+$('markBtn').addEventListener('click',()=>{ unlock(); addBookmark(); });
+$('themeChip').addEventListener('click',()=>{ unlock(); nextTheme(); });
 $('restartBtn').addEventListener('click',()=>{
   stop(); ({c:ci,b:bi}=firstPlace()); si=0; resumeT=0; paint(); buildRead();
   announce('Эхнээс нь'); play();
@@ -2300,6 +2410,8 @@ const JUMPS={
   'х':'speed','h':'speed',      // хурд
   'я':'where','y':'where',      // би хаана байна
   'л':'twin','l':'twin',        // нөгөө хэлээр (хэл)
+  'ө':'theme','o':'theme',      // өнгө
+  'ц':'mark','c':'mark',        // хавчуурга (цэг тавих)
   '?':'help','/':'help'
 };
 // A number keypad as a remote: a few dollars, and every key is found by feel.
@@ -2327,6 +2439,8 @@ function doJump(what){
     case 'speed': $('speedBtn').click(); break;
     case 'where': announceParts(whereAmI()); break;
     case 'twin':  openTwin(); break;
+    case 'theme': nextTheme(); break;
+    case 'mark':  addBookmark(); break;
     // One clip per line, so changing one line of the help needs only that
     // line re-voiced. Recording it as one long sentence is what went silent:
     // the list changed and the recording no longer matched.
@@ -2382,7 +2496,7 @@ document.addEventListener('pointerdown',firstTouch,true);
 
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-10-03-e');
+console.log('Gerel build 2026-10-03-f');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   const typing=/^(INPUT|TEXTAREA)$/.test(e.target.tagName||'');
@@ -2523,7 +2637,7 @@ document.addEventListener('keydown',e=>{
       const was=items.indexOf(document.activeElement);
       // The first press lands on the chapter being read, not at the top of a
       // list that can run to hundreds.
-      const at = was<0 ? Math.min(ci,items.length-1)
+      const at = was<0 ? Math.max(0,items.findIndex(x=>x.dataset.ch===String(ci)))
                : Math.max(0,Math.min(items.length-1,was+(down?1:-1)));
       // At either end, the bump: the same sound as the end of any list.
       if(at===was){ earcon('bump'); return; }
