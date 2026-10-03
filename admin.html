@@ -903,6 +903,12 @@ async function editBook(file){
       const r = await fetch(base + 'text/' + book.id + '.txt?t=' + Date.now());
       if(r.ok){ text = await r.text(); from = 'хадгалсан засвар'; }
     }catch(e){}
+    // The EPUBs are on R2 beside the audio since 3 Oct (catalogue
+    // "booksBase"); a book added here since then is still in the site.
+    if(text === null && catalog && catalog.booksBase){
+      try{ text = await epubToText(catalog.booksBase.replace(/\/+$/,'') + '/books/' + book.id + '.epub'); }
+      catch(e){ text = null; }
+    }
     if(text === null) text = await epubToText(base + 'books/' + book.id + '.epub');
     $('editText').value = text;
     $('editState').textContent = from + ' · ' + text.length.toLocaleString() + ' тэмдэгт';

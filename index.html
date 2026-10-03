@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-10-03-b">
+<meta name="gerel-build" content="2026-10-03-c">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -2038,7 +2038,13 @@ async function openBook(e, opts={}){
   try{
     try{ await loadVoiced(e); }
     catch(x){
-      const r=await fetch(e.file);
+      // The EPUBs are on R2 beside the audio since 3 Oct (catalogue
+      // "booksBase"); one added later through the admin page is still in the
+      // site, so that is tried next.
+      let r=null;
+      if(catalog && catalog.booksBase)
+        r=await fetch(catalog.booksBase.replace(/\/+$/,'')+'/'+e.file).catch(()=>null);
+      if(!r || !r.ok) r=await fetch(e.file);
       if(!r.ok) throw new Error('unavailable');
       await loadEpub(await r.arrayBuffer(), e.title);
     }
@@ -2365,7 +2371,7 @@ document.addEventListener('pointerdown',firstTouch,true);
 
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-10-03-b');
+console.log('Gerel build 2026-10-03-c');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   const typing=/^(INPUT|TEXTAREA)$/.test(e.target.tagName||'');
