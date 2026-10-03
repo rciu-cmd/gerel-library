@@ -4,7 +4,10 @@
    "name": "Ochirbat",
    "user": "admin",
    "role": "супер",
-   "hash": "bdc3aa81093929c69b8c385f15693ffd122dd541426cbb3045ad2e6904c334fa"
+   "hash": "dc72b6a99add3b691335213b0589817c6a0ab495de1cac9cf5397946f93e9a03",
+   "kdf": "pbkdf2-sha256",
+   "iter": 150000,
+   "salt": "gCeyc1ROztfepdqc3OiQfQ=="
   },
   {
    "name": "test",
