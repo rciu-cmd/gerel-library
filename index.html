@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-10-03-n">
+<meta name="gerel-build" content="2026-10-06-a">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -293,6 +293,23 @@
   /* The tile being pointed at: a dark ring outside a white one, so it shows
      against the paper and against the tile's own colour alike. */
   .shelfCard.on{outline:5px solid var(--ink);outline-offset:3px;box-shadow:0 0 0 3px #fff;}
+  /* The one movement on the first screen (6 Oct, the user's choice): the
+     tile a child is on lights up — its sun comes in from the corner and
+     brightens, and the ring closes in around it — so a child who sees a
+     little can follow where they are. Children with cortical visual
+     impairment notice movement before still shapes. It moves only when the
+     child points or presses a key, and stops within a third of a second;
+     nothing moves on its own. Off when the phone asks for less motion. */
+  .shelfCard::before,.contBtn::before{transition:transform .35s ease,filter .35s ease;}
+  .shelfCard:hover::before,.shelfCard:focus-visible::before,.shelfCard.on::before,
+  .contBtn:hover::before,.contBtn:focus-visible::before{
+    transform:translate(-14px,14px) scale(1.22);filter:blur(2px) brightness(1.35);}
+  .shelfCard.on{animation:ringIn .22s ease-out;}
+  @keyframes ringIn{from{outline-offset:10px;}to{outline-offset:3px;}}
+  @media (prefers-reduced-motion: reduce){
+    .shelfCard::before,.contBtn::before{transition:none;}
+    .shelfCard.on{animation:none;}
+  }
 
   .bookRow{display:flex;align-items:center;gap:14px;background:#fff;
     border:3px solid var(--line);border-radius:22px;padding:11px;}
@@ -2646,7 +2663,7 @@ document.addEventListener('pointerdown',firstTouch,true);
 
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-10-03-n');
+console.log('Gerel build 2026-10-06-a');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   const typing=/^(INPUT|TEXTAREA)$/.test(e.target.tagName||'');
