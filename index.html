@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-10-12-c">
+<meta name="gerel-build" content="2026-10-12-d">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -1413,7 +1413,7 @@ async function play(){
 
   unlock();
   const mine=++era;
-  playing=true;
+  playing=true; listenStart();
   $('lamp').classList.add('lit');
   $('playBtn').textContent='❚❚ Зогсоох'; $('readPlayBtn').textContent='❚❚ Зогсоох';
   media();
@@ -1468,6 +1468,7 @@ const speakable=(c,b)=>!book.chapters[c].blocks[b].skip
 function stop(){
   // Keep the place in a whole-chapter recording before the audio is cleared.
   if(playing && isWhole() && audioEl.currentTime>0) resumeT=audioEl.currentTime;
+  listenEnd();
   playing=false; era++;
   try{ audioEl.pause(); audioEl.removeAttribute('src'); audioEl.load(); }catch(e){}
   $('lamp').classList.remove('lit');
@@ -1746,7 +1747,7 @@ async function signIn(){
     $('loginNote').textContent='';
     renderShelf();
     show('shelf');
-    earcon('done'); announce('Сайн байна уу, '+(me.name||me.user));
+    usage('signin'); earcon('done'); announce('Сайн байна уу, '+(me.name||me.user));
   }catch(err){
     $('loginNote').textContent='Нэвтэрч чадсангүй. Дараа дахин оролдоно уу.';
   }finally{
@@ -1836,6 +1837,48 @@ function markRead(scroll){
   if(el){ el.classList.add('now'); if(scroll!==false) el.scrollIntoView({block:'center',behavior:'smooth'}); }
 }
 
+// ---- usage counts (12 Oct) ----
+// Totals only, for the super-admin's dashboard: devices that opened the
+// library today, books opened, minutes listened, books read in large print,
+// kept on the phone, braille taken, sign-ins. Nothing about who: no name, no
+// address, no id. The "counted today" mark stays on this device. Sent a few
+// at a time to the accounts service, and only when the catalogue names it.
+const usageQ=[], readSeen=new Set();
+let listenFrom=0, listenBook='', listenSecs={};
+const usageOn=()=>!!(catalog && catalog.accountsBase);
+function usage(kind,bookId,n){ if(usageOn()) usageQ.push({kind,book:bookId||'',n:n||1}); }
+function usageVisit(){
+  const day=new Date(Date.now()+8*3600e3).toISOString().slice(0,10);   // Ulaanbaatar
+  if(get('usageDay','')!==day){ put('usageDay',day); usage('visit'); }
+}
+function usageRead(){
+  const id=book.entry && book.entry.id;
+  if(id && !readSeen.has(id)){ readSeen.add(id); usage('read',id); }
+}
+function listenStart(){ if(!listenFrom){ listenFrom=Date.now(); listenBook=(book.entry&&book.entry.id)||''; } }
+function listenEnd(){
+  if(listenFrom && listenBook) listenSecs[listenBook]=(listenSecs[listenBook]||0)+(Date.now()-listenFrom)/1000;
+  listenFrom=0;
+}
+function usageFlush(){
+  if(!usageOn()) return;
+  if(listenFrom){ listenEnd(); listenStart(); }        // what is playing so far
+  for(const [b,s] of Object.entries(listenSecs)){
+    const m=Math.floor(s/60);
+    if(m>0){ usageQ.push({kind:'listen',book:b,n:m}); listenSecs[b]=s-m*60; }
+  }
+  if(!usageQ.length) return;
+  const url=catalog.accountsBase.replace(/\/+$/,'')+'/events';
+  const body=JSON.stringify({events:usageQ.splice(0,20)});
+  try{
+    if(!(navigator.sendBeacon && navigator.sendBeacon(url,new Blob([body],{type:'text/plain'}))))
+      fetch(url,{method:'POST',body,keepalive:true,headers:{'Content-Type':'text/plain'}}).catch(()=>{});
+  }catch(e){}
+}
+document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='hidden') usageFlush(); });
+window.addEventListener('pagehide',usageFlush);
+setInterval(usageFlush,5*60*1000);
+
 // ---- screens ----
 const SCREENS=['shelf','player','reader','toc','help','resume','login'];
 let openShelf=null, pick=-1, rows=[], catalog=null;
@@ -1846,7 +1889,7 @@ function show(n){
   if(n==='shelf' && catalog) showContinue();     // the last book may have changed
   if(n!=='help') lastScreen=n;
   SCREENS.forEach(s=>$(s).classList.toggle('hidden',s!==n));
-  if(n==='reader') buildRead();
+  if(n==='reader'){ buildRead(); usageRead(); }
 }
 
 const MODES={listen:'Сонсох', both:'Сонсох ба унших', read:'Унших'};
@@ -2151,7 +2194,7 @@ function renderShelf(){
       brl.addEventListener('focus',()=>say('Брайль татах'));
       brl.addEventListener('mouseenter',onHover(()=>say('Брайль татах')));
       brl.addEventListener('click',ev=>{ ev.stopPropagation();
-        announce('Брайль файл татагдаж байна.'); });
+        usage('braille',e.id); announce('Брайль файл татагдаж байна.'); });
     }
     const keep=r.querySelector('.keepBtn');
     if(keep){
@@ -2170,7 +2213,7 @@ function renderShelf(){
         try{
           await keepBook(e,(done,all)=>{ keep.textContent=Math.round(done/all*100)+'%'; });
           keep.textContent='⤓'; keep.classList.add('is');
-          earcon('done'); announce('Утсанд хадгаллаа. Интернэтгүй сонсож болно.');
+          usage('keep',e.id); earcon('done'); announce('Утсанд хадгаллаа. Интернэтгүй сонсож болно.');
         }catch(err){
           keep.textContent='⤓';
           console.warn('Gerel: download failed for', e.id, err);
@@ -2316,6 +2359,7 @@ async function openBook(e, opts={}){
       await loadEpub(await r.arrayBuffer(), e.title);
     }
     put('last',JSON.stringify(e));
+    usage('open',e.id);
     $('nowCoverImg').src=$('resumeCover').src=e.cover||'logo.png';
     $('shelfNote').classList.add('hidden');
     $('playerStatus').classList.add('hidden');
@@ -2713,7 +2757,7 @@ document.addEventListener('pointerdown',firstTouch,true);
 
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-10-12-c');
+console.log('Gerel build 2026-10-12-d');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   const typing=/^(INPUT|TEXTAREA)$/.test(e.target.tagName||'');
@@ -2897,6 +2941,7 @@ if(navigator.serviceWorker){
 
   catalog=await catalogP;
   if(catalog && catalog.audioBase) AUDIO_ROOT=catalog.audioBase.replace(/\/+$/,'');
+  usageVisit();
   await blockedP;
   applySize();
   showWho();

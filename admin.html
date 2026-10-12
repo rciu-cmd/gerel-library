@@ -107,6 +107,9 @@
   .row .k{flex:1;min-width:0;color:var(--ink);}
   .row .v{font-weight:800;text-align:right;white-space:nowrap;}
   .row.total .k,.row.total .v{font-family:var(--display);color:var(--navy);font-size:15px;}
+  /* On a phone a long value (a build note, a tag) wraps under its label
+     instead of pushing the page sideways. */
+  @media(max-width:600px){ .row{flex-wrap:wrap;} .row .v{white-space:normal;text-align:left;} }
   .bar{height:10px;border-radius:99px;background:#EEEAE0;overflow:hidden;position:relative;margin:6px 0 2px;}
   .bar i{display:block;height:100%;border-radius:99px;background:var(--navy);}
   .bar .mark{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ember);}
@@ -133,6 +136,18 @@
   .kpi .s{font-size:12px;opacity:.9;font-weight:600;}
 
   .checks .row .k{display:flex;gap:8px;align-items:baseline;}
+  /* Usage: a table of periods, the last 30 days as bars, the top books. */
+  .utable{width:100%;border-collapse:collapse;font-size:14px;margin:4px 0 10px;}
+  .utable th,.utable td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap;}
+  .utable th:first-child,.utable td:first-child{text-align:left;white-space:normal;}
+  .utable td b{font-family:var(--display);color:var(--navy);font-size:16px;}
+  @media(max-width:600px){ .utable th,.utable td{padding:6px 4px;font-size:13px;} .utable td b{font-size:14px;} }
+  .ubars{display:flex;align-items:flex-end;gap:3px;height:90px;padding:6px 0;border-bottom:1.5px solid var(--line);}
+  .ubars i{flex:1;min-width:3px;background:var(--navy);border-radius:4px 4px 0 0;}
+  .ubars i.z{background:var(--line);}
+  .ugrid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));margin-top:12px;}
+  .ugrid ol{margin:6px 0 0;padding-left:22px;font-size:14px;}
+  .ugrid li{padding:3px 0;}
   details.more summary{cursor:pointer;font-weight:700;color:var(--navy);font-size:13px;padding:4px 0;}
   details.more ul{margin:6px 0 4px 18px;padding:0;font-size:13px;color:var(--muted);columns:2 240px;}
   .probe .row .v{font-weight:700;}
@@ -245,6 +260,10 @@
   <section class="view" id="sec-dash">
     <div class="head"><h1>Самбар</h1><span class="sub" id="statsWhen"></span></div>
     <div class="kpis" id="kpis"></div>
+    <div class="card hidden" id="usageCard">
+      <h2>📈 Хэрэглээ <span class="tag mute">зөвхөн супер админд</span></h2>
+      <div id="usageBody" class="fine">Ачаалж байна…</div>
+    </div>
     <div class="grid">
       <div class="card">
         <h2>🌐 Сайтын байдал</h2>
@@ -518,7 +537,7 @@ async function passwordFields(password){
 const weak = p => p.length < 8 || /^(1234|0000|pass|admin|gerel)/i.test(p);
 // The accounts service, when the catalogue names it. Its key is made the same
 // way as on accounts.html and in the app (PBKDF2, salted with the login name).
-let accountsBase = null;
+let accountsBase = null, acctToken = null;
 async function readAccountsBase(){
   try{ const c = await (await fetch('catalog.json', { cache:'no-cache' })).json();
     return c.accountsBase ? c.accountsBase.replace(/\/+$/, '') : null; }catch(e){ return null; }
@@ -565,7 +584,9 @@ async function tryGate(){
         body: JSON.stringify({ user, key: await accountKey(user, pass) }) });
       if(r.status === 429) throw new Error('Олон удаа буруу оролдлоо. 15 минутын дараа дахин оролдоно уу.');
       if(!r.ok) throw new Error(r.status === 401 ? 'Нэр эсвэл нууц үг буруу байна.' : 'Хэрэглэгчийн үйлчилгээ хариу өгсөнгүй (' + r.status + ').');
-      found = Object.assign((await r.json()).me, { kdf:'pbkdf2-sha256' });
+      const d = await r.json();
+      found = Object.assign(d.me, { kdf:'pbkdf2-sha256' });
+      acctToken = d.token;
       if(found.role !== 'админ' && found.role !== 'супер') throw new Error('Энэ хэрэглэгчид удирдах эрх алга.');
     }else{
       const ur = await fetch('users.json', { cache:'no-cache' });
@@ -591,6 +612,7 @@ async function tryGate(){
     me = found ? { user: found.user, name: found.name || found.user, role: found.role }
                : { user, name: user, role: 'супер', firstRun: true };
     store.set('gerel:admin', JSON.stringify(me), keep);
+    if(acctToken) store.set('gerel:acctToken', acctToken, keep);
     $('gatePass').value = ''; $('gateToken').value = '';
     $('gate').style.display = 'none';
     start();
@@ -617,7 +639,7 @@ $('gateGo').addEventListener('click', tryGate);
 function signOut(){
   if(dirty && !confirm('Хадгалаагүй өөрчлөлт устна. Гарах уу?')) return;
   dirty = false;
-  ['gerel:ghRepo','gerel:ghToken','gerel:admin'].forEach(k => store.del(k));
+  ['gerel:ghRepo','gerel:ghToken','gerel:admin','gerel:acctToken'].forEach(k => store.del(k));
   location.hash = '';
   location.reload();
 }
@@ -631,7 +653,7 @@ async function ghLoad(){
     catalog = JSON.parse(unb64(file.content));
     if(!catalog.shelves) throw new Error('shelves байхгүй');
     setDirty(false);
-    renderShelves(); renderAddTargets(); renderDash();
+    renderShelves(); renderAddTargets(); renderDash(); renderUsage();
   }catch(err){
     log('Каталог татаж чадсангүй: ' + err.message, 'warn');
   }
@@ -1439,6 +1461,64 @@ function copyCmd(btn){
 // ---------------------------------------------------------------- start
 // With the accounts service set up, people are managed on accounts.html —
 // by admins and by teachers — so the menu leads there for every admin.
+// ---------------------------------------------------------------- usage (super-admin)
+// Totals the library reports to the accounts service: devices a day, books
+// opened, minutes listened, large-print reading, offline keeps, braille,
+// sign-ins. Nothing about who. Read with the accounts sign-in made at the
+// gate, so a page opened from a remembered device asks to sign in again.
+const UMETRICS = [['visit','Зочилсон төхөөрөмж (өдөр бүр)'],['open','Ном нээсэн'],['listen','Сонссон хугацаа'],
+  ['read','Том үсгээр уншсан'],['keep','Утсанд хадгалсан'],['braille','Брайль татсан'],['signin','Нэвтэрсэн']];
+let usageData = null;
+async function loadUsage(){
+  const card = $('usageCard');
+  card.classList.toggle('hidden', !(isSuper() && accountsBase));
+  if(!isSuper() || !accountsBase) return;
+  acctToken = acctToken || store.get('gerel:acctToken');
+  if(!acctToken){
+    $('usageBody').innerHTML = 'Хэрэглээг харахын тулд дахин нэвтэрнэ үү. <button class="small" id="usageRelog">Гарах, дахин нэвтрэх</button>';
+    $('usageRelog').addEventListener('click', signOut); return;
+  }
+  try{
+    const r = await fetch(accountsBase + '/stats', { headers:{ Authorization:'Bearer ' + acctToken } });
+    if(r.status === 401){ acctToken = null; store.del('gerel:acctToken'); return loadUsage(); }
+    if(!r.ok) throw new Error(r.status);
+    usageData = await r.json();
+    renderUsage();
+  }catch(e){ $('usageBody').textContent = 'Хэрэглээг уншиж чадсангүй (' + e.message + ').'; }
+}
+function bookTitle(id){
+  for(const g of (catalog && catalog.shelves) || []) for(const b of g.books) if(b.id === id) return b.title;
+  return id;
+}
+function renderUsage(){
+  const U = usageData; if(!U) return;
+  // Listening is counted in minutes: shown as minutes under an hour, then hours.
+  const hours = m => !m ? '0' : m < 60 ? m + ' мин' : (m < 600 ? (m / 60).toFixed(1) : fmt(Math.round(m / 60))) + ' цаг';
+  const cell = (p, k) => { const v = (U.periods[p] || {})[k] || 0; return k === 'listen' ? hours(v) : fmt(v); };
+  const days = []; const base = new Date(U.today + 'T00:00:00Z');
+  for(let i = 29; i >= 0; i--) days.push(new Date(base - i * 864e5).toISOString().slice(0, 10));
+  const per = {}; U.daily.forEach(r => { (per[r.day] = per[r.day] || {})[r.kind] = r.n; });
+  const max = Math.max(1, ...days.map(d => (per[d] || {}).visit || 0));
+  const bars = days.map(d => { const v = (per[d] || {}).visit || 0, o = (per[d] || {}).open || 0, l = (per[d] || {}).listen || 0;
+    return `<i class="${v ? '' : 'z'}" style="height:${Math.max(3, v / max * 100)}%" title="${d}: ${v} төхөөрөмж, ${o} ном нээсэн, ${Math.round(l / 6) / 10} цаг сонссон"></i>`; }).join('');
+  const list = (rows, unit) => rows.length ? '<ol>' + rows.map(r => `<li>${esc(bookTitle(r.book))} — <b>${unit(r.n)}</b></li>`).join('') + '</ol>'
+    : '<p class="fine">Одоохондоо алга.</p>';
+  $('usageBody').innerHTML = `
+    <div style="overflow-x:auto"><table class="utable"><thead><tr><th></th><th>Өнөөдөр</th><th>7 хоног</th><th>30 хоног</th><th>Нийт</th></tr></thead><tbody>
+      ${UMETRICS.map(([k, label]) => `<tr><td>${label}</td>${['today','d7','d30','all'].map(p => `<td><b>${cell(p, k)}</b></td>`).join('')}</tr>`).join('')}
+    </tbody></table></div>
+    <div class="fine">Сүүлийн 30 хоног — өдөр бүр зочилсон төхөөрөмж (баганан дээр очиж дэлгэрэнгүйг харна)</div>
+    <div class="ubars">${bars}</div>
+    <div class="ugrid">
+      <div><b>Хамгийн их нээсэн ном (30 хоног)</b>${list(U.topOpened, n => fmt(n) + ' удаа')}</div>
+      <div><b>Хамгийн их сонссон ном (30 хоног)</b>${list(U.topListened, hours)}</div>
+    </div>
+    <p class="note">Зөвхөн нийт тоо хадгалагдана — хэн, хаанаас гэдэг хадгалагдахгүй.
+      ${U.since ? 'Тоолж эхэлсэн: ' + esc(U.since) + '.' : 'Одоогоор тоо алга.'}
+      Төхөөрөмжийг өдөрт нэг л удаа тоолно (7 хоногийн тоо = өдрүүдийн нийлбэр).
+      Бүртгэл: ${Object.entries(U.accounts || {}).map(([k, v]) => esc(k) + ' ' + v).join(', ')}.</p>`;
+}
+
 function useAccountsPage(){
   const a = document.querySelector('#nav a[data-sec="users"]');
   if(!a) return;
@@ -1448,7 +1528,7 @@ function useAccountsPage(){
 }
 function start(){
   applyRole();
-  readAccountsBase().then(b => { accountsBase = b; if(b) useAccountsPage(); });
+  readAccountsBase().then(b => { accountsBase = b; if(b) useAccountsPage(); loadUsage(); });
   renderGuide();
   go(location.hash.slice(1) || 'dash');
   loadStats();
