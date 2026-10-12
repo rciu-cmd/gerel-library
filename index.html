@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-10-06-a">
+<meta name="gerel-build" content="2026-10-12-a">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -543,7 +543,10 @@
   </div>
 </div>
 
-<div id="resume" class="screen center">
+<!-- Hidden until a book with a saved place opens. Without "hidden" it lay
+     over the first screen until the catalogue arrived — on a phone a second
+     or two of two big old-style doors before the library appeared (12 Oct). -->
+<div id="resume" class="screen center hidden">
   <img class="resumeCover" id="resumeCover" src="logo.png" alt="">
   <div class="brand" style="font-family:var(--display);font-weight:700;font-size:clamp(24px,6vw,34px)"
        id="resumeTitle"></div>
@@ -1847,6 +1850,9 @@ document.querySelectorAll('.modeBtn').forEach(b=>{
   b.addEventListener('mouseleave',()=>clearTimeout(hoverT));
   b.addEventListener('click',()=>{ unlock(); setMode(b.dataset.mode); });
 });
+// The chosen way of reading shows at once, not after the catalogue arrives.
+if(!MODES[mode]) mode='listen';
+paintModes();
 
 // Only shelves meant for children. A shelf marked forChildren:false — such as
 // "Хасагдсан", where books taken off on 2 Oct wait — must not leak its books
@@ -2663,7 +2669,7 @@ document.addEventListener('pointerdown',firstTouch,true);
 
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-10-06-a');
+console.log('Gerel build 2026-10-12-a');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   const typing=/^(INPUT|TEXTAREA)$/.test(e.target.tagName||'');
