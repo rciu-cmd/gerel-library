@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-10-12-a">
+<meta name="gerel-build" content="2026-10-12-b">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -1676,6 +1676,16 @@ async function pbkdf2Hex(password,saltB64,iter){
   const bits=await crypto.subtle.deriveBits({name:'PBKDF2',hash:'SHA-256',salt,iterations:iter},key,256);
   return [...new Uint8Array(bits)].map(b=>b.toString(16).padStart(2,'0')).join('');
 }
+// The accounts service (12 Oct): when the catalogue names it (accountsBase),
+// sign-in asks it instead of reading the public users.json. The password
+// never leaves the page — it is turned into a key here, salted with the
+// login name, and only the key is sent. Same rule as accounts.html.
+async function accountKey(user,password){
+  const k=await crypto.subtle.importKey('raw',new TextEncoder().encode(password),'PBKDF2',false,['deriveBits']);
+  const bits=await crypto.subtle.deriveBits({name:'PBKDF2',hash:'SHA-256',
+    salt:new TextEncoder().encode('gerel-v2:'+user.trim().toLowerCase()),iterations:150000},k,256);
+  return [...new Uint8Array(bits)].map(b=>b.toString(16).padStart(2,'0')).join('');
+}
 async function passwordMatches(row,user,password){
   if(row.kdf==='pbkdf2-sha256') return (await pbkdf2Hex(password,row.salt,row.iter||150000))===row.hash;
   return (await hashPassword(user,password))===row.hash;
@@ -1694,11 +1704,22 @@ async function signIn(){
   $('loginGo').disabled=true;
   $('loginNote').textContent='Шалгаж байна…';
   try{
-    const r=await fetch('users.json',{cache:'no-cache'});
-    if(!r.ok) throw new Error('жагсаалт алга');
-    const list=(await r.json()).users||[];
-    const found=list.find(p=>(p.user||'').toLowerCase()===user);
-    if(!found || !(await passwordMatches(found,user,pass))){
+    let found=null;
+    if(catalog && catalog.accountsBase){
+      const r=await fetch(catalog.accountsBase.replace(/\/+$/,'')+'/login',{method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({user,key:await accountKey(user,pass)})});
+      if(r.status===429){ $('loginNote').textContent='Олон удаа буруу оролдлоо. 15 минутын дараа дахин оролдоно уу.'; earcon('fail'); return; }
+      if(r.ok) found=(await r.json()).me;
+      else if(r.status!==401) throw new Error('үйлчилгээ '+r.status);
+    }else{
+      const r=await fetch('users.json',{cache:'no-cache'});
+      if(!r.ok) throw new Error('жагсаалт алга');
+      const list=(await r.json()).users||[];
+      const row=list.find(p=>(p.user||'').toLowerCase()===user);
+      if(row && await passwordMatches(row,user,pass)) found=row;
+    }
+    if(!found){
       $('loginNote').textContent='Нэр эсвэл нууц үг буруу байна.';
       earcon('fail'); say('Нэр эсвэл нууц үг буруу байна.');
       return;
@@ -2669,7 +2690,7 @@ document.addEventListener('pointerdown',firstTouch,true);
 
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-10-12-a');
+console.log('Gerel build 2026-10-12-b');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   const typing=/^(INPUT|TEXTAREA)$/.test(e.target.tagName||'');

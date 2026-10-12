@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<!-- Talks only to this site and the accounts service. (127.0.0.1:8787 is the
+     service run on the maintainer's own computer for testing.) -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://accounts.gerelnom.com http://127.0.0.1:8787; object-src 'none'; base-uri 'self'; form-action 'none'">
+<script>
+  if(window.top!==window.self){ document.documentElement.style.display='none';
+    try{ window.top.location=window.self.location.href; }catch(e){} }
+</script>
+<title>Гэрэл — Хэрэглэгчид</title>
+<link rel="icon" href="favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* Teachers' page (12 Oct): add, edit and remove students. The same look as
+     the admin page — paper, navy, Montserrat and Nunito. */
+  :root{--paper:#F6F4EE;--ink:#22243B;--muted:#6B6F8D;--line:#E6E0D2;--soft:#FBFAF6;
+    --navy:#242C5C;--ember:#C2410C;--good:#128A54;--good-bg:#E5F3EB;--warn:#A35A06;--warn-bg:#FCF0DE;
+    --bad:#C81E38;--bad-bg:#FBE6EA;--display:'Montserrat',system-ui,sans-serif;--body:'Nunito',system-ui,sans-serif;}
+  *{box-sizing:border-box;}
+  html,body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 var(--body);-webkit-text-size-adjust:100%;}
+  h1,h2{font-family:var(--display);color:var(--navy);margin:0;}
+  a{color:var(--navy);}
+  .hidden{display:none !important;}
+  button,.btn{font:700 15px var(--body);color:var(--ink);background:#fff;cursor:pointer;border:1.5px solid var(--line);
+    border-radius:12px;padding:10px 14px;display:inline-flex;align-items:center;gap:6px;text-decoration:none;min-height:44px;}
+  button.primary{background:var(--navy);border-color:var(--navy);color:#fff;}
+  button.danger{color:var(--bad);border-color:#F1C4CC;}
+  button.small{padding:6px 10px;font-size:14px;min-height:38px;}
+  button:disabled{opacity:.5;cursor:default;}
+  :focus-visible{outline:3px solid var(--ember);outline-offset:2px;}
+  input,select{font:600 16px var(--body);color:var(--ink);background:#fff;border:1.5px solid var(--line);
+    border-radius:12px;padding:11px 12px;width:100%;}
+  label{display:block;font-size:14px;font-weight:800;color:var(--muted);margin:0 0 5px;}
+  .hint{font-size:13px;color:var(--muted);margin-top:4px;}
+  .wrap{max-width:1040px;margin:0 auto;padding:18px;}
+  .top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:#fff;border-bottom:1.5px solid var(--line);padding:10px 18px;}
+  .brand{font:800 19px var(--display);color:var(--navy);}
+  .brand b{color:var(--ember);} .brand span{font:700 14px var(--body);color:var(--muted);}
+  .grow{flex:1;}
+  .pill{font-size:13px;font-weight:800;border-radius:99px;padding:5px 11px;background:var(--soft);border:1.5px solid var(--line);color:var(--muted);}
+  .card{background:#fff;border:1.5px solid var(--line);border-radius:18px;padding:18px;}
+  .card h2{font-size:17px;font-weight:800;margin-bottom:12px;}
+  .grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));align-items:start;}
+  .form{display:grid;gap:12px;}
+  .row2{display:flex;gap:8px;} .row2 input{flex:1;}
+  .center{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+  .box{width:100%;max-width:430px;}
+  .boxHead{text-align:center;margin-bottom:16px;}
+  .boxHead .nm{font:800 32px var(--display);color:var(--navy);} .boxHead .nm b{color:var(--ember);}
+  .boxHead .sub{color:var(--muted);font-weight:700;}
+  .msg{font-size:14px;font-weight:700;min-height:1.2em;}
+  .msg.bad{color:var(--bad);} .msg.good{color:var(--good);}
+  table{width:100%;border-collapse:collapse;}
+  td,th{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;font-size:15px;vertical-align:middle;}
+  th{font-size:13px;color:var(--muted);font-weight:800;}
+  td.acts{text-align:right;white-space:nowrap;}
+  td.acts button{margin-left:4px;}
+  .tag{display:inline-block;font-size:12px;font-weight:800;border-radius:99px;padding:2px 9px;background:#EFEDE6;color:var(--muted);}
+  .tag.t{background:var(--warn-bg);color:var(--warn);}
+  .stat{font:800 28px var(--display);color:var(--navy);}
+  @media(max-width:640px){
+    thead{display:none;} tr{display:grid;grid-template-columns:1fr auto;border-bottom:1px solid var(--line);padding:6px 0;}
+    td{border:0;padding:4px 6px;} td.acts{grid-column:1/-1;text-align:left;} td.acts button{margin:4px 6px 0 0;}
+  }
+  /* The slip a teacher hands to a child (or to the parent): login,
+     password and where to sign in, large enough to read. */
+  #slip{border:2.5px dashed var(--navy);border-radius:16px;padding:16px;background:var(--soft);}
+  #slip .k{font-size:13px;font-weight:800;color:var(--muted);}
+  #slip .v{font:800 24px var(--display);color:var(--ink);letter-spacing:.02em;word-break:break-all;margin-bottom:8px;}
+  @media print{ body *{visibility:hidden;} #slip,#slip *{visibility:visible;} #slip{position:absolute;left:0;top:0;width:100%;border-color:#000;}
+    #slipBtns{display:none;} }
+  #toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:var(--navy);color:#fff;font-weight:700;
+    padding:10px 16px;border-radius:12px;max-width:92vw;z-index:9;}
+  #toast.bad{background:var(--bad);}
+</style>
+</head>
+<body>
+
+<!-- ============ waiting / not set up / first account / sign-in ============ -->
+<div id="gate" class="center">
+  <div class="box">
+    <div class="boxHead"><div class="nm"><b>Гэрэл</b> номын сан</div><div class="sub">Хэрэглэгчид — багш, админд</div></div>
+    <div class="card" id="gWait"><p class="msg">Холбогдож байна…</p></div>
+    <div class="card hidden" id="gDown">
+      <h2>Хэрэглэгчийн үйлчилгээ ажиллахгүй байна</h2>
+      <p>Хэрэглэгчийн үйлчилгээ хараахан тохируулагдаагүй, эсвэл түр ажиллахгүй байна. Хэсэг хугацааны дараа дахин оролдоно уу.</p>
+      <p class="hint">Админд: тохируулах алхмууд — гарын авлагын 15-р бүлэг.</p>
+      <button onclick="location.reload()">Дахин оролдох</button>
+    </div>
+    <form class="card form hidden" id="gSetup" onsubmit="return false">
+      <h2>Анхны тохиргоо</h2>
+      <p class="hint" style="margin:0">Одоогоор хэрэглэгч алга. Эхний хүн — <b>супер админ</b>. Үүнийг үйлчилгээг суулгасны дараа шууд хийнэ.</p>
+      <div><label for="sName">Нэр</label><input id="sName" autocomplete="name"></div>
+      <div><label for="sUser">Нэвтрэх нэр</label><input id="sUser" autocomplete="username" autocapitalize="none"></div>
+      <div><label for="sPass">Нууц үг (8+ тэмдэгт)</label><input id="sPass" type="password" autocomplete="new-password"></div>
+      <button class="primary" id="sGo">Супер админ үүсгэх</button>
+      <div class="msg" id="sMsg"></div>
+    </form>
+    <form class="card form hidden" id="gLogin" onsubmit="return false">
+      <h2>Нэвтрэх</h2>
+      <div><label for="lUser">Нэвтрэх нэр</label><input id="lUser" autocomplete="username" autocapitalize="none"></div>
+      <div><label for="lPass">Нууц үг</label><input id="lPass" type="password" autocomplete="current-password"></div>
+      <button class="primary" id="lGo">Нэвтрэх</button>
+      <div class="msg" id="lMsg"></div>
+    </form>
+    <p class="hint" style="text-align:center"><a href="./">← Номын сан руу</a></p>
+  </div>
+</div>
+
+<!-- ============ the dashboard ============ -->
+<div id="app" class="hidden">
+  <header class="top">
+    <div class="brand"><b>Гэрэл</b> <span>· хэрэглэгчид</span></div>
+    <div class="grow"></div>
+    <span class="pill" id="who"></span>
+    <a class="btn" href="./">Номын сан</a>
+    <button id="outBtn">Гарах</button>
+  </header>
+  <div class="wrap" style="display:grid;gap:16px">
+    <div class="grid">
+      <form class="card form" id="addCard" onsubmit="return false">
+        <h2 id="addTitle">Сурагч нэмэх</h2>
+        <div><label for="aName">Нэр</label><input id="aName" placeholder="Болд Б.">
+          <div class="hint">Нэр, овгийн эхний үсэг. Бүтэн нэр, сургууль, нас бүү бич.</div></div>
+        <div><label for="aUser">Нэвтрэх нэр</label><input id="aUser" placeholder="bold" autocapitalize="none" autocomplete="off">
+          <div class="hint">3–32 үсэг, тоо. Зай байхгүй. Жижиг үсгээр хадгалагдана.</div></div>
+        <div><label for="aPass">Нууц үг</label>
+          <div class="row2"><input id="aPass" autocomplete="off" placeholder="nar-4821"><button class="small" id="aGen" type="button">Үүсгэх</button></div>
+          <div class="hint" id="aPassHint">Сурагчид 6+, багшид 8+ тэмдэгт.</div></div>
+        <div id="aRoleBox" class="hidden"><label for="aRole">Эрх</label><select id="aRole"></select></div>
+        <div id="aOwnerBox" class="hidden"><label for="aOwner">Багш</label><select id="aOwner"></select></div>
+        <button class="primary" id="aGo">Нэмэх</button>
+        <div class="msg" id="aMsg"></div>
+      </form>
+      <div style="display:grid;gap:16px">
+        <div class="card hidden" id="slipCard">
+          <h2>Хүүхдэд өгөх хуудас</h2>
+          <div id="slip">
+            <div class="k">Сайт</div><div class="v">gerelnom.com</div>
+            <div class="k">Нэр</div><div class="v" id="slipName"></div>
+            <div class="k">Нэвтрэх нэр</div><div class="v" id="slipUser"></div>
+            <div class="k">Нууц үг</div><div class="v" id="slipPass"></div>
+          </div>
+          <div id="slipBtns" style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+            <button class="primary" id="slipPrint">Хэвлэх</button>
+            <button id="slipClose">Хаах</button>
+          </div>
+          <p class="hint">Нууц үгийг дахин харах боломжгүй — одоо хэвлэх эсвэл бичиж авна уу.</p>
+        </div>
+        <div class="card">
+          <h2>Тоо</h2>
+          <div id="stats" style="display:flex;gap:22px;flex-wrap:wrap"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:8px">
+        <h2 id="listTitle" style="margin:0">Миний сурагчид</h2>
+        <div class="grow"></div>
+        <input id="search" type="search" placeholder="Хайх…" style="max-width:260px">
+      </div>
+      <table>
+        <thead><tr id="thead"></tr></thead>
+        <tbody id="list"></tbody>
+      </table>
+      <p class="hint" id="empty"></p>
+    </div>
+
+    <form class="card form" onsubmit="return false" style="max-width:520px">
+      <h2>Миний нууц үг солих</h2>
+      <div><label for="pNew">Шинэ нууц үг (8+ тэмдэгт)</label><input id="pNew" type="password" autocomplete="new-password"></div>
+      <div><label for="pAgain">Дахин бичнэ үү</label><input id="pAgain" type="password" autocomplete="new-password"></div>
+      <button class="primary" id="pGo" style="justify-self:start">Солих</button>
+      <div class="msg" id="pMsg"></div>
+    </form>
+  </div>
+</div>
+<div id="toast" class="hidden" role="status" aria-live="polite"></div>
+
+<script>
+// The accounts service. A ?api= address is accepted only for the
+// maintainer's own computer, so a link cannot send a sign-in elsewhere (the
+// page's security rules would refuse it anyway).
+const API = (() => {
+  const q = new URLSearchParams(location.search).get('api') || '';
+  return /^http:\/\/127\.0\.0\.1:\d+$/.test(q) ? q : 'https://accounts.gerelnom.com';
+})();
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ROLE = { 'супер':'Супер админ', 'админ':'Админ', 'багш':'Багш', 'сурагч':'Сурагч' };
+let token = null, me = null, users = [];
+try{ token = sessionStorage.getItem('gerel:acctToken'); }catch(e){}
+
+let toastT;
+function toast(text, bad){ const t = $('toast'); t.textContent = text; t.className = bad ? 'bad' : '';
+  clearTimeout(toastT); toastT = setTimeout(() => t.classList.add('hidden'), bad ? 6000 : 3000); }
+
+// The password never leaves this page: it becomes a key (PBKDF2, 150,000
+// rounds, salted with the login name) and only the key is sent. The same
+// rule is in index.html and admin.html — they must match.
+async function keyOf(user, password){
+  const k = await crypto.subtle.importKey('raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveBits']);
+  const bits = await crypto.subtle.deriveBits({ name:'PBKDF2', hash:'SHA-256',
+    salt: new TextEncoder().encode('gerel-v2:' + user.trim().toLowerCase()), iterations:150000 }, k, 256);
+  return [...new Uint8Array(bits)].map(b => b.toString(16).padStart(2,'0')).join('');
+}
+async function api(method, path, body){
+  const res = await fetch(API + path, { method, headers: Object.assign({ 'Content-Type':'application/json' },
+    token ? { Authorization:'Bearer ' + token } : {}), body: body ? JSON.stringify(body) : undefined });
+  let data = {}; try{ data = await res.json(); }catch(e){}
+  if(res.status === 401 && path !== '/login'){ signedOut(); }
+  if(!res.ok) throw new Error(data.error || ('Алдаа ' + res.status));
+  return data;
+}
+
+// A password a child can read and type: a short word and four numbers.
+const WORDS = ['nar','sar','od','gal','us','mod','uul','tal','nom','ger','mori','temee','buga','chono','shuvuu','tsetseg','salkhi','boroo','tsas','dalai','zuu','arslan','bars','tuulai'];
+function makePassword(){
+  const r = new Uint32Array(2); crypto.getRandomValues(r);
+  return WORDS[r[0] % WORDS.length] + '-' + String(1000 + r[1] % 9000);
+}
+const minLen = role => role === 'сурагч' ? 6 : 8;
+
+function showGate(which){
+  ['gWait','gDown','gSetup','gLogin'].forEach(id => $(id).classList.toggle('hidden', id !== which));
+  $('gate').classList.remove('hidden'); $('app').classList.add('hidden');
+  const f = { gSetup:'sName', gLogin:'lUser' }[which]; if(f) setTimeout(() => $(f).focus(), 50);
+}
+function signedOut(){
+  token = null; me = null; try{ sessionStorage.removeItem('gerel:acctToken'); }catch(e){}
+  showGate('gLogin');
+}
+async function start(){
+  showGate('gWait');
+  let h;
+  try{ h = await api('GET', '/health'); }catch(e){ showGate('gDown'); return; }
+  if(h.setup){ showGate('gSetup'); return; }
+  if(token){ try{ me = (await api('GET', '/me')).me; return openApp(); }catch(e){} }
+  showGate('gLogin');
+}
+function signedIn(data){
+  token = data.token; me = data.me;
+  try{ sessionStorage.setItem('gerel:acctToken', token); }catch(e){}
+  openApp();
+}
+$('lGo').addEventListener('click', async () => {
+  const user = $('lUser').value.trim().toLowerCase(), pass = $('lPass').value;
+  if(!user || !pass){ $('lMsg').textContent = 'Нэр, нууц үгээ бөглөнө үү.'; $('lMsg').className = 'msg bad'; return; }
+  $('lGo').disabled = true; $('lMsg').textContent = 'Шалгаж байна…'; $('lMsg').className = 'msg';
+  try{
+    const d = await api('POST', '/login', { user, key: await keyOf(user, pass) });
+    if(d.me.role === 'сурагч'){ $('lMsg').textContent = 'Энэ хуудас багш, админд зориулагдсан.'; $('lMsg').className = 'msg bad'; token = null; return; }
+    $('lPass').value = ''; signedIn(d);
+  }catch(e){ $('lMsg').textContent = e.message; $('lMsg').className = 'msg bad'; }
+  finally{ $('lGo').disabled = false; }
+});
+$('lPass').addEventListener('keydown', e => { if(e.key === 'Enter') $('lGo').click(); });
+$('sGo').addEventListener('click', async () => {
+  const name = $('sName').value.trim(), user = $('sUser').value.trim().toLowerCase(), pass = $('sPass').value;
+  if(!/^[a-z0-9а-яёөү._-]{3,32}$/.test(user)){ $('sMsg').textContent = 'Нэвтрэх нэр: 3–32 үсэг, тоо, зайгүй.'; $('sMsg').className = 'msg bad'; return; }
+  if(pass.length < 8){ $('sMsg').textContent = 'Нууц үг дор хаяж 8 тэмдэгт.'; $('sMsg').className = 'msg bad'; return; }
+  $('sGo').disabled = true;
+  try{ signedIn(await api('POST', '/setup', { user, name, key: await keyOf(user, pass) })); toast('Супер админ үүслээ.'); }
+  catch(e){ $('sMsg').textContent = e.message; $('sMsg').className = 'msg bad'; }
+  finally{ $('sGo').disabled = false; }
+});
+$('outBtn').addEventListener('click', async () => { try{ await api('POST', '/logout'); }catch(e){} signedOut(); });
+
+const staff = () => me && (me.role === 'супер' || me.role === 'админ');
+function creatable(){
+  return me.role === 'супер' ? ['сурагч','багш','админ','супер'] : me.role === 'админ' ? ['сурагч','багш'] : ['сурагч'];
+}
+async function openApp(){
+  $('gate').classList.add('hidden'); $('app').classList.remove('hidden');
+  $('who').textContent = (me.name || me.user) + ' · ' + ROLE[me.role];
+  $('addTitle').textContent = staff() ? 'Хэрэглэгч нэмэх' : 'Сурагч нэмэх';
+  $('listTitle').textContent = staff() ? 'Хэрэглэгчид' : 'Миний сурагчид';
+  $('aRoleBox').classList.toggle('hidden', !staff());
+  $('aRole').innerHTML = creatable().map(r => `<option value="${r}">${ROLE[r]}</option>`).join('');
+  $('thead').innerHTML = '<th>Нэвтрэх нэр</th><th>Нэр</th>' + (staff() ? '<th>Эрх</th><th>Багш</th>' : '') + '<th>Нэмсэн</th><th></th>';
+  await load();
+  setTimeout(() => $('aName').focus(), 50);
+}
+async function load(){
+  try{ users = (await api('GET', '/users')).users; }catch(e){ toast(e.message, true); users = []; }
+  render();
+}
+function teachers(){ return users.filter(u => u.role === 'багш'); }
+function render(){
+  const q = $('search').value.trim().toLowerCase();
+  const rows = users.filter(u => u.user !== me.user)
+    .filter(u => !q || u.user.includes(q) || (u.name || '').toLowerCase().includes(q));
+  $('list').innerHTML = rows.map(u => `<tr>
+      <td><b>${esc(u.user)}</b></td><td>${esc(u.name)}</td>
+      ${staff() ? `<td><span class="tag ${u.role === 'сурагч' ? '' : 't'}">${esc(ROLE[u.role])}</span></td><td>${esc(u.role === 'сурагч' ? (u.owner || '') : '')}</td>` : ''}
+      <td>${new Date(u.created).toISOString().slice(0, 10)}</td>
+      <td class="acts">
+        <button class="small" data-name="${esc(u.user)}">Нэр засах</button>
+        <button class="small" data-pass="${esc(u.user)}">Шинэ нууц үг</button>
+        ${staff() && u.role === 'сурагч' ? `<button class="small" data-owner="${esc(u.user)}">Багш солих</button>` : ''}
+        <button class="small danger" data-del="${esc(u.user)}">Устгах</button>
+      </td></tr>`).join('');
+  $('empty').textContent = rows.length ? '' : (q ? 'Олдсонгүй.' : (staff() ? 'Хэрэглэгч алга.' : 'Сурагч алга. Дээрх хэсгээс нэмнэ үү.'));
+  const n = r => users.filter(u => u.role === r).length;
+  $('stats').innerHTML = (staff()
+    ? [['сурагч','Сурагч'],['багш','Багш'],['админ','Админ'],['супер','Супер']].map(([r, l]) => `<div><div class="stat">${n(r)}</div><div class="hint">${l}</div></div>`)
+    : [`<div><div class="stat">${n('сурагч')}</div><div class="hint">Миний сурагч</div></div>`]).join('');
+  const ts = teachers();
+  $('aOwner').innerHTML = `<option value="${esc(me.user)}">${esc(me.name || me.user)} (би)</option>` +
+    ts.map(t => `<option value="${esc(t.user)}">${esc(t.name || t.user)} (${esc(t.user)})</option>`).join('');
+  syncOwner();
+}
+function syncOwner(){ $('aOwnerBox').classList.toggle('hidden', !(staff() && $('aRole').value === 'сурагч')); }
+$('aRole').addEventListener('change', syncOwner);
+$('search').addEventListener('input', render);
+$('aGen').addEventListener('click', () => { $('aPass').value = makePassword(); });
+
+function showSlip(name, user, pass){
+  $('slipName').textContent = name || user; $('slipUser').textContent = user; $('slipPass').textContent = pass;
+  $('slipCard').classList.remove('hidden'); $('slipCard').scrollIntoView({ block:'nearest' });
+}
+$('slipPrint').addEventListener('click', () => window.print());
+$('slipClose').addEventListener('click', () => { $('slipCard').classList.add('hidden'); $('slipPass').textContent = ''; });
+
+$('aGo').addEventListener('click', async () => {
+  const name = $('aName').value.trim(), user = $('aUser').value.trim().toLowerCase();
+  const role = staff() ? $('aRole').value : 'сурагч';
+  let pass = $('aPass').value.trim();
+  const say = (t, cls) => { $('aMsg').textContent = t; $('aMsg').className = 'msg ' + (cls || ''); };
+  if(!/^[a-z0-9а-яёөү._-]{3,32}$/.test(user)){ say('Нэвтрэх нэр: 3–32 үсэг, тоо, зайгүй.', 'bad'); $('aUser').focus(); return; }
+  if(!pass){ pass = makePassword(); $('aPass').value = pass; }
+  if(pass.length < minLen(role)){ say('Нууц үг дор хаяж ' + minLen(role) + ' тэмдэгт.', 'bad'); $('aPass').focus(); return; }
+  $('aGo').disabled = true; say('Хадгалж байна…');
+  try{
+    const body = { user, name, role, key: await keyOf(user, pass) };
+    if(staff() && role === 'сурагч') body.owner = $('aOwner').value;
+    const d = await api('POST', '/users', body);
+    users.push(d.user); render();
+    showSlip(name, user, pass);
+    $('aName').value = $('aUser').value = $('aPass').value = '';
+    say('Нэмэгдлээ: ' + user, 'good'); $('aName').focus();
+  }catch(e){ say(e.message, 'bad'); }
+  finally{ $('aGo').disabled = false; }
+});
+
+document.addEventListener('click', async e => {
+  const b = e.target.closest('[data-name],[data-pass],[data-del],[data-owner]'); if(!b) return;
+  const user = b.dataset.name || b.dataset.pass || b.dataset.del || b.dataset.owner;
+  const u = users.find(x => x.user === user); if(!u) return;
+  try{
+    if(b.dataset.name){
+      const name = prompt('«' + user + '»-ийн нэр (нэр, овгийн эхний үсэг):', u.name || '');
+      if(name === null) return;
+      Object.assign(u, (await api('PATCH', '/users/' + encodeURIComponent(user), { name })).user);
+      render(); toast('Нэр солигдлоо.');
+    }else if(b.dataset.pass){
+      const pass = prompt('«' + user + '»-ийн шинэ нууц үг (хоосон орхивол автоматаар үүсгэнэ):', '');
+      if(pass === null) return;
+      const p = pass.trim() || makePassword();
+      if(p.length < minLen(u.role)){ toast('Нууц үг дор хаяж ' + minLen(u.role) + ' тэмдэгт.', true); return; }
+      await api('PATCH', '/users/' + encodeURIComponent(user), { key: await keyOf(user, p) });
+      showSlip(u.name, user, p); toast('Нууц үг солигдлоо.');
+    }else if(b.dataset.owner){
+      const list = teachers().map(t => t.user);
+      const owner = prompt('«' + user + '»-ийн шинэ багш (нэвтрэх нэр):\n' + list.concat([me.user]).join(', '), u.owner || '');
+      if(!owner) return;
+      Object.assign(u, (await api('PATCH', '/users/' + encodeURIComponent(user), { owner: owner.trim().toLowerCase() })).user);
+      render(); toast('Багш солигдлоо.');
+    }else if(b.dataset.del){
+      if(!confirm('«' + user + '» (' + (u.name || '') + ') — устгах уу? Буцаах боломжгүй.')) return;
+      await api('DELETE', '/users/' + encodeURIComponent(user));
+      users = users.filter(x => x.user !== user);
+      if(u.role === 'багш') await load(); else render();
+      toast('Устгагдлаа: ' + user);
+    }
+  }catch(err){ toast(err.message, true); }
+});
+
+$('pGo').addEventListener('click', async () => {
+  const a = $('pNew').value, b = $('pAgain').value;
+  const say = (t, cls) => { $('pMsg').textContent = t; $('pMsg').className = 'msg ' + (cls || ''); };
+  if(a.length < 8){ say('Дор хаяж 8 тэмдэгт.', 'bad'); return; }
+  if(a !== b){ say('Хоёр нууц үг таарахгүй байна.', 'bad'); return; }
+  $('pGo').disabled = true;
+  try{ await api('POST', '/password', { key: await keyOf(me.user, a) }); $('pNew').value = $('pAgain').value = ''; say('Солигдлоо.', 'good'); }
+  catch(e){ say(e.message, 'bad'); }
+  finally{ $('pGo').disabled = false; }
+});
+
+start();
+</script>
+</body>
+</html>

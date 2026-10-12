@@ -11,7 +11,7 @@
      scripts only from this site: an injected script could not send the key
      anywhere else. (GitHub Pages cannot send headers, so this is the meta
      form; it cannot forbid framing — the script below does that.) -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://audio.gerelnom.com; connect-src 'self' https://api.github.com https://audio.gerelnom.com; media-src 'self' https://audio.gerelnom.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://audio.gerelnom.com; connect-src 'self' https://api.github.com https://audio.gerelnom.com https://accounts.gerelnom.com http://127.0.0.1:8787; media-src 'self' https://audio.gerelnom.com; object-src 'none'; base-uri 'self'; form-action 'none'">
 <script>
   // Never inside another site's frame: a page that shows a signed-in admin
   // could otherwise be laid under a decoy and its buttons clicked unseen.
@@ -454,6 +454,7 @@ window.addEventListener('beforeunload', e => { if(dirty){ e.preventDefault(); e.
 const SECTIONS = ['dash','books','add','users','guide','settings'];
 function go(sec){
   if(!SECTIONS.includes(sec)) sec = 'dash';
+  if(sec === 'users' && accountsBase){ location.href = 'accounts.html'; return; }
   if(sec === 'users' && !isSuper()) sec = 'dash';
   SECTIONS.forEach(s => $('sec-' + s).classList.toggle('hidden', s !== sec));
   document.querySelectorAll('#nav a').forEach(a => a.classList.toggle('on', a.dataset.sec === sec));
@@ -515,6 +516,19 @@ async function passwordFields(password){
   return { kdf:'pbkdf2-sha256', iter:150000, salt, hash: await pbkdf2Hex(password, salt, 150000) };
 }
 const weak = p => p.length < 8 || /^(1234|0000|pass|admin|gerel)/i.test(p);
+// The accounts service, when the catalogue names it. Its key is made the same
+// way as on accounts.html and in the app (PBKDF2, salted with the login name).
+let accountsBase = null;
+async function readAccountsBase(){
+  try{ const c = await (await fetch('catalog.json', { cache:'no-cache' })).json();
+    return c.accountsBase ? c.accountsBase.replace(/\/+$/, '') : null; }catch(e){ return null; }
+}
+async function accountKey(user, password){
+  const k = await crypto.subtle.importKey('raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveBits']);
+  const bits = await crypto.subtle.deriveBits({ name:'PBKDF2', hash:'SHA-256',
+    salt: new TextEncoder().encode('gerel-v2:' + user.trim().toLowerCase()), iterations:150000 }, k, 256);
+  return [...new Uint8Array(bits)].map(b => b.toString(16).padStart(2,'0')).join('');
+}
 
 // ---------------------------------------------------------------- who
 let me = null;
@@ -541,9 +555,22 @@ async function tryGate(){
   $('gateGo').disabled = true;
   $('gateNote').textContent = 'Шалгаж байна…';
   try{
-    const ur = await fetch('users.json', { cache:'no-cache' });
-    const list = ur.ok ? ((await ur.json()).users || []) : [];
-    let found = null;
+    // With the accounts service set up (catalog.accountsBase, 12 Oct), the
+    // password is checked there — the same accounts teachers manage on
+    // accounts.html. Before that, against users.json as before.
+    let found = null, list = [];
+    accountsBase = await readAccountsBase();
+    if(accountsBase){
+      const r = await fetch(accountsBase + '/login', { method:'POST', headers:{ 'Content-Type':'application/json' },
+        body: JSON.stringify({ user, key: await accountKey(user, pass) }) });
+      if(r.status === 429) throw new Error('Олон удаа буруу оролдлоо. 15 минутын дараа дахин оролдоно уу.');
+      if(!r.ok) throw new Error(r.status === 401 ? 'Нэр эсвэл нууц үг буруу байна.' : 'Хэрэглэгчийн үйлчилгээ хариу өгсөнгүй (' + r.status + ').');
+      found = Object.assign((await r.json()).me, { kdf:'pbkdf2-sha256' });
+      if(found.role !== 'админ' && found.role !== 'супер') throw new Error('Энэ хэрэглэгчид удирдах эрх алга.');
+    }else{
+      const ur = await fetch('users.json', { cache:'no-cache' });
+      list = ur.ok ? ((await ur.json()).users || []) : [];
+    }
     if(list.length){
       found = list.find(p => (p.user || '').toLowerCase() === user);
       if(!found || !(await passwordMatches(found, user, pass))) throw new Error('Нэр эсвэл нууц үг буруу байна.');
@@ -1205,7 +1232,8 @@ function renderDash(){
     kpi('#0E7C86', L ? L.shelves.length : '—', 'Тавиур', 'хүүхдэд харагдах'),
     kpi('#6D3FB8', L ? fmt(L.braille) : '—', 'Брайль ном', L ? fmt(L.braillePages) + ' хуудас' : ''),
     kpi('#C2410C', L ? fmt(L.interfaceClips) : '—', 'Дуут хэллэг', 'дэлгэц бүр ярина'),
-    kpi('#128A54', fmt(people.length || (L && L.accounts) || 0), 'Хэрэглэгч', 'админ, багш, сурагч'),
+    accountsBase ? kpi('#128A54', '↗', 'Хэрэглэгч', 'accounts.html — багш, сурагч')
+                 : kpi('#128A54', fmt(people.length || (L && L.accounts) || 0), 'Хэрэглэгч', 'админ, багш, сурагч'),
   ].join('');
   if(!S) return;
 
@@ -1273,7 +1301,8 @@ function renderDash(){
   $('secRows').innerHTML =
     checkRow(tdays > 21 ? 'ok' : 'warn', 'GitHub түлхүүр ' + esc(sec.githubTokenExpires) + (sec.githubTokenExpiryIsEstimate ? ' орчим' : '') +
       ' дуусна (' + tdays + ' өдөр)' + (tdays <= 21 ? ' — шинийг үүсгэнэ үү' : '')) +
-    (people.length ? checkRow(people.every(p => p.kdf === 'pbkdf2-sha256') ? 'ok' : 'warn',
+    (accountsBase ? checkRow('ok', 'Хэрэглэгчид хувийн үйлчилгээнд (accounts.gerelnom.com) — жагсаалт нийтэд харагдахгүй') :
+     people.length ? checkRow(people.every(p => p.kdf === 'pbkdf2-sha256') ? 'ok' : 'warn',
       people.every(p => p.kdf === 'pbkdf2-sha256') ? 'Бүх нууц үг PBKDF2-оор хадгалагдсан'
         : people.filter(p => p.kdf !== 'pbkdf2-sha256').length + ' хэрэглэгчийн нууц үг хуучин хэштэй — дараагийн нэвтрэлт/солиход шинэчлэгдэнэ') : '') +
     sec.items.map(([s, t]) => checkRow(s === 'ok' ? 'ok' : 'todo', esc(t))).join('');
@@ -1408,8 +1437,18 @@ function copyCmd(btn){
 }
 
 // ---------------------------------------------------------------- start
+// With the accounts service set up, people are managed on accounts.html —
+// by admins and by teachers — so the menu leads there for every admin.
+function useAccountsPage(){
+  const a = document.querySelector('#nav a[data-sec="users"]');
+  if(!a) return;
+  a.href = 'accounts.html'; a.removeAttribute('data-sec'); a.classList.remove('superOnly', 'hidden');
+  a.textContent = '👥 Хэрэглэгчид ↗';
+  renderDash();
+}
 function start(){
   applyRole();
+  readAccountsBase().then(b => { accountsBase = b; if(b) useAccountsPage(); });
   renderGuide();
   go(location.hash.slice(1) || 'dash');
   loadStats();
