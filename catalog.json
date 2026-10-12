@@ -5371,5 +5371,6 @@
   "Англи хэлний номуудыг LibriVox (librivox.org) сайтын сайн дурын уншигчид уншсан. Нийтийн өмч.",
   "Англи номын бичвэрийг Project Gutenberg (gutenberg.org)-аас авав."
  ],
- "booksBase": "https://audio.gerelnom.com"
+ "booksBase": "https://audio.gerelnom.com",
+ "accountsBase": "https://accounts.gerelnom.com"
 }
