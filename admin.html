@@ -1232,7 +1232,7 @@ function renderDash(){
     kpi('#0E7C86', L ? L.shelves.length : '—', 'Тавиур', 'хүүхдэд харагдах'),
     kpi('#6D3FB8', L ? fmt(L.braille) : '—', 'Брайль ном', L ? fmt(L.braillePages) + ' хуудас' : ''),
     kpi('#C2410C', L ? fmt(L.interfaceClips) : '—', 'Дуут хэллэг', 'дэлгэц бүр ярина'),
-    accountsBase ? kpi('#128A54', '↗', 'Хэрэглэгч', 'accounts.html — багш, сурагч')
+    accountsBase ? kpi('#128A54', '↗', 'Хэрэглэгч', 'accounts.html — сурагчид')
                  : kpi('#128A54', fmt(people.length || (L && L.accounts) || 0), 'Хэрэглэгч', 'админ, багш, сурагч'),
   ].join('');
   if(!S) return;

@@ -86,7 +86,7 @@
 <!-- ============ waiting / not set up / first account / sign-in ============ -->
 <div id="gate" class="center">
   <div class="box">
-    <div class="boxHead"><div class="nm"><b>Гэрэл</b> номын сан</div><div class="sub">Хэрэглэгчид — багш, админд</div></div>
+    <div class="boxHead"><div class="nm"><b>Гэрэл</b> номын сан</div><div class="sub">Хэрэглэгчид — админд</div></div>
     <div class="card" id="gWait"><p class="msg">Холбогдож байна…</p></div>
     <div class="card hidden" id="gDown">
       <h2>Хэрэглэгчийн үйлчилгээ ажиллахгүй байна</h2>
@@ -133,7 +133,7 @@
           <div class="hint">3–32 үсэг, тоо. Зай байхгүй. Жижиг үсгээр хадгалагдана.</div></div>
         <div><label for="aPass">Нууц үг</label>
           <div class="row2"><input id="aPass" autocomplete="off" placeholder="nar-4821"><button class="small" id="aGen" type="button">Үүсгэх</button></div>
-          <div class="hint" id="aPassHint">Сурагчид 6+, багшид 8+ тэмдэгт.</div></div>
+          <div class="hint" id="aPassHint">Сурагчид 6+, админд 8+ тэмдэгт.</div></div>
         <div id="aRoleBox" class="hidden"><label for="aRole">Эрх</label><select id="aRole"></select></div>
         <div id="aOwnerBox" class="hidden"><label for="aOwner">Багш</label><select id="aOwner"></select></div>
         <button class="primary" id="aGo">Нэмэх</button>
@@ -257,7 +257,7 @@ $('lGo').addEventListener('click', async () => {
   $('lGo').disabled = true; $('lMsg').textContent = 'Шалгаж байна…'; $('lMsg').className = 'msg';
   try{
     const d = await api('POST', '/login', { user, key: await keyOf(user, pass) });
-    if(d.me.role === 'сурагч'){ $('lMsg').textContent = 'Энэ хуудас багш, админд зориулагдсан.'; $('lMsg').className = 'msg bad'; token = null; return; }
+    if(d.me.role === 'сурагч'){ $('lMsg').textContent = 'Энэ хуудас админд зориулагдсан.'; $('lMsg').className = 'msg bad'; token = null; return; }
     $('lPass').value = ''; signedIn(d);
   }catch(e){ $('lMsg').textContent = e.message; $('lMsg').className = 'msg bad'; }
   finally{ $('lGo').disabled = false; }
@@ -275,8 +275,10 @@ $('sGo').addEventListener('click', async () => {
 $('outBtn').addEventListener('click', async () => { try{ await api('POST', '/logout'); }catch(e){} signedOut(); });
 
 const staff = () => me && (me.role === 'супер' || me.role === 'админ');
+// No teacher accounts (12 Oct, the user's choice: admins are enough). The
+// service still knows the role, so it can come back without new code.
 function creatable(){
-  return me.role === 'супер' ? ['сурагч','багш','админ','супер'] : me.role === 'админ' ? ['сурагч','багш'] : ['сурагч'];
+  return me.role === 'супер' ? ['сурагч','админ','супер'] : ['сурагч'];
 }
 async function openApp(){
   $('gate').classList.add('hidden'); $('app').classList.remove('hidden');
@@ -285,7 +287,7 @@ async function openApp(){
   $('listTitle').textContent = staff() ? 'Хэрэглэгчид' : 'Миний сурагчид';
   $('aRoleBox').classList.toggle('hidden', !staff());
   $('aRole').innerHTML = creatable().map(r => `<option value="${r}">${ROLE[r]}</option>`).join('');
-  $('thead').innerHTML = '<th>Нэвтрэх нэр</th><th>Нэр</th>' + (staff() ? '<th>Эрх</th><th>Багш</th>' : '') + '<th>Нэмсэн</th><th></th>';
+  $('thead').innerHTML = '<th>Нэвтрэх нэр</th><th>Нэр</th>' + (staff() ? '<th>Эрх</th>' : '') + '<th>Нэмсэн</th><th></th>';
   await load();
   setTimeout(() => $('aName').focus(), 50);
 }
@@ -300,25 +302,24 @@ function render(){
     .filter(u => !q || u.user.includes(q) || (u.name || '').toLowerCase().includes(q));
   $('list').innerHTML = rows.map(u => `<tr>
       <td><b>${esc(u.user)}</b></td><td>${esc(u.name)}</td>
-      ${staff() ? `<td><span class="tag ${u.role === 'сурагч' ? '' : 't'}">${esc(ROLE[u.role])}</span></td><td>${esc(u.role === 'сурагч' ? (u.owner || '') : '')}</td>` : ''}
+      ${staff() ? `<td><span class="tag ${u.role === 'сурагч' ? '' : 't'}">${esc(ROLE[u.role])}</span></td>` : ''}
       <td>${new Date(u.created).toISOString().slice(0, 10)}</td>
       <td class="acts">
         <button class="small" data-name="${esc(u.user)}">Нэр засах</button>
         <button class="small" data-pass="${esc(u.user)}">Шинэ нууц үг</button>
-        ${staff() && u.role === 'сурагч' ? `<button class="small" data-owner="${esc(u.user)}">Багш солих</button>` : ''}
         <button class="small danger" data-del="${esc(u.user)}">Устгах</button>
       </td></tr>`).join('');
   $('empty').textContent = rows.length ? '' : (q ? 'Олдсонгүй.' : (staff() ? 'Хэрэглэгч алга.' : 'Сурагч алга. Дээрх хэсгээс нэмнэ үү.'));
   const n = r => users.filter(u => u.role === r).length;
   $('stats').innerHTML = (staff()
-    ? [['сурагч','Сурагч'],['багш','Багш'],['админ','Админ'],['супер','Супер']].map(([r, l]) => `<div><div class="stat">${n(r)}</div><div class="hint">${l}</div></div>`)
+    ? [['сурагч','Сурагч'],['админ','Админ'],['супер','Супер']].map(([r, l]) => `<div><div class="stat">${n(r)}</div><div class="hint">${l}</div></div>`)
     : [`<div><div class="stat">${n('сурагч')}</div><div class="hint">Миний сурагч</div></div>`]).join('');
   const ts = teachers();
   $('aOwner').innerHTML = `<option value="${esc(me.user)}">${esc(me.name || me.user)} (би)</option>` +
     ts.map(t => `<option value="${esc(t.user)}">${esc(t.name || t.user)} (${esc(t.user)})</option>`).join('');
   syncOwner();
 }
-function syncOwner(){ $('aOwnerBox').classList.toggle('hidden', !(staff() && $('aRole').value === 'сурагч')); }
+function syncOwner(){ $('aOwnerBox').classList.add('hidden'); }
 $('aRole').addEventListener('change', syncOwner);
 $('search').addEventListener('input', render);
 $('aGen').addEventListener('click', () => { $('aPass').value = makePassword(); });
@@ -341,7 +342,6 @@ $('aGo').addEventListener('click', async () => {
   $('aGo').disabled = true; say('Хадгалж байна…');
   try{
     const body = { user, name, role, key: await keyOf(user, pass) };
-    if(staff() && role === 'сурагч') body.owner = $('aOwner').value;
     const d = await api('POST', '/users', body);
     users.push(d.user); render();
     showSlip(name, user, pass);
