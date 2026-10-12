@@ -1,19 +1,3 @@
 {
- "users": [
-  {
-   "name": "Ochirbat",
-   "user": "admin",
-   "role": "супер",
-   "hash": "dc72b6a99add3b691335213b0589817c6a0ab495de1cac9cf5397946f93e9a03",
-   "kdf": "pbkdf2-sha256",
-   "iter": 150000,
-   "salt": "gCeyc1ROztfepdqc3OiQfQ=="
-  },
-  {
-   "name": "test",
-   "user": "test",
-   "role": "багш",
-   "hash": "640ea9a04ba41dc469c5342ba11fea193e89066970c24755ecf1d606f94d21ff"
-  }
- ]
+ "users": []
 }
