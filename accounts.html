@@ -98,14 +98,14 @@
       <h2>Анхны тохиргоо</h2>
       <p class="hint" style="margin:0">Одоогоор хэрэглэгч алга. Эхний хүн — <b>супер админ</b>. Үүнийг үйлчилгээг суулгасны дараа шууд хийнэ.</p>
       <div><label for="sName">Нэр</label><input id="sName" autocomplete="name"></div>
-      <div><label for="sUser">Нэвтрэх нэр</label><input id="sUser" autocomplete="username" autocapitalize="none"></div>
+      <div><label for="sUser">Нэвтрэх нэр</label><input id="sUser" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false"></div>
       <div><label for="sPass">Нууц үг (8+ тэмдэгт)</label><input id="sPass" type="password" autocomplete="new-password"></div>
       <button class="primary" id="sGo">Супер админ үүсгэх</button>
       <div class="msg" id="sMsg"></div>
     </form>
     <form class="card form hidden" id="gLogin" onsubmit="return false">
       <h2>Нэвтрэх</h2>
-      <div><label for="lUser">Нэвтрэх нэр</label><input id="lUser" autocomplete="username" autocapitalize="none"></div>
+      <div><label for="lUser">Нэвтрэх нэр</label><input id="lUser" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false"></div>
       <div><label for="lPass">Нууц үг</label><input id="lPass" type="password" autocomplete="current-password"></div>
       <button class="primary" id="lGo">Нэвтрэх</button>
       <div class="msg" id="lMsg"></div>
@@ -129,7 +129,7 @@
         <h2 id="addTitle">Сурагч нэмэх</h2>
         <div><label for="aName">Нэр</label><input id="aName" placeholder="Болд Б.">
           <div class="hint">Нэр, овгийн эхний үсэг. Бүтэн нэр, сургууль, нас бүү бич.</div></div>
-        <div><label for="aUser">Нэвтрэх нэр</label><input id="aUser" placeholder="bold" autocapitalize="none" autocomplete="off">
+        <div><label for="aUser">Нэвтрэх нэр</label><input id="aUser" placeholder="bold" autocapitalize="none" autocorrect="off" spellcheck="false" autocomplete="off">
           <div class="hint">3–32 үсэг, тоо. Зай байхгүй. Жижиг үсгээр хадгалагдана.</div></div>
         <div><label for="aPass">Нууц үг</label>
           <div class="row2"><input id="aPass" autocomplete="off" placeholder="nar-4821"><button class="small" id="aGen" type="button">Үүсгэх</button></div>

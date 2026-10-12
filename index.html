@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-10-12-b">
+<meta name="gerel-build" content="2026-10-12-c">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -487,10 +487,17 @@
        font-size:clamp(30px,7vw,48px)">Нэвтрэх</div>
   <p class="sub" style="margin:0;color:var(--muted)">Ном татаж авахын тулд нэвтэрнэ үү</p>
   <div style="display:grid;gap:14px;width:100%;max-width:420px">
+    <!-- No autocorrect: a phone "correcting" saraa into another word made a
+         right login fail (12 Oct). The password can be shown, because one
+         typed on the Mongolian keyboard is different letters behind the dots. -->
     <input id="loginUser" class="field" type="text" autocomplete="username"
-      placeholder="Хэрэглэгчийн нэр">
-    <input id="loginPass" class="field" type="password" autocomplete="current-password"
-      placeholder="Нууц үг">
+      autocapitalize="none" autocorrect="off" spellcheck="false"
+      placeholder="Нэвтрэх нэр (жишээ нь bold)">
+    <div style="display:flex;gap:8px">
+      <input id="loginPass" class="field" type="password" autocomplete="current-password"
+        autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="Нууц үг" style="flex:1">
+      <button class="mini" id="loginShow" type="button" aria-pressed="false">Харах</button>
+    </div>
     <button class="key big" id="loginGo" style="min-height:70px">Нэвтрэх</button>
     <button class="mini" id="loginBack">← Буцах</button>
   </div>
@@ -1698,7 +1705,9 @@ function showWho(){
 
 async function signIn(){
   const user=($('loginUser').value||'').trim().toLowerCase();
-  const pass=$('loginPass').value||'';
+  // Spaces at either end are dropped, as accounts.html drops them when the
+  // password is made — one pasted from the slip often carries a space.
+  const pass=($('loginPass').value||'').trim();
   if(!user||!pass){ $('loginNote').textContent='Нэр болон нууц үгээ бөглөнө үү.'; return; }
 
   $('loginGo').disabled=true;
@@ -1720,7 +1729,13 @@ async function signIn(){
       if(row && await passwordMatches(row,user,pass)) found=row;
     }
     if(!found){
-      $('loginNote').textContent='Нэр эсвэл нууц үг буруу байна.';
+      // The commonest reason in Mongolia: the keyboard was on Mongolian, so a
+      // Latin password (nar-4821) went in as other letters behind the dots.
+      const mn=/[А-Яа-яЁёӨөҮү]/;
+      $('loginNote').textContent='Нэр эсвэл нууц үг буруу байна.'
+        +(mn.test(pass)||mn.test(user)
+          ? ' Монгол үсгээр бичигдсэн байна — гарыг англи (EN) болгоод дахин бичнэ үү. «Харах» дарж нууц үгээ шалгаж болно.'
+          : ' Нэвтрэх нэр, нууц үгийг хуудсан дээрхтэй яг адил бичнэ үү.');
       earcon('fail'); say('Нэр эсвэл нууц үг буруу байна.');
       return;
     }
@@ -1748,6 +1763,14 @@ function signOut(){
 
 $('loginGo').addEventListener('click',signIn);
 $('loginBack').addEventListener('click',()=>show('shelf'));
+// Show or hide the password, so a child (or a teacher helping) can see what
+// was typed — on a Mongolian keyboard a Latin password turns into other letters.
+$('loginShow').addEventListener('click',()=>{
+  const on=$('loginPass').type==='password';
+  $('loginPass').type=on?'text':'password';
+  $('loginShow').textContent=on?'Нуух':'Харах';
+  $('loginShow').setAttribute('aria-pressed',on?'true':'false');
+});
 $('loginPass').addEventListener('keydown',e=>{
   if(e.code==='Enter'||e.code==='NumpadEnter'){ e.preventDefault(); signIn(); }
   e.stopPropagation();
@@ -2690,7 +2713,7 @@ document.addEventListener('pointerdown',firstTouch,true);
 
 // Printed so it is possible to tell which build is actually live, instead of
 // guessing whether a fix reached the server.
-console.log('Gerel build 2026-10-12-b');
+console.log('Gerel build 2026-10-12-c');
 let lastNav=0;
 document.addEventListener('keydown',e=>{
   const typing=/^(INPUT|TEXTAREA)$/.test(e.target.tagName||'');
