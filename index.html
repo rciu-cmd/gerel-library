@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-11-02-a">
+<meta name="gerel-build" content="2026-11-02-b">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -263,6 +263,8 @@
     border:2px solid var(--line);background:#fff;font-weight:800;font-size:16px;}
   #letters button.off{opacity:.3;}
   #letters button.on{background:var(--sun);border-color:transparent;}
+  /* The textbook shelf's grades in the alphabet's place: words, not letters. */
+  #letters.grades button{min-height:54px;padding:10px 16px;font-size:17px;}
   /* A shelf as a tile drawn like the covers of its books (gerel_covers4.py,
      style B): the shelf colour, lighter at the top, a soft sun rising behind
      the top corner, white words and the covers' gold bar. A shelf and the
@@ -617,11 +619,12 @@ const COLOURS=['#1668CC','#C81E38','#0E7C86','#6D3FB8',
 // orange-red.
 const SHELF_STYLE={
   'Үлгэр':['#1668CC','castle'],            'Хүүхдийн ном':['#C81E38','bear'],
-  'Шүлэг':['#0E7C86','quill'],             'Хөгжилтэй түүхүүд':['#6D3FB8','laugh'],
+  'Шүлэг':['#0E7C86','quill'],
+  // Хөгжилтэй түүхүүд joined Адал явдал on 2 Nov; its purple went to the textbooks.
   'Адал явдал':['#C2410C','compass'],       'Байгаль, амьтад':['#128A54','paw'],
   'Дэлхийн шилдэг зохиол':['#A3237A','globe'],
   'Англи хэлний ном':['#0369A1','speech'], // English books, read by people (LibriVox)
-  'Сурах бичиг':['#8B4513','book'],        // school textbooks from medle.mn, in grade order
+  'Сурах бичиг':['#6D3FB8','book'],        // school textbooks from medle.mn, by grade
   'Миний ном':['#242C5C','star'],
 };
 // A big simple shape is found faster than a word by a child who sees a
@@ -2152,7 +2155,7 @@ function renderLetters(books){
   letterCounts={};
   books.forEach(b=>{ const L=keyOf(b); letterCounts[L]=(letterCounts[L]||0)+1; });
   const box=$('letters');
-  box.innerHTML='';
+  box.innerHTML=''; box.classList.remove('grades');
   if(!books.length) return;
   const present=new Set(books.map(b=>keyOf(b)));
   MN_LETTERS.concat(EN_LETTERS).filter(L=>present.has(L)).forEach(L=>{
@@ -2174,6 +2177,36 @@ function renderLetters(books){
       setTimeout(()=>{ const bands=shelfBands();
         const bl=bands.indexOf($('bookList'));
         if(bl>=0 && letterPick) enterBand(bands,bl,0); }, 60);
+    });
+    box.appendChild(b);
+  });
+}
+
+// The textbook shelf is found by grade, not by letter (user, 2 Nov): a class
+// looks for "7-р анги", and every title starts with its subject anyway. The
+// grades take the alphabet's place, so the arrows move through them the same.
+let gradePick=0;
+const gradeOf=b=>b.source==='medle.mn'?(b.level||0):0;
+const gradeName=n=>n+'-р анги';
+function renderGrades(books){
+  const box=$('letters');
+  box.innerHTML=''; box.classList.add('grades');
+  [...new Set(books.map(gradeOf))].sort((a,b)=>a-b).forEach(n=>{
+    const b=document.createElement('button');
+    const label=gradeName(n);
+    b.textContent=label;
+    if(n===gradePick) b.className='on';
+    const speak=()=>say(label);
+    b.addEventListener('mouseenter',onHover(speak));
+    b.addEventListener('mouseleave',()=>clearTimeout(hoverT));
+    b.addEventListener('focus',speak);
+    b.addEventListener('click',()=>{
+      gradePick = (gradePick===n) ? 0 : n;
+      renderShelf();
+      announce(gradePick ? label : 'Бүх ном');
+      setTimeout(()=>{ const bands=shelfBands();
+        const bl=bands.indexOf($('bookList'));
+        if(bl>=0 && gradePick) enterBand(bands,bl,0); }, 60);
     });
     box.appendChild(b);
   });
@@ -2209,7 +2242,7 @@ function renderShelf(){
   if(openShelf===null){
     $('letters').innerHTML='';
     $('fieldRow').innerHTML='';
-    letterPick='';
+    letterPick=''; gradePick=0;
     $('shelfTitle').textContent='Тавиурууд';
     if(catalog) showContinue();
     const list=shelvesOf();
@@ -2241,10 +2274,18 @@ function renderShelf(){
   $('shelfTitle').textContent=g.name;
   $('backChip').textContent='← Тавиурууд';
   let all=(g.books||[]).filter(b=>b&&b.title&&b.file);
-  renderFields();
-  renderLetters(all);
-  if(letterPick) all=all.filter(b=>keyOf(b)===letterPick);
-  all=all.slice().sort(SORTS[sortIndex][1]);
+  const graded=all.length>0 && all.every(b=>gradeOf(b));
+  if(graded){
+    $('fieldRow').innerHTML='';            // no authors to search by
+    renderGrades(all);
+    if(gradePick) all=all.filter(b=>gradeOf(b)===gradePick);
+  }else{
+    renderFields();
+    renderLetters(all);
+    if(letterPick) all=all.filter(b=>keyOf(b)===letterPick);
+  }
+  const cmp=SORTS[sortIndex][1];
+  all=all.slice().sort(graded?(a,b)=>(gradeOf(a)-gradeOf(b))||cmp(a,b):cmp);
   all.forEach((e,i)=>{
     rows.push(e);
     const r=document.createElement('div');
@@ -2255,7 +2296,8 @@ function renderShelf(){
     r.innerHTML=cov
       +'<button class="meta"><span class="t">'+esc(e.title)
       +(begun(e.title)?'<span class="mark">эхэлсэн</span>':'')+'</span>'
-      +(e.author?'<span class="who">'+esc(e.author)+'</span>':'')
+      +(e.author?'<span class="who">'+esc(e.author)+'</span>'
+        :gradeOf(e)?'<span class="who">'+gradeName(gradeOf(e))+'</span>':'')
       +(e.minutes?'<span class="len">'+mins(e.minutes)+'</span>':'')+'</button>'
       +(e.braille?'<a class="brl" href="'+esc(e.braille)+'" download '
         +'aria-label="Брайль татах'+(e.braillePages?', '+e.braillePages+' хуудас':'')
