@@ -693,16 +693,18 @@ function partOf(title){
   const key = m[1].replace(/[ABCEHKMOPTXY]/g, c => 'АВСЕНКМОРТХУ'['ABCEHKMOPTXY'.indexOf(c)]).replace(/[^\p{L}\p{N}]/gu, '');
   return key ? {key, n} : null;
 }
+// A school textbook's number is its grade, not a part (1 Nov).
+const bookPart = b => b && b.source === 'medle.mn' ? null : partOf(b && b.title);
 function seriesMap(){
   const s = new Map();
   (catalog.shelves || []).filter(g => g.forChildren !== false).forEach(g => g.books.forEach(b => {
-    const p = partOf(b.title); if(!p) return;
+    const p = bookPart(b); if(!p) return;
     if(!s.has(p.key)) s.set(p.key, new Set()); s.get(p.key).add(p.n);
   }));
   return s;
 }
 function reachable(b, s){
-  const p = partOf(b.title); if(!p) return true;
+  const p = bookPart(b); if(!p) return true;
   for(let i = 1; i < p.n; i++) if(!(s.get(p.key) || new Set()).has(i)) return false;
   return true;
 }

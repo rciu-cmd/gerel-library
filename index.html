@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-10-12-d">
+<meta name="gerel-build" content="2026-11-02-a">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -393,6 +393,10 @@
   #readText p + p{text-indent:1.4em;margin-top:-.35em;}
   #readText .sent{border-radius:6px;padding:0 2px;cursor:pointer;}
   #readText .sent.now{background:#F3E2A9;}
+  /* The textbooks' own pictures (1 Nov): as wide as the column at most, and
+     never stretched past the 560 px they were cut at. */
+  #readText .pic{margin:.2em 0 1.2em;text-align:center;}
+  #readText .pic img{max-width:100%;height:auto;border-radius:10px;}
   #readFoot{position:fixed;left:0;right:0;bottom:0;background:#FBF4E6;
     border-top:1px solid #E3D9C4;
     padding:11px 14px calc(11px + env(safe-area-inset-bottom));display:flex;gap:9px;}
@@ -617,6 +621,7 @@ const SHELF_STYLE={
   'Адал явдал':['#C2410C','compass'],       'Байгаль, амьтад':['#128A54','paw'],
   'Дэлхийн шилдэг зохиол':['#A3237A','globe'],
   'Англи хэлний ном':['#0369A1','speech'], // English books, read by people (LibriVox)
+  'Сурах бичиг':['#8B4513','book'],        // school textbooks from medle.mn, in grade order
   'Миний ном':['#242C5C','star'],
 };
 // A big simple shape is found faster than a word by a child who sees a
@@ -847,7 +852,7 @@ function afterSpeaking(fn){
 }
 
 // ---- book text ----
-const book={title:'',author:'',chapters:[],audioBase:null,entry:null};
+const book={title:'',author:'',chapters:[],audioBase:null,entry:null,zip:null,pics:null};
 // Everything here is about the book rather than in it. A child asked for a
 // story, not a publishing history and certainly not an advertisement for a
 // novel on sale in Ulaanbaatar bookshops.
@@ -960,7 +965,9 @@ async function loadVoiced(e){
   // "whole": a recording of the entire chapter by a person (LibriVox), played
   // as one piece. Since 2 Oct it also carries the printed text, its paragraph
   // starts ("paras") and the time of every word, so the reader follows it.
-  book.chapters=d.chapters.map(c=>({title:c.title,
+  // "print": a textbook chapter's printed title when the spoken one differs
+  // ("1.1 …" is said "нэг цэг нэг …"); its pictures are filed under it.
+  book.chapters=d.chapters.map(c=>({title:c.title,print:c.print||c.title,
     blocks:c.blocks.map(b=>({sentences:b.sentences,audio:b.audio,marks:b.marks,
                              whole:!!b.whole,secs:b.secs||0,paras:b.paras||null,
                              start:b.start||0,end:b.end||0}))}));
@@ -1020,8 +1027,11 @@ function markJunk(chapters, bookTitle){
   // title if it is the first, and "Тайлбар" (notes) after that — which is
   // what such chapters hold (НЭГЭН АЛХАМ, the 1839 notes in a travel book).
   const first=chapters.findIndex(ch=>!ch.hidden);
-  chapters.forEach((ch,i)=>{ if(!ch.hidden && JUNK.pubTitle.test(ch.title||'')) ch.title=i===first?bookTitle:'Тайлбар'; });
+  chapters.forEach((ch,i)=>{ if(!ch.hidden && JUNK.pubTitle.test(ch.title||'')) ch.title=ch.shown=i===first?bookTitle:'Тайлбар'; });
 }
+// A chapter's name on screen: as printed ("1.1 …", "IV бүлэг") where it is
+// said differently; a renamed one by its new name. It is said by its title.
+const shown=c=>c.shown||c.print||c.title;
 // Chapters as a child meets them: hidden ones are not counted, so the
 // chapter after a contents page is still "5-р бүлэг" if it is the fifth.
 const chNo=i=>{ let n=0; for(let k=0;k<=i&&k<book.chapters.length;k++) if(!book.chapters[k].hidden) n++; return Math.max(n,1); };
@@ -1034,8 +1044,19 @@ function firstPlace(){
   const c=Math.max(0,book.chapters.findIndex(ch=>!ch.hidden));
   return {c, b:Math.max(0,book.chapters[c].blocks.findIndex(x=>!x.skip))};
 }
+// The EPUBs are on R2 beside the audio since 3 Oct (catalogue "booksBase");
+// one added later through the admin page is still in the site, so that is
+// tried next.
+async function fetchEpub(e){
+  let r=null;
+  if(catalog && catalog.booksBase)
+    r=await fetch(catalog.booksBase.replace(/\/+$/,'')+'/'+e.file).catch(()=>null);
+  if(!r || !r.ok) r=await fetch(e.file);
+  if(!r.ok) throw new Error('unavailable');
+  return r.arrayBuffer();
+}
 async function loadEpub(data,fb){
-  const zip=await JSZip.loadAsync(data);
+  const zip=book.zip=await JSZip.loadAsync(data);
   const cont=await zip.file('META-INF/container.xml').async('string');
   const opfPath=new DOMParser().parseFromString(cont,'application/xml')
     .querySelector('rootfile').getAttribute('full-path');
@@ -1457,7 +1478,7 @@ async function play(){
     // A new chapter is shown, not spoken: the narration reads its heading
     // itself, and a title said over the start of the chapter was two voices
     // at once. The chapter list and "where am I" say it.
-    if(newCh){ if(!chap().hidden) $('status').textContent=$('playerStatus').textContent=chap().title; media(); }
+    if(newCh){ if(!chap().hidden) $('status').textContent=$('playerStatus').textContent=shown(chap()); media(); }
     const a=nextOf(ci,bi);
     dropClips([ck(ci,bi)].concat(a?[ck(a.c,a.b)]:[]));
   }
@@ -1816,7 +1837,7 @@ try{
 const applySize=()=>{ $('readText').style.setProperty('--size',readSize+'px'); put('size',readSize); };
 function buildRead(){
   if(!book.chapters.length) return;
-  $('readTitle').textContent=chap().title;
+  $('readTitle').textContent=shown(chap());
   // A whole recording is one block holding many paragraphs; "paras" says
   // where each begins, so the page is not one wall of text.
   $('readText').innerHTML=chap().blocks.map((b,bx)=>{
@@ -1827,7 +1848,66 @@ function buildRead(){
       +'<span class="sent" data-b="'+bx+'" data-s="'+sx+'">'+esc(t)+'</span>').join(' ')+'</p>';
   }).join('');
   $('readText').dataset.ch=String(ci);
+  placePics();
   applySize(); markRead(true);
+}
+// ---- pictures (1 Nov) ----
+// The school textbooks carry the book's own pictures inside their EPUB, with
+// OEBPS/pics.json saying which paragraph each one follows: the chapter title
+// (t), which chapter of that title (k), and the paragraph's first 48 letters
+// (a, letters only, lower case — gerel_medle.py's norm()). A voiced book is
+// read from its audio index, not the EPUB, so the EPUB is fetched only when a
+// book with pictures (catalogue "pics") is opened for reading. Pictures are
+// for the child who sees a little; nothing is said about them.
+const picUrls=new Map();
+const letters=t=>t.toLowerCase().replace(/\P{L}+/gu,'');
+function dropPics(){
+  picUrls.forEach(u=>URL.revokeObjectURL(u)); picUrls.clear();
+  book.zip=null; book.pics=null;
+}
+async function loadPics(){
+  const e=book.entry; if(!e || !e.pics || book.pics) return;
+  book.pics=[];                                   // once per opening, even if it fails
+  try{
+    const zip=book.zip||await JSZip.loadAsync(await fetchEpub(e));
+    if(book.entry!==e) return;                    // another book opened meanwhile
+    const f=zip.file('OEBPS/pics.json'); if(!f) return;
+    book.zip=zip; book.pics=JSON.parse(await f.async('string'));
+    if(book.entry===e && !$('reader').classList.contains('hidden')) buildRead();
+  }catch(x){}
+}
+function placePics(){
+  if(!book.pics){ loadPics(); return; }
+  if(!book.pics.length || !book.zip) return;
+  const ch=chap(), name=c=>c.print||c.title; let k=0;
+  for(let i=0;i<ci;i++) if(name(book.chapters[i])===name(ch)) k++;
+  const mine=book.pics.filter(p=>p.t===name(ch) && p.k===k);
+  if(!mine.length) return;
+  const keys=ch.blocks.map(b=>letters((b.sentences||[]).join(' ')));
+  const box=$('readText'), zip=book.zip;
+  // The paragraph a picture follows, or the nearest one shown before it
+  // (a skipped colophon line has no paragraph on the page).
+  const para=bx=>{ for(let j=bx;j>=0;j--){ const s=box.querySelector('.sent[data-b="'+j+'"]'); if(s) return s.parentElement; } return null; };
+  let from=0, lastBx=-3, lastFig=null;
+  mine.forEach(p=>{
+    let bx=p.a?-2:-1;                             // -1 chapter start, -2 not found
+    if(p.a) for(let j=from;j<keys.length;j++) if(keys[j].startsWith(p.a)){ bx=j; break; }
+    const fig=document.createElement('div'); fig.className='pic';
+    const img=document.createElement('img');
+    img.alt='Зураг'; img.width=p.w; img.height=p.h; img.decoding='async';
+    fig.appendChild(img);
+    // Several pictures after one paragraph keep their order; one whose
+    // paragraph was not found follows the picture before it.
+    const at=(bx===-2 || bx===lastBx) ? lastFig : (bx===-1 ? null : para(bx));
+    if(at) at.after(fig); else box.prepend(fig);
+    if(bx!==-2) lastBx=bx;
+    if(bx>=0) from=bx;
+    lastFig=fig;
+    if(picUrls.has(p.src)) img.src=picUrls.get(p.src);
+    else{ const f=zip.file('OEBPS/'+p.src);
+      if(f) f.async('blob').then(b=>{ if(book.zip!==zip) return;
+        const u=URL.createObjectURL(b); picUrls.set(p.src,u); img.src=u; }); }
+  });
 }
 function markRead(scroll){
   if($('reader').classList.contains('hidden')) return;
@@ -1972,13 +2052,16 @@ function partOf(title){
                 .replace(/[^\p{L}\p{N}]/gu,'');
   return key?{key,n}:null;
 }
+// A school textbook's number is its grade, not a part (1 Nov): "Монгол хэл 2"
+// does not wait for a "Монгол хэл 1", nor run on into "Монгол хэл 3".
+const bookPart=b=>b&&b.source==='medle.mn'?null:partOf(b&&b.title);
 let SERIES=null;                         // series key -> Map(part -> book)
 function series(){
   if(SERIES) return SERIES;
   if(!catalog) return new Map();
   SERIES=new Map();
   allBooks().forEach(b=>{
-    const p=partOf(b.title); if(!p) return;
+    const p=bookPart(b); if(!p) return;
     if(!SERIES.has(p.key)) SERIES.set(p.key,new Map());
     SERIES.get(p.key).set(p.n,b);
   });
@@ -1989,14 +2072,14 @@ function series(){
 // back to its beginning. It comes back by itself once the earlier parts are
 // added — 14 books are waiting on this.
 function reachable(b){
-  const p=partOf(b&&b.title); if(!p) return true;
+  const p=bookPart(b); if(!p) return true;
   const parts=series().get(p.key);
   if(!parts) return true;
   for(let i=1;i<p.n;i++) if(!parts.has(i)) return false;
   return true;
 }
 function nextPart(b){
-  const p=partOf(b&&b.title); if(!p) return null;
+  const p=bookPart(b); if(!p) return null;
   const parts=series().get(p.key);
   return (parts&&parts.get(p.n+1))||null;
 }
@@ -2342,22 +2425,13 @@ async function openBook(e, opts={}){
   dropClips();
   book.entry=e; book.chapters=[]; book.audioBase=null;
   book.title=''; book.author='';
+  dropPics();
   ci=0; bi=0; si=0; resumeT=0;
   $('shelfNote').classList.remove('hidden');
   $('shelfNote').textContent='Ном нээж байна…';
   try{
     try{ await loadVoiced(e); }
-    catch(x){
-      // The EPUBs are on R2 beside the audio since 3 Oct (catalogue
-      // "booksBase"); one added later through the admin page is still in the
-      // site, so that is tried next.
-      let r=null;
-      if(catalog && catalog.booksBase)
-        r=await fetch(catalog.booksBase.replace(/\/+$/,'')+'/'+e.file).catch(()=>null);
-      if(!r || !r.ok) r=await fetch(e.file);
-      if(!r.ok) throw new Error('unavailable');
-      await loadEpub(await r.arrayBuffer(), e.title);
-    }
+    catch(x){ await loadEpub(await fetchEpub(e), e.title); }
     put('last',JSON.stringify(e));
     usage('open',e.id);
     $('nowCoverImg').src=$('resumeCover').src=e.cover||'logo.png';
@@ -2380,7 +2454,7 @@ async function openBook(e, opts={}){
       if(opts.resume){ openAt(false); return; }
       paint();
       $('resumeTitle').textContent = book.title;
-      $('resumeWhere').textContent = chap().title;
+      $('resumeWhere').textContent = shown(chap());
       show('resume');
       $('resumeGo').focus();
       announce('Үргэлжлүүлэх үү, эхнээс нь үү?');
@@ -2404,7 +2478,7 @@ function buildToc(){
     const b=document.createElement('button');
     const c=book.chapters[m.ci];
     b.className='bookRow'; b.style.display='block'; b.style.padding='18px';
-    b.innerHTML='<span class="t">★ Хавчуурга — '+chNo(m.ci)+'. '+esc(c.title)+'</span>';
+    b.innerHTML='<span class="t">★ Хавчуурга — '+chNo(m.ci)+'. '+esc(shown(c))+'</span>';
     b.addEventListener('click',()=>{ earcon('open'); goBookmark(m); });
     b.addEventListener('focus',()=>sayParts(['Хавчуурга', chNo(m.ci)+'-р бүлэг', c.title]));
     $('tocList').appendChild(b);
@@ -2414,7 +2488,7 @@ function buildToc(){
     b.className='bookRow'; b.style.display='block'; b.style.padding='18px';
     if(c.hidden) return;                    // a contents page: not a chapter to go to
     b.dataset.ch=String(i);
-    b.innerHTML='<span class="t">'+chNo(i)+'. '+esc(c.title)+'</span>';
+    b.innerHTML='<span class="t">'+chNo(i)+'. '+esc(shown(c))+'</span>';
     b.addEventListener('click',()=>{ earcon('open'); jump(i); });
     // The number is always voiced; the title only where it has been, so a
     // chapter is never silent.
