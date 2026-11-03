@@ -45,6 +45,15 @@
   h1{font-family:var(--display);font-weight:800;color:var(--navy);
     font-size:clamp(30px,6vw,46px);line-height:1.15;margin:0;}
   h1 .gerel{color:var(--ember);}
+  /* From a tablet up the name stays on one line (3 Nov, user's wish): it
+     shrinks with the row's width (cqi) until it fits, 46px from about 860px,
+     and the seal is sized to that one line, as on the first screen. A phone,
+     or a browser without container units, keeps the wrapped name above. */
+  @media(min-width:600px){
+    .title{container-type:inline-size;gap:20px;}
+    .title img{height:clamp(56px,calc(9.7cqi - 2px),78px);}
+    .title h1{font-size:min(46px,calc(5.7cqi - 1px));}
+  }
   .lead{font-size:20px;margin:18px 0 0;}
   section{margin-top:40px;padding-top:28px;border-top:2px solid var(--line);}
   h2{font-family:var(--display);font-weight:800;color:var(--navy);
