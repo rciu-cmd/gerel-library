@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-11-02-b">
+<meta name="gerel-build" content="2026-11-02-c">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -22,7 +22,11 @@
 <meta name="apple-mobile-web-app-title" content="Гэрэл">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<!-- The fonts arrive after the first screen, not before it (2 Nov): a stylesheet
+     from another site held the whole page back by two connections. Until they
+     come the page shows in the phone's own font, then swaps. -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet"></noscript>
 <style>
   :root{
     /* Daylight, not a reading lamp at midnight. Every shelf colour is dark
@@ -590,11 +594,11 @@
   <div class="books" id="tocList"></div>
 </div>
 
-<!-- Served from this site, not a CDN: no third party can change the code that
-     runs here, and the service worker keeps it so EPUBs open with no signal.
+<!-- jszip.min.js is served from this site, not a CDN: no third party can change
+     the code that runs here, and the service worker keeps it so EPUBs open with
+     no signal. Since 2 Nov it is loaded by zipLib() only when a book needs it.
      The Azure Speech SDK is gone: the key is empty, so it was 1.5 MB fetched on
      every visit and never used. -->
-<script src="jszip.min.js"></script>
 <script>
 // Where the voiced books live. The catalogue may point this elsewhere — at
 // Cloudflare R2 — because 21 GB of audio cannot sit in a GitHub repository,
@@ -605,7 +609,10 @@ const SPEECH_ROOT='speech';
 // an old offline worker answered speech/index.json from its own store —
 // September's list, so every phrase since was silent; a name it has never
 // stored has to come from the site.
-const speechList=()=>SPEECH_ROOT+'/index.json?v='+((document.querySelector('meta[name=gerel-build]')||{}).content||Date.now());
+// Since 2 Nov in two halves: core.json (the interface, shelves and book
+// titles, 32 KB) for the first screen, chapters.json (chapter titles, 250 KB)
+// once the shelves are up. index.json is both, for older copies of the page.
+const speechList=(part='index')=>SPEECH_ROOT+'/'+part+'.json?v='+((document.querySelector('meta[name=gerel-build]')||{}).content||Date.now());
 // Only for books not yet voiced. Empty means no key ships in the page.
 const AZURE_SPEECH_KEY="", AZURE_SPEECH_REGION="eastasia", VOICE="mn-MN-YesuiNeural";
 // Deep enough to hold white text at full contrast, far enough apart that
@@ -1050,6 +1057,18 @@ function firstPlace(){
 // The EPUBs are on R2 beside the audio since 3 Oct (catalogue "booksBase");
 // one added later through the admin page is still in the site, so that is
 // tried next.
+// The EPUB reader (JSZip, 97 KB) is fetched only when a book needs it — one
+// with no recording, or a textbook's pictures. Loaded with the page, it held
+// the first screen back by one whole download (2 Nov).
+let zipLibP=null;
+function zipLib(){
+  if(window.JSZip) return Promise.resolve(window.JSZip);
+  return zipLibP||(zipLibP=new Promise((ok,no)=>{
+    const s=document.createElement('script'); s.src='jszip.min.js';
+    s.onload=()=>ok(window.JSZip);
+    s.onerror=()=>{ zipLibP=null; s.remove(); no(new Error('jszip')); };
+    document.head.appendChild(s); }));
+}
 async function fetchEpub(e){
   let r=null;
   if(catalog && catalog.booksBase)
@@ -1059,7 +1078,7 @@ async function fetchEpub(e){
   return r.arrayBuffer();
 }
 async function loadEpub(data,fb){
-  const zip=book.zip=await JSZip.loadAsync(data);
+  const zip=book.zip=await (await zipLib()).loadAsync(data);
   const cont=await zip.file('META-INF/container.xml').async('string');
   const opfPath=new DOMParser().parseFromString(cont,'application/xml')
     .querySelector('rootfile').getAttribute('full-path');
@@ -1872,7 +1891,7 @@ async function loadPics(){
   const e=book.entry; if(!e || !e.pics || book.pics) return;
   book.pics=[];                                   // once per opening, even if it fails
   try{
-    const zip=book.zip||await JSZip.loadAsync(await fetchEpub(e));
+    const zip=book.zip||await (await zipLib()).loadAsync(await fetchEpub(e));
     if(book.entry!==e) return;                    // another book opened meanwhile
     const f=zip.file('OEBPS/pics.json'); if(!f) return;
     book.zip=zip; book.pics=JSON.parse(await f.async('string'));
@@ -3040,7 +3059,10 @@ if(navigator.serviceWorker){
   // waited for the voice list too — 273 KB, the largest thing the page loads
   // — which on a slow phone connection was seconds of empty paper. Now the
   // shelves appear as soon as the catalogue is here, and the voice follows.
-  const catalogP=fetch('catalog.json',{cache:'no-store'}).then(r=>r.ok?r.json():{shelves:[]})
+  // 'no-cache', not 'no-store' (2 Nov): still checked with the server every
+  // time, but an unchanged catalogue comes back as "not modified" instead of
+  // being downloaded again.
+  const catalogP=fetch('catalog.json',{cache:'no-cache'}).then(r=>r.ok?r.json():{shelves:[]})
     .catch(()=>({shelves:[]}));
   const blockedP=fetch('blocklist.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null)
     .then(j=>{ if(j) BLOCKED=new Set((j.lines||[]).map(x=>x.trim()).filter(Boolean)); })
@@ -3050,10 +3072,23 @@ if(navigator.serviceWorker){
   // 'no-cache' revalidates with the server. The manifest changes whenever a
   // shelf is renamed or a book added, and a cached copy leaves those names
   // silent forever with nothing to show why.
-  const speechP=fetch(speechList(),{cache:'no-cache'}).then(r=>r.ok?r.json():null)
-    .then(j=>{ if(j) SPEECH=j; })
+  const getList=part=>fetch(speechList(part),{cache:'no-cache'})
+    .then(r=>r.ok?r.json():Promise.reject(new Error(part+' '+r.status)));
+  const speechP=getList('core').catch(()=>getList('index'))     // a site without the halves
+    .then(j=>{ if(j) SPEECH=Object.assign(j,SPEECH); })
     .catch(e=>console.warn('speech manifest not loaded', e));
   speechReady=speechP;
+  // The chapter titles, and the first names a child will hear, once the
+  // first screen is up: the shelves and the three ways of reading are
+  // fetched ahead, so the first arrow press is answered at once (the worker
+  // keeps them for next time).
+  speechP.then(()=>{
+    getList('chapters').then(j=>{ Object.assign(SPEECH,j); }).catch(()=>{});
+    setTimeout(()=>{
+      new Set(shelvesOf().map(g=>g.name).concat(Object.values(MODES))).forEach(t=>{
+        if(SPEECH[t]) fetch(SPEECH_ROOT+'/'+SPEECH[t]).catch(()=>{}); });
+    },1500);
+  });
 
   catalog=await catalogP;
   if(catalog && catalog.audioBase) AUDIO_ROOT=catalog.audioBase.replace(/\/+$/,'');

@@ -14,6 +14,13 @@
 // was silent. A new name makes activate() delete v1 and everything in it.
 const SHELL = 'gerel-shell-v2';
 const BOOKS = 'gerel-books-v1';
+// 2 Nov: the interface's voice clips and the covers are kept as they are met,
+// so moving around answers from the phone instead of the network.
+const VOICE = 'gerel-voice-v1';
+const COVERS = 'gerel-covers-v1';
+// After this long the phone's own copy of the page is shown, and the download
+// carries on to replace it for next time.
+const SLOW_MS = 3000;
 
 // The Rotary tile left the screens on 3 Oct; the club and district logos at
 // the foot of the first screen are kept instead, so it is whole with no signal.
@@ -38,7 +45,7 @@ self.addEventListener('activate', e => {
   e.waitUntil((async () => {
     const keys = await caches.keys();
     await Promise.all(keys
-      .filter(k => k !== SHELL && k !== BOOKS)
+      .filter(k => ![SHELL, BOOKS, VOICE, COVERS].includes(k))
       .map(k => caches.delete(k)));
     await self.clients.claim();
   })());
@@ -80,23 +87,45 @@ self.addEventListener('fetch', e => {
 
   const url = new URL(req.url);
 
-  // Covers can be redrawn — all of them were on 2 Oct — so they are asked for
-  // first and the kept copy is brought up to date. Served cache-first, a kept
-  // book showed its old cover for ever. The cache is for when there is no
-  // signal.
+  // Covers can be redrawn — all of them were on 2 Oct — so a kept copy is
+  // shown at once AND the cover is asked for again behind it, bringing the
+  // copy up to date for the next look. (Served from the cache alone, a kept
+  // book showed its old cover for ever; asked for first, every shelf waited
+  // on the network for pictures it already had.)
   if (/\/covers\//.test(url.pathname)) {
     e.respondWith((async () => {
-      try {
-        const res = await fetch(req);
+      const hit = await caches.match(req, { ignoreVary: true });
+      const fresh = fetch(req).then(async res => {
         if (res && res.ok) {
-          const c = await caches.open(BOOKS);
-          if (await c.match(req, { ignoreVary: true })) c.put(req, res.clone()).catch(() => {});
+          const a = res.clone(), b = res.clone();
+          (await caches.open(COVERS)).put(req, a).catch(() => {});
+          const kept = await caches.open(BOOKS);
+          if (await kept.match(req, { ignoreVary: true })) kept.put(req, b).catch(() => {});
         }
         return res;
-      } catch (err) {
-        const hit = await caches.match(req, { ignoreVary: true });
-        return hit || new Response('', { status: 504 });
-      }
+      }).catch(() => null);
+      if (hit) { e.waitUntil(fresh); return hit; }
+      return (await fresh) || new Response('', { status: 504 });
+    })());
+    return;
+  }
+
+  // The interface's own voice. A clip's name is a hash of what it says, so a
+  // name never changes its sound and a kept clip is never out of date: kept
+  // the first time it is heard, then played from the phone. Fetched whole
+  // (without the player's Range header) so it can be kept.
+  if (url.origin === location.origin && /^\/speech\/p[0-9a-f]+\.mp3$/.test(url.pathname)) {
+    e.respondWith((async () => {
+      const hit = await caches.match(req.url, { ignoreVary: true });
+      if (hit) return partial(req, hit);
+      try {
+        const res = await fetch(req.url);
+        if (res && res.status === 200) {
+          const copy = res.clone();
+          (await caches.open(VOICE)).put(req.url, copy).catch(() => {});
+        }
+        return partial(req, res);
+      } catch (err) { return new Response('', { status: 504 }); }
     })());
     return;
   }
@@ -116,15 +145,33 @@ self.addEventListener('fetch', e => {
 
   // Everything else: network first, falling back to the cached shell, so a
   // fix always reaches the child but a dead connection does not blank the
-  // page.
+  // page. This site's own files wait at most SLOW_MS (2 Nov): on a slow
+  // connection the page waited as long as the network did, with a copy
+  // already on the phone. The download carries on and replaces the copy.
+  const same = url.origin === location.origin;
+  const net = fetch(req).then(res => {
+    if (res && res.ok && same) {
+      const copy = res.clone();
+      caches.open(SHELL).then(c => c.put(req, copy)).catch(() => {});
+    }
+    return res;
+  });
+  if (same) {
+    e.respondWith((async () => {
+      const first = await Promise.race([net.catch(() => 'down'),
+        new Promise(r => setTimeout(r, SLOW_MS, 'slow'))]);
+      if (first !== 'slow' && first !== 'down') return first;
+      const hit = await caches.match(req, { ignoreVary: true })
+        || (req.mode === 'navigate' ? await caches.match('/index.html') : null);
+      if (hit) { e.waitUntil(net.catch(() => {})); return hit; }
+      if (first === 'down') return new Response('', { status: 504 });
+      try { return await net; } catch (err) { return new Response('', { status: 504 }); }
+    })());
+    return;
+  }
   e.respondWith((async () => {
     try {
-      const res = await fetch(req);
-      if (res && res.ok && url.origin === location.origin) {
-        const c = await caches.open(SHELL);
-        c.put(req, res.clone()).catch(() => {});
-      }
-      return res;
+      return await net;
     } catch (err) {
       // Kept audio on audio.gerelnom.com lands here when there is no signal.
       const hit = await caches.match(req, { ignoreVary: true });
