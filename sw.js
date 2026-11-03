@@ -24,8 +24,10 @@ const SLOW_MS = 3000;
 
 // The Rotary tile left the screens on 3 Oct; the club and district logos at
 // the foot of the first screen are kept instead, so it is whole with no signal.
+// School 116's seal stands before the name (3 Nov).
 const SHELL_FILES = [
   '/', '/index.html', '/catalog.json', '/jszip.min.js',
+  '/logos/school-116.webp',
   '/logos/rotary-d3450.png', '/logos/rotary-ikh-urgoo.png',
   '/logos/rotary-taipei-passport.png', '/logos/rotary-d3522.png',
   '/logo.png', '/icon-192.png', '/icon-512.png', '/favicon.ico'

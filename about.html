@@ -38,6 +38,10 @@
   /* Only the chosen language is shown. */
   html[lang="mn"] [data-l="en"], html[lang="en"] [data-l="mn"]{display:none !important;}
   header{margin:28px 0 8px;}
+  /* School 116's seal before the name (3 Nov, user's wish): about as tall as
+     the name's two lines, so neither outweighs the other. */
+  .title{display:flex;align-items:center;gap:clamp(14px,2.6vw,22px);}
+  .title img{flex:0 0 auto;height:clamp(76px,13vw,112px);width:auto;}
   h1{font-family:var(--display);font-weight:800;color:var(--navy);
     font-size:clamp(30px,6vw,46px);line-height:1.15;margin:0;}
   h1 .gerel{color:var(--ember);}
@@ -81,7 +85,10 @@
   </div>
 
   <header>
-    <h1><span data-l="mn"><span class="gerel">Гэрэл</span> хүүхдийн номын сан</span><span data-l="en"><span class="gerel">Gerel</span> Children's Library</span></h1>
+    <div class="title">
+      <img src="logos/school-116.webp" alt="Нийслэлийн ерөнхий боловсролын 116 дугаар сургууль · School No. 116, Ulaanbaatar" width="256" height="256">
+      <h1><span data-l="mn"><span class="gerel">Гэрэл</span> хүүхдийн номын сан</span><span data-l="en"><span class="gerel">Gerel</span> Children's Library</span></h1>
+    </div>
     <p class="lead" data-l="mn">Хараагүй болон хараа муу хүүхдэд зориулсан үнэгүй аудио номын сан.</p>
     <p class="lead" data-l="en">A free audiobook library for blind and partially sighted children in Mongolia.</p>
   </header>

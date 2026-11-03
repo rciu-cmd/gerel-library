@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-11-03-a">
+<meta name="gerel-build" content="2026-11-03-b">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -74,6 +74,7 @@
   /* The clubs' logos keep their own colours on a white card: Rotary blue on
      black could not be read. */
   html[data-theme] body #sponsors img{background-color:#fff !important;border-radius:12px;}
+  html[data-theme] body #shelf .school{background-color:#fff !important;border-radius:50%;}
   html[data-theme] body .progress{border:2px solid var(--hc) !important;}
   /* The title area of a book row is a button too, but its row already has the
      border: a second one squeezed the titles into a narrow column. */
@@ -128,11 +129,14 @@
      sign; Continue; the three ways of reading as one switch; every shelf at
      once; and the clubs behind it at the foot. The same screen shows a
      shelf's books once one is opened — .home marks the first view.
-     No logo here (the user's choice, 1 Oct); it stays as the tab and phone
-     icon. "Гэрэл" — light — in the orange-red of the sun. */
+     Gerel's own logo stays the tab and phone icon (the user's choice, 1 Oct);
+     before the name stands the seal of School 116 (3 Nov, user's wish), as
+     tall as the name's lines (three on a phone, two on a laptop). "Гэрэл" — light — in the
+     orange-red of the sun. */
   #shelf .brand{flex:1;min-width:0;font-family:var(--display);font-weight:800;
     color:var(--navy);font-size:clamp(22px,4.4vw,34px);line-height:1.15;
     letter-spacing:-.01em;margin:0;}
+  #shelf .school{flex:0 0 auto;height:clamp(62px,5.6vw,76px);width:auto;}
   #shelf .brand .gerel{color:#C2410C;}
   #shelf.home .shelfOnly{display:none !important;}
   #shelf:not(.home) .homeOnly{display:none !important;}
@@ -450,6 +454,7 @@
      clubs); opening a shelf swaps those for its title and its books. -->
 <div id="shelf" class="screen home">
   <div class="bar">
+    <img class="school homeOnly" src="logos/school-116.webp" alt="Нийслэлийн ерөнхий боловсролын 116 дугаар сургууль" width="256" height="256">
     <h1 class="brand homeOnly"><span class="gerel">Гэрэл</span> хүүхдийн номын сан</h1>
     <h1 id="shelfTitle" class="shelfOnly">Тавиурууд</h1>
     <button class="chip shelfOnly" id="backChip">← Тавиурууд</button>
