@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-11-02-c">
+<meta name="gerel-build" content="2026-11-03-a">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -3047,10 +3047,17 @@ if(navigator.serviceWorker){
   });
   // A new worker taking over means the voice list this page loaded may have
   // come from the old one's store (September's, on some phones). Ask again,
-  // so new phrases speak without a second reload.
+  // so new phrases speak without a second reload — but only when a worker
+  // was already there: on a first visit the lists just came from the network,
+  // and asking again cost a child 280 KB for nothing (3 Nov). The two halves,
+  // not the whole list.
+  const hadWorker=!!navigator.serviceWorker.controller;
   navigator.serviceWorker.addEventListener('controllerchange',async()=>{
-    try{ const r=await fetch(speechList(),{cache:'no-cache'});
-      if(r.ok) SPEECH=await r.json(); }catch(e){}
+    if(!hadWorker) return;
+    for(const part of ['core','chapters']){
+      try{ const r=await fetch(speechList(part),{cache:'no-cache'});
+        if(r.ok) Object.assign(SPEECH,await r.json()); }catch(e){}
+    }
   });
 }
 
