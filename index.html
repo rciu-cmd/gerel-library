@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta name="gerel-build" content="2026-11-03-b">
+<meta name="gerel-build" content="2026-11-03-c">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-64.png" type="image/png" sizes="64x64">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -239,6 +239,18 @@
     .tools{display:none;flex-basis:100%;order:9;padding:10px;border-radius:18px;
       background:#fff;border:2px solid var(--line);}
     .tools.open{display:flex;}
+  }
+  /* On a laptop the name stays on one line beside the buttons (3 Nov, user's
+     wish): the buttons a little smaller, the seal sized to one line, and the
+     name shrinking with the bar's width (cqi) until it fits — 34px from a
+     1160px window, about 26px at 1024. A browser without container units
+     keeps the 34px name on two lines, as before. */
+  @media(min-width:1024px){
+    #shelf .bar{container-type:inline-size;}
+    #shelf .brand{font-size:min(34px,calc(6.5cqi - 38px));}
+    #shelf .school{height:clamp(46px,calc(11cqi - 64px),58px);}
+    .tools{gap:6px;}
+    .tools .chip{padding:10px 12px;font-size:14px;}
   }
 
   /* Shelves as tiles (3 Oct): two across on a phone, three on a tablet, four
