@@ -1,16 +1,21 @@
 {
- "generated": "2026-10-03T22:57",
- "build": "2026-10-03-n",
+ "generated": "2026-11-05T10:07",
+ "build": "2026-11-03-d",
  "lastCommit": {
-  "hash": "e751ab8",
-  "when": "2026-10-03T22:31:02+08:00",
-  "message": "District logos beside the club logos on the first screen"
+  "hash": "6c5aff3",
+  "when": "2026-11-03T17:49:42+08:00",
+  "message": "About page: the library's name on one line"
  },
  "library": {
-  "books": 349,
-  "mongolian": 307,
+  "books": 400,
+  "mongolian": 358,
   "english": 42,
   "shelves": [
+   {
+    "name": "Сурах бичиг",
+    "books": 51,
+    "entries": 51
+   },
    {
     "name": "Үлгэр",
     "books": 93,
@@ -27,14 +32,9 @@
     "entries": 35
    },
    {
-    "name": "Хөгжилтэй түүхүүд",
-    "books": 34,
-    "entries": 34
-   },
-   {
     "name": "Адал явдал",
-    "books": 34,
-    "entries": 39
+    "books": 68,
+    "entries": 73
    },
    {
     "name": "Байгаль, амьтад",
@@ -52,12 +52,12 @@
     "entries": 42
    }
   ],
-  "hoursMongolian": 882,
+  "hoursMongolian": 1067,
   "hoursEnglish": 43,
-  "braille": 307,
-  "braillePages": 55916,
-  "interfaceClips": 9335,
-  "accounts": 2,
+  "braille": 358,
+  "braillePages": 69282,
+  "interfaceClips": 10245,
+  "accounts": 0,
   "removed": [
    "АЛСЫГ ЗОРЬСОН АЛТАН ЗАГАС",
    "АНХНЫ БАГШ",
@@ -117,36 +117,36 @@
   "noBraille": []
  },
  "storage": {
-  "siteMB": 384.5,
+  "siteMB": 447.2,
   "siteLimitMB": 1024,
   "siteFolders": {
-   "speech": 187.3,
-   "braille": 175.6,
-   "covers": 11.0,
+   "speech": 217.6,
+   "braille": 206.8,
+   "covers": 12.0,
    "audio": 9.5,
-   "(pages)": 1.1,
+   "(pages)": 1.2,
    "logos": 0.1,
    "text": 0.0
   },
-  "gitHistoryMB": 610,
-  "r2GB": 23.38,
-  "r2Files": 304599,
-  "r2AudioGB": 23.0,
-  "r2AudioFiles": 304255,
-  "r2BooksMB": 388,
-  "r2BooksFiles": 344,
+  "gitHistoryMB": 647,
+  "r2GB": 27.27,
+  "r2Files": 379820,
+  "r2AudioGB": 26.83,
+  "r2AudioFiles": 379425,
+  "r2BooksMB": 448,
+  "r2BooksFiles": 395,
   "r2FreeGB": 10
  },
  "costs": {
-  "r2PerYear": 2.41,
+  "r2PerYear": 3.11,
   "domainPerYear": 12.0,
   "githubPerYear": 0,
-  "totalPerYear": 14.41,
-  "freeListeningHoursPerMonth": 30400,
+  "totalPerYear": 15.11,
+  "freeListeningHoursPerMonth": 29300,
   "azureGrantPerYear": 2000.0,
-  "azureSpent": 802.0,
-  "azureLeft": 1198.0,
-  "azureSpentAsOf": "2026-10-03",
+  "azureSpent": 942.0,
+  "azureLeft": 1058.0,
+  "azureSpentAsOf": "2026-11-02",
   "azureSpentIsEstimate": true,
   "azureGrantExpires": "2027-09-04"
  },
@@ -165,18 +165,6 @@
    [
     "ok",
     "Репод түлхүүр, нууц үг алга (3 Oct шалгав)."
-   ],
-   [
-    "todo",
-    "GitHub, Cloudflare, Azure, Microsoft бүртгэлд хоёр шаттай баталгаажуулалт (2FA) асаах."
-   ],
-   [
-    "todo",
-    "Cloudflare → audio.gerelnom.com дээр хурдны хязгаар (Rate limiting) нэг дүрэм."
-   ],
-   [
-    "todo",
-    "Azure Cost Management дээр төсвийн анхааруулга (жишээ нь сард $20)."
    ]
   ]
  },
